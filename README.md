@@ -9,6 +9,11 @@ reinforcement-learning loop that re-ranks the graph for the next learner.
 > **Status:** functional prototype. Hand-off candidate for UI/design polish.
 > All apps run via `streamlit`. Data layer = local Python (Obsidian vault
 > loader + optional Graphiti/FalkorDB temporal graph + BM25 indices).
+>
+> **👉 Designers: read [`DESIGN_BRIEF.md`](DESIGN_BRIEF.md) before touching pixels.**
+> It explains the journey-through-the-graph metaphor, the first-90-seconds
+> onboarding beats, the four user types, voice/tone, hard requirements,
+> and the specific UI moments to mock up first.
 
 ---
 
