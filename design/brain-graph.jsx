@@ -37,21 +37,50 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
     const Graph = window.ForceGraph3D()(containerRef.current);
     fgRef.current = Graph;
 
+    // 3d-force-graph snapshots container size at construct time. If our
+    // parent is mid-fade-in (0×0 during React mount) the graph stays 0×0
+    // forever and the canvas appears blank. Set an explicit size now and
+    // keep it in sync via a ResizeObserver — this is what makes the canvas
+    // actually fill the viewport across page/tab transitions.
+    const sizeFromContainer = () => {
+      const r = containerRef.current?.getBoundingClientRect();
+      const w = Math.max(320, Math.floor(r?.width || window.innerWidth));
+      const h = Math.max(240, Math.floor(r?.height || window.innerHeight));
+      Graph.width(w).height(h);
+    };
+    sizeFromContainer();
+    const ro = new ResizeObserver(sizeFromContainer);
+    ro.observe(containerRef.current);
+    window.addEventListener("resize", sizeFromContainer);
+
     const nodes = BU_DATA.NODES.map(n => ({
       ...n,
       val: 1 + n.degree * 0.4,
     }));
     const links = BU_DATA.EDGES.map(([s,t]) => ({ source: s, target: t }));
 
+    // 3d-force-graph passes the bg color through `polished`, which can't
+    // parse CSS variables like `var(--c-bg)`. Resolve to a real hex first.
+    let bgResolved = background;
+    if (typeof bgResolved === "string" && bgResolved.includes("var(")) {
+      const varName = bgResolved.match(/var\(([^,)]+)/)?.[1]?.trim();
+      if (varName) {
+        const got = getComputedStyle(document.documentElement)
+          .getPropertyValue(varName).trim();
+        if (got) bgResolved = got;
+      }
+    }
+    if (!bgResolved || bgResolved.startsWith("var(")) bgResolved = "#0a0e22";
+
     Graph
       .graphData({ nodes, links })
-      .backgroundColor(background)
+      .backgroundColor(bgResolved)
       .showNavInfo(false)
-      .nodeRelSize(3.5)
+      .nodeRelSize(6)
       .nodeOpacity(0.95)
-      .linkOpacity(0.18)
-      .linkWidth(0.6)
-      .linkColor(() => "rgba(125,211,252,0.35)")
+      .linkOpacity(0.55)
+      .linkWidth(1.0)
+      .linkColor(() => "rgba(82,121,193,0.55)")
       .nodeColor(node => colorForNode(node, { currentNode, visited, tourPath, highlightCluster }))
       .nodeLabel(node => `<div style="font-family:'JetBrains Mono',monospace;font-size:11px;background:#0f1733;color:#f5f7fb;padding:4px 8px;border-radius:4px;border:1px solid rgba(125,211,252,0.4)">${node.name}<br/><span style="opacity:0.6">course: ${BU_DATA.CLUSTERS[node.cluster].name}</span></div>`)
       .onNodeClick(node => {
@@ -95,8 +124,17 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
       Graph.cameraPosition({ x: 0, y: 80, z: 380 }, { x: 0, y: 0, z: 0 }, 1500);
     }, 100);
 
+    // Fit-all once the force layout settles so we never render an empty
+    // viewport. Runs ~3s after mount; safe to no-op if user already moved
+    // the camera before then.
+    setTimeout(() => {
+      try { Graph.zoomToFit(1200, 60); } catch (_) {}
+    }, 3200);
+
     return () => {
       try { Graph._destructor && Graph._destructor(); } catch (_) {}
+      try { ro.disconnect(); } catch (_) {}
+      window.removeEventListener("resize", sizeFromContainer);
       containerRef.current?.removeEventListener("mousedown", onUserInput);
     };
   }, []); // build once
