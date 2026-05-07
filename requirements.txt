@@ -1,0 +1,33 @@
+# Core UI
+streamlit>=1.30
+pandas
+numpy
+
+# Graph + viz
+networkx>=3.0
+pyvis
+
+# Markdown rendering inside notes (built into streamlit but listed for clarity)
+# (no extra package required)
+
+# Retrieval
+rank_bm25
+
+# LLM (optional but recommended)
+anthropic
+
+# Auto-explainer mp4 (optional — Watch tab > Render mp4)
+moviepy>=2.0
+gTTS
+Pillow
+
+# TTS offline fallback (optional)
+pyttsx3
+
+# Temporal graph (optional — needs FalkorDB container)
+graphiti-core
+falkordb
+nest_asyncio
+
+# Utility
+python-louvain   # only used if networkx 3.x community detection unavailable

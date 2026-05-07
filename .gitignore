@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+
+# Generated runtime state
+data/sessions/
+data/raw/
+data/cleaned/
+data/defense_corpus/
+rag/index.pkl
+rag/indices/
+
+# Build artifacts
+site/
+*.webm
+*.mp4
+eval/results/
+
+# Backups
+*.bak
+*.eval-bak.*
+
+# Logs
+logs/

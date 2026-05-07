@@ -1,0 +1,22 @@
+{
+  "_comment": "Three deployment modes for the specialist agents.",
+  "synthesizer": "claude-sonnet-4-5",
+  "specialists": {
+    "_comment": "PROTOTYPE \u2014 Claude (cheap, no GPU needed, ~$0.10/debate)",
+    "aero": "claude-haiku-4-5",
+    "mech": "claude-haiku-4-5",
+    "cs": "claude-haiku-4-5"
+  },
+  "specialists_after_phase5_local": {
+    "_comment": "LOCAL GPU \u2014 load base + LoRA on a CUDA machine. Won't work on Mac.",
+    "aero": "hf:google/gemma-2-9b-it+jang0294/gemma-2-9b-aero-lora",
+    "mech": "hf:google/gemma-2-9b-it+jang0294/gemma-2-9b-mech-lora",
+    "cs": "hf:google/gemma-2-9b-it+jang0294/gemma-2-9b-cs-lora"
+  },
+  "specialists_after_phase5": {
+    "_comment": "PRODUCTION \u2014 HF Inference Endpoints (managed, no local GPU). Replace placeholders with the URL HF gives you when you create each endpoint at https://ui.endpoints.huggingface.co/",
+    "aero": "hf-endpoint:https://y3uvg7xnj4grofv7.us-east-1.aws.endpoints.huggingface.cloud",
+    "mech": "hf-endpoint:https://n3ce9l02e957o08k.us-east-1.aws.endpoints.huggingface.cloud",
+    "cs": "hf-endpoint:https://bm8u24hspwv4q692.us-east-1.aws.endpoints.huggingface.cloud"
+  }
+}
