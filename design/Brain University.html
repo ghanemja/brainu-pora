@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Brain University · Learning UI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* Tweak-driven font-family overrides applied to root */
+html[data-display-font="serif"]   { --f-display: "Fraunces", "Iowan Old Style", Georgia, serif; }
+html[data-display-font="grotesk"] { --f-display: "Geist", "General Sans", system-ui, sans-serif; }
+html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Menlo, monospace; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React + Babel pinned -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- 3D force graph (loads three.js peer) -->
+  <script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
+
+  <!-- Data layer (no JSX, plain JS) -->
+  <script src="data.js"></script>
+
+  <!-- Component libraries (each Babel-compiled, exports to window) -->
+  <script type="text/babel" src="atoms.jsx"></script>
+  <script type="text/babel" src="brain-graph.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+
+  <!-- Screens -->
+  <script type="text/babel" src="screens/trailhead.jsx"></script>
+  <script type="text/babel" src="screens/walk.jsx"></script>
+  <script type="text/babel" src="screens/branch-and-summit.jsx"></script>
+  <script type="text/babel" src="screens/dashboard-and-propose.jsx"></script>
+  <script type="text/babel" src="screens/threed-flex.jsx"></script>
+
+  <!-- Main app shell -->
+  <script type="text/babel">
+const { useState, useEffect, useMemo, useCallback } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": "paper",
+  "displayFont": "grotesk",
+  "lessonLayout": "postcard",
+  "showMinimap": true,
+  "cinematicCamera": true
+}/*EDITMODE-END*/;
+
+const SCREENS = [
+  { id: "trailhead", label: "Trailhead",  hint: "01" },
+  { id: "walk",      label: "The walk",   hint: "02" },
+  { id: "branch",    label: "Bridge",     hint: "03" },
+  { id: "summit",    label: "Summit",     hint: "04" },
+  { id: "dashboard", label: "Dashboard",  hint: "05" },
+  { id: "propose",   label: "Propose",    hint: "06" },
+  { id: "explorer",  label: "3D mode",    hint: "07" },
+];
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [screen, setScreen]     = useState("trailhead");
+  const [tour, setTour]         = useState(null);
+  const [stopIdx, setStopIdx]   = useState(0);
+  const [branchOpen, setBranch] = useState(false);
+  const [explorerOpen, setExplorer] = useState(false);
+  const [explorerNode, setExplorerNode] = useState(null);
+  const [learner] = useState({ name: "K. Asakawa", interest: "rocket aerodynamics" });
+
+  // Apply tweaks to <html>
+  useEffect(() => {
+    document.documentElement.dataset.palette     = t.palette;
+    document.documentElement.dataset.displayFont = t.displayFont;
+  }, [t.palette, t.displayFont]);
+
+  const startTour = useCallback((nodeId) => {
+    const planned = BU_DATA.planTour(nodeId);
+    setTour(planned);
+    setStopIdx(0);
+    setScreen("walk");
+  }, []);
+
+  const advance = useCallback((delta) => {
+    setStopIdx(i => Math.max(0, Math.min(tour.length - 1, i + delta)));
+  }, [tour]);
+
+  const handleBranch = useCallback(() => setBranch(true), []);
+  const handleFork = useCallback((toNode, cluster) => {
+    // Splice a forked tour: keep visited stops, append a planned tour starting at toNode
+    const visited = tour.slice(0, stopIdx + 1);
+    const forked = BU_DATA.planTour(toNode).slice(0, 4);
+    setTour([...visited, ...forked]);
+    setStopIdx(visited.length);
+    setBranch(false);
+  }, [tour, stopIdx]);
+
+  const handleSummit = useCallback(() => {
+    setScreen("summit");
+  }, []);
+
+  // Visited set for visualizations
+  const visited = useMemo(() => {
+    if (!tour) return new Set();
+    return new Set(tour.slice(0, stopIdx + 1).map(s => s.node));
+  }, [tour, stopIdx]);
+
+  // Fast nav across top
+  const goto = (id) => {
+    if (id === "explorer") {
+      setExplorer(true);
+      setExplorerNode(tour?.[stopIdx]?.node || "Reynolds_number");
+    } else {
+      if (id === "walk" && !tour) startTour("Reynolds_number");
+      else setScreen(id);
+    }
+  };
+
+  return (
+    <div className="app-shell">
+      {/* TOPBAR */}
+      <header className="topbar">
+        <div className="brand">
+          <span className="glyph">B<span style={{opacity: 0.7}}>U</span></span>
+          <span>Brain University<span style={{ opacity: 0.5, marginLeft: 6 }}>· learning prototype</span></span>
+        </div>
+        <nav className="nav">
+          {SCREENS.map(s => (
+            <button key={s.id}
+              className={screen === s.id || (s.id === "explorer" && explorerOpen) ? "active" : ""}
+              onClick={() => goto(s.id)}
+              title={`Screen ${s.hint} · ${s.label}`}>
+              <span style={{ opacity: 0.45, fontFamily: "var(--f-mono)", fontSize: 10, marginRight: 6 }}>
+                {s.hint}
+              </span>
+              {s.label}
+            </button>
+          ))}
+        </nav>
+        <div className="right">
+          <span>{learner.name}</span>
+          <span style={{ opacity: 0.4 }}>·</span>
+          <span style={{ color: "var(--c-bridge)" }}>online graph</span>
+        </div>
+      </header>
+
+      {/* MAIN */}
+      <main style={{ position: "relative" }}>
+        {screen === "trailhead" && (
+          <Trailhead learner={learner} onPickStart={startTour} />
+        )}
+        {screen === "walk" && tour && (
+          <Walk tour={tour} idx={stopIdx} layout={t.lessonLayout}
+                onAdvance={advance}
+                onJumpTo={(i) => typeof i === "number" ? setStopIdx(i) : setScreen("trailhead")}
+                onBranch={handleBranch}
+                onSummit={handleSummit}
+                onShow3D={() => { setExplorer(true); setExplorerNode(tour[stopIdx].node); }} />
+        )}
+        {screen === "walk" && !tour && (
+          <EmptyTour onPick={() => setScreen("trailhead")} />
+        )}
+        {screen === "branch" && (
+          <BranchStandalone onOpen={() => { setScreen("walk"); if (!tour) startTour("Reynolds_number"); setTimeout(() => setBranch(true), 300); }} />
+        )}
+        {screen === "summit" && (
+          <Summit tour={tour || BU_DATA.planTour("Reynolds_number")}
+                  onAnotherTrail={() => setScreen("trailhead")}
+                  onDashboard={() => setScreen("dashboard")} />
+        )}
+        {screen === "dashboard" && (
+          <Dashboard learner={learner}
+                     onResume={() => { startTour("Reynolds_number"); }}
+                     onNewTrail={() => setScreen("trailhead")} />
+        )}
+        {screen === "propose" && (
+          <Propose onJumpToNode={(id) => startTour(id)} />
+        )}
+
+        {/* Branch panel — overlays the walk */}
+        <BranchPanel
+          open={branchOpen}
+          fromNode={tour?.[stopIdx]?.node}
+          onStay={() => setBranch(false)}
+          onFork={handleFork} />
+
+        {/* 3D explorer fullscreen overlay */}
+        {explorerOpen && (
+          <ThreeDFlex initialNode={explorerNode}
+                      visited={visited}
+                      onClose={() => setExplorer(false)}
+                      onPickNode={(id) => { setExplorer(false); startTour(id); }} />
+        )}
+      </main>
+
+      {/* TWEAKS PANEL */}
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Theme">
+          <TweakRadio label="Palette" value={t.palette}
+            options={[
+              { value: "night", label: "Night" },
+              { value: "paper", label: "Paper" },
+              { value: "ocean", label: "Ocean" },
+            ]}
+            onChange={(v) => setTweak('palette', v)} />
+          <TweakRadio label="Display font" value={t.displayFont}
+            options={[
+              { value: "grotesk", label: "Grotesk" },
+              { value: "serif",   label: "Serif" },
+              { value: "mono",    label: "Mono" },
+            ]}
+            onChange={(v) => setTweak('displayFont', v)} />
+        </TweakSection>
+        <TweakSection label="Lesson view">
+          <TweakRadio label="Layout" value={t.lessonLayout}
+            options={[
+              { value: "postcard",   label: "Postcard" },
+              { value: "split",      label: "Split" },
+              { value: "full-bleed", label: "Spread" },
+            ]}
+            onChange={(v) => setTweak('lessonLayout', v)} />
+        </TweakSection>
+        <TweakSection label="Visuals">
+          <TweakToggle label="Cinematic auto-orbit" value={t.cinematicCamera}
+            onChange={(v) => setTweak('cinematicCamera', v)} />
+        </TweakSection>
+        <TweakSection label="Demo helpers">
+          <TweakButton label="Jump to summit" onClick={() => setScreen("summit")} />
+          <TweakButton label="Reset to trailhead" secondary
+            onClick={() => { setTour(null); setStopIdx(0); setScreen("trailhead"); }} />
+        </TweakSection>
+      </TweaksPanel>
+    </div>
+  );
+}
+
+// Helper screens for direct nav
+
+function EmptyTour({ onPick }) {
+  return (
+    <div style={{ minHeight: "calc(100vh - 56px)", display: "grid", placeItems: "center", padding: 40 }}>
+      <div className="card" style={{ textAlign: "center", padding: 40, maxWidth: 460 }}>
+        <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 6 }}>NO ACTIVE TRAIL</div>
+        <h2 className="t-h1" style={{ margin: "0 0 8px" }}>Pick a peak first</h2>
+        <p className="t-cap" style={{ margin: "0 0 18px" }}>
+          The walk is generated from your starting concept. Visit the trailhead to choose one
+          (or let the system rank options for you).
+        </p>
+        <button className="btn primary" onClick={onPick}>▲ Go to trailhead</button>
+      </div>
+    </div>
+  );
+}
+
+function BranchStandalone({ onOpen }) {
+  // The Branch screen #03 is really a moment inside the walk — but the top-bar
+  // entry needs to land somewhere. Show a brief explainer + open the panel.
+  return (
+    <div style={{ minHeight: "calc(100vh - 56px)", padding: "60px 28px", maxWidth: 720, margin: "0 auto" }}>
+      <div className="t-tag" style={{ color: "var(--c-bridge)" }}>≈ BRIDGE MOMENT</div>
+      <h1 className="t-display" style={{ margin: "8px 0 12px" }}>The fork is the magic.</h1>
+      <p style={{ fontSize: 17, lineHeight: 1.6, color: "var(--c-ink-muted)", maxWidth: 600 }}>
+        Most platforms make you finish a course before suggesting another. Brain University thinks
+        in concepts, not courses — so when you land on a <em>bridge concept</em> (one with edges
+        across multiple Louvain communities), the system surfaces fork options inline.
+      </p>
+      <p style={{ fontSize: 17, lineHeight: 1.6, color: "var(--c-ink-muted)", maxWidth: 600 }}>
+        You stay on your trail or follow the bridge into a totally different course. Same lesson,
+        different region of the brain.
+      </p>
+      <div className="topo-rule" style={{ margin: "32px 0" }} />
+      <button className="btn primary" onClick={onOpen}>
+        Open the bridge prompt →
+      </button>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
