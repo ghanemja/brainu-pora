@@ -210,7 +210,7 @@ window.BU_DATA = (() => {
   {
     "id": "BFS_tree",
     "cluster": 2,
-    "degree": 5,
+    "degree": 4,
     "name": "BFS tree"
   },
   {
@@ -448,10 +448,10 @@ window.BU_DATA = (() => {
     "name": "Halfspace approximation"
   },
   {
-    "id": "VC_dimension",
+    "id": "\u03b5-comatching",
     "cluster": 5,
     "degree": 2,
-    "name": "VC dimension"
+    "name": "\u03b5-comatching"
   },
   {
     "id": "k-center_problem",
@@ -466,12 +466,6 @@ window.BU_DATA = (() => {
     "name": "PAC learning"
   },
   {
-    "id": "\u03b5-comatching",
-    "cluster": 5,
-    "degree": 1,
-    "name": "\u03b5-comatching"
-  },
-  {
     "id": "shortest_path",
     "cluster": 5,
     "degree": 1,
@@ -482,16 +476,22 @@ window.BU_DATA = (() => {
     "cluster": 5,
     "degree": 1,
     "name": "Ising model"
+  },
+  {
+    "id": "\u03b5-coreset",
+    "cluster": 5,
+    "degree": 1,
+    "name": "\u03b5-coreset"
   }
 ];
-  const EDGES = [["Treewidth", "adhesion_size"], ["Treewidth", "planar_loop"], ["Treewidth", "bag_function"], ["GHS_algorithm", "Minimum_Spanning_Tree_MST"], ["GHS_algorithm", "Distributed_algorithms"], ["GHS_algorithm", "Broadcast_algorithm"], ["fundamental_cycle", "spanning_tree"], ["fundamental_cycle", "planar_graph"], ["fundamental_cycle", "CONGEST_model"], ["Vertex_Cover", "independent_set"], ["Vertex_Cover", "Approximation_algorithms"], ["Vertex_Cover", "dominating_set"], ["Vertex_Cover", "Maximal_Independent_Set_MIS"], ["distributed_graph_algorithms", "Breadth-First_Search_BFS_tree"], ["distributed_graph_algorithms", "Lenzens_phase"], ["distributed_graph_algorithms", "Rooted_tree_structure"], ["distributed_graph_algorithms", "Virtual_fragment_tree"], ["distributed_graph_algorithms", "BFS_tree"], ["breadth-first_search_BFS", "Depth-First_Search_DFS"], ["breadth-first_search_BFS", "spanning_tree"], ["contraction_sequence", "twin-width"], ["contraction_sequence", "tree_decomposition"], ["Directed_cut_problems", "Approximation_algorithms"], ["interval_allocation_subroutine", "convergecast_procedure"], ["interval_allocation_subroutine", "slot_set_creation"], ["spanner", "dynamic_graph_algorithms"], ["spanner", "net_tree"], ["Breadth-First_Search_BFS_tree", "Minimum_Spanning_Tree_MST"], ["dynamic_graph_algorithms", "doubling_metrics"], ["planar_graph", "tree_decomposition"], ["planar_graph", "double-ladder"], ["planar_graph", "distributed_algorithm"], ["planar_graph", "planar_loop"], ["graph_coloring", "independent_set"], ["graph_coloring", "maximal_independent_set"], ["graph_coloring", "k-core_decomposition"], ["graph_coloring", "dominating_set"], ["graph_coloring", "Maximal_Independent_Set_MIS"], ["Ising_model", "Halfspace_approximation"], ["Bellman-Ford_algorithm", "Dijkstras_algorithm"], ["\u03b5-comatching", "\u03b5-double_ladder"], ["double-ladder", "VC_dimension"], ["double-ladder", "shortest_path"], ["flow_scheduling_algorithm", "Time-Sensitive_Networking_TSN"], ["spanning_tree", "Minimum_Spanning_Tree_MST"], ["spanning_tree", "Depth-First_Search_DFS"], ["spanning_tree", "distributed_algorithm"], ["spanning_tree", "Broadcast_algorithm"], ["spanning_tree", "Rooted_tree_structure"], ["spanning_tree", "BFS_tree"], ["independent_set", "dominating_set"], ["PAC_learning", "randomized_rounding"], ["PAC_learning", "Halfspace_approximation"], ["Lenzens_phase", "Minimum_Spanning_Tree_MST"], ["DAG_compression", "power_graph"], ["DAG_compression", "Kruskals_algorithm"], ["complete_bipartite_graph", "graph_minor"], ["tree_routing_tables", "CONGEST_model"], ["tree_routing_tables", "publish-query_sets"], ["maximal_independent_set", "Distributed_algorithms"], ["maximal_independent_set", "k-core_decomposition"], ["Dijkstras_algorithm", "Minimum_Spanning_Tree"], ["interval_allocation_procedure", "convergecast"], ["interval_allocation_procedure", "BFS_tree"], ["net_tree", "Minimum_Spanning_Tree"], ["Depth-First_Search_DFS", "Euler_tour"], ["slot_set_creation", "convergecast"], ["Approximation_algorithms", "sparsification"], ["Approximation_algorithms", "dominating_set"], ["Approximation_algorithms", "Maximal_Independent_Set_MIS"], ["graph_minor", "adhesion_size"], ["graph_minor", "bag_function"], ["distributed_algorithm", "routing_table"], ["adhesion_size", "tree_decomposition"], ["tree_decomposition", "planar_loop"], ["tree_decomposition", "bag_function"], ["tree_decomposition", "routing_table"], ["pipelined_convergecast", "convergecast"], ["pipelined_convergecast", "CONGEST_model"], ["hierarchical_decomposition", "Thorup-Zwicks_tree_routing_scheme"], ["randomized_rounding", "VC_dimension"], ["randomized_rounding", "concentration_inequalities"], ["power_graph", "twin-width"], ["Minimum_Spanning_Tree_MST", "Virtual_fragment_tree"], ["k-center_problem", "\u03b5-double_ladder"], ["sparsification", "concentration_inequalities"], ["convergecast", "routing_table"], ["convergecast", "publish-query_sets"], ["convergecast", "BFS_tree"], ["Broadcast_algorithm", "Rooted_tree_structure"], ["Kruskals_algorithm", "Minimum_Spanning_Tree"], ["Maximal_Independent_Set_MIS", "Distributed_algorithms"], ["Thorup-Zwicks_tree_routing_scheme", "CONGEST_model"], ["CONGEST_model", "BFS_tree"]];
+  const EDGES = [["Treewidth", "adhesion_size"], ["Treewidth", "planar_loop"], ["Treewidth", "bag_function"], ["GHS_algorithm", "Minimum_Spanning_Tree_MST"], ["GHS_algorithm", "Distributed_algorithms"], ["GHS_algorithm", "Broadcast_algorithm"], ["fundamental_cycle", "spanning_tree"], ["fundamental_cycle", "planar_graph"], ["fundamental_cycle", "CONGEST_model"], ["Vertex_Cover", "independent_set"], ["Vertex_Cover", "Approximation_algorithms"], ["Vertex_Cover", "dominating_set"], ["Vertex_Cover", "Maximal_Independent_Set_MIS"], ["distributed_graph_algorithms", "Breadth-First_Search_BFS_tree"], ["distributed_graph_algorithms", "Lenzens_phase"], ["distributed_graph_algorithms", "Rooted_tree_structure"], ["distributed_graph_algorithms", "Virtual_fragment_tree"], ["distributed_graph_algorithms", "BFS_tree"], ["breadth-first_search_BFS", "Depth-First_Search_DFS"], ["breadth-first_search_BFS", "spanning_tree"], ["contraction_sequence", "twin-width"], ["contraction_sequence", "tree_decomposition"], ["Directed_cut_problems", "Approximation_algorithms"], ["interval_allocation_subroutine", "convergecast_procedure"], ["interval_allocation_subroutine", "slot_set_creation"], ["spanner", "dynamic_graph_algorithms"], ["spanner", "net_tree"], ["Breadth-First_Search_BFS_tree", "Minimum_Spanning_Tree_MST"], ["dynamic_graph_algorithms", "doubling_metrics"], ["planar_graph", "tree_decomposition"], ["planar_graph", "double-ladder"], ["planar_graph", "distributed_algorithm"], ["planar_graph", "planar_loop"], ["graph_coloring", "independent_set"], ["graph_coloring", "maximal_independent_set"], ["graph_coloring", "k-core_decomposition"], ["graph_coloring", "dominating_set"], ["graph_coloring", "Maximal_Independent_Set_MIS"], ["Ising_model", "Halfspace_approximation"], ["Bellman-Ford_algorithm", "Dijkstras_algorithm"], ["\u03b5-comatching", "double-ladder"], ["\u03b5-comatching", "\u03b5-double_ladder"], ["double-ladder", "shortest_path"], ["flow_scheduling_algorithm", "Time-Sensitive_Networking_TSN"], ["spanning_tree", "Minimum_Spanning_Tree_MST"], ["spanning_tree", "Depth-First_Search_DFS"], ["spanning_tree", "distributed_algorithm"], ["spanning_tree", "Broadcast_algorithm"], ["spanning_tree", "Rooted_tree_structure"], ["spanning_tree", "BFS_tree"], ["independent_set", "dominating_set"], ["PAC_learning", "randomized_rounding"], ["PAC_learning", "Halfspace_approximation"], ["Lenzens_phase", "Minimum_Spanning_Tree_MST"], ["DAG_compression", "power_graph"], ["DAG_compression", "Kruskals_algorithm"], ["complete_bipartite_graph", "graph_minor"], ["tree_routing_tables", "CONGEST_model"], ["tree_routing_tables", "publish-query_sets"], ["maximal_independent_set", "Distributed_algorithms"], ["maximal_independent_set", "k-core_decomposition"], ["Dijkstras_algorithm", "Minimum_Spanning_Tree"], ["interval_allocation_procedure", "convergecast"], ["net_tree", "Minimum_Spanning_Tree"], ["Depth-First_Search_DFS", "Euler_tour"], ["slot_set_creation", "convergecast"], ["Approximation_algorithms", "sparsification"], ["Approximation_algorithms", "dominating_set"], ["Approximation_algorithms", "Maximal_Independent_Set_MIS"], ["graph_minor", "adhesion_size"], ["graph_minor", "bag_function"], ["distributed_algorithm", "routing_table"], ["adhesion_size", "tree_decomposition"], ["tree_decomposition", "planar_loop"], ["tree_decomposition", "bag_function"], ["tree_decomposition", "routing_table"], ["pipelined_convergecast", "convergecast"], ["pipelined_convergecast", "CONGEST_model"], ["hierarchical_decomposition", "Thorup-Zwicks_tree_routing_scheme"], ["randomized_rounding", "concentration_inequalities"], ["power_graph", "twin-width"], ["Minimum_Spanning_Tree_MST", "Virtual_fragment_tree"], ["k-center_problem", "\u03b5-double_ladder"], ["sparsification", "concentration_inequalities"], ["convergecast", "routing_table"], ["convergecast", "publish-query_sets"], ["convergecast", "BFS_tree"], ["Broadcast_algorithm", "Rooted_tree_structure"], ["\u03b5-coreset", "\u03b5-double_ladder"], ["Kruskals_algorithm", "Minimum_Spanning_Tree"], ["Maximal_Independent_Set_MIS", "Distributed_algorithms"], ["Thorup-Zwicks_tree_routing_scheme", "CONGEST_model"], ["CONGEST_model", "BFS_tree"]];
   const FOUNDATION_PICKS = [
   {
     "raw": "spanning_tree",
     "name": "spanning tree",
     "cluster": 0,
-    "score": 1.004,
-    "rationale": "bridges 5 courses; connects to 12 other concepts.",
+    "score": 1.006,
+    "rationale": "bridges 5 courses; connects to 12 other concepts; in a 37-concept course.",
     "metrics": {
       "degree": 12,
       "span": 5,
@@ -504,8 +504,8 @@ window.BU_DATA = (() => {
     "raw": "tree_decomposition",
     "name": "tree decomposition",
     "cluster": 4,
-    "score": 0.823,
-    "rationale": "bridges 3 courses; connects to 12 other concepts.",
+    "score": 0.853,
+    "rationale": "bridges 3 courses; connects to 12 other concepts; in a 21-concept course.",
     "metrics": {
       "degree": 12,
       "span": 3,
@@ -518,8 +518,8 @@ window.BU_DATA = (() => {
     "raw": "graph_coloring",
     "name": "graph coloring",
     "cluster": 1,
-    "score": 0.799,
-    "rationale": "bridges 3 courses; connects to 11 other concepts.",
+    "score": 0.833,
+    "rationale": "bridges 3 courses; connects to 11 other concepts; in a 33-concept course.",
     "metrics": {
       "degree": 11,
       "span": 3,
@@ -532,8 +532,8 @@ window.BU_DATA = (() => {
     "raw": "CONGEST_model",
     "name": "CONGEST model",
     "cluster": 2,
-    "score": 0.695,
-    "rationale": "bridges 3 courses; connects to 9 other concepts.",
+    "score": 0.738,
+    "rationale": "bridges 3 courses; connects to 9 other concepts; in a 23-concept course.",
     "metrics": {
       "degree": 9,
       "span": 3,
@@ -546,8 +546,8 @@ window.BU_DATA = (() => {
     "raw": "distributed_graph_algorithms",
     "name": "distributed graph algorithms",
     "cluster": 0,
-    "score": 0.676,
-    "rationale": "bridges two courses; connects to 10 other concepts.",
+    "score": 0.732,
+    "rationale": "bridges two courses; connects to 10 other concepts; in a 37-concept course.",
     "metrics": {
       "degree": 10,
       "span": 2,
@@ -2890,34 +2890,30 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "VC_dimension": {
-    "title": "VC_dimension",
-    "summary": "**VC dimension** (Vapnik-Chervonenkis dimension) is a fundamental measure of the capacity or complexity of a hypothesis class\u2014the maximum number of points that can be shattered by the class.",
+  "\u03b5-comatching": {
+    "title": "\u03b5-comatching",
+    "summary": "An **\u03b5-comatching** is a fundamental combinatorial structure in metric geometry and computational geometry, defined as follows:",
     "key_ideas": [
       {
         "h": "",
-        "b": "Read the full wiki page for the formal definition."
+        "b": "Every pair has distance $> d$"
       },
       {
         "h": "",
-        "b": "Work through one quantitative example."
-      },
-      {
-        "h": "",
-        "b": "Note any open research questions in the page footer."
+        "b": "Every two distinct pairs have cross-distance $\\leq d$"
       }
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/VC_dimension.md"
+      "wiki/concepts/\u03b5-comatching.md"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'VC_dimension'",
+        "q": "True/false: this statement matches the wiki definition of '\u03b5-comatching'",
         "choices": [
-          "**VC dimension** (Vapnik-Chervonenkis dimension) is a fundamental measure of the capacity or complexity of a hypothesis class\u2014the maximum number of points that can be shattered by the class.",
-          "VC_dimension has no formal definition.",
-          "VC_dimension is unrelated to the rest of this cluster."
+          "An **\u03b5-comatching** is a fundamental combinatorial structure in metric geometry and computational geometry, defined as follows:",
+          "\u03b5-comatching has no formal definition.",
+          "\u03b5-comatching is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -2992,36 +2988,6 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "\u03b5-comatching": {
-    "title": "\u03b5-comatching",
-    "summary": "An **\u03b5-comatching** is a fundamental combinatorial structure in metric geometry and computational geometry, defined as follows:",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Every pair has distance $> d$"
-      },
-      {
-        "h": "",
-        "b": "Every two distinct pairs have cross-distance $\\leq d$"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/\u03b5-comatching.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of '\u03b5-comatching'",
-        "choices": [
-          "An **\u03b5-comatching** is a fundamental combinatorial structure in metric geometry and computational geometry, defined as follows:",
-          "\u03b5-comatching has no formal definition.",
-          "\u03b5-comatching is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
   "shortest_path": {
     "title": "shortest_path",
     "summary": "A **shortest path** between two vertices $u$ and $v$ in a graph $G = (V, E)$ is a sequence of edges connecting $u$ to $v$ such that the total weight (or edge count in unweighted graphs) is minimized. Formally:",
@@ -3084,6 +3050,36 @@ window.BU_DATA = (() => {
           "The Ising model is a fundamental probabilistic graphical model that defines a probability distribution over binary-valued variables (typically taking values in $\\{\\pm 1\\}$ or $\\{0,1\\}$).",
           "Ising_model has no formal definition.",
           "Ising_model is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
+  "\u03b5-coreset": {
+    "title": "\u03b5-coreset",
+    "summary": "An **\u03b5-coreset** is a compact subset of a metric space that preserves distance properties within a multiplicative error factor $\\epsilon$. Formally, for a metric space $(V, \\text{dist})$ and a problem instance (e.g., furthest neighbor or $k$-center), an \u03b5-coreset $S \\subseteq V$ is a weighted or unweighted subset such that solutions computed on $S$ approximate the optimal solutions on the full set $V$ within a factor of $(1 \\pm \\epsilon)$.",
+    "key_ideas": [
+      {
+        "h": "For **furthest neighbor problems**",
+        "b": "An \u03b5-coreset is a set of representative points such that the furthest point from any query in the coreset approximates the furthest point in the original set within error $\\epsilon$."
+      },
+      {
+        "h": "For **$k$-center problems**",
+        "b": "An \u03b5-coreset $S$ satisfies the property that for any subset $X \\subseteq V$, the $k$-center cost on $X \\cap S$ approximates the $k$-center cost on $X$ within relative error $\\epsilon$."
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/\u03b5-coreset.md"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of '\u03b5-coreset'",
+        "choices": [
+          "An **\u03b5-coreset** is a compact subset of a metric space that preserves distance properties within a multiplicative error factor $\\epsilon$.",
+          "\u03b5-coreset has no formal definition.",
+          "\u03b5-coreset is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."

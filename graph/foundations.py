@@ -254,25 +254,48 @@ def recommend_for_interest(interest: str, limit: int = 5) -> list[Foundation]:
 
 def _build_rationale(name: str, degree: int, span: int, csize: int,
                      rl: float, *, has_wiki: bool) -> str:
-    """One sentence explaining why this node is a good place to start."""
+    """One sentence explaining why this node is a good place to start.
+
+    Always emits at least three signal phrases so every card carries the
+    same information shape — bridge span, connection count, and course
+    size. Keeps cards visually balanced even when one signal is weak.
+    """
     parts: list[str] = []
+
+    # Bridge span — always emit
     if span >= 3:
         parts.append(f"bridges {span} courses")
     elif span == 2:
         parts.append("bridges two courses")
+    elif span == 1:
+        parts.append("anchored in one course")
+    else:
+        parts.append("isolated within its course")
+
+    # Connection count — always emit
     if degree >= 8:
         parts.append(f"connects to {degree} other concepts")
     elif degree >= 3:
         parts.append(f"{degree} direct connections")
+    else:
+        parts.append(f"degree {degree}")
+
+    # Course size — always emit (with size-aware phrasing)
     if csize >= 50:
         parts.append(f"anchors a {csize}-concept course")
+    elif csize >= 15:
+        parts.append(f"in a {csize}-concept course")
+    elif csize > 0:
+        parts.append(f"small {csize}-concept course")
+
+    # Optional: RL feedback (only when meaningful)
     if rl > 0.05:
         parts.append("learners gave it strong feedback")
-    if not has_wiki:
-        parts.append("(no wiki — lesson built on graph context only)")
 
-    if not parts:
-        return "central in this region of the graph"
+    # Optional: missing wiki
+    if not has_wiki:
+        parts.append("no wiki page yet")
+
     return "; ".join(parts) + "."
 
 

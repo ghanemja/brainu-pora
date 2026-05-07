@@ -60,17 +60,38 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
     const links = BU_DATA.EDGES.map(([s,t]) => ({ source: s, target: t }));
 
     // 3d-force-graph passes the bg color through `polished`, which can't
-    // parse CSS variables like `var(--c-bg)`. Resolve to a real hex first.
-    let bgResolved = background;
-    if (typeof bgResolved === "string" && bgResolved.includes("var(")) {
-      const varName = bgResolved.match(/var\(([^,)]+)/)?.[1]?.trim();
-      if (varName) {
-        const got = getComputedStyle(document.documentElement)
-          .getPropertyValue(varName).trim();
-        if (got) bgResolved = got;
+    // parse CSS variables. Resolve to a real hex by reading the live
+    // computed style. The palette can flip at runtime via the tweaks
+    // panel (light <-> dark), so we also re-resolve whenever the
+    // documentElement's data-palette attribute changes.
+    function resolveBg() {
+      let v = background;
+      if (typeof v === "string" && v.includes("var(")) {
+        const name = v.match(/var\(([^,)]+)/)?.[1]?.trim();
+        if (name) {
+          const got = getComputedStyle(document.documentElement)
+            .getPropertyValue(name).trim();
+          if (got) v = got;
+        }
       }
+      if (!v || (typeof v === "string" && v.startsWith("var("))) {
+        // Final fallback — read the live --c-bg directly. If still empty,
+        // default to the brief's PAPER palette (light) since that's the
+        // app's chosen default.
+        const liveBg = getComputedStyle(document.documentElement)
+          .getPropertyValue("--c-bg").trim();
+        v = liveBg || "#efebe2";
+      }
+      return v;
     }
-    if (!bgResolved || bgResolved.startsWith("var(")) bgResolved = "#0a0e22";
+    let bgResolved = resolveBg();
+    // Re-apply background whenever data-palette flips (light <-> dark).
+    const paletteObserver = new MutationObserver(() => {
+      try { Graph.backgroundColor(resolveBg()); } catch (_) {}
+    });
+    paletteObserver.observe(document.documentElement, {
+      attributes: true, attributeFilter: ["data-palette"],
+    });
 
     Graph
       .graphData({ nodes, links })
@@ -134,6 +155,7 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
     return () => {
       try { Graph._destructor && Graph._destructor(); } catch (_) {}
       try { ro.disconnect(); } catch (_) {}
+      try { paletteObserver.disconnect(); } catch (_) {}
       window.removeEventListener("resize", sizeFromContainer);
       containerRef.current?.removeEventListener("mousedown", onUserInput);
     };
