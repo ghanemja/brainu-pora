@@ -169,16 +169,22 @@ function StartCard({ pick, idx, onHover, onClick }) {
       }}
       className="slide-up"
     >
-      {/* Rank pill */}
+      {/* Rank pill — sits INSIDE the card so it never gets clipped by the
+          right-rail's vertical scroll container.  Was previously at
+          left:-10 which stuck it outside; the rail clipped to overflow:hidden
+          and the pill became "1, 2, 3" cut down to "_, _, _" depending on
+          padding.  Now lives at left:14 with the title pushed to make room. */}
       <div style={{
-        position: "absolute", left: -10, top: 14,
-        width: 22, height: 22, borderRadius: "50%",
+        position: "absolute", left: 14, top: 14,
+        width: 24, height: 24, borderRadius: "50%",
         background: c.color, color: "white",
         display: "grid", placeItems: "center",
-        fontFamily: "var(--f-mono)", fontSize: 11, fontWeight: 600,
+        fontFamily: "var(--f-mono)", fontSize: 11, fontWeight: 700,
+        boxShadow: "0 1px 2px rgba(0,0,0,0.18)",
+        zIndex: 1,
       }}>{idx + 1}</div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", paddingLeft: 16 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", paddingLeft: 36 }}>
         <h3 style={{
           margin: 0, fontSize: 17, fontWeight: 600,
           fontFamily: "var(--f-sans)", letterSpacing: "-0.01em",
@@ -188,14 +194,14 @@ function StartCard({ pick, idx, onHover, onClick }) {
           color: c.color,
         }}>{pick.score.toFixed(2)}</div>
       </div>
-      <div style={{ marginLeft: 16, marginTop: 6 }}>
+      <div style={{ marginLeft: 36, marginTop: 6 }}>
         <CourseChip clusterId={pick.cluster} />
       </div>
-      <p className="t-cap" style={{ margin: "8px 0 0 16px", color: "var(--c-ink-muted)", fontSize: 12.5, lineHeight: 1.45 }}>
+      <p className="t-cap" style={{ margin: "8px 0 0 36px", color: "var(--c-ink-muted)", fontSize: 12.5, lineHeight: 1.45 }}>
         {pick.rationale}
       </p>
       <div style={{
-        marginLeft: 16, marginTop: 10,
+        marginLeft: 36, marginTop: 10,
         display: "flex", gap: 6, flexWrap: "wrap",
         fontFamily: "var(--f-mono)", fontSize: 10.5,
         color: "var(--c-ink-dim)",
