@@ -175,10 +175,10 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
   useEffect(() => {
     if (!fgRef.current) return;
     fgRef.current.nodeColor(node => colorForNode(node, { currentNode, visited, tourPath, highlightCluster }));
-    fgRef.current.linkColor(link => linkColorFor(link, { tourPath, currentNode }));
-    fgRef.current.linkWidth(link => linkWidthFor(link, { tourPath }));
+    fgRef.current.linkColor(link => linkColorFor(link, { tourPath, currentNode, defaultColor: linkColor, defaultOpacity: linkOpacity }));
+    fgRef.current.linkWidth(link => linkWidthFor(link, { tourPath, defaultWidth: linkWidth }));
     fgRef.current.nodeThreeObject(node => makeLabelSprite(node, showLabels));
-  }, [currentNode, visited, tourPath, highlightCluster, showLabels, ready]);
+  }, [currentNode, visited, tourPath, highlightCluster, showLabels, ready, linkColor, linkOpacity, linkWidth]);
 
   function focusOn(node, distance = 90) {
     if (!fgRef.current || !node) return;
@@ -212,6 +212,7 @@ function colorForNode(node, { currentNode, visited, tourPath, highlightCluster }
   if (node.id === currentNode) return "#f96167"; // coral
   if (tourPath?.includes(node.id)) return "#fbb036"; // amber for tour
   if (visited?.has(node.id)) return "#fbb036"; // amber for visited
+  if (node.kind === "defense") return "#FBB036"; // defense corpus = amber
   if (highlightCluster != null && node.cluster !== highlightCluster) {
     return "rgba(155,170,200,0.25)";
   }
@@ -220,30 +221,39 @@ function colorForNode(node, { currentNode, visited, tourPath, highlightCluster }
   return c?.color || "#7dd3fc";
 }
 
-function linkColorFor(link, { tourPath, currentNode }) {
-  if (!tourPath || tourPath.length < 2) return "rgba(125,211,252,0.18)";
-  const sId = typeof link.source === "object" ? link.source.id : link.source;
-  const tId = typeof link.target === "object" ? link.target.id : link.target;
-  for (let i = 0; i < tourPath.length - 1; i++) {
-    if ((tourPath[i] === sId && tourPath[i+1] === tId) ||
-        (tourPath[i] === tId && tourPath[i+1] === sId)) {
-      return "rgba(251,176,54,0.85)";
-    }
-  }
-  return "rgba(125,211,252,0.12)";
+function _hexToRgba(hex, alpha) {
+  const h = hex.replace("#", "");
+  const r = parseInt(h.substring(0, 2), 16);
+  const g = parseInt(h.substring(2, 4), 16);
+  const b = parseInt(h.substring(4, 6), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
 }
 
-function linkWidthFor(link, { tourPath }) {
-  if (!tourPath || tourPath.length < 2) return 0.6;
+function linkColorFor(link, { tourPath, currentNode, defaultColor = "#7DD3FC", defaultOpacity = 0.7 }) {
+  const baseColor = _hexToRgba(defaultColor, defaultOpacity);
+  if (!tourPath || tourPath.length < 2) return baseColor;
   const sId = typeof link.source === "object" ? link.source.id : link.source;
   const tId = typeof link.target === "object" ? link.target.id : link.target;
   for (let i = 0; i < tourPath.length - 1; i++) {
     if ((tourPath[i] === sId && tourPath[i+1] === tId) ||
         (tourPath[i] === tId && tourPath[i+1] === sId)) {
-      return 2.5;
+      return "rgba(251,176,54,0.95)";
     }
   }
-  return 0.6;
+  return baseColor;
+}
+
+function linkWidthFor(link, { tourPath, defaultWidth = 1.5 }) {
+  if (!tourPath || tourPath.length < 2) return defaultWidth;
+  const sId = typeof link.source === "object" ? link.source.id : link.source;
+  const tId = typeof link.target === "object" ? link.target.id : link.target;
+  for (let i = 0; i < tourPath.length - 1; i++) {
+    if ((tourPath[i] === sId && tourPath[i+1] === tId) ||
+        (tourPath[i] === tId && tourPath[i+1] === sId)) {
+      return Math.max(defaultWidth * 1.5, 3.0);
+    }
+  }
+  return defaultWidth;
 }
 
 function makeLabelSprite(node, mode) {

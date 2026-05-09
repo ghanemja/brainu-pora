@@ -29,8 +29,8 @@ function Trailhead({ onPickStart, learner }) {
           showLabels="hubs"
           cinematic={true}
           linkOpacity={1.0}
-          linkWidth={2.2}
-          linkColor="#1e3a52"
+          linkWidth={4.0}
+          linkColor="#0a0e22"
           onNodeHover={setHoverNode}
           onNodeClick={node => {
             if (node) onPickStart?.(node.id, node.cluster, interest);
@@ -122,17 +122,35 @@ function Trailhead({ onPickStart, learner }) {
           overflowY: "auto", paddingRight: 4,
         }}>
           {(() => {
-            let sorted = [...BU_DATA.FOUNDATION_PICKS];
-            if (interest.trim()) {
-              const interestLower = interest.toLowerCase();
-              sorted.sort((a, b) => {
-                const aMatch = a.name.toLowerCase().includes(interestLower) ? 1 : 0;
-                const bMatch = b.name.toLowerCase().includes(interestLower) ? 1 : 0;
-                return bMatch - aMatch;
-              });
-            }
-            return sorted.map((p, i) => (
+            // Score each pick by interest token matches
+            const STOP = new Set(["the","and","for","with","from","this","that","into","of","a","an","is","to","in","on","by"]);
+            const tokens = interest.toLowerCase()
+              .split(/[\s,;\.\/]+/)
+              .map(t => t.trim())
+              .filter(t => t.length > 2 && !STOP.has(t));
+
+            const scored = BU_DATA.FOUNDATION_PICKS.map(p => {
+              const cluster = BU_DATA.CLUSTERS[p.cluster];
+              const haystack = [
+                p.name,
+                p.rationale || "",
+                cluster?.name || "",
+                cluster?.blurb || "",
+              ].join(" ").toLowerCase();
+              const matchCount = tokens.reduce((acc, t) => acc + (haystack.includes(t) ? 1 : 0), 0);
+              return { ...p, _matchCount: matchCount, _matchTokens: tokens.filter(t => haystack.includes(t)) };
+            });
+
+            // Sort: matched picks first (by score), then originals
+            scored.sort((a, b) => {
+              if (b._matchCount !== a._matchCount) return b._matchCount - a._matchCount;
+              return b.score - a.score;
+            });
+
+            return scored.map((p, i) => (
               <StartCard key={p.raw} pick={p} idx={i}
+                         matched={p._matchCount > 0}
+                         matchTokens={p._matchTokens}
                          onHover={() => graphRef.current?.focusOn(p.raw, 70)}
                          onClick={() => onPickStart?.(p.raw, p.cluster, interest)} />
             ));
@@ -161,18 +179,23 @@ function Trailhead({ onPickStart, learner }) {
   );
 }
 
-function StartCard({ pick, idx, onHover, onClick }) {
+function StartCard({ pick, idx, onHover, onClick, matched, matchTokens }) {
   const [hovered, setHovered] = useState(false);
   const c = BU_DATA.CLUSTERS[pick.cluster];
+  const borderColor = matched
+    ? "var(--c-here)"
+    : (hovered ? c.color + "88" : "var(--c-line)");
   return (
     <div
       onMouseEnter={() => { setHovered(true); onHover?.(); }}
       onMouseLeave={() => setHovered(false)}
       onClick={onClick}
       style={{
-        background: "color-mix(in oklch, var(--c-bg-elev) 88%, transparent)",
+        background: matched
+          ? "color-mix(in oklch, var(--c-here) 6%, var(--c-bg-elev) 94%)"
+          : "color-mix(in oklch, var(--c-bg-elev) 88%, transparent)",
         backdropFilter: "blur(12px)",
-        border: `1px solid ${hovered ? c.color + "88" : "var(--c-line)"}`,
+        border: `${matched ? 2 : 1}px solid ${borderColor}`,
         borderRadius: "var(--r-lg)",
         padding: 14,
         cursor: "pointer",
@@ -180,9 +203,23 @@ function StartCard({ pick, idx, onHover, onClick }) {
         transform: hovered ? "translateX(-3px)" : "translateX(0)",
         position: "relative",
         animationDelay: `${idx * 60}ms`,
+        boxShadow: matched ? "0 0 0 3px color-mix(in oklch, var(--c-here) 18%, transparent)" : "none",
       }}
       className="slide-up"
     >
+      {matched && (
+        <div style={{
+          position: "absolute", top: -8, right: 12,
+          background: "var(--c-here)", color: "white",
+          fontFamily: "var(--f-mono)", fontSize: 9, fontWeight: 700,
+          letterSpacing: "0.08em", textTransform: "uppercase",
+          padding: "3px 8px", borderRadius: 999,
+          boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+          zIndex: 2,
+        }}>
+          ★ MATCH · {matchTokens?.join(" ")}
+        </div>
+      )}
       {/* Rank pill — sits INSIDE the card so it never gets clipped by the
           right-rail's vertical scroll container.  Was previously at
           left:-10 which stuck it outside; the rail clipped to overflow:hidden

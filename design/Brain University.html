@@ -77,7 +77,7 @@ function App() {
   const [branchOpen, setBranch] = useState(false);
   const [explorerOpen, setExplorer] = useState(false);
   const [explorerNode, setExplorerNode] = useState(null);
-  const [learner] = useState({ name: "J. Ghanem", interest: "rocket aerodynamics" });
+  const [learner, setLearner] = useState({ name: "J. Ghanem", interest: "rocket aerodynamics" });
 
   // Apply tweaks to <html>
   useEffect(() => {
@@ -85,7 +85,10 @@ function App() {
     document.documentElement.dataset.displayFont = t.displayFont;
   }, [t.palette, t.displayFont]);
 
-  const startTour = useCallback((nodeId) => {
+  const startTour = useCallback((nodeId, _cluster, interest) => {
+    if (interest && interest.trim()) {
+      setLearner(prev => ({ ...prev, interest: interest.trim() }));
+    }
     const planned = BU_DATA.planTour(nodeId);
     setTour(planned);
     setStopIdx(0);

@@ -117,6 +117,66 @@ def build_nodes_and_edges(picked_clusters, G, per_cluster):
     return nodes, edges
 
 
+def add_defense_corpus_nodes(nodes, edges, picked_clusters):
+    """Inject defense corpus papers as visible graph nodes.
+
+    Attaches each paper to relevant CS/aero/control clusters via topic match,
+    so users can see defense work threaded through the academic graph.
+    """
+    defense_path = PROJECT_ROOT / "data" / "defense_corpus_samples.json"
+    if not defense_path.exists():
+        return nodes, edges
+
+    try:
+        corpus = json.loads(defense_path.read_text())
+    except json.JSONDecodeError:
+        return nodes, edges
+
+    # Build cluster-name -> cluster_idx lookup
+    cluster_lookup = {}
+    for new_idx, c in enumerate(picked_clusters):
+        for stem in c.members:
+            cluster_lookup[stem.lower()] = new_idx
+
+    # Build set of node ids present
+    nodeset = {n["id"] for n in nodes}
+    name_lookup = {n["id"].lower(): n["id"] for n in nodes}
+
+    for paper in corpus.get("papers", []):
+        paper_id = f"def_{paper['id']}"
+        topics = paper.get("topics", [])
+        title = paper.get("title", "Defense Paper")
+
+        # Find best-matching cluster: cluster of any node whose name
+        # appears in paper topics or title
+        haystack = " ".join(topics + [title]).lower()
+        matched_nodes = []
+        for nid, real_id in name_lookup.items():
+            if nid in haystack or any(tok in haystack for tok in nid.split("_") if len(tok) > 3):
+                matched_nodes.append(real_id)
+
+        if not matched_nodes:
+            continue
+
+        # Cluster = cluster of first matched node
+        first_match = matched_nodes[0]
+        cl_idx = next((n["cluster"] for n in nodes if n["id"] == first_match), 0)
+
+        nodes.append({
+            "id":      paper_id,
+            "cluster": cl_idx,
+            "degree":  len(matched_nodes),
+            "name":    f"⚡ {title[:40]}",
+            "kind":    "defense",
+        })
+
+        # Connect to top 2 matched nodes
+        for target in matched_nodes[:2]:
+            edges.append([paper_id, target])
+
+    return nodes, edges
+
+
 def build_foundation_picks(max_picks=5):
     try:
         from graph.foundations import recommend
@@ -392,6 +452,7 @@ def main():
           f"{args.per_cluster} nodes/cluster")
     clusters_js, picked = build_clusters(clusters_all, args.max_clusters)
     nodes_js, edges_js = build_nodes_and_edges(picked, G, args.per_cluster)
+    nodes_js, edges_js = add_defense_corpus_nodes(nodes_js, edges_js, picked)
     print(f"  {len(nodes_js)} nodes, {len(edges_js)} edges")
 
     # 3. Foundation picks (5)
