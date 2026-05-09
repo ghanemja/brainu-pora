@@ -79,14 +79,39 @@ function Altitude({ idx, total }) {
   );
 }
 
-// Citation token row
+// Citation token row — with defense corpus badge styling
 function Evidence({ items = [] }) {
   return (
     <div style={{ display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
       <span className="t-cap" style={{ color: "var(--c-ink-dim)" }}>EVIDENCE</span>
-      {items.map((c, i) => (
-        <span key={i} className="cite">[{c}]</span>
-      ))}
+      {items.map((c, i) => {
+        // Style defense corpus papers with amber badge
+        const isDef = c.startsWith("def/");
+        const isArxiv = c.startsWith("arxiv/");
+        return isDef ? (
+          <span key={i} style={{
+            display: "inline-flex", alignItems: "center", gap: 4,
+            padding: "2px 8px", borderRadius: 4,
+            background: "#FBB03644",
+            border: "1px solid #FBB03666",
+            color: "#D97706", fontSize: 11, fontWeight: 500,
+          }}>
+            ⚡ {c.replace("def/", "").substring(0, 8)}
+          </span>
+        ) : isArxiv ? (
+          <span key={i} style={{
+            display: "inline-flex", alignItems: "center", gap: 4,
+            padding: "2px 8px", borderRadius: 4,
+            background: "#7DD3FC44",
+            border: "1px solid #7DD3FC66",
+            color: "#0369A1", fontSize: 11, fontWeight: 500,
+          }}>
+            📄 {c}
+          </span>
+        ) : (
+          <span key={i} className="cite">[{c}]</span>
+        );
+      })}
     </div>
   );
 }

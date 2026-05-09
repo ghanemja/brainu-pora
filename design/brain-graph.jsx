@@ -18,6 +18,9 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
   showLabels = "hubs",    // "all" | "hubs" | "none"
   cinematic = true,
   background = "#0a0e22",
+  linkOpacity = 0.7,      // edge visibility (0.55 = faded, 0.8+ = bold)
+  linkWidth = 1.5,        // edge thickness
+  linkColor = "#7DD3FC",  // edge color (sky blue by default)
   onNodeClick = () => {},
   onNodeHover = () => {},
   className = "",
@@ -99,9 +102,16 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
       .showNavInfo(false)
       .nodeRelSize(6)
       .nodeOpacity(0.95)
-      .linkOpacity(0.55)
-      .linkWidth(1.0)
-      .linkColor(() => "rgba(82,121,193,0.55)")
+      .linkOpacity(linkOpacity)
+      .linkWidth(linkWidth)
+      .linkColor(() => {
+        // Convert hex to rgba with opacity
+        const hex = linkColor.replace("#", "");
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+        return `rgba(${r},${g},${b},${linkOpacity})`;
+      })
       .nodeColor(node => colorForNode(node, { currentNode, visited, tourPath, highlightCluster }))
       .nodeLabel(node => `<div style="font-family:'JetBrains Mono',monospace;font-size:11px;background:#0f1733;color:#f5f7fb;padding:4px 8px;border-radius:4px;border:1px solid rgba(125,211,252,0.4)">${node.name}<br/><span style="opacity:0.6">course: ${BU_DATA.CLUSTERS[node.cluster].name}</span></div>`)
       .onNodeClick(node => {

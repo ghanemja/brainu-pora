@@ -12,42 +12,42 @@ window.BU_DATA = (() => {
     "name": "spanning tree",
     "color": "#7641eb",
     "emoji": "\u232c",
-    "blurb": "spanning tree, Minimum Spanning Tree MST, distributed graph algorithms, breadth-first search BFS."
+    "blurb": "spanning tree, distributed graph algorithms, Minimum Spanning Tree MST, breadth-first search BFS."
   },
   {
     "id": 1,
     "name": "graph coloring",
     "color": "#2ec4b6",
     "emoji": "\u03a6",
-    "blurb": "graph coloring, Approximation algorithms, Distributed algorithms, Vertex Cover."
+    "blurb": "graph coloring, Vertex Cover, Approximation algorithms, Distributed algorithms."
   },
   {
     "id": 2,
-    "name": "CONGEST model",
+    "name": "convergecast",
     "color": "#f59e0b",
     "emoji": "\u222e",
-    "blurb": "CONGEST model, convergecast, BFS tree, convergecast procedure."
+    "blurb": "convergecast, CONGEST model, BFS tree, publish-query sets."
   },
   {
     "id": 3,
-    "name": "spanner",
+    "name": "twin-width",
     "color": "#1e6fa8",
     "emoji": "\u2699",
-    "blurb": "spanner, twin-width, Bellman-Ford algorithm, power graph."
+    "blurb": "twin-width, spanner, power graph, Dijkstras algorithm."
   },
   {
     "id": 4,
     "name": "tree decomposition",
     "color": "#84cc16",
     "emoji": "\u273a",
-    "blurb": "tree decomposition, planar graph, Treewidth, planar loop."
+    "blurb": "tree decomposition, planar graph, Treewidth, bag function."
   },
   {
     "id": 5,
-    "name": "randomized rounding",
+    "name": "Four Color Theorem",
     "color": "#c5a3ff",
     "emoji": "\u2726",
-    "blurb": "randomized rounding, double-ladder, \u03b5-double ladder, sparsification."
+    "blurb": "Four Color Theorem, obstructing cycles, D-reducible configurations, degree range."
   }
 ];
   const NODES = [
@@ -58,16 +58,16 @@ window.BU_DATA = (() => {
     "name": "spanning tree"
   },
   {
-    "id": "Minimum_Spanning_Tree_MST",
-    "cluster": 0,
-    "degree": 10,
-    "name": "Minimum Spanning Tree MST"
-  },
-  {
     "id": "distributed_graph_algorithms",
     "cluster": 0,
     "degree": 10,
     "name": "distributed graph algorithms"
+  },
+  {
+    "id": "Minimum_Spanning_Tree_MST",
+    "cluster": 0,
+    "degree": 10,
+    "name": "Minimum Spanning Tree MST"
   },
   {
     "id": "breadth-first_search_BFS",
@@ -82,6 +82,12 @@ window.BU_DATA = (() => {
     "name": "Rooted tree structure"
   },
   {
+    "id": "GHS_algorithm",
+    "cluster": 0,
+    "degree": 4,
+    "name": "GHS algorithm"
+  },
+  {
     "id": "Broadcast_algorithm",
     "cluster": 0,
     "degree": 4,
@@ -94,40 +100,16 @@ window.BU_DATA = (() => {
     "name": "Lenzens phase"
   },
   {
-    "id": "GHS_algorithm",
-    "cluster": 0,
-    "degree": 4,
-    "name": "GHS algorithm"
-  },
-  {
-    "id": "Virtual_fragment_tree",
-    "cluster": 0,
-    "degree": 4,
-    "name": "Virtual fragment tree"
-  },
-  {
-    "id": "Depth-First_Search_DFS",
-    "cluster": 0,
-    "degree": 4,
-    "name": "Depth-First Search DFS"
-  },
-  {
-    "id": "Breadth-First_Search_BFS_tree",
-    "cluster": 0,
-    "degree": 4,
-    "name": "Breadth-First Search BFS tree"
-  },
-  {
-    "id": "Euler_tour",
-    "cluster": 0,
-    "degree": 3,
-    "name": "Euler tour"
-  },
-  {
     "id": "graph_coloring",
     "cluster": 1,
     "degree": 11,
     "name": "graph coloring"
+  },
+  {
+    "id": "Vertex_Cover",
+    "cluster": 1,
+    "degree": 7,
+    "name": "Vertex Cover"
   },
   {
     "id": "Approximation_algorithms",
@@ -142,34 +124,10 @@ window.BU_DATA = (() => {
     "name": "Distributed algorithms"
   },
   {
-    "id": "Vertex_Cover",
-    "cluster": 1,
-    "degree": 7,
-    "name": "Vertex Cover"
-  },
-  {
     "id": "independent_set",
     "cluster": 1,
     "degree": 5,
     "name": "independent set"
-  },
-  {
-    "id": "Time-Sensitive_Networking_TSN",
-    "cluster": 1,
-    "degree": 4,
-    "name": "Time-Sensitive Networking TSN"
-  },
-  {
-    "id": "dominating_set",
-    "cluster": 1,
-    "degree": 4,
-    "name": "dominating set"
-  },
-  {
-    "id": "Maximal_Independent_Set_MIS",
-    "cluster": 1,
-    "degree": 4,
-    "name": "Maximal Independent Set MIS"
   },
   {
     "id": "k-core_decomposition",
@@ -178,28 +136,16 @@ window.BU_DATA = (() => {
     "name": "k-core decomposition"
   },
   {
-    "id": "Directed_cut_problems",
+    "id": "Time-Sensitive_Networking_TSN",
     "cluster": 1,
-    "degree": 3,
-    "name": "Directed cut problems"
+    "degree": 4,
+    "name": "Time-Sensitive Networking TSN"
   },
   {
-    "id": "flow_scheduling_algorithm",
+    "id": "Maximal_Independent_Set_MIS",
     "cluster": 1,
-    "degree": 3,
-    "name": "flow scheduling algorithm"
-  },
-  {
-    "id": "maximal_independent_set",
-    "cluster": 1,
-    "degree": 3,
-    "name": "maximal independent set"
-  },
-  {
-    "id": "CONGEST_model",
-    "cluster": 2,
-    "degree": 9,
-    "name": "CONGEST model"
+    "degree": 4,
+    "name": "Maximal Independent Set MIS"
   },
   {
     "id": "convergecast",
@@ -208,22 +154,34 @@ window.BU_DATA = (() => {
     "name": "convergecast"
   },
   {
+    "id": "CONGEST_model",
+    "cluster": 2,
+    "degree": 9,
+    "name": "CONGEST model"
+  },
+  {
     "id": "BFS_tree",
     "cluster": 2,
     "degree": 4,
     "name": "BFS tree"
   },
   {
-    "id": "convergecast_procedure",
+    "id": "publish-query_sets",
     "cluster": 2,
     "degree": 3,
-    "name": "convergecast procedure"
+    "name": "publish-query sets"
   },
   {
     "id": "Thorup-Zwicks_tree_routing_scheme",
     "cluster": 2,
     "degree": 3,
     "name": "Thorup-Zwicks tree routing scheme"
+  },
+  {
+    "id": "convergecast_procedure",
+    "cluster": 2,
+    "degree": 3,
+    "name": "convergecast procedure"
   },
   {
     "id": "slot_set_creation",
@@ -238,34 +196,10 @@ window.BU_DATA = (() => {
     "name": "interval allocation procedure"
   },
   {
-    "id": "publish-query_sets",
-    "cluster": 2,
-    "degree": 3,
-    "name": "publish-query sets"
-  },
-  {
-    "id": "pipelined_convergecast",
-    "cluster": 2,
-    "degree": 2,
-    "name": "pipelined convergecast"
-  },
-  {
-    "id": "hierarchical_decomposition",
-    "cluster": 2,
-    "degree": 2,
-    "name": "hierarchical decomposition"
-  },
-  {
-    "id": "tree_routing_tables",
-    "cluster": 2,
-    "degree": 2,
-    "name": "tree routing tables"
-  },
-  {
-    "id": "interval_allocation_subroutine",
-    "cluster": 2,
-    "degree": 2,
-    "name": "interval allocation subroutine"
+    "id": "twin-width",
+    "cluster": 3,
+    "degree": 4,
+    "name": "twin-width"
   },
   {
     "id": "spanner",
@@ -274,28 +208,10 @@ window.BU_DATA = (() => {
     "name": "spanner"
   },
   {
-    "id": "twin-width",
-    "cluster": 3,
-    "degree": 4,
-    "name": "twin-width"
-  },
-  {
-    "id": "Bellman-Ford_algorithm",
-    "cluster": 3,
-    "degree": 3,
-    "name": "Bellman-Ford algorithm"
-  },
-  {
     "id": "power_graph",
     "cluster": 3,
     "degree": 3,
     "name": "power graph"
-  },
-  {
-    "id": "Minimum_Spanning_Tree",
-    "cluster": 3,
-    "degree": 3,
-    "name": "Minimum Spanning Tree"
   },
   {
     "id": "Dijkstras_algorithm",
@@ -304,40 +220,28 @@ window.BU_DATA = (() => {
     "name": "Dijkstras algorithm"
   },
   {
-    "id": "net_tree",
+    "id": "Bellman-Ford_algorithm",
+    "cluster": 3,
+    "degree": 3,
+    "name": "Bellman-Ford algorithm"
+  },
+  {
+    "id": "Minimum_Spanning_Tree",
+    "cluster": 3,
+    "degree": 3,
+    "name": "Minimum Spanning Tree"
+  },
+  {
+    "id": "Minimum-cost_flow",
     "cluster": 3,
     "degree": 2,
-    "name": "net tree"
+    "name": "Minimum-cost flow"
   },
   {
     "id": "dynamic_graph_algorithms",
     "cluster": 3,
     "degree": 2,
     "name": "dynamic graph algorithms"
-  },
-  {
-    "id": "contraction_sequence",
-    "cluster": 3,
-    "degree": 2,
-    "name": "contraction sequence"
-  },
-  {
-    "id": "DAG_compression",
-    "cluster": 3,
-    "degree": 2,
-    "name": "DAG compression"
-  },
-  {
-    "id": "Kruskals_algorithm",
-    "cluster": 3,
-    "degree": 2,
-    "name": "Kruskals algorithm"
-  },
-  {
-    "id": "doubling_metrics",
-    "cluster": 3,
-    "degree": 2,
-    "name": "doubling metrics"
   },
   {
     "id": "tree_decomposition",
@@ -358,12 +262,6 @@ window.BU_DATA = (() => {
     "name": "Treewidth"
   },
   {
-    "id": "planar_loop",
-    "cluster": 4,
-    "degree": 4,
-    "name": "planar loop"
-  },
-  {
     "id": "bag_function",
     "cluster": 4,
     "degree": 4,
@@ -376,10 +274,10 @@ window.BU_DATA = (() => {
     "name": "fundamental cycle"
   },
   {
-    "id": "graph_minor",
+    "id": "planar_loop",
     "cluster": 4,
-    "degree": 3,
-    "name": "graph minor"
+    "degree": 4,
+    "name": "planar loop"
   },
   {
     "id": "distributed_algorithm",
@@ -388,109 +286,67 @@ window.BU_DATA = (() => {
     "name": "distributed algorithm"
   },
   {
-    "id": "adhesion_size",
+    "id": "graph_minor",
     "cluster": 4,
     "degree": 3,
-    "name": "adhesion size"
+    "name": "graph minor"
   },
   {
-    "id": "routing_table",
-    "cluster": 4,
-    "degree": 3,
-    "name": "routing table"
-  },
-  {
-    "id": "bag_tree_decomposition",
-    "cluster": 4,
-    "degree": 2,
-    "name": "bag tree decomposition"
-  },
-  {
-    "id": "complete_bipartite_graph",
-    "cluster": 4,
-    "degree": 2,
-    "name": "complete bipartite graph"
-  },
-  {
-    "id": "randomized_rounding",
+    "id": "Four_Color_Theorem",
     "cluster": 5,
     "degree": 5,
-    "name": "randomized rounding"
+    "name": "Four Color Theorem"
   },
   {
-    "id": "double-ladder",
+    "id": "obstructing_cycles",
     "cluster": 5,
     "degree": 4,
-    "name": "double-ladder"
+    "name": "obstructing cycles"
   },
   {
-    "id": "\u03b5-double_ladder",
+    "id": "D-reducible_configurations",
+    "cluster": 5,
+    "degree": 4,
+    "name": "D-reducible configurations"
+  },
+  {
+    "id": "degree_range",
+    "cluster": 5,
+    "degree": 4,
+    "name": "degree range"
+  },
+  {
+    "id": "Birkhoff_diamond",
     "cluster": 5,
     "degree": 3,
-    "name": "\u03b5-double ladder"
+    "name": "Birkhoff diamond"
   },
   {
-    "id": "sparsification",
+    "id": "reducible_configuration",
     "cluster": 5,
-    "degree": 2,
-    "name": "sparsification"
+    "degree": 3,
+    "name": "reducible configuration"
   },
   {
-    "id": "concentration_inequalities",
+    "id": "Discharging_method",
     "cluster": 5,
-    "degree": 2,
-    "name": "concentration inequalities"
+    "degree": 3,
+    "name": "Discharging method"
   },
   {
-    "id": "Halfspace_approximation",
+    "id": "Kempe_chains",
     "cluster": 5,
-    "degree": 2,
-    "name": "Halfspace approximation"
-  },
-  {
-    "id": "\u03b5-comatching",
-    "cluster": 5,
-    "degree": 2,
-    "name": "\u03b5-comatching"
-  },
-  {
-    "id": "k-center_problem",
-    "cluster": 5,
-    "degree": 2,
-    "name": "k-center problem"
-  },
-  {
-    "id": "PAC_learning",
-    "cluster": 5,
-    "degree": 2,
-    "name": "PAC learning"
-  },
-  {
-    "id": "shortest_path",
-    "cluster": 5,
-    "degree": 1,
-    "name": "shortest path"
-  },
-  {
-    "id": "Ising_model",
-    "cluster": 5,
-    "degree": 1,
-    "name": "Ising model"
-  },
-  {
-    "id": "\u03b5-coreset",
-    "cluster": 5,
-    "degree": 1,
-    "name": "\u03b5-coreset"
+    "degree": 3,
+    "name": "Kempe chains"
   }
 ];
-  const EDGES = [["Treewidth", "adhesion_size"], ["Treewidth", "planar_loop"], ["Treewidth", "bag_function"], ["GHS_algorithm", "Minimum_Spanning_Tree_MST"], ["GHS_algorithm", "Distributed_algorithms"], ["GHS_algorithm", "Broadcast_algorithm"], ["fundamental_cycle", "spanning_tree"], ["fundamental_cycle", "planar_graph"], ["fundamental_cycle", "CONGEST_model"], ["Vertex_Cover", "independent_set"], ["Vertex_Cover", "Approximation_algorithms"], ["Vertex_Cover", "dominating_set"], ["Vertex_Cover", "Maximal_Independent_Set_MIS"], ["distributed_graph_algorithms", "Breadth-First_Search_BFS_tree"], ["distributed_graph_algorithms", "Lenzens_phase"], ["distributed_graph_algorithms", "Rooted_tree_structure"], ["distributed_graph_algorithms", "Virtual_fragment_tree"], ["distributed_graph_algorithms", "BFS_tree"], ["breadth-first_search_BFS", "Depth-First_Search_DFS"], ["breadth-first_search_BFS", "spanning_tree"], ["contraction_sequence", "twin-width"], ["contraction_sequence", "tree_decomposition"], ["Directed_cut_problems", "Approximation_algorithms"], ["interval_allocation_subroutine", "convergecast_procedure"], ["interval_allocation_subroutine", "slot_set_creation"], ["spanner", "dynamic_graph_algorithms"], ["spanner", "net_tree"], ["Breadth-First_Search_BFS_tree", "Minimum_Spanning_Tree_MST"], ["dynamic_graph_algorithms", "doubling_metrics"], ["planar_graph", "tree_decomposition"], ["planar_graph", "double-ladder"], ["planar_graph", "distributed_algorithm"], ["planar_graph", "planar_loop"], ["graph_coloring", "independent_set"], ["graph_coloring", "maximal_independent_set"], ["graph_coloring", "k-core_decomposition"], ["graph_coloring", "dominating_set"], ["graph_coloring", "Maximal_Independent_Set_MIS"], ["Ising_model", "Halfspace_approximation"], ["Bellman-Ford_algorithm", "Dijkstras_algorithm"], ["\u03b5-comatching", "double-ladder"], ["\u03b5-comatching", "\u03b5-double_ladder"], ["double-ladder", "shortest_path"], ["flow_scheduling_algorithm", "Time-Sensitive_Networking_TSN"], ["spanning_tree", "Minimum_Spanning_Tree_MST"], ["spanning_tree", "Depth-First_Search_DFS"], ["spanning_tree", "distributed_algorithm"], ["spanning_tree", "Broadcast_algorithm"], ["spanning_tree", "Rooted_tree_structure"], ["spanning_tree", "BFS_tree"], ["independent_set", "dominating_set"], ["PAC_learning", "randomized_rounding"], ["PAC_learning", "Halfspace_approximation"], ["Lenzens_phase", "Minimum_Spanning_Tree_MST"], ["DAG_compression", "power_graph"], ["DAG_compression", "Kruskals_algorithm"], ["complete_bipartite_graph", "graph_minor"], ["tree_routing_tables", "CONGEST_model"], ["tree_routing_tables", "publish-query_sets"], ["maximal_independent_set", "Distributed_algorithms"], ["maximal_independent_set", "k-core_decomposition"], ["Dijkstras_algorithm", "Minimum_Spanning_Tree"], ["interval_allocation_procedure", "convergecast"], ["net_tree", "Minimum_Spanning_Tree"], ["Depth-First_Search_DFS", "Euler_tour"], ["slot_set_creation", "convergecast"], ["Approximation_algorithms", "sparsification"], ["Approximation_algorithms", "dominating_set"], ["Approximation_algorithms", "Maximal_Independent_Set_MIS"], ["graph_minor", "adhesion_size"], ["graph_minor", "bag_function"], ["distributed_algorithm", "routing_table"], ["adhesion_size", "tree_decomposition"], ["tree_decomposition", "planar_loop"], ["tree_decomposition", "bag_function"], ["tree_decomposition", "routing_table"], ["pipelined_convergecast", "convergecast"], ["pipelined_convergecast", "CONGEST_model"], ["hierarchical_decomposition", "Thorup-Zwicks_tree_routing_scheme"], ["randomized_rounding", "concentration_inequalities"], ["power_graph", "twin-width"], ["Minimum_Spanning_Tree_MST", "Virtual_fragment_tree"], ["k-center_problem", "\u03b5-double_ladder"], ["sparsification", "concentration_inequalities"], ["convergecast", "routing_table"], ["convergecast", "publish-query_sets"], ["convergecast", "BFS_tree"], ["Broadcast_algorithm", "Rooted_tree_structure"], ["\u03b5-coreset", "\u03b5-double_ladder"], ["Kruskals_algorithm", "Minimum_Spanning_Tree"], ["Maximal_Independent_Set_MIS", "Distributed_algorithms"], ["Thorup-Zwicks_tree_routing_scheme", "CONGEST_model"], ["CONGEST_model", "BFS_tree"]];
+  const EDGES = [["Treewidth", "planar_loop"], ["Treewidth", "bag_function"], ["GHS_algorithm", "Minimum_Spanning_Tree_MST"], ["GHS_algorithm", "Distributed_algorithms"], ["GHS_algorithm", "Broadcast_algorithm"], ["fundamental_cycle", "spanning_tree"], ["fundamental_cycle", "planar_graph"], ["fundamental_cycle", "CONGEST_model"], ["Vertex_Cover", "independent_set"], ["Vertex_Cover", "Approximation_algorithms"], ["Vertex_Cover", "Maximal_Independent_Set_MIS"], ["distributed_graph_algorithms", "Lenzens_phase"], ["distributed_graph_algorithms", "Rooted_tree_structure"], ["distributed_graph_algorithms", "BFS_tree"], ["breadth-first_search_BFS", "spanning_tree"], ["D-reducible_configurations", "Four_Color_Theorem"], ["D-reducible_configurations", "Kempe_chains"], ["D-reducible_configurations", "Discharging_method"], ["D-reducible_configurations", "obstructing_cycles"], ["spanner", "dynamic_graph_algorithms"], ["obstructing_cycles", "Four_Color_Theorem"], ["obstructing_cycles", "Kempe_chains"], ["planar_graph", "tree_decomposition"], ["planar_graph", "distributed_algorithm"], ["planar_graph", "planar_loop"], ["graph_coloring", "independent_set"], ["graph_coloring", "k-core_decomposition"], ["graph_coloring", "Maximal_Independent_Set_MIS"], ["graph_coloring", "Birkhoff_diamond"], ["Bellman-Ford_algorithm", "Dijkstras_algorithm"], ["Bellman-Ford_algorithm", "Minimum-cost_flow"], ["spanning_tree", "Minimum_Spanning_Tree_MST"], ["spanning_tree", "distributed_algorithm"], ["spanning_tree", "Broadcast_algorithm"], ["spanning_tree", "Rooted_tree_structure"], ["spanning_tree", "BFS_tree"], ["reducible_configuration", "degree_range"], ["reducible_configuration", "Birkhoff_diamond"], ["Lenzens_phase", "Minimum_Spanning_Tree_MST"], ["Discharging_method", "Four_Color_Theorem"], ["Dijkstras_algorithm", "Minimum_Spanning_Tree"], ["interval_allocation_procedure", "convergecast"], ["slot_set_creation", "convergecast"], ["Approximation_algorithms", "Maximal_Independent_Set_MIS"], ["graph_minor", "bag_function"], ["tree_decomposition", "planar_loop"], ["tree_decomposition", "bag_function"], ["power_graph", "twin-width"], ["convergecast", "publish-query_sets"], ["convergecast", "BFS_tree"], ["Broadcast_algorithm", "Rooted_tree_structure"], ["Maximal_Independent_Set_MIS", "Distributed_algorithms"], ["Thorup-Zwicks_tree_routing_scheme", "CONGEST_model"], ["Birkhoff_diamond", "Four_Color_Theorem"], ["CONGEST_model", "BFS_tree"]];
   const FOUNDATION_PICKS = [
   {
     "raw": "spanning_tree",
     "name": "spanning tree",
     "cluster": 0,
-    "score": 1.006,
+    "score": 1.02,
     "rationale": "bridges 5 courses; connects to 12 other concepts; in a 37-concept course.",
     "metrics": {
       "degree": 12,
@@ -518,7 +374,7 @@ window.BU_DATA = (() => {
     "raw": "graph_coloring",
     "name": "graph coloring",
     "cluster": 1,
-    "score": 0.833,
+    "score": 0.847,
     "rationale": "bridges 3 courses; connects to 11 other concepts; in a 33-concept course.",
     "metrics": {
       "degree": 11,
@@ -529,29 +385,29 @@ window.BU_DATA = (() => {
     }
   },
   {
-    "raw": "CONGEST_model",
-    "name": "CONGEST model",
-    "cluster": 2,
-    "score": 0.738,
-    "rationale": "bridges 3 courses; connects to 9 other concepts; in a 23-concept course.",
-    "metrics": {
-      "degree": 9,
-      "span": 3,
-      "size": 23,
-      "hasWiki": true,
-      "rl": 0.0
-    }
-  },
-  {
     "raw": "distributed_graph_algorithms",
     "name": "distributed graph algorithms",
     "cluster": 0,
-    "score": 0.732,
+    "score": 0.757,
     "rationale": "bridges two courses; connects to 10 other concepts; in a 37-concept course.",
     "metrics": {
       "degree": 10,
       "span": 2,
       "size": 37,
+      "hasWiki": true,
+      "rl": 0.0
+    }
+  },
+  {
+    "raw": "CONGEST_model",
+    "name": "CONGEST model",
+    "cluster": 2,
+    "score": 0.734,
+    "rationale": "bridges 3 courses; connects to 9 other concepts; in a 23-concept course.",
+    "metrics": {
+      "degree": 9,
+      "span": 3,
+      "size": 23,
       "hasWiki": true,
       "rl": 0.0
     }
@@ -592,48 +448,6 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "Minimum_Spanning_Tree_MST": {
-    "title": "Minimum_Spanning_Tree_MST",
-    "summary": "A **Minimum Spanning Tree** of a weighted undirected graph $G = (V, E)$ is an acyclic subgraph (tree) that:\n1. Connects all $n = |V|$ vertices\n2. Contains exactly $n-1$ edges\n3. Has minimum total edge weight among all possible spanning trees",
-    "key_ideas": [
-      {
-        "h": "Number of edges in tree",
-        "b": "$|T| = n - 1$"
-      },
-      {
-        "h": "Acyclicity",
-        "b": "$T$ contains no cycles"
-      },
-      {
-        "h": "Connectivity",
-        "b": "The subgraph $(V, T)$ is connected"
-      },
-      {
-        "h": "Time",
-        "b": "$\\tilde{\\Omega}(\\sqrt{n})$ even when $D = O(\\log n)$ (Peleg & Rubinovich)"
-      },
-      {
-        "h": "Messages",
-        "b": "$\\Omega(m)$ for any deterministic algorithm (Awerbuch et al., Kutten et al.)"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/Minimum_Spanning_Tree_MST.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'Minimum_Spanning_Tree_MST'",
-        "choices": [
-          "A **Minimum Spanning Tree** of a weighted undirected graph $G = (V, E)$ is an acyclic subgraph (tree) that:\n1.",
-          "Minimum_Spanning_Tree_MST has no formal definition.",
-          "Minimum_Spanning_Tree_MST is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
   "distributed_graph_algorithms": {
     "title": "distributed_graph_algorithms",
     "summary": "**Distributed graph algorithms** are algorithms that compute properties of a graph where computation is performed collaboratively by multiple processors (nodes) with limited communication. Key characteristics:",
@@ -661,7 +475,8 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/distributed_graph_algorithms.md"
+      "wiki/concepts/distributed_graph_algorithms.md",
+      "def/def_001"
     ],
     "quiz": [
       {
@@ -670,6 +485,50 @@ window.BU_DATA = (() => {
           "**Distributed graph algorithms** are algorithms that compute properties of a graph where computation is performed collaboratively by multiple processors (nodes) with limited communication.",
           "distributed_graph_algorithms has no formal definition.",
           "distributed_graph_algorithms is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
+  "Minimum_Spanning_Tree_MST": {
+    "title": "Minimum_Spanning_Tree_MST",
+    "summary": "A **Minimum Spanning Tree** of a weighted undirected graph $G = (V, E)$ is an acyclic subgraph (tree) that:\n1. Connects all $n = |V|$ vertices\n2. Contains exactly $n-1$ edges\n3. Has minimum total edge weight among all possible spanning trees",
+    "key_ideas": [
+      {
+        "h": "Number of edges in tree",
+        "b": "$|T| = n - 1$"
+      },
+      {
+        "h": "Acyclicity",
+        "b": "$T$ contains no cycles"
+      },
+      {
+        "h": "Connectivity",
+        "b": "The subgraph $(V, T)$ is connected"
+      },
+      {
+        "h": "Time",
+        "b": "$\\tilde{\\Omega}(\\sqrt{n})$ even when $D = O(\\log n)$ (Peleg & Rubinovich)"
+      },
+      {
+        "h": "Messages",
+        "b": "$\\Omega(m)$ for any deterministic algorithm (Awerbuch et al., Kutten et al.)"
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/Minimum_Spanning_Tree_MST.md",
+      "def/def_001",
+      "def/def_002"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of 'Minimum_Spanning_Tree_MST'",
+        "choices": [
+          "A **Minimum Spanning Tree** of a weighted undirected graph $G = (V, E)$ is an acyclic subgraph (tree) that:\n1.",
+          "Minimum_Spanning_Tree_MST has no formal definition.",
+          "Minimum_Spanning_Tree_MST is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -733,7 +592,9 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/Rooted_tree_structure.md"
+      "wiki/concepts/Rooted_tree_structure.md",
+      "def/def_001",
+      "def/def_003"
     ],
     "quiz": [
       {
@@ -742,6 +603,40 @@ window.BU_DATA = (() => {
           "A **rooted tree structure** is a connected acyclic graph with a designated root vertex, used to represent hierarchical relationships and enable efficient distributed algorithms.",
           "Rooted_tree_structure has no formal definition.",
           "Rooted_tree_structure is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
+  "GHS_algorithm": {
+    "title": "GHS_algorithm",
+    "summary": "The **GHS algorithm** (Gallager-Humblet-Spira) is a foundational distributed algorithm for computing the Minimum Spanning Tree (MST) of an undirected, weighted graph in a synchronous message-passing network model. It operates in a decentralized fashion where each vertex makes local decisions based on messages from neighbors, ultimately coordinating to build a globally optimal MST without central control.",
+    "key_ideas": [
+      {
+        "h": "",
+        "b": "Read the full wiki page for the formal definition."
+      },
+      {
+        "h": "",
+        "b": "Work through one quantitative example."
+      },
+      {
+        "h": "",
+        "b": "Note any open research questions in the page footer."
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/GHS_algorithm.md"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of 'GHS_algorithm'",
+        "choices": [
+          "The **GHS algorithm** (Gallager-Humblet-Spira) is a foundational distributed algorithm for computing the Minimum Spanning Tree (MST) of an undirected, weighted graph in a synchronous message-passing n",
+          "GHS_algorithm has no formal definition.",
+          "GHS_algorithm is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -767,7 +662,8 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/Broadcast_algorithm.md"
+      "wiki/concepts/Broadcast_algorithm.md",
+      "def/def_003"
     ],
     "quiz": [
       {
@@ -820,192 +716,6 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "GHS_algorithm": {
-    "title": "GHS_algorithm",
-    "summary": "The **GHS algorithm** (Gallager-Humblet-Spira) is a foundational distributed algorithm for computing the Minimum Spanning Tree (MST) of an undirected, weighted graph in a synchronous message-passing network model. It operates in a decentralized fashion where each vertex makes local decisions based on messages from neighbors, ultimately coordinating to build a globally optimal MST without central control.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Read the full wiki page for the formal definition."
-      },
-      {
-        "h": "",
-        "b": "Work through one quantitative example."
-      },
-      {
-        "h": "",
-        "b": "Note any open research questions in the page footer."
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/GHS_algorithm.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'GHS_algorithm'",
-        "choices": [
-          "The **GHS algorithm** (Gallager-Humblet-Spira) is a foundational distributed algorithm for computing the Minimum Spanning Tree (MST) of an undirected, weighted graph in a synchronous message-passing n",
-          "GHS_algorithm has no formal definition.",
-          "GHS_algorithm is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "Virtual_fragment_tree": {
-    "title": "Virtual_fragment_tree",
-    "summary": "A **virtual fragment tree** is a hierarchical data structure used in distributed minimum spanning tree (MST) algorithms to organize and manage communication between fragments (connected components) during the MST construction process.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Each fragment $F$ discovers its **minimum weight outgoing edge (MWOE)** $e = \\{v_{\\text{adj}}, u\\}$ that connects to a neighboring fragment $F'$"
-      },
-      {
-        "h": "The MWOE discovery establishes a parent-child relationship",
-        "b": "fragment $F'$ becomes the **parent** of fragment $F$ in the virtual fragment tree"
-      },
-      {
-        "h": "",
-        "b": "The vertex $v_{\\text{adj}} \\in F$ adjacent to the MWOE is designated as the **gateway vertex** responsible for inter-fragment communication"
-      },
-      {
-        "h": "",
-        "b": "These relationships form a tree structure overlaid on the original graph, enabling efficient hierarchical communication"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/Virtual_fragment_tree.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'Virtual_fragment_tree'",
-        "choices": [
-          "A **virtual fragment tree** is a hierarchical data structure used in distributed minimum spanning tree (MST) algorithms to organize and manage communication between fragments (connected components) du",
-          "Virtual_fragment_tree has no formal definition.",
-          "Virtual_fragment_tree is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "Depth-First_Search_DFS": {
-    "title": "Depth-First_Search_DFS",
-    "summary": "**Depth-First Search (DFS)** is a fundamental graph traversal algorithm that explores a graph by advancing as far as possible along each branch before backtracking. Starting from a source node, DFS systematically visits nodes by recursively exploring unvisited neighbors until reaching a dead-end, then backtracks to explore alternative paths.",
-    "key_ideas": [
-      {
-        "h": "**Tree edges**",
-        "b": "edges used to discover new nodes"
-      },
-      {
-        "h": "**Back edges**",
-        "b": "edges pointing to ancestors in the DFS tree"
-      },
-      {
-        "h": "**Forward edges**",
-        "b": "edges to descendants (in directed graphs)"
-      },
-      {
-        "h": "**Cross edges**",
-        "b": "all other edges"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/Depth-First_Search_DFS.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'Depth-First_Search_DFS'",
-        "choices": [
-          "**Depth-First Search (DFS)** is a fundamental graph traversal algorithm that explores a graph by advancing as far as possible along each branch before backtracking.",
-          "Depth-First_Search_DFS has no formal definition.",
-          "Depth-First_Search_DFS is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "Breadth-First_Search_BFS_tree": {
-    "title": "Breadth-First_Search_BFS_tree",
-    "summary": "A **Breadth-First Search (BFS) tree** is a spanning tree of a graph constructed by exploring vertices in order of their distance from a designated root vertex. Specifically:",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Start from a root vertex $r$"
-      },
-      {
-        "h": "",
-        "b": "Visit all vertices at distance 1 from $r$, then all at distance 2, and so on"
-      },
-      {
-        "h": "",
-        "b": "Edges connecting each vertex to the vertex that discovered it form the tree edges"
-      },
-      {
-        "h": "",
-        "b": "The tree has depth equal to the diameter of the component being explored"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/Breadth-First_Search_BFS_tree.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'Breadth-First_Search_BFS_tree'",
-        "choices": [
-          "A **Breadth-First Search (BFS) tree** is a spanning tree of a graph constructed by exploring vertices in order of their distance from a designated root vertex.",
-          "Breadth-First_Search_BFS_tree has no formal definition.",
-          "Breadth-First_Search_BFS_tree is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "Euler_tour": {
-    "title": "Euler_tour",
-    "summary": "An **Euler tour** is a traversal of a tree or graph that visits every edge exactly once, typically in a depth-first manner. In the context of preprocessing for efficient queries (particularly lowest common ancestor problems), an **Euler tour** refers to a linearization of a rooted tree obtained by recording nodes in the order they are visited during a DFS traversal, including repeated visits when backtracking.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Each node $v \\in V$ appears when first visited (entering) and when all its descendants are processed (exiting)"
-      },
-      {
-        "h": "",
-        "b": "The sequence respects the parent-child relationships in $T$"
-      },
-      {
-        "h": "Preprocessing",
-        "b": "$O(n)$ time"
-      },
-      {
-        "h": "Query",
-        "b": "$O(1)$ time (with Range Minimum Query preprocessing)"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/Euler_tour.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'Euler_tour'",
-        "choices": [
-          "An **Euler tour** is a traversal of a tree or graph that visits every edge exactly once, typically in a depth-first manner.",
-          "Euler_tour has no formal definition.",
-          "Euler_tour is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
   "graph_coloring": {
     "title": "graph_coloring",
     "summary": "**Graph coloring** is the assignment of labels (called \"colors\") to vertices of a graph such that no two adjacent vertices share the same color. Formally, given an undirected graph $G = (V, E)$, a **proper $k$-coloring** is a function $c: V \\to \\{1, 2, \\ldots, k\\}$ such that for every edge $(u, v) \\in E$, we have $c(u) \\neq c(v)$.",
@@ -1034,6 +744,36 @@ window.BU_DATA = (() => {
           "**Graph coloring** is the assignment of labels (called \"colors\") to vertices of a graph such that no two adjacent vertices share the same color.",
           "graph_coloring has no formal definition.",
           "graph_coloring is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
+  "Vertex_Cover": {
+    "title": "Vertex_Cover",
+    "summary": "A **vertex cover** of an undirected graph $\\bar{G} = (\\bar{V}, \\bar{E})$ is a subset of vertices $U \\subseteq \\bar{V}$ such that every edge in $\\bar{E}$ has at least one endpoint in $U$. Formally:",
+    "key_ideas": [
+      {
+        "h": "**Achievable",
+        "b": "** $2$-approximation (simple greedy algorithm)"
+      },
+      {
+        "h": "**Conjectured hard",
+        "b": "** No $(2-\\varepsilon)$-approximation for any $\\varepsilon > 0$ under the Unique Games Conjecture (UGC) and P \u2260 NP"
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/Vertex_Cover.md"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of 'Vertex_Cover'",
+        "choices": [
+          "A **vertex cover** of an undirected graph $\\bar{G} = (\\bar{V}, \\bar{E})$ is a subset of vertices $U \\subseteq \\bar{V}$ such that every edge in $\\bar{E}$ has at least one endpoint in $U$.",
+          "Vertex_Cover has no formal definition.",
+          "Vertex_Cover is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -1097,7 +837,9 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/Distributed_algorithms.md"
+      "wiki/concepts/Distributed_algorithms.md",
+      "def/def_001",
+      "def/def_003"
     ],
     "quiz": [
       {
@@ -1106,36 +848,6 @@ window.BU_DATA = (() => {
           "A **distributed algorithm** is a computational procedure that executes on a network of autonomous processors (nodes/vertices) with the following characteristics:",
           "Distributed_algorithms has no formal definition.",
           "Distributed_algorithms is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "Vertex_Cover": {
-    "title": "Vertex_Cover",
-    "summary": "A **vertex cover** of an undirected graph $\\bar{G} = (\\bar{V}, \\bar{E})$ is a subset of vertices $U \\subseteq \\bar{V}$ such that every edge in $\\bar{E}$ has at least one endpoint in $U$. Formally:",
-    "key_ideas": [
-      {
-        "h": "**Achievable",
-        "b": "** $2$-approximation (simple greedy algorithm)"
-      },
-      {
-        "h": "**Conjectured hard",
-        "b": "** No $(2-\\varepsilon)$-approximation for any $\\varepsilon > 0$ under the Unique Games Conjecture (UGC) and P \u2260 NP"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/Vertex_Cover.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'Vertex_Cover'",
-        "choices": [
-          "A **vertex cover** of an undirected graph $\\bar{G} = (\\bar{V}, \\bar{E})$ is a subset of vertices $U \\subseteq \\bar{V}$ such that every edge in $\\bar{E}$ has at least one endpoint in $U$.",
-          "Vertex_Cover has no formal definition.",
-          "Vertex_Cover is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -1176,6 +888,38 @@ window.BU_DATA = (() => {
       }
     ]
   },
+  "k-core_decomposition": {
+    "title": "k-core_decomposition",
+    "summary": "A **k-core** of a graph $G = (V, E)$ is a maximal subgraph $H \\subseteq G$ in which every vertex has degree at least $k$ within $H$. The **k-core decomposition** is the process of recursively identifying and removing all k-cores from a graph, partitioning vertices into coreness levels.",
+    "key_ideas": [
+      {
+        "h": "",
+        "b": "A vertex $v$ has **coreness** $c(v) = k$ if it belongs to the $k$-core but not to the $(k+1)$-core."
+      },
+      {
+        "h": "",
+        "b": "The **core number** of a graph is the maximum $k$ for which a non-empty $k$-core exists."
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/k-core_decomposition.md",
+      "def/def_001",
+      "def/def_004"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of 'k-core_decomposition'",
+        "choices": [
+          "A **k-core** of a graph $G = (V, E)$ is a maximal subgraph $H \\subseteq G$ in which every vertex has degree at least $k$ within $H$.",
+          "k-core_decomposition has no formal definition.",
+          "k-core_decomposition is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
   "Time-Sensitive_Networking_TSN": {
     "title": "Time-Sensitive_Networking_TSN",
     "summary": "**Time-Sensitive Networking (TSN)** is a set of IEEE 802.1 standards that enable **deterministic and predictable communication** over Ethernet networks by providing:",
@@ -1203,7 +947,9 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/Time-Sensitive_Networking_TSN.md"
+      "wiki/concepts/Time-Sensitive_Networking_TSN.md",
+      "def/def_001",
+      "def/def_003"
     ],
     "quiz": [
       {
@@ -1212,48 +958,6 @@ window.BU_DATA = (() => {
           "**Time-Sensitive Networking (TSN)** is a set of IEEE 802.1 standards that enable **deterministic and predictable communication** over Ethernet networks by providing:",
           "Time-Sensitive_Networking_TSN has no formal definition.",
           "Time-Sensitive_Networking_TSN is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "dominating_set": {
-    "title": "dominating_set",
-    "summary": "A **dominating set** is a subset $D$ of vertices in a graph $G = (V, E)$ such that every vertex not in $D$ is adjacent to at least one vertex in $D$. Formally:",
-    "key_ideas": [
-      {
-        "h": "**Minimum dominating set**",
-        "b": "A dominating set of smallest cardinality; the **domination number** $\\gamma(G)$ is its size"
-      },
-      {
-        "h": "**Approximately dominating set**",
-        "b": "A relaxation where the domination condition is satisfied approximately (e.g., most vertices are dominated)"
-      },
-      {
-        "h": "**Total dominating set**",
-        "b": "Every vertex (including those in $D$) must have a neighbor in $D$"
-      },
-      {
-        "h": "**Wireless networks**",
-        "b": "Base stations must cover all devices"
-      },
-      {
-        "h": "",
-        "b": "**Fac"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/dominating_set.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'dominating_set'",
-        "choices": [
-          "A **dominating set** is a subset $D$ of vertices in a graph $G = (V, E)$ such that every vertex not in $D$ is adjacent to at least one vertex in $D$.",
-          "dominating_set has no formal definition.",
-          "dominating_set is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -1280,172 +984,6 @@ window.BU_DATA = (() => {
           "A **Maximal Independent Set (MIS)** is a subset $S \\subseteq V$ of vertices in an undirected graph $G = (V, E)$ satisfying two properties:",
           "Maximal_Independent_Set_MIS has no formal definition.",
           "Maximal_Independent_Set_MIS is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "k-core_decomposition": {
-    "title": "k-core_decomposition",
-    "summary": "A **k-core** of a graph $G = (V, E)$ is a maximal subgraph $H \\subseteq G$ in which every vertex has degree at least $k$ within $H$. The **k-core decomposition** is the process of recursively identifying and removing all k-cores from a graph, partitioning vertices into coreness levels.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "A vertex $v$ has **coreness** $c(v) = k$ if it belongs to the $k$-core but not to the $(k+1)$-core."
-      },
-      {
-        "h": "",
-        "b": "The **core number** of a graph is the maximum $k$ for which a non-empty $k$-core exists."
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/k-core_decomposition.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'k-core_decomposition'",
-        "choices": [
-          "A **k-core** of a graph $G = (V, E)$ is a maximal subgraph $H \\subseteq G$ in which every vertex has degree at least $k$ within $H$.",
-          "k-core_decomposition has no formal definition.",
-          "k-core_decomposition is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "Directed_cut_problems": {
-    "title": "Directed_cut_problems",
-    "summary": "A **directed cut problem** is a fundamental optimization challenge in graph theory and network design that seeks to partition the vertices of a directed graph into two disjoint sets to minimize (or sometimes maximize) the total weight of edges crossing between the sets.",
-    "key_ideas": [
-      {
-        "h": "**Minimum cut**",
-        "b": "Find $(S, \\bar{S})$ minimizing cut value"
-      },
-      {
-        "h": "**Directed multicuts**",
-        "b": "Separate multiple terminal pairs simultaneously"
-      },
-      {
-        "h": "**Sparsest cut**",
-        "b": "Minimize the ratio of cut edges to edges within smaller partition"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/Directed_cut_problems.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'Directed_cut_problems'",
-        "choices": [
-          "A **directed cut problem** is a fundamental optimization challenge in graph theory and network design that seeks to partition the vertices of a directed graph into two disjoint sets to minimize (or so",
-          "Directed_cut_problems has no formal definition.",
-          "Directed_cut_problems is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "flow_scheduling_algorithm": {
-    "title": "flow_scheduling_algorithm",
-    "summary": "A **flow scheduling algorithm** is a computational procedure that determines the transmission schedule for multiple data flows across a network topology, ensuring that flows meet timing constraints and resource availability conditions. In time-sensitive networks (TSNs), flow scheduling algorithms compute *no-wait schedules*\u2014sequences of transmission slots where each flow is allocated specific time windows to traverse network links without buffering delays.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "A set of flows $\\mathcal{F} = \\{f_1, f_2, \\ldots, f_n\\}$ with source-destination pairs and timing requirements"
-      },
-      {
-        "h": "",
-        "b": "A network topology $G = (V, E)$ with links of finite capacity"
-      },
-      {
-        "h": "",
-        "b": "Timing constraints (deadlines, periods, synchronization requirements)"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/flow_scheduling_algorithm.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'flow_scheduling_algorithm'",
-        "choices": [
-          "A **flow scheduling algorithm** is a computational procedure that determines the transmission schedule for multiple data flows across a network topology, ensuring that flows meet timing constraints an",
-          "flow_scheduling_algorithm has no formal definition.",
-          "flow_scheduling_algorithm is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "maximal_independent_set": {
-    "title": "maximal_independent_set",
-    "summary": "A **maximal independent set (MIS)** in an undirected graph $G = (V, E)$ is a subset $S \\subseteq V$ of vertices such that:",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "No two selected posit"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/maximal_independent_set.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'maximal_independent_set'",
-        "choices": [
-          "A **maximal independent set (MIS)** in an undirected graph $G = (V, E)$ is a subset $S \\subseteq V$ of vertices such that:",
-          "maximal_independent_set has no formal definition.",
-          "maximal_independent_set is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "CONGEST_model": {
-    "title": "CONGEST_model",
-    "summary": "The **CONGEST model** is a theoretical framework for distributed computing on communication networks. In this model:",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "The network is represented as an undirected or directed graph $G = (V, E)$ with $n = |V|$ nodes"
-      },
-      {
-        "h": "",
-        "b": "Each node corresponds to a computational device; each edge represents a bidirectional communication channel"
-      },
-      {
-        "h": "**Computation proceeds in synchronous rounds**",
-        "b": "in each round, every node can:"
-      },
-      {
-        "h": "**Message constraint**",
-        "b": "Each message is limited to $O(\\log n)$ bits per edge per round"
-      },
-      {
-        "h": "**Initial knowledge**",
-        "b": "Each node knows its own ID, the degree of neighbors, and (if applicable) weights and directions of incident edges"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/CONGEST_model.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'CONGEST_model'",
-        "choices": [
-          "The **CONGEST model** is a theoretical framework for distributed computing on communication networks.",
-          "CONGEST_model has no formal definition.",
-          "CONGEST_model is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -1486,6 +1024,50 @@ window.BU_DATA = (() => {
       }
     ]
   },
+  "CONGEST_model": {
+    "title": "CONGEST_model",
+    "summary": "The **CONGEST model** is a theoretical framework for distributed computing on communication networks. In this model:",
+    "key_ideas": [
+      {
+        "h": "",
+        "b": "The network is represented as an undirected or directed graph $G = (V, E)$ with $n = |V|$ nodes"
+      },
+      {
+        "h": "",
+        "b": "Each node corresponds to a computational device; each edge represents a bidirectional communication channel"
+      },
+      {
+        "h": "**Computation proceeds in synchronous rounds**",
+        "b": "in each round, every node can:"
+      },
+      {
+        "h": "**Message constraint**",
+        "b": "Each message is limited to $O(\\log n)$ bits per edge per round"
+      },
+      {
+        "h": "**Initial knowledge**",
+        "b": "Each node knows its own ID, the degree of neighbors, and (if applicable) weights and directions of incident edges"
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/CONGEST_model.md",
+      "def/def_001",
+      "def/def_003"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of 'CONGEST_model'",
+        "choices": [
+          "The **CONGEST model** is a theoretical framework for distributed computing on communication networks.",
+          "CONGEST_model has no formal definition.",
+          "CONGEST_model is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
   "BFS_tree": {
     "title": "BFS_tree",
     "summary": "A **BFS tree** (Breadth-First Search tree) is a spanning tree of an undirected graph $G = (V, E)$ constructed by exploring vertices in order of their distance from a designated root vertex. For a graph $G$ and root $r$, the BFS tree $T$ is a subgraph where:",
@@ -1509,7 +1091,8 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/BFS_tree.md"
+      "wiki/concepts/BFS_tree.md",
+      "def/def_002"
     ],
     "quiz": [
       {
@@ -1518,6 +1101,85 @@ window.BU_DATA = (() => {
           "A **BFS tree** (Breadth-First Search tree) is a spanning tree of an undirected graph $G = (V, E)$ constructed by exploring vertices in order of their distance from a designated root vertex.",
           "BFS_tree has no formal definition.",
           "BFS_tree is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
+  "publish-query_sets": {
+    "title": "publish-query_sets",
+    "summary": "A **publish-query set** is a scheduling mechanism that interleaves convergecast and broadcast operations in distributed tree networks to enable memory-efficient message routing without requiring intermediate nodes to buffer multiple messages.",
+    "key_ideas": [
+      {
+        "h": "",
+        "b": "Fragment $F_i$ is rooted at vertex $r_i$ and contains base fragments $B_{i1}, B_{i2}, \\ldots$ rooted at vertices $r_{i1}, r_{i2}, \\ldots$"
+      },
+      {
+        "h": "",
+        "b": "Messages $m_i$ flow from fragment roots to base fragment roots"
+      },
+      {
+        "h": "",
+        "b": "$T_p$ = time to publish (convergecast) one message"
+      },
+      {
+        "h": "",
+        "b": "$T_q$ = time for a single query-response cycle"
+      },
+      {
+        "h": "",
+        "b": "$k_i$ = number of base fragments in $F_i$"
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/publish-query_sets.md",
+      "def/def_005"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of 'publish-query_sets'",
+        "choices": [
+          "A **publish-query set** is a scheduling mechanism that interleaves convergecast and broadcast operations in distributed tree networks to enable memory-efficient message routing without requiring inter",
+          "publish-query_sets has no formal definition.",
+          "publish-query_sets is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
+  "Thorup-Zwicks_tree_routing_scheme": {
+    "title": "Thorup-Zwicks_tree_routing_scheme",
+    "summary": "Thorup-Zwick's tree routing scheme is a compact routing protocol for trees that enables efficient point-to-point message delivery using small routing labels. Given a tree $T$ with $n$ vertices, the scheme assigns each vertex a **routing label** of size $O(\\log^2 n)$ bits such that:",
+    "key_ideas": [
+      {
+        "h": "Number of communication rounds to transmit a label",
+        "b": "$O(\\log n)$"
+      },
+      {
+        "h": "Number of messages to transmit a label",
+        "b": "$O(\\log n)$"
+      },
+      {
+        "h": "Total complexity multiplier",
+        "b": "$O(\\log n)$ when labels must be sent as message payloads"
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/Thorup-Zwicks_tree_routing_scheme.md",
+      "def/def_001",
+      "def/def_002"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of 'Thorup-Zwicks_tree_routing_scheme'",
+        "choices": [
+          "Thorup-Zwick's tree routing scheme is a compact routing protocol for trees that enables efficient point-to-point message delivery using small routing labels.",
+          "Thorup-Zwicks_tree_routing_scheme has no formal definition.",
+          "Thorup-Zwicks_tree_routing_scheme is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -1566,40 +1228,6 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "Thorup-Zwicks_tree_routing_scheme": {
-    "title": "Thorup-Zwicks_tree_routing_scheme",
-    "summary": "Thorup-Zwick's tree routing scheme is a compact routing protocol for trees that enables efficient point-to-point message delivery using small routing labels. Given a tree $T$ with $n$ vertices, the scheme assigns each vertex a **routing label** of size $O(\\log^2 n)$ bits such that:",
-    "key_ideas": [
-      {
-        "h": "Number of communication rounds to transmit a label",
-        "b": "$O(\\log n)$"
-      },
-      {
-        "h": "Number of messages to transmit a label",
-        "b": "$O(\\log n)$"
-      },
-      {
-        "h": "Total complexity multiplier",
-        "b": "$O(\\log n)$ when labels must be sent as message payloads"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/Thorup-Zwicks_tree_routing_scheme.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'Thorup-Zwicks_tree_routing_scheme'",
-        "choices": [
-          "Thorup-Zwick's tree routing scheme is a compact routing protocol for trees that enables efficient point-to-point message delivery using small routing labels.",
-          "Thorup-Zwicks_tree_routing_scheme has no formal definition.",
-          "Thorup-Zwicks_tree_routing_scheme is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
   "slot_set_creation": {
     "title": "slot_set_creation",
     "summary": "**Slot set creation** is a distributed algorithm procedure for dynamically allocating time slots to fragments (connected components) in a distributed network, enabling coordinated communication across phases of a larger protocol (typically for Minimum Spanning Forest or MSF problems).",
@@ -1619,7 +1247,8 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/slot_set_creation.md"
+      "wiki/concepts/slot_set_creation.md",
+      "def/def_001"
     ],
     "quiz": [
       {
@@ -1661,7 +1290,8 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/interval_allocation_procedure.md"
+      "wiki/concepts/interval_allocation_procedure.md",
+      "def/def_002"
     ],
     "quiz": [
       {
@@ -1676,51 +1306,9 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "publish-query_sets": {
-    "title": "publish-query_sets",
-    "summary": "A **publish-query set** is a scheduling mechanism that interleaves convergecast and broadcast operations in distributed tree networks to enable memory-efficient message routing without requiring intermediate nodes to buffer multiple messages.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Fragment $F_i$ is rooted at vertex $r_i$ and contains base fragments $B_{i1}, B_{i2}, \\ldots$ rooted at vertices $r_{i1}, r_{i2}, \\ldots$"
-      },
-      {
-        "h": "",
-        "b": "Messages $m_i$ flow from fragment roots to base fragment roots"
-      },
-      {
-        "h": "",
-        "b": "$T_p$ = time to publish (convergecast) one message"
-      },
-      {
-        "h": "",
-        "b": "$T_q$ = time for a single query-response cycle"
-      },
-      {
-        "h": "",
-        "b": "$k_i$ = number of base fragments in $F_i$"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/publish-query_sets.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'publish-query_sets'",
-        "choices": [
-          "A **publish-query set** is a scheduling mechanism that interleaves convergecast and broadcast operations in distributed tree networks to enable memory-efficient message routing without requiring inter",
-          "publish-query_sets has no formal definition.",
-          "publish-query_sets is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "pipelined_convergecast": {
-    "title": "pipelined_convergecast",
-    "summary": "**Pipelined convergecast** is a distributed algorithm technique that interleaves message convergence (aggregation toward a root) with targeted broadcast operations to minimize memory requirements at intermediate nodes. Rather than collecting all messages at a root before dispatching them, the algorithm schedules convergecasts and broadcasts to overlap in time, allowing a root node to process and forward messages immediately upon receipt instead of buffering them.",
+  "twin-width": {
+    "title": "twin-width",
+    "summary": "**Twin-width** is a structural graph parameter that measures how \"simple\" a graph is in terms of a hierarchical decomposition. Formally, a graph $G$ has twin-width at most $d$ if there exists a **contraction sequence** that iteratively merges vertices into larger parts such that:",
     "key_ideas": [
       {
         "h": "",
@@ -1737,125 +1325,15 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/pipelined_convergecast.md"
+      "wiki/concepts/twin-width.md"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'pipelined_convergecast'",
+        "q": "True/false: this statement matches the wiki definition of 'twin-width'",
         "choices": [
-          "**Pipelined convergecast** is a distributed algorithm technique that interleaves message convergence (aggregation toward a root) with targeted broadcast operations to minimize memory requirements at i",
-          "pipelined_convergecast has no formal definition.",
-          "pipelined_convergecast is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "hierarchical_decomposition": {
-    "title": "hierarchical_decomposition",
-    "summary": "**Hierarchical decomposition** is a recursive partitioning strategy that breaks a complex structure (typically a graph) into nested levels of simpler substructures. At each level, the structure is decomposed into **components** (or expanders in the graph-theoretic context) and a small set of **crossing edges** that connect different components. This process repeats on the remaining crossing edges until a termination criterion is met.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Vertices are partitioned into disjoint components $V_1^{(j)}, V_2^{(j)}, \\ldots, V_{k_j}^{(j)}$"
-      },
-      {
-        "h": "",
-        "b": "Each component induces a well-connected subgraph (an expander)"
-      },
-      {
-        "h": "",
-        "b": "A set $X_j$ of **crossing edges** connects different components"
-      },
-      {
-        "h": "",
-        "b": "The next level $G_{j+1}$ is formed from $X_j$"
-      },
-      {
-        "h": "Component identities",
-        "b": "$\\tilde{O}(n)$ bits across all $l$ levels"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/hierarchical_decomposition.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'hierarchical_decomposition'",
-        "choices": [
-          "**Hierarchical decomposition** is a recursive partitioning strategy that breaks a complex structure (typically a graph) into nested levels of simpler substructures.",
-          "hierarchical_decomposition has no formal definition.",
-          "hierarchical_decomposition is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "tree_routing_tables": {
-    "title": "tree_routing_tables",
-    "summary": "Tree routing tables are preprocessed data structures that enable efficient message routing in distributed networks organized hierarchically. They assign routing labels to fragment roots and direct communication paths (r-ripaths) through a tree structure, allowing vertices to forward messages toward their destinations without storing intermediate routing information.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Global root $r$"
-      },
-      {
-        "h": "",
-        "b": "Fragment $F_i$ rooted at $r_i$ (for $i \\in [t]$)"
-      },
-      {
-        "h": "",
-        "b": "Base fragments $B_{ij}$ rooted at $r_{ij}$"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/tree_routing_tables.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'tree_routing_tables'",
-        "choices": [
-          "Tree routing tables are preprocessed data structures that enable efficient message routing in distributed networks organized hierarchically.",
-          "tree_routing_tables has no formal definition.",
-          "tree_routing_tables is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "interval_allocation_subroutine": {
-    "title": "interval_allocation_subroutine",
-    "summary": "The **interval allocation subroutine** is a distributed algorithm component that assigns contiguous ranges (intervals) of communication time slots to fragments in a network synchronization or minimum spanning forest (MSF) computation protocol. It ensures that every vertex in a fragment receives a consistent, non-overlapping time slot range for communication during a given phase.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "$I_i \\cap I_j = \\emptyset$ for $i \\neq j$"
-      },
-      {
-        "h": "",
-        "b": "$\\bigcup_{i=1}^{k} I_i \\subseteq [1, S]$"
-      },
-      {
-        "h": "",
-        "b": "$|I_i|$ is proportional to the size or communication demand of fragment $F_i$"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/interval_allocation_subroutine.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'interval_allocation_subroutine'",
-        "choices": [
-          "The **interval allocation subroutine** is a distributed algorithm component that assigns contiguous ranges (intervals) of communication time slots to fragments in a network synchronization or minimum ",
-          "interval_allocation_subroutine has no formal definition.",
-          "interval_allocation_subroutine is unrelated to the rest of this cluster."
+          "**Twin-width** is a structural graph parameter that measures how \"simple\" a graph is in terms of a hierarchical decomposition.",
+          "twin-width has no formal definition.",
+          "twin-width is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -1896,34 +1374,64 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "twin-width": {
-    "title": "twin-width",
-    "summary": "**Twin-width** is a structural graph parameter that measures how \"simple\" a graph is in terms of a hierarchical decomposition. Formally, a graph $G$ has twin-width at most $d$ if there exists a **contraction sequence** that iteratively merges vertices into larger parts such that:",
+  "power_graph": {
+    "title": "power_graph",
+    "summary": "A **power graph** is a visualization and compression technique for dense graphs that abstracts multiple vertices into **modules** (also called supernodes) and represents all edges between two modules as a single **compression edge**.",
     "key_ideas": [
       {
         "h": "",
-        "b": "Read the full wiki page for the formal definition."
+        "b": "A set of modules $M$ that partition or hierarchically organize the original vertex set $V$"
       },
       {
         "h": "",
-        "b": "Work through one quantitative example."
+        "b": "A condensed edge set where each edge represents all connections between two modules"
       },
       {
-        "h": "",
-        "b": "Note any open research questions in the page footer."
+        "h": "A **tree compression** structure where modules form a containment hierarchy",
+        "b": "if two modules overlap, one must be completely contained within the other (no partial overlaps allowed)"
       }
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/twin-width.md"
+      "wiki/concepts/power_graph.md"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'twin-width'",
+        "q": "True/false: this statement matches the wiki definition of 'power_graph'",
         "choices": [
-          "**Twin-width** is a structural graph parameter that measures how \"simple\" a graph is in terms of a hierarchical decomposition.",
-          "twin-width has no formal definition.",
-          "twin-width is unrelated to the rest of this cluster."
+          "A **power graph** is a visualization and compression technique for dense graphs that abstracts multiple vertices into **modules** (also called supernodes) and represents all edges between two modules ",
+          "power_graph has no formal definition.",
+          "power_graph is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
+  "Dijkstras_algorithm": {
+    "title": "Dijkstras_algorithm",
+    "summary": "**Dijkstra's algorithm** is a greedy algorithm for solving the single-source shortest paths problem on weighted directed graphs with **non-negative edge weights**. Given a source vertex $s$ and a directed graph $G = (V, E)$ with edge weight function $w: E \\to \\mathbb{R}^{\\geq 0}$, the algorithm computes the shortest path distance $d(s, v)$ from $s$ to every vertex $v \\in V$.",
+    "key_ideas": [
+      {
+        "h": "",
+        "b": "A set $S$ of vertices whose shortest path distance from $s$ has been finalized"
+      },
+      {
+        "h": "",
+        "b": "A priority queue $Q$ of unexplored vertices, keyed by their current estimated distance from $s$"
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/Dijkstras_algorithm.md"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of 'Dijkstras_algorithm'",
+        "choices": [
+          "**Dijkstra's algorithm** is a greedy algorithm for solving the single-source shortest paths problem on weighted directed graphs with **non-negative edge weights**.",
+          "Dijkstras_algorithm has no formal definition.",
+          "Dijkstras_algorithm is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -1972,40 +1480,6 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "power_graph": {
-    "title": "power_graph",
-    "summary": "A **power graph** is a visualization and compression technique for dense graphs that abstracts multiple vertices into **modules** (also called supernodes) and represents all edges between two modules as a single **compression edge**.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "A set of modules $M$ that partition or hierarchically organize the original vertex set $V$"
-      },
-      {
-        "h": "",
-        "b": "A condensed edge set where each edge represents all connections between two modules"
-      },
-      {
-        "h": "A **tree compression** structure where modules form a containment hierarchy",
-        "b": "if two modules overlap, one must be completely contained within the other (no partial overlaps allowed)"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/power_graph.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'power_graph'",
-        "choices": [
-          "A **power graph** is a visualization and compression technique for dense graphs that abstracts multiple vertices into **modules** (also called supernodes) and represents all edges between two modules ",
-          "power_graph has no formal definition.",
-          "power_graph is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
   "Minimum_Spanning_Tree": {
     "title": "Minimum_Spanning_Tree",
     "summary": "A **Minimum Spanning Tree (MST)** of a weighted graph $G = (V, E, w)$ is a subset of edges $T \\subseteq E$ such that:",
@@ -2040,64 +1514,40 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "Dijkstras_algorithm": {
-    "title": "Dijkstras_algorithm",
-    "summary": "**Dijkstra's algorithm** is a greedy algorithm for solving the single-source shortest paths problem on weighted directed graphs with **non-negative edge weights**. Given a source vertex $s$ and a directed graph $G = (V, E)$ with edge weight function $w: E \\to \\mathbb{R}^{\\geq 0}$, the algorithm computes the shortest path distance $d(s, v)$ from $s$ to every vertex $v \\in V$.",
+  "Minimum-cost_flow": {
+    "title": "Minimum-cost_flow",
+    "summary": "The **minimum-cost flow problem** is a fundamental optimization problem on directed graphs that simultaneously optimizes two objectives:",
     "key_ideas": [
       {
         "h": "",
-        "b": "A set $S$ of vertices whose shortest path distance from $s$ has been finalized"
+        "b": "A directed graph $G = (V, E)$ with $n$ vertices and $m$ edges"
       },
       {
         "h": "",
-        "b": "A priority queue $Q$ of unexplored vertices, keyed by their current estimated distance from $s$"
+        "b": "Edge capacities $c_e \\geq 0$ for each edge $e \\in E$"
+      },
+      {
+        "h": "",
+        "b": "Edge costs (weights) $w_e \\in \\mathbb{R}$ for each edge $e$"
+      },
+      {
+        "h": "",
+        "b": "Supply/demand values $b_v \\in \\mathbb{R}$ at each vertex $v$ (where $\\sum_v b_v = 0$ for feasibility)"
       }
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/Dijkstras_algorithm.md"
+      "wiki/concepts/Minimum-cost_flow.md",
+      "def/def_001",
+      "def/def_004"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'Dijkstras_algorithm'",
+        "q": "True/false: this statement matches the wiki definition of 'Minimum-cost_flow'",
         "choices": [
-          "**Dijkstra's algorithm** is a greedy algorithm for solving the single-source shortest paths problem on weighted directed graphs with **non-negative edge weights**.",
-          "Dijkstras_algorithm has no formal definition.",
-          "Dijkstras_algorithm is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "net_tree": {
-    "title": "net_tree",
-    "summary": "A **net tree** is a hierarchical data structure that organizes a finite metric space (or point set) into a laminar family of nets at successively finer scales. Formally, given a metric space $(X, d)$ and a sequence of scales $r_0 < r_1 < \\cdots < r_h$, a net tree $T$ is a tree where:",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Read the full wiki page for the formal definition."
-      },
-      {
-        "h": "",
-        "b": "Work through one quantitative example."
-      },
-      {
-        "h": "",
-        "b": "Note any open research questions in the page footer."
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/net_tree.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'net_tree'",
-        "choices": [
-          "A **net tree** is a hierarchical data structure that organizes a finite metric space (or point set) into a laminar family of nets at successively finer scales.",
-          "net_tree has no formal definition.",
-          "net_tree is unrelated to the rest of this cluster."
+          "The **minimum-cost flow problem** is a fundamental optimization problem on directed graphs that simultaneously optimizes two objectives:",
+          "Minimum-cost_flow has no formal definition.",
+          "Minimum-cost_flow is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -2138,142 +1588,6 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "contraction_sequence": {
-    "title": "contraction_sequence",
-    "summary": "A **contraction sequence** is a stepwise procedure for simplifying a matrix representation by iteratively merging consecutive rows or columns while preserving structural properties. Specifically, a contraction sequence of width $d$ involves:",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Read the full wiki page for the formal definition."
-      },
-      {
-        "h": "",
-        "b": "Work through one quantitative example."
-      },
-      {
-        "h": "",
-        "b": "Note any open research questions in the page footer."
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/contraction_sequence.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'contraction_sequence'",
-        "choices": [
-          "A **contraction sequence** is a stepwise procedure for simplifying a matrix representation by iteratively merging consecutive rows or columns while preserving structural properties.",
-          "contraction_sequence has no formal definition.",
-          "contraction_sequence is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "DAG_compression": {
-    "title": "DAG_compression",
-    "summary": "A **DAG compression** is a compact representation of a (typically dense) directed graph $\\mathbf{G} = (\\mathbf{V}, \\mathbf{E})$ defined as a triple $D = (V, A, \\mathcal{E})$ where:",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "**$(V, A)$ is a directed acyclic graph (DAG)** whose sink vertices (vertices with out-degree zero) are exactly the elements of a set $V \\subseteq \\mathbf{V}$."
-      },
-      {
-        "h": "**Each vertex $v \\in V$ represents a cluster** $C_D(v) \\subseteq \\mathbf{V}$ defined as",
-        "b": ""
-      },
-      {
-        "h": "",
-        "b": "**$\\mathcal{E} \\subseteq V \\times V$ is the set of compression edges**, which encode connectivity in the original graph. For each edge $(u,v) \\in \\mathcal{E}$, the original graph contains all edges from vertices in cluster $C(u)$ to vertices in cluster $C(v)$."
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/DAG_compression.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'DAG_compression'",
-        "choices": [
-          "A **DAG compression** is a compact representation of a (typically dense) directed graph $\\mathbf{G} = (\\mathbf{V}, \\mathbf{E})$ defined as a triple $D = (V, A, \\mathcal{E})$ where:",
-          "DAG_compression has no formal definition.",
-          "DAG_compression is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "Kruskals_algorithm": {
-    "title": "Kruskals_algorithm",
-    "summary": "Kruskal's algorithm is a **greedy algorithm for computing the minimum spanning tree (MST)** of a weighted undirected graph. The algorithm constructs an MST by iteratively selecting edges in order of increasing weight, adding each edge to the tree if and only if it does not create a cycle.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "$T$ forms a spanning tree (connects all vertices with $|V|-1$ edges, no cycles)"
-      },
-      {
-        "h": "",
-        "b": "Total weight $\\sum_{e \\in T} w(e)$ is minimized"
-      },
-      {
-        "h": "",
-        "b": "$T$ is acyclic and contains exactly $|V| - 1$ edges"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/Kruskals_algorithm.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'Kruskals_algorithm'",
-        "choices": [
-          "Kruskal's algorithm is a **greedy algorithm for computing the minimum spanning tree (MST)** of a weighted undirected graph.",
-          "Kruskals_algorithm has no formal definition.",
-          "Kruskals_algorithm is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "doubling_metrics": {
-    "title": "doubling_metrics",
-    "summary": "A **doubling metric** is a metric space $(X, d)$ in which the metric dimension is bounded. Formally, a metric space has **doubling dimension** $d$ if every ball of radius $2r$ can be covered by at most $2^d$ balls of radius $r$.",
-    "key_ideas": [
-      {
-        "h": "**Distortion/stretch factor**",
-        "b": "$(1 + \\varepsilon)$ for $\\varepsilon > 0$"
-      },
-      {
-        "h": "**Lightness**",
-        "b": "$w(G)/w(\\text{MST})$ (total edge weight relative to minimum spanning tree weight)"
-      },
-      {
-        "h": "**Road networks**",
-        "b": "Distance betwe"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/doubling_metrics.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'doubling_metrics'",
-        "choices": [
-          "A **doubling metric** is a metric space $(X, d)$ in which the metric dimension is bounded.",
-          "doubling_metrics has no formal definition.",
-          "doubling_metrics is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
   "tree_decomposition": {
     "title": "tree_decomposition",
     "summary": "A **tree decomposition** of a graph $G = (V, E)$ is a pair $(T, \\beta)$ where:",
@@ -2289,7 +1603,9 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/tree_decomposition.md"
+      "wiki/concepts/tree_decomposition.md",
+      "def/def_002",
+      "def/def_005"
     ],
     "quiz": [
       {
@@ -2365,7 +1681,8 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/Treewidth.md"
+      "wiki/concepts/Treewidth.md",
+      "def/def_002"
     ],
     "quiz": [
       {
@@ -2374,40 +1691,6 @@ window.BU_DATA = (() => {
           "**Treewidth** is a graph parameter that measures how \"tree-like\" a graph is.",
           "Treewidth has no formal definition.",
           "Treewidth is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "planar_loop": {
-    "title": "planar_loop",
-    "summary": "A **planar loop** is a closed curve in the plane formed by combining two directed paths in a planar graph along with a connecting edge that closes the cycle. Formally, given a planar embedding of a graph $G$:",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Let two upward paths $P_1$ and $P_2$ exist in a spanning subgraph $H \\subseteq G$"
-      },
-      {
-        "h": "",
-        "b": "Let $e$ be a \"closing edge\" in $G$ connecting the terminal endpoints of $P_1$ and $P_2$, where $e \\notin H$"
-      },
-      {
-        "h": "",
-        "b": "The **planar loop** $\\xi_S$ is the Jordan curve formed by the planar drawing of $P_1$, $P_2$, and $e$ together"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/planar_loop.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'planar_loop'",
-        "choices": [
-          "A **planar loop** is a closed curve in the plane formed by combining two directed paths in a planar graph along with a connecting edge that closes the cycle.",
-          "planar_loop has no formal definition.",
-          "planar_loop is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -2463,7 +1746,9 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/fundamental_cycle.md"
+      "wiki/concepts/fundamental_cycle.md",
+      "def/def_001",
+      "def/def_002"
     ],
     "quiz": [
       {
@@ -2478,38 +1763,36 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "graph_minor": {
-    "title": "graph_minor",
-    "summary": "A **graph minor** is a graph obtained from another graph by a sequence of the following operations:",
+  "planar_loop": {
+    "title": "planar_loop",
+    "summary": "A **planar loop** is a closed curve in the plane formed by combining two directed paths in a planar graph along with a connecting edge that closes the cycle. Formally, given a planar embedding of a graph $G$:",
     "key_ideas": [
       {
         "h": "",
-        "b": "The subgraphs $T_v$ are pairwise vertex-disjoint"
+        "b": "Let two upward paths $P_1$ and $P_2$ exist in a spanning subgraph $H \\subseteq G$"
       },
       {
         "h": "",
-        "b": "For each edge $(u,v) \\in E(H)$, there exists at least one edge in $G$ connecting $T_u$ to $T_v$"
+        "b": "Let $e$ be a \"closing edge\" in $G$ connecting the terminal endpoints of $P_1$ and $P_2$, where $e \\notin H$"
       },
       {
         "h": "",
-        "b": "If $K_{n}$ (complete graph on $n$ vertices) is a minor, then some bag must contain at least $n$ vertices"
-      },
-      {
-        "h": "",
-        "b": "If $K_{s,t}$ (complete bipartite graph) is a minor, the tree decomposition structure creates path-connectivity constraints"
+        "b": "The **planar loop** $\\xi_S$ is the Jordan curve formed by the planar drawing of $P_1$, $P_2$, and $e$ together"
       }
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/graph_minor.md"
+      "wiki/concepts/planar_loop.md",
+      "def/def_002",
+      "def/def_005"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'graph_minor'",
+        "q": "True/false: this statement matches the wiki definition of 'planar_loop'",
         "choices": [
-          "A **graph minor** is a graph obtained from another graph by a sequence of the following operations:",
-          "graph_minor has no formal definition.",
-          "graph_minor is unrelated to the rest of this cluster."
+          "A **planar loop** is a closed curve in the plane formed by combining two directed paths in a planar graph along with a connecting edge that closes the cycle.",
+          "planar_loop has no formal definition.",
+          "planar_loop is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -2543,7 +1826,9 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/distributed_algorithm.md"
+      "wiki/concepts/distributed_algorithm.md",
+      "def/def_003",
+      "def/def_005"
     ],
     "quiz": [
       {
@@ -2558,43 +1843,49 @@ window.BU_DATA = (() => {
       }
     ]
   },
-  "adhesion_size": {
-    "title": "adhesion_size",
-    "summary": "**Adhesion size** is a graph-theoretic parameter that measures the maximum number of vertices shared between adjacent bags in a tree decomposition.",
+  "graph_minor": {
+    "title": "graph_minor",
+    "summary": "A **graph minor** is a graph obtained from another graph by a sequence of the following operations:",
     "key_ideas": [
       {
         "h": "",
-        "b": "$T$ is a tree with nodes representing bags"
+        "b": "The subgraphs $T_v$ are pairwise vertex-disjoint"
       },
       {
         "h": "",
-        "b": "$\\mathcal{B}(v)$ denotes the bag (set of vertices) at node $v \\in V(T)$"
+        "b": "For each edge $(u,v) \\in E(H)$, there exists at least one edge in $G$ connecting $T_u$ to $T_v$"
       },
       {
-        "h": "**Small adhesion** ($a \\ll w$)",
-        "b": "Bags are loosely connected; removing the intersection vertices would separ"
+        "h": "",
+        "b": "If $K_{n}$ (complete graph on $n$ vertices) is a minor, then some bag must contain at least $n$ vertices"
+      },
+      {
+        "h": "",
+        "b": "If $K_{s,t}$ (complete bipartite graph) is a minor, the tree decomposition structure creates path-connectivity constraints"
       }
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/adhesion_size.md"
+      "wiki/concepts/graph_minor.md",
+      "def/def_005",
+      "def/def_001"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'adhesion_size'",
+        "q": "True/false: this statement matches the wiki definition of 'graph_minor'",
         "choices": [
-          "**Adhesion size** is a graph-theoretic parameter that measures the maximum number of vertices shared between adjacent bags in a tree decomposition.",
-          "adhesion_size has no formal definition.",
-          "adhesion_size is unrelated to the rest of this cluster."
+          "A **graph minor** is a graph obtained from another graph by a sequence of the following operations:",
+          "graph_minor has no formal definition.",
+          "graph_minor is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
       }
     ]
   },
-  "routing_table": {
-    "title": "routing_table",
-    "summary": "A **routing table** is a data structure maintained at each vertex in a distributed network that stores compact directional information for routing messages toward specific destinations. In the context of tree-based routing schemes (such as the TZ scheme), a routing table at vertex $v$ contains:",
+  "Four_Color_Theorem": {
+    "title": "Four_Color_Theorem",
+    "summary": "The **Four Color Theorem (4CT)** states that every planar graph can be properly colored using at most 4 colors such that no two adjacent vertices share the same color.",
     "key_ideas": [
       {
         "h": "",
@@ -2611,84 +1902,24 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/routing_table.md"
+      "wiki/concepts/Four_Color_Theorem.md"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'routing_table'",
+        "q": "True/false: this statement matches the wiki definition of 'Four_Color_Theorem'",
         "choices": [
-          "A **routing table** is a data structure maintained at each vertex in a distributed network that stores compact directional information for routing messages toward specific destinations.",
-          "routing_table has no formal definition.",
-          "routing_table is unrelated to the rest of this cluster."
+          "The **Four Color Theorem (4CT)** states that every planar graph can be properly colored using at most 4 colors such that no two adjacent vertices share the same color.",
+          "Four_Color_Theorem has no formal definition.",
+          "Four_Color_Theorem is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
       }
     ]
   },
-  "bag_tree_decomposition": {
-    "title": "bag_tree_decomposition",
-    "summary": "A **bag** in a tree decomposition $(T, \\beta)$ of a graph $G$ is a subset of vertices $B_t \\subseteq V(G)$ associated with each node $t$ in a tree $T$. The tree decomposition is a pair consisting of:",
-    "key_ideas": [
-      {
-        "h": "**Coverage**",
-        "b": "Every vertex of $G$ appears in at least one bag"
-      },
-      {
-        "h": "**Edge property**",
-        "b": "For every edge $(u,v) \\in E(G)$, there exists at least one bag containing both $u$ and $v$"
-      },
-      {
-        "h": "**Connectedness**",
-        "b": "For each vertex $v \\in V(G)$, the set of tree nodes $\\{t \\in V(T) : v \\in \\beta(t)\\}$ forms a connected subtree of $T$"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/bag_tree_decomposition.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'bag_tree_decomposition'",
-        "choices": [
-          "A **bag** in a tree decomposition $(T, \\beta)$ of a graph $G$ is a subset of vertices $B_t \\subseteq V(G)$ associated with each node $t$ in a tree $T$.",
-          "bag_tree_decomposition has no formal definition.",
-          "bag_tree_decomposition is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "complete_bipartite_graph": {
-    "title": "complete_bipartite_graph",
-    "summary": "A **complete bipartite graph**, denoted $K_{s,t}$, is a bipartite graph whose vertex set can be partitioned into two disjoint sets $A$ and $B$ with $|A| = s$ and $|B| = t$, such that every vertex in $A$ is adjacent to every vertex in $B$, and there are no edges within $A$ or within $B$.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Planar graphs"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/complete_bipartite_graph.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'complete_bipartite_graph'",
-        "choices": [
-          "A **complete bipartite graph**, denoted $K_{s,t}$, is a bipartite graph whose vertex set can be partitioned into two disjoint sets $A$ and $B$ with $|A| = s$ and $|B| = t$, such that every vertex in $",
-          "complete_bipartite_graph has no formal definition.",
-          "complete_bipartite_graph is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "randomized_rounding": {
-    "title": "randomized_rounding",
-    "summary": "**Randomized rounding** is a technique for converting randomized (probabilistic) hypotheses or solutions into deterministic ones while preserving theoretical guarantees on error or objective value.",
+  "obstructing_cycles": {
+    "title": "obstructing_cycles",
+    "summary": "An **obstructing cycle** is a structural configuration in a planar graph that cannot appear in a minimal counterexample to the Four Color Theorem (4CT).",
     "key_ideas": [
       {
         "h": "",
@@ -2705,24 +1936,92 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/randomized_rounding.md"
+      "wiki/concepts/obstructing_cycles.md"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'randomized_rounding'",
+        "q": "True/false: this statement matches the wiki definition of 'obstructing_cycles'",
         "choices": [
-          "**Randomized rounding** is a technique for converting randomized (probabilistic) hypotheses or solutions into deterministic ones while preserving theoretical guarantees on error or objective value.",
-          "randomized_rounding has no formal definition.",
-          "randomized_rounding is unrelated to the rest of this cluster."
+          "An **obstructing cycle** is a structural configuration in a planar graph that cannot appear in a minimal counterexample to the Four Color Theorem (4CT).",
+          "obstructing_cycles has no formal definition.",
+          "obstructing_cycles is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
       }
     ]
   },
-  "double-ladder": {
-    "title": "double-ladder",
-    "summary": "A **double-ladder** is a combinatorial graph structure that arises in the study of metric embeddings and shortest-path networks, particularly in planar and bounded-genus graphs. It consists of a set of vertex pairs arranged in a specific topological configuration where:",
+  "D-reducible_configurations": {
+    "title": "D-reducible_configurations",
+    "summary": "A **D-reducible configuration** is a local substructure in a planar graph that cannot appear in a minimal counterexample to the Four Color Theorem (4CT). More precisely, a configuration is D-reducible if, whenever it appears in a planar graph $G$, removing the configuration and properly coloring the resulting smaller graph $G'$ guarantees that the coloring can be extended to include the configuration in $G$.",
+    "key_ideas": [
+      {
+        "h": "",
+        "b": "The configuration admits a *discharging argument* (hence \"D-\") that proves its reducibility"
+      },
+      {
+        "h": "",
+        "b": "It can be verified computationally through finite case analysis"
+      },
+      {
+        "h": "",
+        "b": "Any minimal counterexample to the 4CT cannot contain such a configuration"
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/D-reducible_configurations.md"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of 'D-reducible_configurations'",
+        "choices": [
+          "A **D-reducible configuration** is a local substructure in a planar graph that cannot appear in a minimal counterexample to the Four Color Theorem (4CT).",
+          "D-reducible_configurations has no formal definition.",
+          "D-reducible_configurations is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
+  "degree_range": {
+    "title": "degree_range",
+    "summary": "A **degree range** is a pair of constraints $(\\delta^-, \\delta^+)$ that specifies the permissible degrees for a vertex in a graph or pseudo-configuration. For a vertex $v$ in a pseudo-configuration $(Z^\\circ, \\delta^-, \\delta^+)$, the degree range constrains the degree $d_G(v)$ of the corresponding vertex in an embedded graph $G$ such that:",
+    "key_ideas": [
+      {
+        "h": "",
+        "b": "$\\delta^-(v)$ is the minimum allowable degree"
+      },
+      {
+        "h": "",
+        "b": "$\\delta^+(v)$ is the maximum allowable degree (possibly $\\infty$)"
+      },
+      {
+        "h": "",
+        "b": "$d_G(v)$ is the actual degree in the embedding"
+      }
+    ],
+    "worked_example": "",
+    "evidence": [
+      "wiki/concepts/degree_range.md"
+    ],
+    "quiz": [
+      {
+        "q": "True/false: this statement matches the wiki definition of 'degree_range'",
+        "choices": [
+          "A **degree range** is a pair of constraints $(\\delta^-, \\delta^+)$ that specifies the permissible degrees for a vertex in a graph or pseudo-configuration.",
+          "degree_range has no formal definition.",
+          "degree_range is unrelated to the rest of this cluster."
+        ],
+        "correct": 0,
+        "why": "Source statement is pulled directly from the wiki page intro."
+      }
+    ]
+  },
+  "Birkhoff_diamond": {
+    "title": "Birkhoff_diamond",
+    "summary": "The **Birkhoff diamond** is a planar graph configuration consisting of two adjacent triangles sharing a common edge, where all four outer vertices have degree 5. This configuration is **D-reducible**, meaning any valid 4-coloring of its outer ring can be extended to a complete 4-coloring of the configuration using at most a finite number of Kempe chain swaps in the surrounding graph.",
     "key_ideas": [
       {
         "h": "",
@@ -2739,58 +2038,24 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/double-ladder.md"
+      "wiki/concepts/Birkhoff_diamond.md"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'double-ladder'",
+        "q": "True/false: this statement matches the wiki definition of 'Birkhoff_diamond'",
         "choices": [
-          "A **double-ladder** is a combinatorial graph structure that arises in the study of metric embeddings and shortest-path networks, particularly in planar and bounded-genus graphs.",
-          "double-ladder has no formal definition.",
-          "double-ladder is unrelated to the rest of this cluster."
+          "The **Birkhoff diamond** is a planar graph configuration consisting of two adjacent triangles sharing a common edge, where all four outer vertices have degree 5.",
+          "Birkhoff_diamond has no formal definition.",
+          "Birkhoff_diamond is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
       }
     ]
   },
-  "\u03b5-double_ladder": {
-    "title": "\u03b5-double_ladder",
-    "summary": "An **\u03b5-double ladder** is a combinatorial structure in metric spaces (particularly those induced by planar graphs) consisting of two sequences of points that maintain specific distance separation properties relative to a parameter $\\varepsilon \\in (0,1)$.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Points are arranged in two parallel chains"
-      },
-      {
-        "h": "The chains maintain controlled separation",
-        "b": "distances between corresponding pairs satisfy inequalities parameterized by $\\varepsilon$"
-      },
-      {
-        "h": "",
-        "b": "The structure witnesses certain distance relationships that cannot be approximated more tightly"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/\u03b5-double_ladder.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of '\u03b5-double_ladder'",
-        "choices": [
-          "An **\u03b5-double ladder** is a combinatorial structure in metric spaces (particularly those induced by planar graphs) consisting of two sequences of points that maintain specific distance separation prop",
-          "\u03b5-double_ladder has no formal definition.",
-          "\u03b5-double_ladder is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "sparsification": {
-    "title": "sparsification",
-    "summary": "**Sparsification** is a computational technique that reduces the complexity of a problem by selecting a small, representative subset of elements from a larger set while preserving essential structural or statistical properties. In the context of calibration distance computation, sparsification involves:",
+  "reducible_configuration": {
+    "title": "reducible_configuration",
+    "summary": "A **reducible configuration** is a local structural pattern in a triangulation $G$ that can be systematically eliminated or \"reduced\" while preserving key properties of the graph (such as planarity or the ability to extend a coloring).",
     "key_ideas": [
       {
         "h": "",
@@ -2807,24 +2072,24 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/sparsification.md"
+      "wiki/concepts/reducible_configuration.md"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'sparsification'",
+        "q": "True/false: this statement matches the wiki definition of 'reducible_configuration'",
         "choices": [
-          "**Sparsification** is a computational technique that reduces the complexity of a problem by selecting a small, representative subset of elements from a larger set while preserving essential structural",
-          "sparsification has no formal definition.",
-          "sparsification is unrelated to the rest of this cluster."
+          "A **reducible configuration** is a local structural pattern in a triangulation $G$ that can be systematically eliminated or \"reduced\" while preserving key properties of the graph (such as planarity or",
+          "reducible_configuration has no formal definition.",
+          "reducible_configuration is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
       }
     ]
   },
-  "concentration_inequalities": {
-    "title": "concentration_inequalities",
-    "summary": "**Concentration inequalities** are fundamental probabilistic tools that quantify how tightly a random variable concentrates around its expected value. They provide **high-probability bounds** on the deviation of a random variable from its mean, enabling rigorous analysis of complex stochastic systems.",
+  "Discharging_method": {
+    "title": "Discharging_method",
+    "summary": "The **discharging method** is a combinatorial proof technique that assigns \"charges\" (numerical weights) to vertices or faces of a graph, then systematically redistributes these charges according to local rules while preserving the total charge. By showing that the final charge distribution is impossible if certain structural properties hold, one derives a contradiction\u2014proving that the graph must satisfy those structural properties.",
     "key_ideas": [
       {
         "h": "",
@@ -2841,24 +2106,24 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/concentration_inequalities.md"
+      "wiki/concepts/Discharging_method.md"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'concentration_inequalities'",
+        "q": "True/false: this statement matches the wiki definition of 'Discharging_method'",
         "choices": [
-          "**Concentration inequalities** are fundamental probabilistic tools that quantify how tightly a random variable concentrates around its expected value.",
-          "concentration_inequalities has no formal definition.",
-          "concentration_inequalities is unrelated to the rest of this cluster."
+          "The **discharging method** is a combinatorial proof technique that assigns \"charges\" (numerical weights) to vertices or faces of a graph, then systematically redistributes these charges according to l",
+          "Discharging_method has no formal definition.",
+          "Discharging_method is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
       }
     ]
   },
-  "Halfspace_approximation": {
-    "title": "Halfspace_approximation",
-    "summary": "**Halfspace approximation** is the problem of approximating linear threshold functions (halfspaces) using low-degree polynomials over structured probability distributions.",
+  "Kempe_chains": {
+    "title": "Kempe_chains",
+    "summary": "A **Kempe chain** is a maximal alternating path or cycle in a vertex-colored graph, consisting of vertices alternating between two colors. In the context of the Four Color Theorem (4CT) and planar graph coloring, Kempe chains are sequences of adjacent vertices where colors alternate between two fixed color classes (e.g., colors $i$ and $j$).",
     "key_ideas": [
       {
         "h": "",
@@ -2875,211 +2140,15 @@ window.BU_DATA = (() => {
     ],
     "worked_example": "",
     "evidence": [
-      "wiki/concepts/Halfspace_approximation.md"
+      "wiki/concepts/Kempe_chains.md"
     ],
     "quiz": [
       {
-        "q": "True/false: this statement matches the wiki definition of 'Halfspace_approximation'",
+        "q": "True/false: this statement matches the wiki definition of 'Kempe_chains'",
         "choices": [
-          "**Halfspace approximation** is the problem of approximating linear threshold functions (halfspaces) using low-degree polynomials over structured probability distributions.",
-          "Halfspace_approximation has no formal definition.",
-          "Halfspace_approximation is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "\u03b5-comatching": {
-    "title": "\u03b5-comatching",
-    "summary": "An **\u03b5-comatching** is a fundamental combinatorial structure in metric geometry and computational geometry, defined as follows:",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Every pair has distance $> d$"
-      },
-      {
-        "h": "",
-        "b": "Every two distinct pairs have cross-distance $\\leq d$"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/\u03b5-comatching.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of '\u03b5-comatching'",
-        "choices": [
-          "An **\u03b5-comatching** is a fundamental combinatorial structure in metric geometry and computational geometry, defined as follows:",
-          "\u03b5-comatching has no formal definition.",
-          "\u03b5-comatching is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "k-center_problem": {
-    "title": "k-center_problem",
-    "summary": "The **k-center problem** is a fundamental optimization problem in computational geometry and clustering:",
-    "key_ideas": [
-      {
-        "h": "**Planar graphs",
-        "b": "** $\\text{size}(S) = (1/\\varepsilon)^{2^{O(k)}}$ (upper bound, Theorem 1.10)"
-      },
-      {
-        "h": "**Trees",
-        "b": "** $\\text{size}(S) = \\Omega(2^{1/\\varepsilon})$ when $k \\sim 1/\\varepsilon$ (lower bound)"
-      },
-      {
-        "h": "**Bounded genus $g$ surfaces",
-        "b": "** $\\text{poly}(g) \\cdot (1/\\varepsilon)^{2^{O(k)}}$ (upper bound)"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/k-center_problem.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'k-center_problem'",
-        "choices": [
-          "The **k-center problem** is a fundamental optimization problem in computational geometry and clustering:",
-          "k-center_problem has no formal definition.",
-          "k-center_problem is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "PAC_learning": {
-    "title": "PAC_learning",
-    "summary": "**Probably Approximately Correct (PAC) learning** is a formal computational model for supervised learning that provides probabilistic guarantees on the quality of learned hypotheses.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "Read the full wiki page for the formal definition."
-      },
-      {
-        "h": "",
-        "b": "Work through one quantitative example."
-      },
-      {
-        "h": "",
-        "b": "Note any open research questions in the page footer."
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/PAC_learning.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'PAC_learning'",
-        "choices": [
-          "**Probably Approximately Correct (PAC) learning** is a formal computational model for supervised learning that provides probabilistic guarantees on the quality of learned hypotheses.",
-          "PAC_learning has no formal definition.",
-          "PAC_learning is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "shortest_path": {
-    "title": "shortest_path",
-    "summary": "A **shortest path** between two vertices $u$ and $v$ in a graph $G = (V, E)$ is a sequence of edges connecting $u$ to $v$ such that the total weight (or edge count in unweighted graphs) is minimized. Formally:",
-    "key_ideas": [
-      {
-        "h": "Vertices in $L_1$ (direct neighbors of $v$)",
-        "b": "path length $\\leq 1$"
-      },
-      {
-        "h": "Vertices in $L_2$ (neighbors of $L_1$)",
-        "b": "path length $\\leq 3$ under specific degree conditions"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/shortest_path.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'shortest_path'",
-        "choices": [
-          "A **shortest path** between two vertices $u$ and $v$ in a graph $G = (V, E)$ is a sequence of edges connecting $u$ to $v$ such that the total weight (or edge count in unweighted graphs) is minimized.",
-          "shortest_path has no formal definition.",
-          "shortest_path is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "Ising_model": {
-    "title": "Ising_model",
-    "summary": "The Ising model is a fundamental probabilistic graphical model that defines a probability distribution over binary-valued variables (typically taking values in $\\{\\pm 1\\}$ or $\\{0,1\\}$). It captures how variables interact with one another through pairwise interactions and external influences, and is foundational in statistical physics, machine learning, and applied engineering.",
-    "key_ideas": [
-      {
-        "h": "",
-        "b": "$\\sigma \\in \\{\\pm 1\\}^n$ is a configuration (assignment of binary values to $n$ variables)"
-      },
-      {
-        "h": "",
-        "b": "$A \\in \\mathbb{R}^{n \\times n}$ is the **interaction matrix** (symmetric), where $A_{ij}$ encodes the strength of interaction between variables $i$ and $j$"
-      },
-      {
-        "h": "",
-        "b": "$h \\in \\mathbb{R}^n$ is the **external field vector**, where $h_i$ represents external influence on variable $i$"
-      },
-      {
-        "h": "",
-        "b": "$Z = \\sum_{\\sigma \\in \\{\\pm 1\\}^n} \\exp\\left(-\\frac{1}{2}\\sigma^\\top A\\sigma + h^\\top\\sigma\\right)$ is the **partition function**, a normalization constant ensuring $\\sum_\\sigma \\mu(\\sigma) = 1$"
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/Ising_model.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of 'Ising_model'",
-        "choices": [
-          "The Ising model is a fundamental probabilistic graphical model that defines a probability distribution over binary-valued variables (typically taking values in $\\{\\pm 1\\}$ or $\\{0,1\\}$).",
-          "Ising_model has no formal definition.",
-          "Ising_model is unrelated to the rest of this cluster."
-        ],
-        "correct": 0,
-        "why": "Source statement is pulled directly from the wiki page intro."
-      }
-    ]
-  },
-  "\u03b5-coreset": {
-    "title": "\u03b5-coreset",
-    "summary": "An **\u03b5-coreset** is a compact subset of a metric space that preserves distance properties within a multiplicative error factor $\\epsilon$. Formally, for a metric space $(V, \\text{dist})$ and a problem instance (e.g., furthest neighbor or $k$-center), an \u03b5-coreset $S \\subseteq V$ is a weighted or unweighted subset such that solutions computed on $S$ approximate the optimal solutions on the full set $V$ within a factor of $(1 \\pm \\epsilon)$.",
-    "key_ideas": [
-      {
-        "h": "For **furthest neighbor problems**",
-        "b": "An \u03b5-coreset is a set of representative points such that the furthest point from any query in the coreset approximates the furthest point in the original set within error $\\epsilon$."
-      },
-      {
-        "h": "For **$k$-center problems**",
-        "b": "An \u03b5-coreset $S$ satisfies the property that for any subset $X \\subseteq V$, the $k$-center cost on $X \\cap S$ approximates the $k$-center cost on $X$ within relative error $\\epsilon$."
-      }
-    ],
-    "worked_example": "",
-    "evidence": [
-      "wiki/concepts/\u03b5-coreset.md"
-    ],
-    "quiz": [
-      {
-        "q": "True/false: this statement matches the wiki definition of '\u03b5-coreset'",
-        "choices": [
-          "An **\u03b5-coreset** is a compact subset of a metric space that preserves distance properties within a multiplicative error factor $\\epsilon$.",
-          "\u03b5-coreset has no formal definition.",
-          "\u03b5-coreset is unrelated to the rest of this cluster."
+          "A **Kempe chain** is a maximal alternating path or cycle in a vertex-colored graph, consisting of vertices alternating between two colors.",
+          "Kempe_chains has no formal definition.",
+          "Kempe_chains is unrelated to the rest of this cluster."
         ],
         "correct": 0,
         "why": "Source statement is pulled directly from the wiki page intro."
@@ -3087,7 +2156,55 @@ window.BU_DATA = (() => {
     ]
   }
 };
-  const PROPOSE_EXAMPLES = {};
+  const PROPOSE_EXAMPLES = {
+  "drone swarm coordination using graph theory": {
+    "matched": [
+      "planar_graphs",
+      "distributed_graph_algorithms",
+      "Interval_Graph",
+      "graphical_models",
+      "Language_theory",
+      "graph_distance_metric"
+    ],
+    "synthesis": "The brain knows about 8 concepts that touch this proposal \u2014 most relevant: **planar graphs**, **distributed graph algorithms**, **Interval Graph**. Your idea spans 5 different courses (?, cycle participation predicate, graph coloring, graph diameter), so the answer will need to integrate views from each.",
+    "bridges": []
+  },
+  "applying control theory to financial trading": {
+    "matched": [
+      "controlling_sets",
+      "Language_theory",
+      "random_matrix_theory",
+      "control_bandwidth_latency_coupling",
+      "SAT_Modulo_Theory_SMT_solver"
+    ],
+    "synthesis": "The brain knows about 5 concepts that touch this proposal \u2014 most relevant: **controlling sets**, **Language theory**, **random matrix theory**.",
+    "bridges": []
+  },
+  "stochastic gene expression and information theory": {
+    "matched": [
+      "Language_theory",
+      "information-theoretic_lower_bound",
+      "random_matrix_theory",
+      "information-theoretic_lower_bounds",
+      "phylogenetic_network",
+      "Phylogenetic_tree_reconstruction"
+    ],
+    "synthesis": "The brain knows about 8 concepts that touch this proposal \u2014 most relevant: **Language theory**, **information-theoretic lower bound**, **random matrix theory**. Your idea spans 3 different courses (?, graph coloring, spanning tree), so the answer will need to integrate views from each.",
+    "bridges": []
+  },
+  "boost-phase intercept with reinforcement learning": {
+    "matched": [
+      "online_learning_algorithm",
+      "dynamic_enumeration_with_updates",
+      "scheduling_with_release_dates",
+      "Constant-time_operations_with_O1_delay_enumeration",
+      "Graph_attention_with_Transformer-based_embeddings",
+      "PAC_learning"
+    ],
+    "synthesis": "The brain knows about 8 concepts that touch this proposal \u2014 most relevant: **online learning algorithm**, **dynamic enumeration with updates**, **scheduling with release dates**. Your idea spans 2 different courses (?, randomized rounding), so the answer will need to integrate views from each.",
+    "bridges": []
+  }
+};
   const TOURS = {
   "spanning_tree": [
     {
@@ -3103,28 +2220,28 @@ window.BU_DATA = (() => {
       "rationale": "Next we go deeper into the same course. **Minimum Spanning Tree MST** is closely related to spanning tree \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
     },
     {
-      "node": "breadth-first_search_BFS",
+      "node": "distributed_graph_algorithms",
       "cluster": 0,
       "kind": "deepen",
-      "rationale": "Staying in *spanning tree* for one more stop. **breadth-first search BFS** has the highest connectivity among the unvisited concepts here, so it builds the most context. (36 concepts still in this course.)"
+      "rationale": "Staying in *spanning tree* for one more stop. **distributed graph algorithms** has the highest connectivity among the unvisited concepts here, so it builds the most context. (36 concepts still in this course.)"
     },
     {
       "node": "CONGEST_model",
       "cluster": 2,
       "kind": "bridge",
-      "rationale": "Now we **bridge into the CONGEST model course** via CONGEST model, because this concept connects the two areas. You've built up enough context in *spanning tree* to make sense of how it relates."
-    },
-    {
-      "node": "BFS_tree",
-      "cluster": 2,
-      "kind": "deepen",
-      "rationale": "Next we go deeper into the same course. **BFS tree** is closely related to CONGEST model \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
+      "rationale": "Now we **bridge into the convergecast course** via CONGEST model, because this concept connects the two areas. You've built up enough context in *spanning tree* to make sense of how it relates."
     },
     {
       "node": "convergecast",
       "cluster": 2,
+      "kind": "deepen",
+      "rationale": "Next we go deeper into the same course. **convergecast** is closely related to CONGEST model \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
+    },
+    {
+      "node": "BFS_tree",
+      "cluster": 2,
       "kind": "capstone",
-      "rationale": "Staying in *CONGEST model* for one more stop. **convergecast** has the highest connectivity among the unvisited concepts here, so it builds the most context. (22 concepts still in this course.)  \u00b7 This is a *capstone* concept \u2014 it ties multiple themes from the tour together; a good place to stop and consolidate."
+      "rationale": "Staying in *convergecast* for one more stop. **BFS tree** has the highest connectivity among the unvisited concepts here, so it builds the most context. (22 concepts still in this course.)  \u00b7 This is a *capstone* concept \u2014 it ties multiple themes from the tour together; a good place to stop and consolidate."
     }
   ],
   "tree_decomposition": [
@@ -3141,10 +2258,10 @@ window.BU_DATA = (() => {
       "rationale": "Next we go deeper into the same course. **planar graph** is closely related to tree decomposition \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
     },
     {
-      "node": "planar_loop",
+      "node": "Treewidth",
       "cluster": 4,
       "kind": "deepen",
-      "rationale": "Staying in *tree decomposition* for one more stop. **planar loop** has the highest connectivity among the unvisited concepts here, so it builds the most context. (20 concepts still in this course.)"
+      "rationale": "Staying in *tree decomposition* for one more stop. **Treewidth** has the highest connectivity among the unvisited concepts here, so it builds the most context. (20 concepts still in this course.)"
     },
     {
       "node": "spanning_tree",
@@ -3159,10 +2276,10 @@ window.BU_DATA = (() => {
       "rationale": "Next we go deeper into the same course. **Minimum Spanning Tree MST** is closely related to spanning tree \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
     },
     {
-      "node": "breadth-first_search_BFS",
+      "node": "distributed_graph_algorithms",
       "cluster": 0,
       "kind": "capstone",
-      "rationale": "Staying in *spanning tree* for one more stop. **breadth-first search BFS** has the highest connectivity among the unvisited concepts here, so it builds the most context. (36 concepts still in this course.)  \u00b7 This is a *capstone* concept \u2014 it ties multiple themes from the tour together; a good place to stop and consolidate."
+      "rationale": "Staying in *spanning tree* for one more stop. **distributed graph algorithms** has the highest connectivity among the unvisited concepts here, so it builds the most context. (36 concepts still in this course.)  \u00b7 This is a *capstone* concept \u2014 it ties multiple themes from the tour together; a good place to stop and consolidate."
     }
   ],
   "graph_coloring": [
@@ -3173,16 +2290,16 @@ window.BU_DATA = (() => {
       "rationale": "We start here because **graph coloring** is one of the most foundational nodes in the graph \u2014 it sits at the core of the *graph coloring* course and connects out to many other concepts. Mastering it unlocks the rest of this region."
     },
     {
-      "node": "independent_set",
+      "node": "Vertex_Cover",
       "cluster": 1,
       "kind": "deepen",
-      "rationale": "Next we go deeper into the same course. **independent set** is closely related to graph coloring \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
+      "rationale": "Next we go deeper into the same course. **Vertex Cover** is closely related to graph coloring \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
     },
     {
-      "node": "dominating_set",
+      "node": "Approximation_algorithms",
       "cluster": 1,
       "kind": "deepen",
-      "rationale": "Staying in *graph coloring* for one more stop. **dominating set** has the highest connectivity among the unvisited concepts here, so it builds the most context. (32 concepts still in this course.)"
+      "rationale": "Staying in *graph coloring* for one more stop. **Approximation algorithms** has the highest connectivity among the unvisited concepts here, so it builds the most context. (32 concepts still in this course.)"
     },
     {
       "node": "Minimum_Spanning_Tree_MST",
@@ -3197,48 +2314,10 @@ window.BU_DATA = (() => {
       "rationale": "Next we go deeper into the same course. **spanning tree** is closely related to Minimum Spanning Tree MST \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
     },
     {
-      "node": "breadth-first_search_BFS",
+      "node": "distributed_graph_algorithms",
       "cluster": 0,
       "kind": "capstone",
-      "rationale": "Staying in *spanning tree* for one more stop. **breadth-first search BFS** has the highest connectivity among the unvisited concepts here, so it builds the most context. (36 concepts still in this course.)  \u00b7 This is a *capstone* concept \u2014 it ties multiple themes from the tour together; a good place to stop and consolidate."
-    }
-  ],
-  "CONGEST_model": [
-    {
-      "node": "CONGEST_model",
-      "cluster": 2,
-      "kind": "start",
-      "rationale": "We start here because **CONGEST model** is one of the most foundational nodes in the graph \u2014 it sits at the core of the *CONGEST model* course and connects out to many other concepts. Mastering it unlocks the rest of this region."
-    },
-    {
-      "node": "BFS_tree",
-      "cluster": 2,
-      "kind": "deepen",
-      "rationale": "Next we go deeper into the same course. **BFS tree** is closely related to CONGEST model \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
-    },
-    {
-      "node": "convergecast",
-      "cluster": 2,
-      "kind": "deepen",
-      "rationale": "Staying in *CONGEST model* for one more stop. **convergecast** has the highest connectivity among the unvisited concepts here, so it builds the most context. (22 concepts still in this course.)"
-    },
-    {
-      "node": "spanning_tree",
-      "cluster": 0,
-      "kind": "bridge",
-      "rationale": "Now we **bridge into the spanning tree course** via spanning tree, because this concept connects the two areas. You've built up enough context in *CONGEST model* to make sense of how it relates."
-    },
-    {
-      "node": "Minimum_Spanning_Tree_MST",
-      "cluster": 0,
-      "kind": "deepen",
-      "rationale": "Next we go deeper into the same course. **Minimum Spanning Tree MST** is closely related to spanning tree \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
-    },
-    {
-      "node": "breadth-first_search_BFS",
-      "cluster": 0,
-      "kind": "capstone",
-      "rationale": "Staying in *spanning tree* for one more stop. **breadth-first search BFS** has the highest connectivity among the unvisited concepts here, so it builds the most context. (36 concepts still in this course.)  \u00b7 This is a *capstone* concept \u2014 it ties multiple themes from the tour together; a good place to stop and consolidate."
+      "rationale": "Staying in *spanning tree* for one more stop. **distributed graph algorithms** has the highest connectivity among the unvisited concepts here, so it builds the most context. (36 concepts still in this course.)  \u00b7 This is a *capstone* concept \u2014 it ties multiple themes from the tour together; a good place to stop and consolidate."
     }
   ],
   "distributed_graph_algorithms": [
@@ -3249,34 +2328,72 @@ window.BU_DATA = (() => {
       "rationale": "We start here because **distributed graph algorithms** is one of the most foundational nodes in the graph \u2014 it sits at the core of the *spanning tree* course and connects out to many other concepts. Mastering it unlocks the rest of this region."
     },
     {
-      "node": "Rooted_tree_structure",
-      "cluster": 0,
-      "kind": "deepen",
-      "rationale": "Next we go deeper into the same course. **Rooted tree structure** is closely related to distributed graph algorithms \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
-    },
-    {
       "node": "spanning_tree",
       "cluster": 0,
       "kind": "deepen",
-      "rationale": "Staying in *spanning tree* for one more stop. **spanning tree** has the highest connectivity among the unvisited concepts here, so it builds the most context. (36 concepts still in this course.)"
+      "rationale": "Next we go deeper into the same course. **spanning tree** is closely related to distributed graph algorithms \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
+    },
+    {
+      "node": "Minimum_Spanning_Tree_MST",
+      "cluster": 0,
+      "kind": "deepen",
+      "rationale": "Staying in *spanning tree* for one more stop. **Minimum Spanning Tree MST** has the highest connectivity among the unvisited concepts here, so it builds the most context. (36 concepts still in this course.)"
     },
     {
       "node": "CONGEST_model",
       "cluster": 2,
       "kind": "bridge",
-      "rationale": "Now we **bridge into the CONGEST model course** via CONGEST model, because this concept connects the two areas. You've built up enough context in *spanning tree* to make sense of how it relates."
+      "rationale": "Now we **bridge into the convergecast course** via CONGEST model, because this concept connects the two areas. You've built up enough context in *spanning tree* to make sense of how it relates."
+    },
+    {
+      "node": "convergecast",
+      "cluster": 2,
+      "kind": "deepen",
+      "rationale": "Next we go deeper into the same course. **convergecast** is closely related to CONGEST model \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
+    },
+    {
+      "node": "BFS_tree",
+      "cluster": 2,
+      "kind": "capstone",
+      "rationale": "Staying in *convergecast* for one more stop. **BFS tree** has the highest connectivity among the unvisited concepts here, so it builds the most context. (22 concepts still in this course.)  \u00b7 This is a *capstone* concept \u2014 it ties multiple themes from the tour together; a good place to stop and consolidate."
+    }
+  ],
+  "CONGEST_model": [
+    {
+      "node": "CONGEST_model",
+      "cluster": 2,
+      "kind": "start",
+      "rationale": "We start here because **CONGEST model** is one of the most foundational nodes in the graph \u2014 it sits at the core of the *convergecast* course and connects out to many other concepts. Mastering it unlocks the rest of this region."
+    },
+    {
+      "node": "convergecast",
+      "cluster": 2,
+      "kind": "deepen",
+      "rationale": "Next we go deeper into the same course. **convergecast** is closely related to CONGEST model \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
     },
     {
       "node": "BFS_tree",
       "cluster": 2,
       "kind": "deepen",
-      "rationale": "Next we go deeper into the same course. **BFS tree** is closely related to CONGEST model \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
+      "rationale": "Staying in *convergecast* for one more stop. **BFS tree** has the highest connectivity among the unvisited concepts here, so it builds the most context. (22 concepts still in this course.)"
     },
     {
-      "node": "convergecast",
-      "cluster": 2,
+      "node": "spanning_tree",
+      "cluster": 0,
+      "kind": "bridge",
+      "rationale": "Now we **bridge into the spanning tree course** via spanning tree, because this concept connects the two areas. You've built up enough context in *convergecast* to make sense of how it relates."
+    },
+    {
+      "node": "Minimum_Spanning_Tree_MST",
+      "cluster": 0,
+      "kind": "deepen",
+      "rationale": "Next we go deeper into the same course. **Minimum Spanning Tree MST** is closely related to spanning tree \u2014 they share an edge \u2014 and seeing how the cluster's ideas chain together cements the topic."
+    },
+    {
+      "node": "distributed_graph_algorithms",
+      "cluster": 0,
       "kind": "capstone",
-      "rationale": "Staying in *CONGEST model* for one more stop. **convergecast** has the highest connectivity among the unvisited concepts here, so it builds the most context. (22 concepts still in this course.)  \u00b7 This is a *capstone* concept \u2014 it ties multiple themes from the tour together; a good place to stop and consolidate."
+      "rationale": "Staying in *spanning tree* for one more stop. **distributed graph algorithms** has the highest connectivity among the unvisited concepts here, so it builds the most context. (36 concepts still in this course.)  \u00b7 This is a *capstone* concept \u2014 it ties multiple themes from the tour together; a good place to stop and consolidate."
     }
   ]
 };

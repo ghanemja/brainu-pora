@@ -1,7 +1,23 @@
 /* global React, BU_DATA, BrainGraph3D, CourseChip, KindGlyph,
-          MiniMap, Altitude, Evidence, Compass */
+          MiniMap, Altitude, Evidence, Compass,
+          SpanningTreeSimulator, BFSVisualizer, ApproximationRatioTuner */
 
 const { useState, useMemo, useEffect, useRef } = React;
+
+// ─────────────────────────────────────────────────────────────────
+// EXERCISE MAPPING — which interactive exercise per concept
+// ─────────────────────────────────────────────────────────────────
+function getExerciseForNode(nodeId) {
+  // Map specific nodes to their interactive exercises
+  const exercises = {
+    "spanning_tree": SpanningTreeSimulator,
+    "Minimum_Spanning_Tree_MST": SpanningTreeSimulator,
+    "breadth-first_search_BFS": BFSVisualizer,
+    "distributed_graph_algorithms": BFSVisualizer,
+    "2-approximation_algorithm": ApproximationRatioTuner,
+  };
+  return exercises[nodeId] || null;
+}
 
 // ─────────────────────────────────────────────────────────────────
 // SCREEN 2 — THE WALK
@@ -220,6 +236,8 @@ function PostcardLayout({ lesson, stop, quizPicked, quizChecked, setQuizPicked, 
         {lesson.quiz?.[0] && <Quiz q={lesson.quiz[0]}
           picked={quizPicked} checked={quizChecked}
           setPicked={setQuizPicked} setChecked={setQuizChecked} />}
+
+        {getExerciseForNode(stop.node) && React.createElement(getExerciseForNode(stop.node))}
       </div>
     </div>
   );
@@ -272,6 +290,7 @@ function SplitLayout({ lesson, stop, tour, idx, quizPicked, quizChecked, setQuiz
         {lesson.quiz?.[0] && <Quiz q={lesson.quiz[0]}
           picked={quizPicked} checked={quizChecked}
           setPicked={setQuizPicked} setChecked={setQuizChecked} />}
+        {getExerciseForNode(stop.node) && React.createElement(getExerciseForNode(stop.node))}
       </div>
     </div>
   );
@@ -341,6 +360,7 @@ function FullBleedLayout({ lesson, stop, tour, idx, quizPicked, quizChecked, set
         {lesson.quiz?.[0] && <Quiz q={lesson.quiz[0]}
           picked={quizPicked} checked={quizChecked}
           setPicked={setQuizPicked} setChecked={setQuizChecked} />}
+        {getExerciseForNode(stop.node) && React.createElement(getExerciseForNode(stop.node))}
       </div>
     </div>
   );

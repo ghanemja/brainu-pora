@@ -58,6 +58,58 @@ This level-by-level exploration guarantees that **the first time any vertex is e
 - **Type inference & data flow:** Forward propagation of type information through call graphs
 - **Reachability analysis:** Determining which functions can be called from a given entry point
 
+## Detailed Walkthrough Example
+
+**Graph:** 6 vertices (0–5), edges: (0,1), (0,3), (1,2), (1,4), (2,5), (3,4), (4,5)
+**Start:** vertex 0
+
+**Step-by-step BFS:**
+
+| Step | Queue | Current | Neighbors | Action | Visited |
+|------|-------|---------|-----------|--------|---------|
+| 1 | [0] | — | — | Enqueue start | {0} |
+| 2 | [1,3] | 0 | 1,3 | Dequeue 0, enqueue neighbors | {0,1,3} |
+| 3 | [3,2,4] | 1 | 2,4 | Dequeue 1, enqueue unvisited neighbors | {0,1,3,2,4} |
+| 4 | [2,4,5] | 3 | 4 (visited) | Dequeue 3, 4 already visited | {0,1,3,2,4} |
+| 5 | [4,5] | 2 | 5 | Dequeue 2, enqueue 5 | {0,1,3,2,4,5} |
+| 6 | [5] | 4 | (all visited) | Dequeue 4, no new neighbors | {0,1,3,2,4,5} |
+| 7 | [] | 5 | (all visited) | Dequeue 5, queue empty → DONE | {0,1,3,2,4,5} |
+
+**BFS Tree produced:**
+```
+       0 (distance 0)
+      / \
+     1   3 (distance 1)
+    / \  |
+   2   4 (distance 2)
+    \ /
+     5 (distance 2)
+```
+
+**Distances from source 0:**
+- d(0,0) = 0
+- d(0,1) = 1, d(0,3) = 1
+- d(0,2) = 2, d(0,4) = 2, d(0,5) = 2
+
+## Pseudocode
+
+```
+procedure BFS(G, source):
+  queue ← [source]
+  visited ← {source}
+  distance[source] ← 0
+  parent[source] ← null
+  
+  while queue is not empty:
+    u ← queue.dequeue()
+    for each vertex v in adjacency_list[u]:
+      if v not in visited:
+        visited.add(v)
+        distance[v] ← distance[u] + 1
+        parent[v] ← u
+        queue.enqueue(v)
+```
+
 ## Common Mistakes / Pitfalls
 
 ### 1. **Forgetting to Mark Vertices as Visited**

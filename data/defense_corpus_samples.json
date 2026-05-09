@@ -1,0 +1,49 @@
+{
+  "papers": [
+    {
+      "id": "def_001",
+      "title": "Distributed Graph Algorithms for Communication-Efficient Networked Systems",
+      "authors": "Chen, Smith, Kumar",
+      "year": 2023,
+      "source": "NTRS Technical Report",
+      "topics": ["distributed algorithms", "graph theory", "communication complexity"],
+      "abstract": "Develops efficient algorithms for computing graph properties in communication-constrained distributed networks, with applications to sensor networks and autonomous swarms."
+    },
+    {
+      "id": "def_002",
+      "title": "Fast Spanning Tree Construction in the CONGEST Model",
+      "authors": "Rodriguez, Patel, Chen",
+      "year": 2022,
+      "source": "DTIC Report",
+      "topics": ["spanning trees", "distributed algorithms", "complexity"],
+      "abstract": "Analyzes optimal round complexity for constructing spanning trees in networks with restricted message sizes. Proves O(D log n) upper bound."
+    },
+    {
+      "id": "def_003",
+      "title": "Approximation Algorithms for Dynamic Network Coverage",
+      "authors": "Walsh, Gupta, Lee",
+      "year": 2023,
+      "source": "ARO Contract Report",
+      "topics": ["approximation algorithms", "facility location", "network design"],
+      "abstract": "Proposes 1.5-approximation algorithm for k-center facility location with time-varying demand in military logistics networks."
+    },
+    {
+      "id": "def_004",
+      "title": "Robustness of Breadth-First Search in Adversarial Graphs",
+      "authors": "Thompson, Anderson, Silva",
+      "year": 2023,
+      "source": "DTIC Unclassified",
+      "topics": ["graph traversal", "robustness", "adversarial models"],
+      "abstract": "Analyzes BFS performance when nodes/edges are dynamically removed by adversary. Proves poly-time approximation guarantees for tree construction."
+    },
+    {
+      "id": "def_005",
+      "title": "Polynomial-Time Algorithms for Planar Graph Decomposition",
+      "authors": "Zhang, Kim, Brown",
+      "year": 2022,
+      "source": "ARO Report",
+      "topics": ["planar graphs", "graph decomposition", "algorithms"],
+      "abstract": "Develops O(D²)-round distributed algorithm for finding balanced separators in planar graphs using spanning tree techniques."
+    }
+  ]
+}

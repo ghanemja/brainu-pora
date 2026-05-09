@@ -70,6 +70,28 @@ In problems like interdiction, 2-approximations arise naturally through Lagrangi
 - Dynamic programming combined with 2-approximations (as in BESTREPS) allocates shared budgets across multiple instances while maintaining approximation guarantees.
 - Applications: cloud resource provisioning, hospital staffing across multiple units.
 
+## Worked Example: Vertex Cover for Network Security
+
+**Scenario:** You manage a network of 8 switches. Each link connects two switches. An attacker can exploit any unprotected link if both endpoints are unprotected. You can install security firmware on switches (expensive) to protect all incident links.
+
+**Network topology:**
+```
+Switches: 0, 1, 2, 3, 4, 5, 6, 7
+Links: (0,1), (1,2), (2,3), (0,4), (4,5), (5,6), (6,7), (3,7), (2,4)
+```
+**Exact solution** (minimum vertex cover): Select switches {1, 2, 4, 6, 7} = 5 switches. Every link has at least one protected endpoint.
+
+**Greedy 2-approximation (poly-time):**
+1. While edges remain:
+   - Pick an uncovered edge (u, v)
+   - Add both u and v to cover
+   - Remove all edges incident to u or v
+2. Result: Selects pairs greedily → might select {0,1}, {2,3}, {4,5}, {6,7} = 8 switches (worst case)
+
+**Guarantee:** Your greedy solution uses ≤ 2× the optimal switches, so you're safe in polynomial time.
+
+**Real-world trade-off:** Optimal ≈ 5 switches (requires exponential search), greedy ≈ 8 switches (linear time). Protecting 3 extra switches is acceptable if exact solution takes days to compute.
+
 ## Common Mistakes / Pitfalls
 
 ### 1. **Confusing approximation ratio with error percentage**

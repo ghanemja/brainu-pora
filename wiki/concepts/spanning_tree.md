@@ -95,6 +95,41 @@ The source material demonstrates that a path $P$ in a BFS spanning tree, combine
    - Naive assignment of vertex weight to multiple adjacent faces causes bias
    - The source material solves this elegantly: each vertex assigns weight to *one* face, ensuring exact count
 
+## Detailed Examples
+
+### Example 1: Small Grid Graph
+Consider a 3×3 grid (9 vertices, edges connecting adjacent cells):
+- Total edges in grid: 12 (4 per row + 3 per column, accounting for boundaries)
+- Any spanning tree must have exactly **8 edges** (9 - 1)
+- Remove any tree edge → disconnected
+- Add any of the 4 non-tree edges → creates a fundamental cycle of length 4 (a square)
+
+### Example 2: Complete Graph K₄
+A complete graph on 4 vertices has (4 choose 2) = 6 edges. Possible spanning trees: 4³⁻² = 16 (Cayley's formula).
+- One spanning tree: edges (0,1), (1,2), (2,3) – forms a path
+- Another: edges (0,1), (0,2), (0,3) – forms a star
+- Fundamental cycle with edge (1,3) in first tree: (0,1)-(1,3)-(3,2)-(2,0) plus edge (1,3)
+
+## Computational Perspectives
+
+### Finding a Spanning Tree
+**DFS-based construction** (O(n+m)):
+1. Initialize: mark all vertices unvisited, T ← ∅
+2. DFS from any start vertex s
+3. Each tree edge (u, v) discovered during DFS is added to T
+4. Back edges and cross edges are ignored
+
+**BFS-based construction** (O(n+m)):
+- Use BFS queue instead of DFS stack
+- Produces spanning tree with minimal depth (diameter)
+- Useful for distributed algorithms where communication latency matters
+
+### Distributed Setting (CONGEST Model)
+- **D-hop diameter** of a graph: longest shortest path
+- BFS spanning tree from any root has depth ≤ D
+- Can be constructed deterministically in O(D log n) rounds
+- Combined with separator algorithms, enables fast distributed solutions to global optimization problems
+
 ## See Also
 
 - [[Minimum Spanning Tree (MST)]] – optimization variant; see Kruskal's and Prim's algorithms

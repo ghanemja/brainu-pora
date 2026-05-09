@@ -28,9 +28,12 @@ function Trailhead({ onPickStart, learner }) {
           ref={graphRef}
           showLabels="hubs"
           cinematic={true}
+          linkOpacity={1.0}
+          linkWidth={2.2}
+          linkColor="#1e3a52"
           onNodeHover={setHoverNode}
           onNodeClick={node => {
-            if (node) onPickStart?.(node.id, node.cluster);
+            if (node) onPickStart?.(node.id, node.cluster, interest);
           }}
           background="var(--c-bg)"
         />
@@ -118,11 +121,22 @@ function Trailhead({ onPickStart, learner }) {
           display: "flex", flexDirection: "column", gap: 10,
           overflowY: "auto", paddingRight: 4,
         }}>
-          {BU_DATA.FOUNDATION_PICKS.map((p, i) => (
-            <StartCard key={p.raw} pick={p} idx={i}
-                       onHover={() => graphRef.current?.focusOn(p.raw, 70)}
-                       onClick={() => onPickStart?.(p.raw, p.cluster)} />
-          ))}
+          {(() => {
+            let sorted = [...BU_DATA.FOUNDATION_PICKS];
+            if (interest.trim()) {
+              const interestLower = interest.toLowerCase();
+              sorted.sort((a, b) => {
+                const aMatch = a.name.toLowerCase().includes(interestLower) ? 1 : 0;
+                const bMatch = b.name.toLowerCase().includes(interestLower) ? 1 : 0;
+                return bMatch - aMatch;
+              });
+            }
+            return sorted.map((p, i) => (
+              <StartCard key={p.raw} pick={p} idx={i}
+                         onHover={() => graphRef.current?.focusOn(p.raw, 70)}
+                         onClick={() => onPickStart?.(p.raw, p.cluster, interest)} />
+            ));
+          })()}
         </div>
       </div>
 

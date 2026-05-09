@@ -38,7 +38,48 @@ from typing import Any
 PROJECT_ROOT = Path(__file__).parent.parent
 WIKI_CONCEPTS = PROJECT_ROOT / "wiki" / "concepts"
 LESSON_CACHE_PATH = PROJECT_ROOT / "data" / "sessions" / "curriculum_cache.json"
+DEFENSE_CORPUS_PATH = PROJECT_ROOT / "data" / "defense_corpus_samples.json"
 LESSON_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+
+# ── Defense corpus helpers ─────────────────────────────────────────────────
+
+def _load_defense_corpus() -> dict:
+    """Load defense corpus samples for evidence enrichment."""
+    if DEFENSE_CORPUS_PATH.exists():
+        try:
+            return json.loads(DEFENSE_CORPUS_PATH.read_text())
+        except json.JSONDecodeError:
+            return {"papers": []}
+    return {"papers": []}
+
+
+def _defense_papers_for_topics(topics: list[str], node: str = "") -> list[str]:
+    """Find defense papers matching given topics or node keywords."""
+    corpus = _load_defense_corpus()
+    papers = corpus.get("papers", [])
+
+    # Build keyword set: node name + topics
+    keywords = set()
+    keywords.add(node.lower())
+    keywords.update(t.lower() for t in topics if t and len(t) > 3)
+    # Extract word stems
+    keywords.update(w for t in topics for w in t.lower().split() if len(w) > 3)
+
+    matches = []
+    for paper in papers:
+        paper_topics = [t.lower() for t in paper.get("topics", [])]
+        paper_title = paper.get("title", "").lower()
+
+        # Score: how many keywords appear in paper topics or title
+        score = sum(1 for kw in keywords
+                   if any(kw in pt for pt in paper_topics) or kw in paper_title)
+        if score > 0:
+            matches.append((score, f"def/{paper['id']}"))
+
+    # Sort by score, return top 2
+    matches.sort(reverse=True, key=lambda x: x[0])
+    return [m[1] for m in matches[:2]]
 
 
 # ── Cache ──────────────────────────────────────────────────────────────────
@@ -139,6 +180,13 @@ def fast_lesson(node: str, cluster, all_clusters: list = None,
             if other:
                 bridge_options.append((bridge_node, cid, other.name))
 
+    # Build evidence: wiki + defense corpus papers
+    evidence = [f"wiki/concepts/{wiki.name}"]
+    # Extract topics from key ideas / bullets for matching defense papers
+    topics = bullets + [node]
+    defense_papers = _defense_papers_for_topics(topics, node)
+    evidence.extend(defense_papers)
+
     return {
         "title":  node,
         "summary": intro["summary"],
@@ -147,7 +195,7 @@ def fast_lesson(node: str, cluster, all_clusters: list = None,
             "Work through one quantitative example.",
             "Note any open research questions in the page footer.",
         ],
-        "evidence": [f"wiki/concepts/{wiki.name}"],
+        "evidence": evidence,
         "worked_example": None,
         "quiz": quiz,
         "next_in_cluster": next_in_cluster,
