@@ -28,9 +28,9 @@ function Trailhead({ onPickStart, learner }) {
           ref={graphRef}
           showLabels="hubs"
           cinematic={true}
-          linkOpacity={1.0}
-          linkWidth={4.0}
-          linkColor="#0a0e22"
+          linkOpacity={0.55}
+          linkWidth={1.8}
+          linkColor="#1e3a52"
           onNodeHover={setHoverNode}
           onNodeClick={node => {
             if (node) onPickStart?.(node.id, node.cluster, interest);
