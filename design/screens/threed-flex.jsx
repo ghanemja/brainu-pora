@@ -53,6 +53,10 @@ function ThreeDFlex({ initialNode, visited, onClose, onPickNode }) {
           showLabels={labels}
           highlightCluster={highlightCluster}
           cinematic={!recording}
+          signalFlow={true}
+          linkOpacity={0.55}
+          linkWidth={1.5}
+          linkColor="#0a0e22"
           onNodeHover={setHover}
           onNodeClick={n => onPickNode?.(n.id, n.cluster)}
           background="var(--c-bg)"
@@ -81,7 +85,7 @@ function ThreeDFlex({ initialNode, visited, onClose, onPickNode }) {
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="🔎 Search any of 47 concepts… (e.g. Reynolds, Markov, manifold)"
+            placeholder={`🔎 Search any of ${BU_DATA.NODES.length} concepts… (e.g. Reynolds, Kalman, BFS)`}
             style={{
               width: "100%",
               background: "color-mix(in oklch, var(--c-bg-elev) 88%, transparent)",
@@ -235,6 +239,16 @@ function ThreeDFlex({ initialNode, visited, onClose, onPickNode }) {
             <Legend dot="var(--c-visited)" label="Visited" />
             <Legend dot="var(--c-bridge)" label="Bridge edge" />
             <Legend dot="var(--c-summit)" label="Capstone candidate" />
+            <Legend dot="#FBB036" label="⚡ Defense corpus paper" />
+          </div>
+        </div>
+
+        <div>
+          <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 8 }}>SIGNAL FLOW</div>
+          <div className="t-cap" style={{ color: "var(--c-ink-muted)", lineHeight: 1.5 }}>
+            Particles along edges represent activations propagating through the
+            knowledge graph. Particle count scales with hub degree (more
+            connections = more traffic). Color = source cluster.
           </div>
         </div>
 

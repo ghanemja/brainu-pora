@@ -21,6 +21,7 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
   linkOpacity = 0.7,      // edge visibility (0.55 = faded, 0.8+ = bold)
   linkWidth = 1.5,        // edge thickness
   linkColor = "#7DD3FC",  // edge color (sky blue by default)
+  signalFlow = false,     // animate signals/weights along edges (brain mode)
   onNodeClick = () => {},
   onNodeHover = () => {},
   className = "",
@@ -120,6 +121,33 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
       })
       .onNodeHover(node => onNodeHover(node))
       .cooldownTicks(120);
+
+    // Signal-flow mode: animate moving particles along edges (neural firing)
+    if (signalFlow) {
+      Graph
+        .linkDirectionalParticles(link => {
+          // Vary particle count by edge — denser hubs = more activity
+          const sId = typeof link.source === "object" ? link.source.id : link.source;
+          const tId = typeof link.target === "object" ? link.target.id : link.target;
+          const sNode = nodes.find(n => n.id === sId);
+          const tNode = nodes.find(n => n.id === tId);
+          const avgDeg = ((sNode?.degree || 1) + (tNode?.degree || 1)) / 2;
+          return Math.max(2, Math.min(6, Math.round(avgDeg / 3)));
+        })
+        .linkDirectionalParticleWidth(2.5)
+        .linkDirectionalParticleSpeed(link => {
+          // Random speed per edge — feels like asynchronous neural traffic
+          return 0.004 + Math.random() * 0.012;
+        })
+        .linkDirectionalParticleColor(link => {
+          // Particle color = source cluster color (signal "from" tint)
+          const sId = typeof link.source === "object" ? link.source.id : link.source;
+          const sNode = nodes.find(n => n.id === sId);
+          if (!sNode) return "#7DD3FC";
+          if (sNode.kind === "defense") return "#FBB036";
+          return BU_DATA.CLUSTERS[sNode.cluster]?.color || "#7DD3FC";
+        });
+    }
 
     // Three-pass: add per-node sprite labels for hubs
     Graph.nodeThreeObjectExtend(true);
