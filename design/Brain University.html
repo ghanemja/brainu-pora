@@ -34,6 +34,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <!-- Data layer (no JSX, plain JS) -->
   <script src="data.js"></script>
   <script src="arxivis_data.js?v=4"></script>
+  <script src="open_problems.js"></script>
   <script src="videos/manifest.js"></script>
 
   <!-- Component libraries (each Babel-compiled, exports to window) -->
@@ -49,6 +50,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script type="text/babel" src="screens/dashboard-and-propose.jsx"></script>
   <script type="text/babel" src="screens/threed-flex.jsx"></script>
   <script type="text/babel" src="screens/arxivis.jsx?v=8"></script>
+  <script type="text/babel" src="screens/open-problems.jsx?v=1"></script>
 
   <!-- Main app shell -->
   <script type="text/babel">
@@ -71,6 +73,7 @@ const SCREENS = [
   { id: "propose",   label: "Propose",    hint: "06" },
   { id: "explorer",  label: "3D mode",    hint: "07" },
   { id: "arxivis",   label: "arXivis",    hint: "08" },
+  { id: "openprob",  label: "open problems", hint: "09" },
 ];
 
 function App() {
@@ -82,6 +85,7 @@ function App() {
   const [explorerOpen, setExplorer] = useState(false);
   const [explorerNode, setExplorerNode] = useState(null);
   const [arxivisOpen, setArxivisOpen] = useState(false);
+  const [openprobOpen, setOpenprobOpen] = useState(false);
   const [learner, setLearner] = useState({ name: "J. Ghanem", interest: "rocket aerodynamics" });
 
   // Apply tweaks to <html>
@@ -127,14 +131,17 @@ function App() {
   // Fast nav across top
   const goto = (id) => {
     if (id === "explorer") {
-      setArxivisOpen(false);
+      setArxivisOpen(false); setOpenprobOpen(false);
       setExplorer(true);
       setExplorerNode(tour?.[stopIdx]?.node || "Reynolds_number");
     } else if (id === "arxivis") {
-      setExplorer(false);
+      setExplorer(false); setOpenprobOpen(false);
       setArxivisOpen(true);
+    } else if (id === "openprob") {
+      setExplorer(false); setArxivisOpen(false);
+      setOpenprobOpen(true);
     } else {
-      setArxivisOpen(false);
+      setArxivisOpen(false); setOpenprobOpen(false);
       if (id === "walk" && !tour) startTour("Reynolds_number");
       else setScreen(id);
     }
@@ -151,7 +158,7 @@ function App() {
         <nav className="nav">
           {SCREENS.map(s => (
             <button key={s.id}
-              className={screen === s.id || (s.id === "explorer" && explorerOpen) || (s.id === "arxivis" && arxivisOpen) ? "active" : ""}
+              className={screen === s.id || (s.id === "explorer" && explorerOpen) || (s.id === "arxivis" && arxivisOpen) || (s.id === "openprob" && openprobOpen) ? "active" : ""}
               onClick={() => goto(s.id)}
               title={`Screen ${s.hint} · ${s.label}`}>
               <span style={{ opacity: 0.45, fontFamily: "var(--f-mono)", fontSize: 10, marginRight: 6 }}>
@@ -221,6 +228,13 @@ function App() {
           <ArXivis
             onClose={() => setArxivisOpen(false)}
             onJumpToConcept={(nodeId) => { setArxivisOpen(false); startTour(nodeId); }} />
+        )}
+
+        {/* Open Problems fullscreen overlay */}
+        {openprobOpen && (
+          <OpenProblems
+            onClose={() => setOpenprobOpen(false)}
+            onJumpToConcept={(nodeId) => { setOpenprobOpen(false); startTour(nodeId); }} />
         )}
       </main>
 
