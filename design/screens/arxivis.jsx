@@ -114,23 +114,52 @@ function ArXivis({ onClose, onJumpToConcept }) {
     [activatedGraphNodes]
   );
 
-  // Build a 1-2 sentence "what this paper connects" blurb from the
-  // activated pair_edges + the global edge_freq table.
+  // "What this paper connects" — map activated concepts back to the
+  // universe by paper-degree (foundational vs introduced) and skip
+  // concepts that just echo the title.
   const connectionsBlurb = useMemo(() => {
-    if (!selected?.pair_edges?.length) return null;
-    const ef = window.ARXIVIS?.edge_freq || {};
-    const enriched = selected.pair_edges.map(([a, b]) => {
-      const aSlug = a.replace(/^wiki:/, "");
-      const bSlug = b.replace(/^wiki:/, "");
-      const aName = (window.ARXIVIS?.concept_universe?.find(n => n.id === aSlug)?.name) || aSlug.replace(/_/g, " ");
-      const bName = (window.ARXIVIS?.concept_universe?.find(n => n.id === bSlug)?.name) || bSlug.replace(/_/g, " ");
-      const key = [a, b].sort().join("|");
-      const freq = ef[key] || 1;
-      return { a: aName, b: bName, freq };
+    if (!selected) return null;
+    const titleLc = (selected.title || "").toLowerCase();
+    const tokenInTitle = (name) =>
+      name.toLowerCase().split(/[\s-]+/)
+          .some(t => t.length > 3 && titleLc.includes(t));
+
+    // Universe degree (paper count activating each concept)
+    const universe = window.ARXIVIS?.concept_universe || [];
+    const degreeOf = {};
+    for (const n of universe) degreeOf[n.id] = n.degree || 1;
+
+    const acts = (selected.concepts || []).map(c => {
+      const slug = c.id.replace(/^wiki:/, "");
+      return {
+        id:        slug,
+        name:      c.name,
+        weight:    c.weight,
+        degree:    degreeOf[slug] || 1,
+        echoes:    tokenInTitle(c.name),
+      };
     });
-    const novel = enriched.filter(e => e.freq <= 2).sort((a,b) => a.freq - b.freq).slice(0, 2);
-    const common = enriched.filter(e => e.freq >= 3).sort((a,b) => b.freq - a.freq).slice(0, 2);
-    return { novel, common, total: enriched.length };
+    if (!acts.length) return null;
+
+    const corpusSize = window.ARXIVIS?.papers?.length || 500;
+    // Foundations: high paper-degree, not echoing the title
+    const foundations = acts
+      .filter(a => !a.echoes)
+      .sort((a, b) => b.degree - a.degree)
+      .slice(0, 3);
+    // Paper-introduced: lowest degree (≤2 papers ever activate it)
+    const introduced = acts
+      .filter(a => a.degree <= 2)
+      .sort((a, b) => a.degree - b.degree)
+      .slice(0, 3);
+
+    return {
+      foundations,
+      introduced,
+      total_concepts: acts.length,
+      total_edges:    selected.pair_edges?.length || 0,
+      corpus_size:    corpusSize,
+    };
   }, [selected]);
 
   // Zoom camera to fit just the activated nodes whenever paper changes
@@ -348,74 +377,93 @@ function ArXivis({ onClose, onJumpToConcept }) {
         />
 
         {/* Helper card pinned top-left when a paper is selected — explains
-            what the activated subgraph means in plain words. */}
-        {selected && activatedGraphNodes.length > 0 && !flythrough && (
+            what the activated subgraph means in plain words.
+            Foundations = concepts the paper RESTS ON (high paper-degree across
+            the corpus, not echoing title). Introduced = concepts only this
+            paper (or 1-2 others) activate. Both colors chosen for
+            light-palette legibility — no fluorescent on cream. */}
+        {selected && activatedGraphNodes.length > 0 && !flythrough && connectionsBlurb && (
           <div style={{
             position: "absolute", top: 16, left: 16,
-            maxWidth: 360,
-            padding: "10px 14px",
-            background: "color-mix(in oklch, var(--c-bg-elev) 92%, transparent)",
+            maxWidth: 400,
+            padding: "12px 16px",
+            background: "color-mix(in oklch, var(--c-bg-elev) 94%, transparent)",
             backdropFilter: "blur(10px)",
             border: "1px solid var(--c-line)",
             borderRadius: 12,
-            fontFamily: "var(--f-sans)", fontSize: 11.5,
-            lineHeight: 1.45,
+            fontFamily: "var(--f-sans)", fontSize: 12,
+            lineHeight: 1.5,
+            color: "var(--c-ink)",
           }}>
             <div style={{
               fontFamily: "var(--f-mono)", fontSize: 10,
               opacity: 0.55, letterSpacing: "0.10em",
-              textTransform: "uppercase", marginBottom: 6,
+              textTransform: "uppercase", marginBottom: 8,
             }}>
-              Brain · what this paper connects
+              Brain · where this paper sits
             </div>
-            <div style={{ marginBottom: 6 }}>
-              <span style={{ fontWeight: 600, color: "#fbb036" }}>
+
+            <div style={{ marginBottom: 8 }}>
+              <span style={{ fontWeight: 600, color: "#c66a00" }}>
                 {activatedGraphNodes.length} concept{activatedGraphNodes.length === 1 ? "" : "s"}
               </span>
-              {" linked by "}
-              <span style={{ fontWeight: 600, color: "#fbb036" }}>
-                {selected.pair_edges?.length || 0} edges
+              {" lit, "}
+              <span style={{ fontWeight: 600, color: "#c66a00" }}>
+                {connectionsBlurb.total_edges}
               </span>
-              {connectionsBlurb && connectionsBlurb.novel.length > 0 && (
-                <>
-                  . Pioneers{" "}
-                  <span style={{ color: "#60FFA8" }}>
-                    {connectionsBlurb.novel.map((e, i) => (
-                      <span key={i}>
-                        {i > 0 ? " · " : ""}
-                        <em style={{ fontStyle: "normal", fontWeight: 600 }}>
-                          {e.a} ↔ {e.b}
-                        </em>
-                      </span>
-                    ))}
-                  </span>
-                </>
-              )}
-              {connectionsBlurb && connectionsBlurb.common.length > 0 && (
-                <>
-                  . Reinforces{" "}
-                  <span style={{ color: "#7DD3FC" }}>
-                    {connectionsBlurb.common.map((e, i) => (
-                      <span key={i}>
-                        {i > 0 ? " · " : ""}
-                        <em style={{ fontStyle: "normal", fontWeight: 600 }}>
-                          {e.a} ↔ {e.b}
-                        </em>
-                        <span style={{ opacity: 0.55 }}> ({e.freq}×)</span>
-                      </span>
-                    ))}
-                  </span>
-                </>
-              )}
-              .
+              {" inferred edges. "}
             </div>
+
+            {connectionsBlurb.foundations.length > 0 && (
+              <div style={{ marginBottom: 6 }}>
+                <span style={{
+                  fontFamily: "var(--f-mono)", fontSize: 10,
+                  color: "#1e6fa8", letterSpacing: "0.06em",
+                  textTransform: "uppercase", fontWeight: 700, marginRight: 6,
+                }}>Builds on</span>
+                {connectionsBlurb.foundations.map((c, i) => (
+                  <span key={c.id}>
+                    {i > 0 ? ", " : ""}
+                    <span style={{ fontWeight: 600 }}>{c.name}</span>
+                    <span style={{ opacity: 0.55, fontSize: 11 }}>
+                      {" "}({c.degree}/{connectionsBlurb.corpus_size} papers)
+                    </span>
+                  </span>
+                ))}
+                .
+              </div>
+            )}
+
+            {connectionsBlurb.introduced.length > 0 && (
+              <div style={{ marginBottom: 6 }}>
+                <span style={{
+                  fontFamily: "var(--f-mono)", fontSize: 10,
+                  color: "#a04a14", letterSpacing: "0.06em",
+                  textTransform: "uppercase", fontWeight: 700, marginRight: 6,
+                }}>Introduces</span>
+                {connectionsBlurb.introduced.map((c, i) => (
+                  <span key={c.id}>
+                    {i > 0 ? ", " : ""}
+                    <span style={{ fontWeight: 600 }}>{c.name}</span>
+                    {c.degree > 1 && (
+                      <span style={{ opacity: 0.55, fontSize: 11 }}>
+                        {" "}(also seen in {c.degree - 1} other{c.degree - 1 === 1 ? "" : "s"})
+                      </span>
+                    )}
+                  </span>
+                ))}
+                .
+              </div>
+            )}
+
             <div style={{
               fontFamily: "var(--f-mono)", fontSize: 9.5,
-              opacity: 0.5, letterSpacing: "0.04em",
+              opacity: 0.55, letterSpacing: "0.04em",
+              marginTop: 8, paddingTop: 6, borderTop: "1px solid var(--c-line)",
             }}>
-              <span style={{ color: "#60FFA8" }}>● novel</span> = pair rare/unique in corpus
+              <span style={{ color: "#1e6fa8" }}>builds on</span> = foundational concepts elsewhere in corpus
               {" · "}
-              <span style={{ color: "#7DD3FC" }}>● common</span> = pair seen across many papers
+              <span style={{ color: "#a04a14" }}>introduces</span> = first or near-first use in our corpus
             </div>
           </div>
         )}
