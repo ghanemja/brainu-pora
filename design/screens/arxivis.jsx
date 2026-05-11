@@ -114,6 +114,25 @@ function ArXivis({ onClose, onJumpToConcept }) {
     [activatedGraphNodes]
   );
 
+  // Build a 1-2 sentence "what this paper connects" blurb from the
+  // activated pair_edges + the global edge_freq table.
+  const connectionsBlurb = useMemo(() => {
+    if (!selected?.pair_edges?.length) return null;
+    const ef = window.ARXIVIS?.edge_freq || {};
+    const enriched = selected.pair_edges.map(([a, b]) => {
+      const aSlug = a.replace(/^wiki:/, "");
+      const bSlug = b.replace(/^wiki:/, "");
+      const aName = (window.ARXIVIS?.concept_universe?.find(n => n.id === aSlug)?.name) || aSlug.replace(/_/g, " ");
+      const bName = (window.ARXIVIS?.concept_universe?.find(n => n.id === bSlug)?.name) || bSlug.replace(/_/g, " ");
+      const key = [a, b].sort().join("|");
+      const freq = ef[key] || 1;
+      return { a: aName, b: bName, freq };
+    });
+    const novel = enriched.filter(e => e.freq <= 2).sort((a,b) => a.freq - b.freq).slice(0, 2);
+    const common = enriched.filter(e => e.freq >= 3).sort((a,b) => b.freq - a.freq).slice(0, 2);
+    return { novel, common, total: enriched.length };
+  }, [selected]);
+
   // Zoom camera to fit just the activated nodes whenever paper changes
   useEffect(() => {
     if (activatedGraphNodes.length === 0 || !graphRef.current) return;
@@ -328,22 +347,76 @@ function ArXivis({ onClose, onJumpToConcept }) {
           background="var(--c-bg)"
         />
 
-        {/* Helper hint pinned top-left when a paper is selected */}
+        {/* Helper card pinned top-left when a paper is selected — explains
+            what the activated subgraph means in plain words. */}
         {selected && activatedGraphNodes.length > 0 && !flythrough && (
           <div style={{
             position: "absolute", top: 16, left: 16,
-            padding: "8px 14px",
-            background: "color-mix(in oklch, var(--c-bg-elev) 88%, transparent)",
+            maxWidth: 360,
+            padding: "10px 14px",
+            background: "color-mix(in oklch, var(--c-bg-elev) 92%, transparent)",
             backdropFilter: "blur(10px)",
             border: "1px solid var(--c-line)",
-            borderRadius: 999,
-            fontFamily: "var(--f-mono)", fontSize: 11,
+            borderRadius: 12,
+            fontFamily: "var(--f-sans)", fontSize: 11.5,
+            lineHeight: 1.45,
           }}>
-            <span style={{ opacity: 0.55 }}>Highlighted in brain:</span>{" "}
-            <span style={{ fontWeight: 600, color: "#fbb036" }}>
-              {activatedGraphNodes.length} concept{activatedGraphNodes.length === 1 ? "" : "s"}
-            </span>
-            {" · "}<span style={{ opacity: 0.55 }}>{selected.pair_edges?.length || 0} edges</span>
+            <div style={{
+              fontFamily: "var(--f-mono)", fontSize: 10,
+              opacity: 0.55, letterSpacing: "0.10em",
+              textTransform: "uppercase", marginBottom: 6,
+            }}>
+              Brain · what this paper connects
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ fontWeight: 600, color: "#fbb036" }}>
+                {activatedGraphNodes.length} concept{activatedGraphNodes.length === 1 ? "" : "s"}
+              </span>
+              {" linked by "}
+              <span style={{ fontWeight: 600, color: "#fbb036" }}>
+                {selected.pair_edges?.length || 0} edges
+              </span>
+              {connectionsBlurb && connectionsBlurb.novel.length > 0 && (
+                <>
+                  . Pioneers{" "}
+                  <span style={{ color: "#60FFA8" }}>
+                    {connectionsBlurb.novel.map((e, i) => (
+                      <span key={i}>
+                        {i > 0 ? " · " : ""}
+                        <em style={{ fontStyle: "normal", fontWeight: 600 }}>
+                          {e.a} ↔ {e.b}
+                        </em>
+                      </span>
+                    ))}
+                  </span>
+                </>
+              )}
+              {connectionsBlurb && connectionsBlurb.common.length > 0 && (
+                <>
+                  . Reinforces{" "}
+                  <span style={{ color: "#7DD3FC" }}>
+                    {connectionsBlurb.common.map((e, i) => (
+                      <span key={i}>
+                        {i > 0 ? " · " : ""}
+                        <em style={{ fontStyle: "normal", fontWeight: 600 }}>
+                          {e.a} ↔ {e.b}
+                        </em>
+                        <span style={{ opacity: 0.55 }}> ({e.freq}×)</span>
+                      </span>
+                    ))}
+                  </span>
+                </>
+              )}
+              .
+            </div>
+            <div style={{
+              fontFamily: "var(--f-mono)", fontSize: 9.5,
+              opacity: 0.5, letterSpacing: "0.04em",
+            }}>
+              <span style={{ color: "#60FFA8" }}>● novel</span> = pair rare/unique in corpus
+              {" · "}
+              <span style={{ color: "#7DD3FC" }}>● common</span> = pair seen across many papers
+            </div>
           </div>
         )}
 
