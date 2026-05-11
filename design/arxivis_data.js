@@ -348,7 +348,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 98.04,
-      "pitch": "A central solution concept in this setting is popularity: a matching is popular if it is\na (weak) Condorcet winner,1 meaning that no other matching is preferred by a strict majority of agents. It is\nwell known, however, that Condorcet winners need not exist.\n\n[Condorcet dimension · Pareto optimality · Condorcet-winning set]"
+      "pitch": "We therefore turn to a natural and prominent relaxation Our main results reveal a connection between Condorcet-winning sets and Pareto optimality",
+      "key_finding": "matching problems in which agents form one side of a bipartite graph and have pr"
     },
     {
       "id": "arx:2602.22130v1",
@@ -643,7 +644,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 77.37,
-      "pitch": "Sample Complexity Bounds for Robust Mean Estimation with\nMean-Shift Contamination\nIlias Diakonikolas∗\nUW Madison\nilias@cs.wisc.edu\nGiannis Iakovidis†\nUW Madison\niakovidis@wisc.edu\nDaniel M. Kane‡\nUC San Diego\ndakane@ucsd.edu\nSihan Liu\nUC San Diego\nsil046@ucsd.edu\nAbstract\nWe study the basic task of mean estimation in the presence of mean-shift contamination.\n\n[mean-shift contamination · sample complexity · mean estimation]"
+      "pitch": "In this work, we study and essentially resolve this open question We complement our upper bound with a qualitatively matching sample complexity lower bound",
+      "key_finding": "basic task of mean estimation in the presence of mean-shift contamination"
     },
     {
       "id": "arx:2602.19680v1",
@@ -959,7 +961,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 70.65,
-      "pitch": "The problem is motivated by match-making services relevant in, for\nexample, video games or social apps. It naturally generalizes two prominent combinatorial\noptimization problems—Uncapacitated Facility Location and Minimum-cost Maximum\nMatching.\n\n[facility location · facility location problem · approximation algorithm]"
+      "pitch": "We propose a linear programming (LP) relaxation for this problem, and present a 3.868- approximation algorithm Our algorithm leverages the work on bifactor-approximation algorithms (Byrka and Aardal, SICOMP 2012); our main technical contribution is a rerouting subroutine that reroutes a fractional solution to be supported on a fixed maximum matching with only small additional cost",
+      "key_finding": "Facility Location with Matching"
     },
     {
       "id": "arx:2602.15015v1",
@@ -1240,7 +1243,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 66.77,
-      "pitch": "Expander Decomposition with Almost Optimal Overhead\nNikhil Bansal∗\nArun Jambulapati†\nThatchaphol Saranurak‡\nFebruary 17, 2026\nAbstract\nWe present the first polynomial-time algorithm for computing a near-optimal flow-expander\ndecomposition. Given a graph G and a parameter ϕ, our algorithm removes at most a ϕ log1+o(1) n\nfraction of edges so that every remaining connected component is a ϕ-flow-expander (a stronger\nguarantee than being a ϕ-cut-expander).\n\n[polynomial-time algorithm · polynomial-time algorithms · Streaming algorithms]"
+      "pitch": "Given a graph G and a parameter ϕ, our algorithm removes at most a ϕ log1+o(1) n fraction of edges so that every remaining connected component is a ϕ-flow-expander (a stronger guarantee than being a ϕ-cut-expander This achieves overhead log1+o(1) n, nearly matching the Ω(log n) graph-theoretic lower bound that already holds for cut-expander decompositions, up to a logo(1) n factor",
+      "key_finding": "Introduction Expander decomposition"
     },
     {
       "id": "arx:2602.22916v1",
@@ -1429,7 +1433,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 55.1,
-      "pitch": "Lipton and Tarjan [FOCS’77]\nfamously proved that every planar graph admits a balanced separator of size O(√n), as well as\na balanced separator of size O(D) that is a simple path (where D is the graph’s diameter). In\nthe centralized setting, these separators can both be found in linear O(n) time.\n\n[balanced separator · planar graph · planar graphs]"
+      "pitch": "In this paper, we present a much simpler deterministic separator algorithm with the same (nearoptimal) ˜O(D)-round complexity Lipton and Tarjan [FOCS’77] famously proved that every planar graph admits a balanced separator of size O(√n), as well as a balanced separator of size O(D) that is a simple path (where D is the graph’s diameter",
+      "key_finding": "much simpler deterministic separator algorithm with the same"
     },
     {
       "id": "arx:2602.14748v1",
@@ -1664,7 +1669,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 53.22,
-      "pitch": "Constant-Time Dynamic Enumeration of Word\nInfixes in a Regular Language\nAntoine Amarilli # Ñ\nUniv. We are interested in dynamic enumeration of L-infixes, where we\nmust additionally support letter substitution updates on w (e.g., “replace the i-th letter of w by a\nletter a”).\n\n[regular language · dynamic enumeration · regular languages]"
+      "pitch": "We are interested in dynamic enumeration of L-infixes, where we must additionally support letter substitution updates on w (e.g., “replace the i-th letter of w by a letter a” We study for which regular languages L we can perform dynamic enumeration of L-infixes in constant delay (i.e., the next infix is always produced in constant time) and constant additional memory throughout the enumeration, while supporting each update in constant time",
+      "key_finding": "then to show an algorithm that additionally uses only constant additional memory"
     },
     {
       "id": "arx:2602.16153v1",
@@ -1936,7 +1942,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 50.35,
-      "pitch": "Bellman-Ford in Almost-Linear Time for Dense Graphs\nGeorge Z. Despite its long history, the past few years have witnessed exciting breakthroughs for this problem in multiple different settings.\n\n[shortest path · shortest paths · single-source shortest paths]"
+      "pitch": "We consider the problem of computing single-source shortest paths on weighted directed graphs We refine their shortcut construction to obtain our n2+o(1) algorithm2",
+      "key_finding": "stronger version of the betweenness reduction technique used in all prior works"
     },
     {
       "id": "arx:2602.16605v1",
@@ -2134,7 +2141,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 49.18,
-      "pitch": "We design an algorithm that, given such a representation of an unweighted\nn-vertex graph G with p transversal pairs, and given a source v ∈V (G), computes a shortest-path\ntree rooted at v in G in time O(p log n). STACS ’24];\ngive an O(n7/3 log2 n)-time algorithm for All-Pairs Shortest Path on graphs of symmetric\ndifference O(n1/3).\n\n[shortest path · twin-width · signed tree models]"
+      "pitch": "We design an algorithm that, given such a representation of an unweighted n-vertex graph G with p transversal pairs, and given a source v ∈V (G), computes a shortest-path tree rooted at v in G in time O(p log n We design an algorithm that, given such a representation of an unweighted n-vertex graph G with p transversal pairs, and given a source v ∈V (G), computes a shortest-path tree rooted at v in G in time O(p log n",
+      "key_finding": "algorithm that"
     },
     {
       "id": "arx:2602.16688v2",
@@ -2388,7 +2396,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 48.73,
-      "pitch": "On the Hardness of Approximation of the Fair k-Center Problem\nSuhas Thejaswi1\n1Department of Computer Science, Aalto University, Finland\nAbstract\nIn this work, we study the hardness of approximation of the fair k-center problem. Although\na polynomial-time 3-approximation is known for fair k-center in general metrics, it has remained open\nwhether this approximation guarantee is tight or could be further improved, especially since the classical\nunconstrained k-center problem admits a polynomial-time factor-2 approximation.\n\n[k-center problem · fair k-center problem · hardness of approximation]"
+      "pitch": "We resolve this open question by proving that, assuming P ‰ NP, for any ϵ ą 0, no polynomial-time algorithm can approximate fair k-center to p3 ´ ϵq-factor Our inapproximability results hold even when only two disjoint groups are present and at least one center must be chosen from each group",
+      "key_finding": "k-groups"
     },
     {
       "id": "arx:2602.19552v1",
@@ -2544,7 +2553,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 43.06,
-      "pitch": "The Sample Complexity of Replicable Realizable PAC Learning\nKasper Green Larsen∗\nMarkus Engelund Mathiasen∗\nChirag Pabbaraju†\nClement Svendsen∗\nAbstract\nIn this paper, we consider the problem of replicable realizable PAC learning. We construct a\nparticularly hard learning problem and show a sample complexity lower bound with a close\nto (log |H|)3/2 dependence on the size of the hypothesis class H.\n\n[sample complexity · replicability · PAC learning]"
+      "pitch": "We construct a particularly hard learning problem and show a sample complexity lower bound with a close to (log |H|)3/2 dependence on the size of the hypothesis class H Our proof uses several novel techniques and works by defining a particular Cayley graph associated with H and analyzing a suitable random walk on this graph by examining the spectral properties of its adjacency matrix",
+      "key_finding": "particularly hard learning problem and show a sample complexity lower bound wi"
     },
     {
       "id": "arx:2602.22976v2",
@@ -2741,7 +2751,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 42.31,
-      "pitch": "We present efficient parallel algorithms for computing maximal matchings in hypergraphs. Our algorithm finds locally maximal\nedges in the hypergraph and adds them in parallel to the matching.\n\n[hypergraph matching · Parallel algorithms · Maximal Matching]"
+      "pitch": "We present efficient parallel algorithms for computing maximal matchings in hypergraphs Our algorithm finds locally maximal edges in the hypergraph and adds them in parallel to the matching",
+      "key_finding": "1/d-approximation guarantee for our algorithms"
     },
     {
       "id": "arx:2602.18049v1",
@@ -2969,7 +2980,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 41.76,
-      "pitch": "Notably, it has found an\nunexpected yet impactful application in online advertising [16]. The original model is now referred to as online bipartite matching with one-sided vertex arrivals,\nsince it assumes that one side of the underlying bipartite graph is known upfront, while the other\nside arrives online.\n\n[bipartite matching · competitive ratio · bipartite graph]"
+      "pitch": "In this work, we study the two-sided online bipartite matching problem We focus on the fractional variant of the problem, in which edges may be matched fractionally, subject to the constraint that the total matched value incident to any vertex does not exceed one",
+      "key_finding": "two-sided online bipartite matching problem"
     },
     {
       "id": "arx:2602.18317v1",
@@ -3164,7 +3176,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 41.59,
-      "pitch": "More formally, for every fixed s and t, we show a QPTAS for MWIS in graphs that\nexclude sCt as an induced minor. Combining this with known results, we obtain a QPTAS for the\nproblem of finding a largest induced subgraph of bounded treewidth with given hereditary property\ndefinable in Counting Monadic Second Order Logic, in the same classes of graphs.\n\n[induced subgraph · induced minor · independent set]"
+      "pitch": "We are grateful to Benjamin Bergougnoux, Linda Cook, and Marek Sokołowski for stimulating discussions on the topic More formally, for every fixed s and t, we show a QPTAS for MWIS in graphs that exclude sCt as an induced minor",
+      "key_finding": "quasipolynomial-time approximation scheme"
     },
     {
       "id": "arx:2602.16240v1",
@@ -3345,7 +3358,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 40.03,
-      "pitch": "We\nobtain better approximation when submodular objective has a known curvature (middle). We further find how approximation\nfactor improves if we continue to overflow the constraint by a factor 𝛽(left).\n\n[submodular maximization · greedy algorithm · bicriteria approximation]"
+      "pitch": "We obtain better approximation when submodular objective has a known curvature (middle We further find how approximation factor improves if we continue to overflow the constraint by a factor 𝛽(left",
+      "key_finding": "family of fundamental optimization problems under an upper-bound constraint"
     },
     {
       "id": "arx:2602.14768v1",
@@ -3490,7 +3504,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 39.56,
-      "pitch": "An A-path is called an (A, ℓ)-path if the length\nof the path is exactly ℓ. In the (A, ℓ)-Path PacKing problem (ALPP), we seek to determine whether there\nexist k vertex-disjoint (A, ℓ)-paths in G or not.\n\n[color coding · parameterized complexity · Hamiltonian path]"
+      "pitch": "In this paper, we strengthen their result and prove that it is unlikely that ALPP is fixed-parameter tractable even with respect to a bigger parameter (|A| + dtp) where dtp denotes the distance from the input graph and a path graph (distance to path An A-path is called an (A, ℓ)-path if the length of the path is exactly ℓ",
+      "key_finding": "color coding"
     },
     {
       "id": "arx:2602.16311v1",
@@ -3635,7 +3650,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 38.34,
-      "pitch": "When to Identify Is to Control: On the Controllability of\nCombinatorial Optimization Problems\nMAX KLIMM, TU Berlin, Germany\nJANNIK MATUSCHKE, KU Leuven, Belgium\nConsider a finite ground set 𝐸, a set of feasible solutions 𝑋⊆R𝐸, and a class of objective functions C\ndefined on 𝑋. We are interested in subsets 𝑆of 𝐸that control 𝑋in the sense that we can induce any given\nsolution 𝑥∈𝑋as an optimum for any given objective function 𝑐∈C by adding linear terms to 𝑐on the\ncoordinates corresponding to 𝑆.\n\n[controlling sets · Combinatorial optimization · matroid]"
+      "pitch": "We are interested in subsets 𝑆of 𝐸that control 𝑋in the sense that we can induce any given solution 𝑥∈𝑋as an optimum for any given objective function 𝑐∈C by adding linear terms to 𝑐on the coordinates corresponding to 𝑆 Our first result shows the equivalence between controllability and identifiability",
+      "key_finding": "controlling sets"
     },
     {
       "id": "arx:2602.18389v1",
@@ -3826,7 +3842,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 35.59,
-      "pitch": "Given query access to the strong-oracle and\nweak-oracle in the weak-strong oracle model, the authors design approximation algorithms for k-means\nand k-center clustering problems. In this work, we design algorithms with improved guarantees for kmeans and k-center clustering problems in the weak-strong oracle model.\n\n[distance oracle · approximation algorithm · k-center clustering]"
+      "pitch": "In this work, we design algorithms with improved guarantees for kmeans and k-center clustering problems in the weak-strong oracle model Given query access to the strong-oracle and weak-oracle in the weak-strong oracle model, the authors design approximation algorithms for k-means and k-center clustering problems",
+      "key_finding": "algorithms with improved guarantees for kmeans and k-center clustering problems"
     },
     {
       "id": "arx:2602.15683v1",
@@ -3980,7 +3997,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 35.36,
-      "pitch": "Fair Correlation Clustering\nMeets Graph Parameters\nJohannes Blaha1, Robert Ganian1, Katharina Gillig2,\nJonathan S. Højlev3, and Simon Wietheger1\n1 TU Wien, Vienna, Austria e11930322@student.tuwien.ac.at,\nrganian@gmail.com, swietheger@ac.tuwien.ac.at\n2 Universität Bonn, Bonn, Germany s3kagill@uni-bonn.de\n3 Technical University of Denmark, Copenhagen, Denmark s194684@dtu.dk\nAbstract.\n\n[correlation clustering · fairness constraints · parameterized complexity]"
+      "pitch": "We study the generalization of Correlation Clustering which incorporates fairness constraints via the notion of fairlets Fair Correlation Clustering Meets Graph Parameters Fair Correlation Clustering Meets Graph Parameters Johannes Blaha1, Robert Ganian1, Katharina Gillig2, Jonathan S",
+      "key_finding": "generalization of Correlation Clustering which incorporates fairness constraints"
     },
     {
       "id": "arx:2602.22870v2",
@@ -4140,7 +4158,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 34.54,
-      "pitch": "An O(log N) Time Algorithm for the Generalized Egg Dropping\nProblem\nKleitos Papadopoulos∗\nAbstract\nThe generalized egg dropping problem is a classic challenge in sequential decision-making. Standard dynamic programming evaluates the minimax minimum number of tests in\nO(K · N 2) time.\n\n[binary search · dynamic programming · sequential decision-making]"
+      "pitch": "In this paper, we demonstrate that binary search over the complete sequential test domain is suboptimal We prove that this boundary balances the search depth against the combinatorial evaluation cost, cancelling the K variable to strictly bound the search phase to O(log N",
+      "key_finding": "that this boundary balances the search depth against the combinatorial evaluatio"
     },
     {
       "id": "arx:2602.19189v1",
@@ -4313,7 +4332,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 34.03,
-      "pitch": "In this\nstudy, we explore the relationship between atoms (i.e., maximal\nprime subgraphs) and convex hulls in undirected graphs. Building on this connection, we introduce a recursive decomposition\nalgorithm with polynomial complexity for undirected graphs that\ndoesn’t rely on triangulation.\n\n[directed graphs · recursive decomposition · convex hull]"
+      "pitch": "In this study, we explore the relationship between atoms (i.e., maximal prime subgraphs) and convex hulls in undirected graphs Our experimental findings demonstrate that this algorithm operates significantly faster than current state-of-the-art methods",
+      "key_finding": "recursive decomposition algorithm with polynomial complexity for undirected grap"
     },
     {
       "id": "arx:2602.16028v1",
@@ -4469,7 +4489,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 34.01,
-      "pitch": "In this setting an agent/algorithm interacts with a (partially observable) Markovian random evolution by periodically/strategically rewinding the Markov chain to\nprevious states. Depending on the application this may lead the evolution to desired states\nfaster, or allow the agent to efficiently learn or test properties of the underlying Markov chain\nthat may be infeasible or inefficient with passive observation.\n\n[Markov chain · Markov chains · Query complexity]"
+      "pitch": "In this setting an agent/algorithm interacts with a (partially observable) Markovian random evolution by periodically/strategically rewinding the Markov chain to previous states We study the task of identifying the initial state in a given partially observable Markov chain",
+      "key_finding": "task of identifying the initial state in a given partially observable Markov cha"
     },
     {
       "id": "arx:2602.21859v1",
@@ -4632,7 +4653,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 33.33,
-      "pitch": "Steiner Forest for H-Subgraph-Free Graphs\nTala Eagling-Vose #\nDepartment of Computer Science, Durham University, Durham, UK\nDavid C. To obtain this dichotomy, we establish the following\nnew algorithmic, hardness, and combinatorial results:\nAlgorithms: We identify two new classes of graph-theoretical structures that make it possible\nto solve Steiner Forest in polynomial time.\n\n[Steiner forest · H-subgraph-free graphs · H-free graphs]"
+      "pitch": "Steiner Forest for $H$-Subgraph-Free Graphs Steiner Forest for H-Subgraph-Free Graphs Tala Eagling-Vose # Department of Computer Science, Durham University, Durham, UK David C To obtain this dichotomy, we establish the following new algorithmic, hardness, and combinatorial results: Algorithms: We identify two new classes of graph-theoretical structures that make it possible to solve Steiner Forest in polynomial time",
+      "key_finding": "full classification"
     },
     {
       "id": "arx:2604.04851v1",
@@ -4804,7 +4826,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 32.96,
-      "pitch": "Curvature batching gives single-exponential\ninteger quadratic programming\nCinar Ari∗\nRobert Hildebrand†\nAbstract\nInteger Quadratic Programming (IQP), min{xT Qx+cT x : Ax ≤b, x ∈Zn}, is a fundamental\nproblem in combinatorial optimization. We give the first single-exponential algorithm for IQP, solving it in time\n\u0000n Ln\nA ∆(A) LQ\n\u0001O(n)·\npoly(φ), which is (nL)O(n2) · poly(φ) in general using the same parameterization.\n\n[fixed-parameter tractability · FPT algorithm · polynomial-time algorithms]"
+      "pitch": "We give the first single-exponential algorithm for IQP, solving it in time \u0000n Ln A ∆(A) LQ \u0001O(n)· poly(φ), which is (nL)O(n2) · poly(φ) in general using the same parameterization We achieve improvements for structured cases like total unimodularity and further state explicit complexity results for a number of FPT algorithms and optimization problems",
+      "key_finding": "Integer Quadratic Programming"
     },
     {
       "id": "arx:2602.15314v1",
@@ -4949,7 +4972,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 32.87,
-      "pitch": "It has\nbeen shown that the decision problem for finding an integer array of length ℓ+ ρ or restricting\nthe shift function up to values of ρ is NP-complete (cf. the textbook of Garey and Johnson). As\na practical heuristic, a greedy algorithm has been proposed to shift the i-th row until it forms a\nsolution with its predecessor rows.\n\n[greedy algorithm · parameterized complexity · approximation ratio]"
+      "pitch": "We give further hardness results for parameterizations such as the number of distinct rows or the maximum number of non-zero entries per row We thank Jesper Jansson, Hideo Bannai, and the participants at LA Symposium 2024&2025 Winter for constructive discussion",
+      "key_finding": "greedy algorithm"
     },
     {
       "id": "arx:2602.21191v1",
@@ -5120,7 +5144,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 32.67,
-      "pitch": "Statistical Query Lower Bounds for Smoothed Agnostic Learning\nIlias Diakonikolas∗\nUniversity of Wisconsin-Madison\nilias@cs.wisc.edu\nDaniel M. Kane†\nUniversity of California, San Diego\ndakane@cs.ucsd.edu\nFebruary 25, 2026\nAbstract\nWe study the complexity of smoothed agnostic learning, recently introduced by [CKK+24],\nin which the learner competes with the best classiﬁer in a target class under slight Gaussian\nperturbations of the inputs.\n\n[Agnostic learning · lower bounds · query lower bounds]"
+      "pitch": "Our main result is a Statistical Query (SQ) lower bound providing formal evidence that this upper bound is close to best possible Our techniques involve ﬁnding a moment-matching hard distribution by way of linear programming duality",
+      "key_finding": "SQ algorithm"
     },
     {
       "id": "arx:2602.15702v1",
@@ -5292,7 +5317,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 32.56,
-      "pitch": "A Weighted-to-Unweighted Reduction for Matroid Intersection\nAditi Dudeja∗\nMara Grilnberger†\nAbstract\nGiven two matroids M1 and M2 over the same ground set, the matroid intersection problem\nis to find the maximum cardinality common independent set. In the weighted version of the\nproblem, the goal is to find a maximum weight common independent set.\n\n[Matroid intersection · matroid · independent set]"
+      "pitch": "In this work, we address the question of closing this gap Our main result is a reduction which converts any α-approximate unweighted matroid intersection algorithm into an α(1 −ε)-approximate weighted matroid intersection algorithm, while increasing the runtime of the algorithm by a log W factor, where W is the aspect ratio",
+      "key_finding": "α-approximate"
     },
     {
       "id": "arx:2602.18160v1",
@@ -5438,7 +5464,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 32.15,
-      "pitch": "Prior studies have examined these explanations in different contexts, such as non-probabilistic versus probabilistic frameworks and local versus\nglobal settings. In this study, we introduce a unified framework for analyzing\nthese explanations, demonstrating that they can all be characterized through the\nminimization of a unified probabilistic value function.\n\n[submodularity · contrastive reasons · sufficient reasons]"
+      "pitch": "In this study, we introduce a unified framework for analyzing these explanations, demonstrating that they can all be characterized through the minimization of a unified probabilistic value function We then prove that the complexity of these computations is influenced by three key properties of the value function: (i) monotonicity, (ii) submodularity, and (iii) supermodularity — which are three fundamental properties in combinatorial optimization",
+      "key_finding": "unified framework for analyzing these explanations"
     },
     {
       "id": "arx:2602.20706v1",
@@ -5580,7 +5607,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 30.57,
-      "pitch": "This model completely separates between the predictive and\nalgorithmic components, thus offering a single well-defined analysis framework that relies solely on\nthe considered problem. The goal is to develop OAG algorithms that admit good\ncompetitiveness when β = 0 (a.k.a. consistency) as well as when β = 1 (a.k.a. robustness); the\nappealing notion of smoothness, that in most prior work required a dedicated loss function, now\narises naturally as β shifts from 0 to 1.\n\n[online algorithm · online algorithms · bipartite matching]"
+      "pitch": "We then describe a systematic method, called the drop or trust blindly (DTB) compiler, which transforms any online algorithm into a learning-augmented online algorithm in the OAG model This model completely separates between the predictive and algorithmic components, thus offering a single well-defined analysis framework that relies solely on the considered problem",
+      "key_finding": "new model for ML-augmented online decision making"
     },
     {
       "id": "arx:2602.16638v1",
@@ -5790,7 +5818,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 28.24,
-      "pitch": "This result yields the first almost linear-time algorithm for the problem on dense\ngraphs (m = Θ(n2)) and improves upon the best previously known bounds for moderately dense\ngraphs (m = ω(n1.306)). Our approach builds on the “hop-reduction via shortcutting” framework introduced by Li,\nLi, Rao, and Zhang (2025), which iteratively augments the graph with shortcut edges to reduce\nthe negative hop count of shortest paths.\n\n[shortest path · shortest paths · directed graphs]"
+      "pitch": "Our approach builds on the “hop-reduction via shortcutting” framework introduced by Li, Li, Rao, and Zhang (2025), which iteratively augments the graph with shortcut edges to reduce the negative hop count of shortest paths We overcome this by introducing a new compression technique using auxiliary Steiner vertices",
+      "key_finding": "vertices to represent large neighborhoods compactly in a structured manner"
     },
     {
       "id": "arx:2602.19649v1",
@@ -5923,7 +5952,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 27.97,
-      "pitch": "Analyzing and Leveraging the k-Sensitivity of LZ77\nGabriel Bathie∗\nPaul Huber†\nGuillaume Lagarde‡\nAkka Zemmari§\nAbstract\nWe study the sensitivity of the Lempel-Ziv 77 compression algorithm to edits, showing\nhow modifying a string w can deteriorate or improve its compression. Our first result is a\ntight upper bound for k edits: ∀w′ ∈B(w, k),\nCLZ77(w′) ≤3 · CLZ77(w) + 4k.\n\n[LZ77 compression · lossless data compression · approximation algorithm]"
+      "pitch": "Our first result is a tight upper bound for k edits: ∀w′ ∈B(w, k), CLZ77(w′) ≤3 · CLZ77(w) + 4k We further refine this bound, focusing on the coefficient 3 in front of CLZ77(w), and establish a surprising trichotomy based on the compressibility of w",
+      "key_finding": "sensitivity of the Lempel-Ziv 77 compression algorithm to edits"
     },
     {
       "id": "arx:2602.21089v1",
@@ -6089,7 +6119,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 27.68,
-      "pitch": "First, we design a polynomial time algorithm for directed s-t connectivity using n\n\u000e\n2Θ(√log n)\ncatalytic space, which matches the state-of-the-art time-space bounds in the non-catalytic setting [BBRS98], and improves the catalytic space usage of the best known algorithm [CP26]. Furthermore, using only O(log(n)) random bits we get a randomized algorithm whose running\ntime nearly matches the fastest time bounds known for space-unrestricted algorithms.\n\n[Polynomial time algorithm · polynomial-time algorithms · polynomial-time algorithm]"
+      "pitch": "First, we design a polynomial time algorithm for directed s-t connectivity using n \u000e 2Θ(√log n) catalytic space, which matches the state-of-the-art time-space bounds in the non-catalytic setting [BBRS98], and improves the catalytic space usage of the best known algorithm [CP26 Furthermore, using only O(log(n)) random bits we get a randomized algorithm whose running time nearly matches the fastest time bounds known for space-unrestricted algorithms",
+      "key_finding": "catalytic algorithms for fundamental problems in algorithm design that run in po"
     },
     {
       "id": "arx:2602.18987v1",
@@ -6196,7 +6227,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 27.24,
-      "pitch": "One Color Makes All the Difference in the Tractability of Partial\nColoring in Semi-Streaming\nAvinandan Das∗\nDepartment of Computer Science\nAalto University\nFinland\nAbstract\nThis paper investigates the semi-streaming complexity of k-partial coloring, a generalization\nof proper graph coloring. For k ≥1, a k-partial coloring requires that each vertex v in an\nn-node graph is assigned a color such that at least min{k, deg(v)} of its neighbors are assigned\ncolors different from its own.\n\n[streaming algorithm · graph coloring · Streaming algorithms]"
+      "pitch": "For k ≥1, a k-partial coloring requires that each vertex v in an n-node graph is assigned a color such that at least min{k, deg(v)} of its neighbors are assigned colors different from its own This framework naturally extends classical coloring problems: specifically, k-partial (k +1)-coloring and k-partial k-coloring generalize (∆+1)-proper coloring and ∆-proper coloring, respectively",
+      "key_finding": "k-partial"
     },
     {
       "id": "arx:2603.26298v1",
@@ -6327,7 +6359,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 25.78,
-      "pitch": "IMPROVING SKETCHING ALGORITHMS FOR LOW-RANK\nMATRIX APPROXIMATION VIA SKETCH-POWER ITERATIONS∗\nCHAO CHANG† AND YUNING YANG†‡\nAbstract. Power iteration can improve the accuracy of randomized SVD, but requires multiple\ndata passes, making it impractical in streaming or memory-constrained settings.\n\n[Low-rank matrix approximation · low-rank approximation · Randomized algorithm]"
+      "pitch": "We introduce a lightweight yet effective sketch-power iteration, allowing power-like iterations with only a single pass of the data, which can be incorporated into one-pass algorithms for low-rank approximation We establish meaningful error bounds: given a fixed storage budget, the sketch sizes derived from the bounds closely match the optimal ones observed in reality",
+      "key_finding": "lightweight yet effective sketch-power iteration"
     },
     {
       "id": "arx:2602.21827v1",
@@ -6424,7 +6457,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 25.6,
-      "pitch": "Delayed-Clairvoyant Flow Time Scheduling\nvia a Borrow Graph Analysis∗\nAlexander Lindermayr†\nJens Schlöter‡\nJanuary 2025\nAbstract\nWe study the problem of preemptively scheduling jobs online over time on a single machine\nto minimize the total flow time. In the traditional clairvoyant scheduling model, the scheduler\nlearns about the processing time of a job at its arrival, and scheduling at any time the job with\nthe shortest remaining processing time (SRPT) is optimal.\n\n[competitive ratio]"
+      "pitch": "In this paper, we consider α-clairvoyant scheduling, where the scheduler learns the processing time of a job once it completes an α-fraction of its processing time We complement this positive result with a tight randomized lower bound. ∗This is an independent and precedent work to our joint paper with Anupam Gupta, Haim Kaplan and Sorrachai Yingchareonthawornchai [Gup+25",
+      "key_finding": "problem of preemptively scheduling jobs online over time on a single machine to"
     },
     {
       "id": "arx:2604.03452v1",
@@ -6560,7 +6594,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 25.19,
-      "pitch": "SDP Approach to Quadratic Vertex-Disjoint Paths\nProblem∗\nMingming Xu†, Hao Hu‡\nApril 7, 2026\nAbstract\nWe study the quadratic k-vertex-disjoint paths problem (Q-k-VDP), which seeks\nk vertex-disjoint paths in a directed graph that minimize a nonconvex quadratic\nobjective function. We formulate the problem as a binary quadratic program and\napply a systematic graph reduction to manage its dimensionality.\n\n[vertex-disjoint paths · directed graphs · Combinatorial optimization]"
+      "pitch": "We formulate the problem as a binary quadratic program and apply a systematic graph reduction to manage its dimensionality We then solve this relaxed model within a branch-and-bound framework, where the bounds are computed from the SDP relaxation using a tailored alternating direction method of multipliers",
+      "key_finding": "k-vertex"
     },
     {
       "id": "arx:2602.15341v2",
@@ -6669,7 +6704,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 24.68,
-      "pitch": "Testing Monotonicity of Real-Valued Functions on DAGs\nYuichi Yoshida\nNational Institute of Informatics\nyyoshida@nii.ac.jp\nMarch 24, 2026\nAbstract\nWe study monotonicity testing of real-valued functions on directed acyclic graphs (DAGs)\nwith n vertices. For every constant δ > 0, we prove a Ω(n1/2−δ/√ε) lower bound against\nnon-adaptive two-sided testers, nearly matching the classical O(\np\nn/ε)-query upper bound.\n\n[Query complexity · lower bounds · transitive closure]"
+      "pitch": "For every constant δ > 0, we prove a Ω(n1/2−δ/√ε) lower bound against non-adaptive two-sided testers, nearly matching the classical O( p n/ε)-query upper bound For constant ε, we also prove an Ω(√n) lower bound for adaptive one-sided testers, whereas previously only an Ω(log n) lower bound was known",
+      "key_finding": "monotonicity testing of real-valued functions on directed acyclic graphs"
     },
     {
       "id": "arx:2604.07751v1",
@@ -6803,7 +6839,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 24.48,
-      "pitch": "1\nLearning to Coordinate over Networks with\nBounded Rationality\nZhewei Wang, Emrah Akyol and Marcos M. Vasconcelos\nAbstract—Network coordination games are widely used to\nmodel collaboration among interconnected agents, with applications across diverse domains including economics, robotics,\nand cyber-security.\n\n[Nash equilibrium · partition function · Partition]"
+      "pitch": "We consider networks of bounded-rational agents who interact through binary stag hunt games, a canonical game theoretic model for distributed collaborative tasks We first show that the stationary probability of states corresponding to perfect coordination is monotone increasing in the rationality parameter β",
+      "key_finding": "that the stationary probability of a perfectly coordinated action profile is mon"
     },
     {
       "id": "arx:2602.18362v1",
@@ -6922,7 +6959,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 24.24,
-      "pitch": "Generating minimal redundant and maximal\nirredundant sets in incidence graphs∗\nEmanuel Castelo1, Jérémie Chalopin1, Oscar Defrain1, and Simon Vilmin1\n1Aix-Marseille Université, CNRS, LIS, Marseille, France. February 23, 2026\nAbstract\nIt has been proved by Boros and Makino that there is no output-polynomialtime algorithm enumerating the minimal redundant sets or the maximal\nirredundant sets of a hypergraph, unless P = NP.\n\n[bipartite graphs · bipartite graph · minimal redundant sets]"
+      "pitch": "In this paper, we focus on graph classes that capture incidence relations such as bipartite, co-bipartite, and split graphs February 23, 2026 It has been proved by Boros and Makino that there is no output-polynomialtime algorithm enumerating the minimal redundant sets or the maximal irredundant sets of a hypergraph, unless P = NP",
+      "key_finding": "bipartite graphs"
     },
     {
       "id": "arx:2602.20793v3",
@@ -7015,7 +7053,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 24.12,
-      "pitch": "Implicit Decision Diagrams\nIsaac Rudich1,2[0000−0002−3106−1020] and Louis-Martin\nRousseau1[0000−0001−6949−6014]\n1 Polytechnique Montréal, Quebec, Canada\n2 Carnegie Mellon University, Pittsburgh PA, USA\nAbstract. Decision Diagrams (DDs) have emerged as a powerful tool for\ndiscrete optimization, with rapidly growing adoption.\n\n[Decision Diagrams · Combinatorial optimization]"
+      "pitch": "We introduce implicit Decision Diagrams, storing arcs implicitly rather than explicitly, and reducing per-layer complexity to O(w) for restricted and relaxed DDs We prove this is optimal: any framework treating stateupdate and merge operations as black boxes cannot do better",
+      "key_finding": "is optimal"
     },
     {
       "id": "arx:2602.19879v1",
@@ -7132,7 +7171,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 23.45,
-      "pitch": "The Bidirected Cut Relaxation for Steiner Tree:\nBetter Integrality Gap Bounds and the Limits of Moat Growing\nPaul Paschmanns∗\nVera Traub†\nAbstract\nThe Steiner Tree problem asks for the cheapest way of connecting a given subset of the\nvertices in an undirected graph. One of the most prominent linear programming relaxations for\nSteiner Tree is the Bidirected Cut Relaxation (BCR).\n\n[Steiner tree · integrality gap · linear programming relaxation]"
+      "pitch": "We prove that the integrality gap of BCR is at most 1.898, improving significantly on the previous bound of 1.9988 One of the most prominent linear programming relaxations for Steiner Tree is the Bidirected Cut Relaxation (BCR",
+      "key_finding": "that no such moat-growing algorithm yields dual solutions certifying an integral"
     },
     {
       "id": "arx:2602.21312v3",
@@ -7266,7 +7306,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 23.02,
-      "pitch": "The\ntwo main problems we are interested in are the Optimal Decision Tree and Set Cover. We study these two\nfundamental tasks under precedence constraints, that is, if a test (or set) X is a predecessor of Y , then\nin any feasible decision tree X needs to be an ancestor of Y (or respectively, if Y is added to set cover,\nthen so must be X).\n\n[decision tree · approximation algorithm · Approximation algorithms]"
+      "pitch": "We study these two fundamental tasks under precedence constraints, that is, if a test (or set) X is a predecessor of Y , then in any feasible decision tree X needs to be an ancestor of Y (or respectively, if Y is added to set cover, then so must be X Our approach is to develop a number of algorithmic reductions, where an approximation algorithm for one problem provides an approximation for another via a black-box usage of a procedure for the former",
+      "key_finding": "two fundamental tasks under precedence constraints"
     },
     {
       "id": "def:arxiv:1807.05165v2",
@@ -7396,7 +7437,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 23.0,
-      "pitch": "Kingman (1978)'s representation theorem states that any exchangeable partition of $\\mathbb{N}$ can be represented as a paintbox based on a random mass-partition. Similarly, any exchangeable composition (i.e. ordered partition of $\\mathbb{N}$) can be represented as a paintbox based on an interval-partition (Gnedin 1997).\n\n[metric space · Metric spaces · Partition]"
+      "pitch": "We also display a particularly simple description of the so-called evolving coalescent (Pfaffelhuber &amp; Wakolbinger 2006) by a comb-valued Markov process Exchangeable coalescents, ultrametric spaces, nested interval-partitions: A unifying approach Kingman (1978)'s representation theorem states that any exchangeable partition of $\\mathbb{N}$ can be represented as a paintbox based on a random mass-partition",
+      "key_finding": "that any measured ultrametric space $U$"
     },
     {
       "id": "arx:2602.17811v1",
@@ -7499,7 +7541,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 22.52,
-      "pitch": "In the parallel batch-dynamic setting, one can\ninsert or delete batches of edges, and the goal is to process the entire batch in parallel with work\nper edge similar to that of a single sequential update and with span (or depth) for the entire\nbatch that is polylogarithmic. In this paper we present faster parallel batch-dynamic algorithms\nfor maintaining a low out-degree orientation of an undirected graph.\n\n[low out-degree orientation · dynamic algorithms · arboricity]"
+      "pitch": "In this paper we present faster parallel batch-dynamic algorithms for maintaining a low out-degree orientation of an undirected graph Our first result is the first parallel batch-dynamic algorithm to maintain an asymptotically optimal orientation with asymptotically optimal expected work bounds, in an amortized sense, improving over the prior best work bounds of Liu et al. [SPAA ’22] by a logarithmic factor",
+      "key_finding": "faster parallel batch-dynamic algorithms for maintaining a low out-degree orient"
     },
     {
       "id": "arx:2601.10772v1",
@@ -7589,7 +7632,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 22.19,
-      "pitch": "Resource-Bounded Martin-Löf Type Theory:\nCompositional Cost Analysis for Dependent Types\nMirco A. Our calculus features dependent function types Πb(x)\nx:A B(x) where bounds b(x) depend on the\nargument, dependent pair types Σx:AB(x) with additive cost composition, and inductive\nfamilies (notably Vec(A, n) and Fin(n)) with structurally recursive eliminators carrying sizedependent bounds.\n\n[cost bounds · cost analysis · binary search]"
+      "pitch": "We introduce a resource-indexed universe hierarchy Ur where r ∈L tracks the cost of type formation, and a graded modality □r for feasibility certification We demonstrate the framework with case studies including length-indexed vector operations with O(n) bounds and binary search with O(log n) bounds expressed in the type",
+      "key_finding": "resource-indexed universe hierarchy Ur where r ∈L tracks the cost of type format"
     },
     {
       "id": "arx:2306.06003v1",
@@ -7727,7 +7771,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 22.15,
-      "pitch": "Semi-online Scheduling with Lookahead ⋆\nDebasis Dwibedy and Rakesh Mohanty\nVeer Surendra Sai University of Technology, Burla, Odisha 768018, INDIA\n(debasis.dwibedy, rakesh.iitmphd)@gmail.com\nAbstract. The knowledge of future partial information in the form of a\nlookahead to design efficient online algorithms is a theoretically-efficient\nand realistic approach to solving computational problems.\n\n[online algorithm · online algorithms · competitive ratio]"
+      "pitch": "In this paper, we study and explore the impact of lookahead as an EPI in the context of online scheduling in identical machine frameworks We introduce a k-lookahead model and design improved competitive semi-online algorithms",
+      "key_finding": "and explore the impact of lookahead as an EPI in the context of online schedulin"
     },
     {
       "id": "arx:2602.19259v1",
@@ -7825,7 +7870,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 22.12,
-      "pitch": "We rule out this possibility in a\nbroad quantum sketch model, the dataset P is encoded as an m-qubit state ρP , and each query\nis answered by an arbitrary query-dependent measurement on a fresh copy of ρP . For every\napproximation factor c ≥1 and constant success probability p > 1/2, we exhibit n-point instances\nin Hamming space {0, 1}d with d = Θ(log n) for which any such sketch requires m = Ω(n) qubits,\nvia a reduction to quantum random access codes and Nayak’s lower bound.\n\n[Approximate Nearest Neighbors · Approximation factor]"
+      "pitch": "We rule out this possibility in a broad quantum sketch model, the dataset P is encoded as an m-qubit state ρP , and each query is answered by an arbitrary query-dependent measurement on a fresh copy of ρP We rule out this possibility in a broad quantum sketch model, the dataset P is encoded as an m-qubit state ρP , and each query is answered by an arbitrary query-dependent measurement on a fresh copy of ρP",
+      "key_finding": "Lindenstrauss lemma"
     },
     {
       "id": "arx:2603.27856v1",
@@ -7951,7 +7997,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 22.12,
-      "pitch": "Highlights\nHierarchical Tensor Network Structure Search for High-Dimensional Data\nZheng Guo, Aditya Deshpande, Xinyu Wang, Brian C. However, their efficacy is\noften limited by static, expert-defined structures that fail to adapt to evolving data correlations.\n\n[tensor network · bond dimension · sampling]"
+      "pitch": "We address this limitation by formalizing the tensor network structural rounding problem and introducing the hierarchical structure search algorithm Hiss, which automatically identifies near-optimal structures and index reshaping for arbitrary tree networks Hierarchical Tensor Network Structure Search for High-Dimensional Data Highlights Hierarchical Tensor Network Structure Search for High-Dimensional Data Zheng Guo, Aditya Deshpande, Xinyu Wang, Brian C",
+      "key_finding": "New method"
     },
     {
       "id": "arx:2602.15802v2",
@@ -8065,7 +8112,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 21.7,
-      "pitch": "Local Node Differential Privacy\nSofya Raskhodnikova∗\nAdam Smith∗\nConnor Wagaman∗\nAnatoly Zavyalov∗\nApril 1, 2026\nAbstract\nWe initiate an investigation of node differential privacy for graphs in the local model of private data\nanalysis. In our model, dubbed LNDP⋆, each node sees its own edge list and releases the output of a local\nrandomizer on this input.\n\n[Differential privacy · LOCAL model · lower bounds]"
+      "pitch": "We develop a novel algorithmic framework for this setting that allows us to accurately answer arbitrary linear queries about the degree distribution ddG of the input graph G Our framework is based on a new object, called the blurry degree distribution, which closely approximates ddG and has lower sensitivity",
+      "key_finding": "novel algorithmic framework for this setting that allows us to accurately answer"
     },
     {
       "id": "def:arxiv:2603.24216v1",
@@ -8146,7 +8194,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 21.56,
-      "pitch": "Standard citation metrics treat all citations as equal, obscuring the social and structural pathways through which scholarly influence propagates. I introduce Citation-Constellation, a freely available no-code tool for citation network analysis with two complementary bibliometric scores that decompose a researcher's citation profile by network proximity between citing and cited authors.\n\n[Entity Resolution · graph traversal · calibration]"
+      "pitch": "I introduce Citation-Constellation, a freely available no-code tool for citation network analysis with two complementary bibliometric scores that decompose a researcher's citation profile by network proximity between citing and cited authors BARON (Boundary-Anchored Research Outreach Network score) is a strict binary metric counting only citations from outside the detected collaborative network",
+      "key_finding": "Entity Resolution"
     },
     {
       "id": "arx:2604.09745v1",
@@ -8234,7 +8283,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 21.5,
-      "pitch": "The spectral entropy H[ht] provides\na computable O(N) early-warning signal for network-structural phase transitions (Remark 7). All claims are numerically verified on the path graph P8 with a Gaussian mutual-information\nsource, using the open-source kernelcal library [24].\n\n[Transfer function]"
+      "pitch": "We instantiate that framework on finite graphs, where every kernel is parameterized by a spectral transfer function h : {λ0, . . . , λN−1} →R≥0 over the Laplacian eigenvalues The spectral entropy H[ht] provides a computable O(N) early-warning signal for network-structural phase transitions (Remark 7",
+      "key_finding": "MaxCal stationarity condition decouples into N one-dimensional problems with"
     },
     {
       "id": "def:openalex:W76222559",
@@ -8315,7 +8365,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 21.33,
-      "pitch": "Considering the problem of multiple ballistic missiles tracking of boost-phase ballistic missile defense, a boost-phase tracking algorithm based on multiple hypotheses tracking (MHT) concept is proposed. This paper focuses on the tracking algorithm for hypothesis generation, hypothesis probability calculation, hypotheses reduction and pruning and other sectors.\n\n[Target tracking · Monte Carlo simulation · Scan]"
+      "pitch": "This paper focuses on the tracking algorithm for hypothesis generation, hypothesis probability calculation, hypotheses reduction and pruning and other sectors Multi-target tracking algorithm of boost-phase ballistic missile defense Considering the problem of multiple ballistic missiles tracking of boost-phase ballistic missile defense, a boost-phase tracking algorithm based on multiple hypotheses tracking (MHT) concept is proposed",
+      "key_finding": "Target tracking"
     },
     {
       "id": "arx:2602.22108v1",
@@ -8433,7 +8484,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 20.92,
-      "pitch": "The goal here\nis to achieve the minimal overhead of an online algorithm over the optimal offline algorithm\nthat knows all tasks and their arrival times in advance. Sheffield and Westover constructed online algorithms in\nall three settings.\n\n[competitive ratio · online algorithm · online algorithms]"
+      "pitch": "In this paper we resolve this problem by providing tight bounds for the competitive ratios in the Eventually-committing and Never-committing settings The goal here is to achieve the minimal overhead of an online algorithm over the optimal offline algorithm that knows all tasks and their arrival times in advance",
+      "key_finding": "Kuszmaul and Westover’s conjecture by providing an algorithm that achieves a com"
     },
     {
       "id": "arx:2602.20376v2",
@@ -8550,7 +8602,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 20.64,
-      "pitch": "We propose an algorithm for maximizing these quadratic forms over a domain of size K that enumerates\nand evaluates a set of O\n\u0000n2r−1\u0001\ncandidate solutions, where n is the dimension of the matrix and r\nrepresents the rank of an approximation of the objective. We prove that this candidate set is guaranteed\nto include the exact maximizer when K = 3 (corresponding to Max-3-Cut) and the objective is low-rank,\nand provide approximation guarantees when the objective is a perturbation of a low-rank matrix.\n\n[Partition · Max-3-Cut problem · Combinatorial optimization]"
+      "pitch": "We propose an algorithm for maximizing these quadratic forms over a domain of size K that enumerates and evaluates a set of O \u0000n2r−1\u0001 candidate solutions, where n is the dimension of the matrix and r represents the rank of an approximation of the objective We prove that this candidate set is guaranteed to include the exact maximizer when K = 3 (corresponding to Max-3-Cut) and the objective is low-rank, and provide approximation guarantees when the objective is a perturbation of a low-rank matrix",
+      "key_finding": "algorithm for maximizing these quadratic forms over a domain of size K that enum"
     },
     {
       "id": "arx:2603.14269v1",
@@ -8677,7 +8730,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 20.6,
-      "pitch": "ON AGGREGATION–QUANTIZATION PERMUTABILITY PROBLEM\nFOR DISCRETE-TIME MARKOV CHAINS\nADAM DOLIWA, ARTUR SIEMASZKO, AND ADAM ZALEWSKI\nAbstract. Given random walk on a graph, the corresponding discrete-time quantum walk can be\nconstructed using the method proposed by Szegedy.\n\n[Markov chain · Markov chains · random walk]"
+      "pitch": "We extend the aggregation technique to the level of quantum Markov chains We provide conditions under which application of these two operations – Szegedy’s quantization and aggregation – give the same result",
+      "key_finding": "several examples"
     },
     {
       "id": "arx:2603.05958v1",
@@ -8750,7 +8804,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 20.52,
-      "pitch": "To overcome the scarcity of labeled\nobservational data, we develop an FRB simulator and a rule-based automatic annotation pipeline,\nenabling training exclusively on simulated data. Evaluations on the FAST-FREX dataset show that\nour model achieves an F1 score of 97.8%, recall of 95.7%, and precision of 100%, outperforming\nboth conventional tools (e.g., PRESTO, Heimdall) and recent AI-based baselines (e.g., RaSPDAM,\nDRAFTS) in both accuracy and inference speed.\n\n[false positive rate]"
+      "pitch": "To overcome the scarcity of labeled observational data, we develop an FRB simulator and a rule-based automatic annotation pipeline, enabling training exclusively on simulated data The model supports pixel-level signal segmentation and yields reliable estimates for dispersion measure (DM) and time of arrival (ToA",
+      "key_finding": "transformer-based multi-task model for Fast Radio Burst"
     },
     {
       "id": "arx:2603.16850v1",
@@ -8911,7 +8966,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 20.52,
-      "pitch": "This sequential dependency creates a computational bottleneck: evaluating an RNN on a sequence\nof length T seems to require O(T) time steps, even with unlimited parallel processors. This dissertation challenges the conventional wisdom and develops methods\nthat enable parallel evaluation of nonlinear RNNs with O((logT)2) computational\ndepth.\n\n[Kalman filter · Scan · diffusion models]"
+      "pitch": "In this thesis, I address these limitations with methodological and theoretical contributions This sequential dependency creates a computational bottleneck: evaluating an RNN on a sequence of length T seems to require O(T) time steps, even with unlimited parallel processors",
+      "key_finding": "Newton method"
     },
     {
       "id": "arx:2603.19772v1",
@@ -9003,7 +9059,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 20.43,
-      "pitch": "The equivalence of precompactness, zero maximal pattern entropy and bounded\nmean complexity for finite partitions\nJian Li, Tao Yu, and Xianliang Zhong\nAbstract. In this paper, we investigate several types of low complexity of finite partitions, including precompactness, zero maximal pattern entropy, bounded mean complexity and mean equicontinuity.\n\n[Hamming distance · characteristic function · Partition]"
+      "pitch": "In this paper, we investigate several types of low complexity of finite partitions, including precompactness, zero maximal pattern entropy, bounded mean complexity and mean equicontinuity The equivalence of precompactness, zero maximal pattern entropy and bounded mean complexity for finite partitions The equivalence of precompactness, zero maximal pattern entropy and bounded mean complexity for finite partitions Jian Li, Tao Yu, and Xianliang Zhong Abstract",
+      "key_finding": "several types of low complexity of finite partitions"
     },
     {
       "id": "arx:2602.17541v1",
@@ -9111,7 +9168,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 20.33,
-      "pitch": "Informative Trains: A Memory-Efficient Journey to a\nSelf-Stabilizing Leader Election Algorithm in Anonymous Graphs\nLelia Blin∗\nSylvain Gay†\nIsabella Ziccardi‡\nAbstract\nWe study the self-stabilizing leader election problem in anonymous n-nodes networks. Achieving self-stabilization with low space memory complexity is particularly challenging, and designing space-optimal leader election algorithms remains an open problem for general graphs.\n\n[leader election · self-stabilizing leader election]"
+      "pitch": "In this paper, we present a probabilistic self-stabilizing leader election algorithm for arbitrary anonymous networks that uses O(log log n) bits of memory per node Our algorithm operates in the state model under a synchronous scheduler and assumes knowledge of a global parameter N = Θ(log n",
+      "key_finding": "n-nodes"
     },
     {
       "id": "arx:2602.22619v2",
@@ -9230,7 +9288,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 20.3,
-      "pitch": "SYK thermal expectations are classically easy at any temperature\nAlexander Zlokapa1 and Bobak T. Kiani2\n1Center for Theoretical Physics – a Leinweber Institute, MIT\n2Bowdoin College\nEstimating thermal expectations of local observables is a natural target for quantum advantage.\n\n[Gibbs states · sampling · lower bounds]"
+      "pitch": "We give a simple classical algorithm that approximates thermal expectations for Gibbs states of local Hamiltonians, and we show it has quasi-polynomial cost nO(log(n/ϵ)) for all temperatures above a phase transition in the free energy Our results apply to the Sachdev-Ye-Kitaev (SYK) model at any constant temperature due to its absence of a phase transition—despite its entanglement, sign problem, and polynomial quantum circuit lower bounds",
+      "key_finding": "Gibbs states"
     },
     {
       "id": "arx:2602.17488v1",
@@ -9366,7 +9425,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 20.16,
-      "pitch": "For a given input set of points, a coreset is another set of points such that the k-means\nobjective for any candidate solution is preserved up to a multiplicative (1 ± α) factor (and some\nadditive factor). We prove the first computational lower bounds for this problem.\n\n[Differential privacy · clustering algorithm · lower bounds]"
+      "pitch": "We prove the first computational lower bounds for this problem For a given input set of points, a coreset is another set of points such that the k-means objective for any candidate solution is preserved up to a multiplicative (1 ± α) factor (and some additive factor",
+      "key_finding": "problem of differentially private"
     },
     {
       "id": "arx:2602.18770v1",
@@ -9472,7 +9532,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.72,
-      "pitch": "We present a dynamic data structure for representing binary\nn×n matrices that are d-twin-ordered, for a fixed parameter d. Our structure supports cell queries and single-cell updates both in O(log log n)\nexpected worst case time, while using Od(n) memory; here, the Od(·)\nnotation hides a constant depending on d.\n\n[twin-width · H-minor-free graphs · contraction sequence]"
+      "pitch": "We present a dynamic data structure for representing binary n×n matrices that are d-twin-ordered, for a fixed parameter d Our structure supports cell queries and single-cell updates both in O(log log n) expected worst case time, while using Od(n) memory; here, the Od(·) notation hides a constant depending on d",
+      "key_finding": "dynamic data structure for representing binary n×n matrices that are d-twin-orde"
     },
     {
       "id": "arx:2602.18610v1",
@@ -9591,7 +9652,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.7,
-      "pitch": "Strengths and Limitations of Greedy in Cup Games\nKalina Jasińska\nUniversity of Cambridge\nJohn Kuszmaul\nMIT\nGyudong Lee\nMIT\nAbstract\nIn the cup game, an adversary distributes 1 unit of water among n initially empty cups\nduring each time step. The player then selects a single cup from which to remove up to 1 unit\nof water, with the goal of minimizing the backlog, i.e., the supremum of the height of the fullest\ncup over all time steps.\n\n[greedy algorithm · lower bounds]"
+      "pitch": "In this paper, we prove a lower bound of 2.076 for the backlog of the greedy algorithm, disproving the conjecture of D’Emidio, Di Stefano, and Navarra We also introduce a new algorithm, a hybrid greedy/Deadline-Driven, which achieves backlog O(log n) in the general cup game, and remains exactly optimal for the bamboo trimming problem as well as the fixed-rate cup game",
+      "key_finding": "lower bound of 2"
     },
     {
       "id": "arx:2602.19408v1",
@@ -9700,7 +9762,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.65,
-      "pitch": "Existing approaches, including Unitigs, Eulertigs and\nMatchtigs, model this task as a path cover problem on the deBruijn graph. We extend this framework\nfrom paths to branching structures by introducing necklace covers, which combine cycles and tree-like\nattachments (pendants).\n\n[necklace cover · deBruijn graph · greedy algorithm]"
+      "pitch": "We extend this framework from paths to branching structures by introducing necklace covers, which combine cycles and tree-like attachments (pendants We present a greedy algorithm that constructs a necklace cover while guaranteeing, under certain conditions, optimality in the cumulative size of the final representation",
+      "key_finding": "greedy algorithm that constructs a necklace cover while guaranteeing"
     },
     {
       "id": "def:openalex:W3033603579",
@@ -9810,7 +9873,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.56,
-      "pitch": "Integrated guidance and control using model predictive control against a maneuvering target is proposed. Equations of motion for terminal homing are developed with the consideration of short-period dynamics as well as actuator dynamics of a missile.\n\n[Kalman filter · Monte Carlo simulation · Convex optimization]"
+      "pitch": "Integrated Guidance and Control Using Model Predictive Control with Flight Path Angle Prediction against Pull-Up Maneuvering Target Integrated guidance and control using model predictive control against a maneuvering target is proposed Equations of motion for terminal homing are developed with the consideration of short-period dynamics as well as actuator dynamics of a missile",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "arx:2604.04987v1",
@@ -9867,7 +9931,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.53,
-      "pitch": "Published as a conference paper at ICLR 2026\nCACTUS: ACCELERATING AUTO-REGRESSIVE DE-\nCODING WITH CONSTRAINED ACCEPTANCE SPECULA-\nTIVE SAMPLING\nYongchang Hao♢\nLili Mou♢♠\n♢Dept. SpS strictly enforces the generated distribution to match that of\nthe verifier LLM.\n\n[sampling]"
+      "pitch": "In this work, we formalize the speculative sampling algorithm through the lens of constrained optimization Cactus: Accelerating Auto-Regressive Decoding with Constrained Acceptance Speculative Sampling Published as a conference paper at ICLR 2026 CACTUS: ACCELERATING AUTO-REGRESSIVE DE- CODING WITH CONSTRAINED ACCEPTANCE SPECULA- TIVE SAMPLING Yongchang Hao♢ Lili Mou♢♠ ♢Dept",
+      "key_finding": "sampling"
     },
     {
       "id": "arx:2602.21700v1",
@@ -9980,7 +10045,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.52,
-      "pitch": "Most existing studies\nadopt a branch-and-bound framework, which recursively expands\na partial biclique with a vertex until no further vertices can be\nadded. Equipped with a basic pivot selection strategy, all stateof-the-art methods have a worst-case time complexity no better\nthan 𝑂(𝑚· (\n√\n2)𝑛), where 𝑚and 𝑛are the number of edges and\nvertices in the graph, respectively.\n\n[biclique · bicliques · bipartite graphs]"
+      "pitch": "In this paper, we introduce a new branch-and-bound (BB) algorithm IPS Most existing studies adopt a branch-and-bound framework, which recursively expands a partial biclique with a vertex until no further vertices can be added",
+      "key_finding": "new branch-and-bound"
     },
     {
       "id": "arx:2512.00314v1",
@@ -10084,7 +10150,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.33,
-      "pitch": "Counting and Sampling Traces in Regular Languages∗\nALEXIS DE COLNET, TU Wien, Austria r○\nKULDEEP S. MEEL, University of Toronto, Canada r○\nUMANG MATHUR, National University of Singapore, Singapore r○\nIn this work, we study the fundamental problems of counting and sampling traces that a regular language\ntouches.\n\n[regular language · regular languages · sampling]"
+      "pitch": "We first show that the counting problem is #P-hard even when the automaton accepting the language 𝐿 is deterministic, which is in sharp contrast to the corresponding problem for counting the words of a DFA, which is solvable in polynomial time We then show that the counting problem remains in the class #P for both NFAs and DFAs, independent of whether 𝐿is trace-closed",
+      "key_finding": "fundamental problems of counting and sampling traces that a regular language tou"
     },
     {
       "id": "arx:2604.06776v1",
@@ -10193,7 +10260,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.23,
-      "pitch": "Failure-Aware Iterative Learning of State-Control Invariant Sets\nAhmad Amine, Nick-Marios T. Kokolakis, Ugo Rosolia, Truong X.\n\n[Halfspaces · Filter]"
+      "pitch": "We introduce the concept of state-control invariance, which extends control invariance from the state space to the joint statecontrol space We prove that the state projection of the MSCI is the MCI and the state-dependent sections of the MSCI are the admissible invariance-preserving inputs",
+      "key_finding": "concept of state-control invariance"
     },
     {
       "id": "def:arxiv:1702.00066v2",
@@ -10291,7 +10359,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.13,
-      "pitch": "We survey problems and results from combinatorial geometry in normed spaces, concentrating on problems that involve distances. These include various properties of unit-distance graphs, minimum-distance graphs, diameter graphs, as well as minimum spanning trees and Steiner minimum trees.\n\n[spanning trees · spanning tree · minimum spanning trees]"
+      "pitch": "We show how to use the angular measure of Peter Brass to prove various statements about Hadwiger and blocking numbers of convex bodies in the plane, including some new results We also include some new results on thin cones and their application to distinct distances and other combinatorial problems for normed spaces",
+      "key_finding": "spanning trees"
     },
     {
       "id": "arx:2511.10361v2",
@@ -10365,7 +10434,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.02,
-      "pitch": "However, under the lens of non-strict evaluation, linearity can be further understood\nsemantically, where a syntactic occurrence of a resource does not necessarily entail using that resource when\nthe program is executed. While this distinction has been largely unexplored, it turns out to be inescapable\nin Haskell’s optimising compiler, which heavily rewrites the source program in ways that break syntactic\nlinearity but preserve the program’s semantics.\n\n[communication protocols]"
+      "pitch": "We introduce Linear Core, a novel system which accepts the lazy semantics of linearity statically and is suitable for lazy languages such as the Core intermediate language of the Glasgow Haskell Compiler We prove that Linear Core is sound, guaranteeing linear resource usage, and that multiple optimising transformations preserve linearity in Linear Core while failing to do so in Core",
+      "key_finding": "Linear Core"
     },
     {
       "id": "arx:2603.17422v1",
@@ -10462,7 +10532,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 19.0,
-      "pitch": "The Law of Large Numbers for\nTime-inhomogeneous Markov Chains under\nGeneral Conditions\nAaron Lau and Kouji Yano\nAbstract\nThe weak and strong laws of large numbers for time-inhomogeneous\nMarkov chains are studied under general conditions. First, under Drift\nCondition and Contraction Condition in total variation, we prove the weak\nlaw of large numbers.\n\n[Markov chains · Markov chain · reinforcement learning]"
+      "pitch": "Our results utilize the invariant measure family in the sense of Liu–Lu (2025), and extend the classical Harris–ergodic LLN to the time-inhomogeneous setting In this setting, even basic ergodic principles are substantially more delicate",
+      "key_finding": "weak law of large numbers"
     },
     {
       "id": "arx:2604.04844v1",
@@ -10543,7 +10614,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.93,
-      "pitch": "Optimal Contest Beyond Convexity\nNegin Golrezaei ∗\nMohammadTaghi Hajiaghayi †\nSuho Shin ‡\nAbstract\nIn the contest design problem, initiated by Lazear and Rosen (JPE’81), there are n strategic\ncontestants, each of whom decides an effort level. A contest designer with a fixed budget must\nthen design a mechanism that allocates a prize pi to the i-th rank based on the outcome, to\nincentivize contestants to exert higher costly efforts and induce high-quality outcomes.\n\n[Polynomial-time approximation · Mechanism design]"
+      "pitch": "In this paper, we significantly deepen our understanding of optimal mechanisms under general settings by considering nonconvex high-dimensional objective functions in contestants’ qualities Negin Golrezaei ∗ MohammadTaghi Hajiaghayi † Suho Shin ‡ In the contest design problem, initiated by Lazear and Rosen (JPE’81), there are n strategic contestants, each of whom decides an effort level",
+      "key_finding": "polynomial-time"
     },
     {
       "id": "def:openalex:W2342216150",
@@ -10616,7 +10688,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.93,
-      "pitch": "This paper suggests spatial multi-criteria model in order to assist decision makers in the selection of sites which are suitable for ammunition depots (AD). They represent military facilities which have more criteria that need to be matched than civil structures.\n\n[Sensitivity analysis]"
+      "pitch": "The Combination of Expert Judgment and GIS-MAIRCA Analysis for the Selection of Sites for Ammunition Depots This paper suggests spatial multi-criteria model in order to assist decision makers in the selection of sites which are suitable for ammunition depots (AD They represent military facilities which have more criteria that need to be matched than civil structures",
+      "key_finding": "new technique for the multi-criteria decision making—MAIRCA"
     },
     {
       "id": "def:openalex:W4385420712",
@@ -10696,7 +10769,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.87,
-      "pitch": "As interest in Moon exploration grows, and efforts to establish an orbiting outpost intensify, accurate modeling of spacecraft dynamics in cislunar space is becoming increasingly important. Contrary to satellites in Low Earth Orbit (LEO), where it takes around 5 ms to communicate back and forth with a ground station, it can take up to 2.4 s to communicate with satellites near the Moon.\n\n[Kalman filter · Filter]"
+      "pitch": "In this research, the relative CR3BP equations of motion are derived and linearized using a matrix exponential approximation Contrary to satellites in Low Earth Orbit (LEO), where it takes around 5 ms to communicate back and forth with a ground station, it can take up to 2.4 s to communicate with satellites near the Moon",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "arx:2603.17869v1",
@@ -10778,7 +10852,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.82,
-      "pitch": "ON THE SPECTRAL GAP CONJECTURE FOR PAIRS IN SU(2)\nOLEG PIKHURKO AND KOHKI SAKAMOTO\nAbstract. For n ≥2, Gamburd, Jakobson, and Sarnak [J.\n\n[Spectral gap]"
+      "pitch": "In this paper, we prove that the zero-one law also holds for n = 2 We also remark that a Baire categorical analogue of this result holds. 1",
+      "key_finding": "that the zero-one law also holds for n = 2"
     },
     {
       "id": "arx:2604.03078v1",
@@ -10915,7 +10990,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.74,
-      "pitch": "The Quadratic Bin Packing Problem:\nExact Formulations and Algorithm\nV´ıtor G. Chagas∗1, Alberto Locatelli†2, Fl´avio K.\n\n[bin packing · Combinatorial optimization · linear programming]"
+      "pitch": "The Quadratic Bin Packing Problem: Exact Formulations and Algorithm The Quadratic Bin Packing Problem: Exact Formulations and Algorithm V´ıtor G Beyond its theoretical relevance, the QBPP is of practical interest due to its numerous real-world applications, mainly related to cluster analysis",
+      "key_finding": "enhanced version with a strengthened continuous relaxation"
     },
     {
       "id": "arx:2602.22874v1",
@@ -11023,7 +11099,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.72,
-      "pitch": "Flip Distance of Triangulations of Convex\nPolygons / Rotation Distance of Binary Trees\nis NP-complete∗\nJoseph Dorfer\nGraz University of Technology, Graz, Austria, joseph.dorfer@tugraz.at\nAbstract\nFlips in triangulations of convex polygons arise in many different settings. They are\nisomorphic to rotations in binary trees, define edges in the 1-skeleton of the Associahedron\nand cover relations in the Tamari Lattice.\n\n[spanning trees · spanning tree · polytope]"
+      "pitch": "We settle this question by proving that computing shortest flip sequences between triangulations of convex polygons, and therefore also computing the rotation distance of binary trees, is NP-hard They are isomorphic to rotations in binary trees, define edges in the 1-skeleton of the Associahedron and cover relations in the Tamari Lattice",
+      "key_finding": "techniques for flip sequences of triangulations whose counterparts were introduc"
     },
     {
       "id": "def:openalex:W4387451028",
@@ -11106,7 +11183,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.57,
-      "pitch": "The cooperative active defense guidance problem for a spacecraft with active defense is investigated in this paper. An engagement between a spacecraft, an active defense vehicle, and an interceptor is considered, where the target spacecraft with active defense will attempt to evade the interceptor.\n\n[reinforcement learning · Monte Carlo simulation]"
+      "pitch": "In this set, we propose an intelligent cooperative active defense (ICAAI) guidance strategy based on deep reinforcement learning Cooperative Guidance Strategy for Active Spacecraft Protection from a Homing Interceptor via Deep Reinforcement Learning The cooperative active defense guidance problem for a spacecraft with active defense is investigated in this paper",
+      "key_finding": "intelligent cooperative active defense"
     },
     {
       "id": "def:openalex:W2865103122",
@@ -11180,7 +11258,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.43,
-      "pitch": "Location information for events, assets, and individuals, mostly focusing on two dimensions so far, has triggered a multitude of applications across different verticals, such as consumer, networking, industrial, health care, public safety, and emergency response use cases. This survey provides a comprehensive review of such enabling technologies.\n\n[localization schemes]"
+      "pitch": "We overview range-free localization schemes, which have been traditionally explored in wireless sensor networks and are nowadays gaining attention for several envisioned Internet of Things applications We also present user mobility estimation techniques, particularly those applicable in cellular networks, that can improve localization and tracking accuracy",
+      "key_finding": "cellular localization systems including recent results on 5G localization"
     },
     {
       "id": "def:openalex:W2865103122",
@@ -11254,7 +11333,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.43,
-      "pitch": "Location information for events, assets, and individuals, mostly focusing on two dimensions so far, has triggered a multitude of applications across different verticals, such as consumer, networking, industrial, health care, public safety, and emergency response use cases. This survey provides a comprehensive review of such enabling technologies.\n\n[localization schemes]"
+      "pitch": "We overview range-free localization schemes, which have been traditionally explored in wireless sensor networks and are nowadays gaining attention for several envisioned Internet of Things applications We also present user mobility estimation techniques, particularly those applicable in cellular networks, that can improve localization and tracking accuracy",
+      "key_finding": "cellular localization systems including recent results on 5G localization"
     },
     {
       "id": "def:arxiv:2208.11832v4",
@@ -11364,7 +11444,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.32,
-      "pitch": "Motivated by a transit line planning problem in transportation systems, we investigate the following capacitated assignment problem under a budget constraint. Our model involves $L$ bins and $P$ items.\n\n[approximation algorithm · randomized rounding · approximation ratio]"
+      "pitch": "Our model involves $L$ bins and $P$ items We propose the first randomized rounding algorithm with a constant approximation ratio for this problem",
+      "key_finding": "following capacitated assignment problem under a budget constraint"
     },
     {
       "id": "def:arxiv:2208.11832v4",
@@ -11474,7 +11555,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.32,
-      "pitch": "Motivated by a transit line planning problem in transportation systems, we investigate the following capacitated assignment problem under a budget constraint. Our model involves $L$ bins and $P$ items.\n\n[approximation algorithm · randomized rounding · approximation ratio]"
+      "pitch": "Our model involves $L$ bins and $P$ items We propose the first randomized rounding algorithm with a constant approximation ratio for this problem",
+      "key_finding": "following capacitated assignment problem under a budget constraint"
     },
     {
       "id": "def:openalex:W2957927798",
@@ -11568,7 +11650,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.25,
-      "pitch": "In recent years, demand has been increasing for target detection and tracking from aerial imagery via drones using onboard powered sensors and devices. We propose a very effective method for this application based on a deep learning framework.\n\n[Kalman filter · Target tracking]"
+      "pitch": "We propose a very effective method for this application based on a deep learning framework We also introduce an effective target tracking approach for moving objects",
+      "key_finding": "very effective method for this application based on a deep learning framework"
     },
     {
       "id": "def:openalex:W2957927798",
@@ -11662,7 +11745,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.25,
-      "pitch": "In recent years, demand has been increasing for target detection and tracking from aerial imagery via drones using onboard powered sensors and devices. We propose a very effective method for this application based on a deep learning framework.\n\n[Kalman filter · Target tracking]"
+      "pitch": "We propose a very effective method for this application based on a deep learning framework We also introduce an effective target tracking approach for moving objects",
+      "key_finding": "very effective method for this application based on a deep learning framework"
     },
     {
       "id": "arx:2603.25832v1",
@@ -11729,7 +11813,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.22,
-      "pitch": "A recent\ndeterministic particle method for the full VML system [1] estimates the velocity score function via\nthe blob method, a kernel-based approximation with O(n2) cost. In this work, we replace the blob\nscore estimator with score-based transport modeling (SBTM), in which a neural network is trained\non-the-fly via implicit score matching at O(n) cost.\n\n[Score matching]"
+      "pitch": "In this work, we replace the blob score estimator with score-based transport modeling (SBTM), in which a neural network is trained on-the-fly via implicit score matching at O(n) cost We prove that the approximated collision operator preserves momentum and kinetic energy, and dissipates an estimated entropy",
+      "key_finding": "that the approximated collision operator preserves momentum and kinetic energy"
     },
     {
       "id": "arx:2604.04795v1",
@@ -11806,7 +11891,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.22,
-      "pitch": "Through this we discuss the sample\ncomplexities of these two problems for both finite-horizon and infinite-horizon settings. Depending on how the\ndistribution of St+1 is modeled given Xt and At, we will consider problem (1.1) and (1.2) in the context of\nMarkov decision process (MDP) and stochastic optimal control (SOC).\n\n[sample complexity · sequential decision-making]"
+      "pitch": "We demonstrate the application of the proposed approach through studying distributionally robust functional generated by ϕ-divergences including conditional value-at-risk We make the following assumption on the nonlinear function fθ and the parameter space Θ throughout the rest of the manuscript",
+      "key_finding": "elementary state augmentation method for a class of static risk measure applied"
     },
     {
       "id": "arx:2305.10863v1",
@@ -11887,7 +11973,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 18.11,
-      "pitch": "This makes it challenging to exploit GPUs effectively:\nusing GPUs to sample only a few graph nodes yields lower\nperformance than CPU-based sampling; and aggregating\nmany features exhibits high data movement costs between\nGPUs and CPUs. Therefore, current GNN serving systems\nuse CPUs for graph sampling and feature aggregation, limiting throughput.\n\n[sampling · Graph neural networks · Partition]"
+      "pitch": "We describe Quiver, a distributed GPU-based GNN serving system with low-latency and high-throughput We show that Quiver achieves up to 35× lower latency with a 8× higher throughput compared to state-of-the-art GNN approaches (DGL and PyG",
+      "key_finding": "sampling"
     },
     {
       "id": "arx:2601.22312v1",
@@ -11945,7 +12032,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.92,
-      "pitch": "We introduce\nSCALAR (Structural Consistency And Logic\nAcross Regimes), a benchmark for evaluating geometric scale generalization and its connection to\nstructural hallucination, consistency, and reasoning in materials foundation models. Given canonical crystal representations, models must reason\nabout derived nanoparticle structures obtained\nthrough supercell expansion and geometric truncation across length scales spanning a few atoms\nto over 18,000 atoms, totaling ≈100,000 structures from DFT-validated unit cells.\n\n[Chain-of-thought]"
+      "pitch": "We introduce SCALAR (Structural Consistency And Logic Across Regimes), a benchmark for evaluating geometric scale generalization and its connection to structural hallucination, consistency, and reasoning in materials foundation models We introduce SCALAR (Structural Consistency And Logic Across Regimes), a benchmark for evaluating geometric scale generalization and its connection to structural hallucination, consistency, and reasoning in materials foundation models",
+      "key_finding": "Chain-of-thought"
     },
     {
       "id": "arx:2603.27714v1",
@@ -12029,7 +12117,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.83,
-      "pitch": "The divergencefree BDM subspace is split L2-orthogonally into rotated gradients of a continuous streamfunction space and a finite-dimensional space of discrete harmonic fields whose dimension equals\nthe first Betti number of the surface. Consequently, any incompressible flow discretized on\nthis subspace can be reformulated with a scalar streamfunction and finitely many harmonic\ncoefficients as the only unknowns.\n\n[Compressible flow · Randomized algorithm]"
+      "pitch": "We present a randomized algorithm for constructing the harmonic basis and discuss implementation aspects including hybridization, efficient treatment of the harmonic unknowns, and pressure reconstruction The divergencefree BDM subspace is split L2-orthogonally into rotated gradients of a continuous streamfunction space and a finite-dimensional space of discrete harmonic fields whose dimension equals the first Betti number of the surface",
+      "key_finding": "discrete Helmholtz–Hodge decomposition for H"
     },
     {
       "id": "arx:2604.03399v1",
@@ -12124,7 +12213,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.66,
-      "pitch": "Impulse-to-Peak-Output Norm Optimal State-Feedback Control of\nLinear PDEs\nTristan Thomas1, Sachin Shivakumar2, and Javad Mohammadpour Velni1\nAbstract— Impulse-to-peak response (I2P) analysis for statespace ordinary differential equation (ODE) systems is a wellstudied classical problem. However, the techniques employed\nfor I2P optimal control of ODEs have not been extended to\npartial differential equation (PDE) systems due to the lack of a\nuniversal transfer function and state-space representation.\n\n[Lyapunov stability · Convex optimization · Transfer function]"
+      "pitch": "In this work, we utilize this PIE framework, and associated Lyapunov techniques, to formulate the I2P response analysis problem as a solvable convex optimization and obtain provable bounds for the I2P-norm of linear PDEs However, the techniques employed for I2P optimal control of ODEs have not been extended to partial differential equation (PDE) systems due to the lack of a universal transfer function and state-space representation",
+      "key_finding": "constructive method for I2P optimal state-feedback control of PDEs and demonstra"
     },
     {
       "id": "arx:2603.06010v2",
@@ -12219,7 +12309,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.64,
-      "pitch": "However, the advantage of frequency-domain analysis comes with its own\nlimitations. In this article, we develop a self-contained, end-to-end, fully time-domain formulation\nof gravitational-wave inference and present an implementation that makes the likelihood evaluation practical at scale by exploiting structured linear algebra, software, and hardware acceleration.\n\n[Fourier transform · binary search · Ion channel]"
+      "pitch": "We validate the method using injections and demonstrate speedups for likelihood evaluation and on modern GPUs We present tdanalysis, an accelerated implementation that handles gaps, sharp boundaries, and multiple disjoint segments, and supports GPUs",
+      "key_finding": "self-contained"
     },
     {
       "id": "arx:2602.19834v1",
@@ -12333,7 +12424,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.63,
-      "pitch": "Habitats are fragmented into patches and we seek to reconnect each habitat\nsuch that it remains connected even if any of its patches becomes unavailable. Formally, we are\ngiven an undirected graph with edge costs, a set of fixed green bridges represented as a subset of\nthe graph’s edges, a set of habitats represented as vertex subsets, and some budget.\n\n[induced subgraph · vertex degree · NP-hardness]"
+      "pitch": "We decide whether there exists a subset of the graph’s edges containing all fixed green bridges such that, for each habitat, the induced subgraph on the solution edges is 2-vertex-connected, and the total cost does not exceed the budget We also study the 2-edge-connectivity variant, modeling the case where any single reconnecting green bridge may fail",
+      "key_finding": "problem of robustly reconnecting habitats via the placement of green bridges at"
     },
     {
       "id": "def:openalex:W1924569945",
@@ -12392,7 +12484,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.44,
-      "pitch": "\n\n[calibration]"
+      "pitch": "OpenPTrack: Open source multi-camera calibration and people tracking for RGB-D camera networks",
+      "key_finding": "calibration"
     },
     {
       "id": "def:openalex:W1924569945",
@@ -12451,7 +12544,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.44,
-      "pitch": "\n\n[calibration]"
+      "pitch": "OpenPTrack: Open source multi-camera calibration and people tracking for RGB-D camera networks",
+      "key_finding": "calibration"
     },
     {
       "id": "def:arxiv:1707.06343v1",
@@ -12528,7 +12622,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.43,
-      "pitch": "Pebble games are single-player games on DAGs involving placing and moving pebbles on nodes of the graph according to a certain set of rules. The goal is to pebble a set of target nodes using a minimum number of pebbles.\n\n[inapproximability · hardness of approximation]"
+      "pitch": "We also introduce a family of explicit, constant indegree graphs with $n$ nodes where there exists a graph in the family such that using constant $k$ pebbles requires $Ω(n^k)$ moves to pebble in both the standard and black-white pebble games Inapproximability of the Standard Pebble Game and Hard to Pebble Graphs Pebble games are single-player games on DAGs involving placing and moving pebbles on nodes of the graph according to a certain set of rules",
+      "key_finding": "possibly simpler proof of the result in [CLNV15] and strengthen the result to sh"
     },
     {
       "id": "def:arxiv:1707.06343v1",
@@ -12605,7 +12700,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.43,
-      "pitch": "Pebble games are single-player games on DAGs involving placing and moving pebbles on nodes of the graph according to a certain set of rules. The goal is to pebble a set of target nodes using a minimum number of pebbles.\n\n[inapproximability · hardness of approximation]"
+      "pitch": "We also introduce a family of explicit, constant indegree graphs with $n$ nodes where there exists a graph in the family such that using constant $k$ pebbles requires $Ω(n^k)$ moves to pebble in both the standard and black-white pebble games Inapproximability of the Standard Pebble Game and Hard to Pebble Graphs Pebble games are single-player games on DAGs involving placing and moving pebbles on nodes of the graph according to a certain set of rules",
+      "key_finding": "possibly simpler proof of the result in [CLNV15] and strengthen the result to sh"
     },
     {
       "id": "arx:2602.21937v3",
@@ -12709,7 +12805,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.42,
-      "pitch": "Instance-optimal estimation of L2-norm\nTomer Adar∗\nMarch 26, 2026\nAbstract\nThe L2-norm, or collision norm, is a core entity in the analysis of distributions and probabilistic algorithms. Batu and Canonne (FOCS 2017) presented an extensive analysis of algorithmic\naspects of the L2-norm and its connection to uniformity testing.\n\n[sample complexity · sampling]"
+      "pitch": "In this paper, we present an unbiased L2-estimation algorithm whose sample complexity matches the instance-specific second-moment analysis Instance-optimal estimation of L2-norm Instance-optimal estimation of L2-norm Tomer Adar∗ March 26, 2026 The L2-norm, or collision norm, is a core entity in the analysis of distributions and probabilistic algorithms",
+      "key_finding": "L2-estimation algorithm"
     },
     {
       "id": "def:arxiv:2309.01762v1",
@@ -12768,7 +12865,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.42,
-      "pitch": "Given a connected graph $G$ and a configuration of $t$ pebbles on the vertices of G, a $q$-pebbling step consists of removing $q$ pebbles from a vertex, and adding a single pebble to one of its neighbors. Given a vector $\\bf{q}=(q_1,\\ldots,q_d)$, $\\bf{q}$-pebbling consists of allowing $q_i$-pebbling in coordinate $i$.\n\n[weight function]"
+      "pitch": "In this paper, we determine the weak threshold for $\\bf{q}$-pebbling on the sequence of grids $[n]^d$ for fixed $d$ and $\\bf{q}$, as $n\\to\\infty$ Thresholds for Pebbling on Grids Given a connected graph $G$ and a configuration of $t$ pebbles on the vertices of G, a $q$-pebbling step consists of removing $q$ pebbles from a vertex, and adding a single pebble to one of its neighbors",
+      "key_finding": "weight function"
     },
     {
       "id": "def:ntrs:19790061345",
@@ -12827,7 +12925,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.42,
-      "pitch": "The objective of this research is the development and flight test of a digital multi-rate VTOL autoland system. This autoland system provided the NASA/Army Fly-by-Wire CH-47 helicopter with an automatic 4-D trajectory following and landing capability.\n\n[position tracking]"
+      "pitch": "Flight test of a VTOL digital autoland system along complex trajectories The objective of this research is the development and flight test of a digital multi-rate VTOL autoland system This autoland system provided the NASA/Army Fly-by-Wire CH-47 helicopter with an automatic 4-D trajectory following and landing capability",
+      "key_finding": "position tracking"
     },
     {
       "id": "arx:2602.15921v1",
@@ -12922,7 +13021,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.37,
-      "pitch": "First,\nwe formulate weighted locale allocation as a constrained integer partition problem and give an\nO(n log n) algorithm that simultaneously satisfies minimum-representation, budget-exhaustion,\nand proportionality-bound constraints; we prove all three hold with a tight deviation bound\nof < 1. Second, we define a cascaded country-code inference function as a deterministic priority\nchain over heterogeneous signals (TLD structure, model-inferred metadata, language fallback)\nand prove it satisfies both determinism and graceful degradation.\n\n[Partition]"
+      "pitch": "We further formalize Latent Objective Induction (LOI), an environment-shaping operator over prompt spaces that steers downstream model behavior without restricting the feasible output set, and prove its convergence under mild assumptions We study algorithmic problems arising in the design of multi-source retrieval pipelines where ranked lists from heterogeneous search indices must be merged into a single result set satisfying formal diversity and coverage constraints",
+      "key_finding": "three algorithms with formal correctness guarantees and complexity bounds for th"
     },
     {
       "id": "def:arxiv:0406123v1",
@@ -13006,7 +13106,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.32,
-      "pitch": "A configuration of pebbles on the vertices of a graph is solvable if one can place a pebble on any given root vertex via a sequence of pebbling steps. The pebbling number of a graph G is the minimum number pi(G) so that every configuration of pi(G) pebbles is solvable.\n\n[bipartite graphs · bipartite graph]"
+      "pitch": "Pebbling in Dense Graphs A configuration of pebbles on the vertices of a graph is solvable if one can place a pebble on any given root vertex via a sequence of pebbling steps The pebbling number of a graph G is the minimum number pi(G) so that every configuration of pi(G) pebbles is solvable",
+      "key_finding": "that graphs on n&gt"
     },
     {
       "id": "arx:2604.03566v1",
@@ -13119,7 +13220,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.28,
-      "pitch": "Fr´echet Regression on the Bures-Wasserstein Manifold\nDuc Toan Nguyen 1 C´esar A. Uribe 1\nAbstract\nFr´echet regression, or conditional Barycenters, is\na flexible framework for modeling relationships\nbetween covariates (usually Euclidean) and response variables on general metric spaces, e.g.,\nprobability distributions or positive definite matrices.\n\n[Metric spaces · Diffusion · Convex optimization]"
+      "pitch": "In this work, we study the existence and computation of conditional barycenters, specifically in the space of positive-definite matrices with the Bures- Wasserstein metric We provide a sufficient condition for the existence of a minimizer of the conditional barycenter problem that characterizes the regression range of extrapolation",
+      "key_finding": "existence and computation of conditional barycenters"
     },
     {
       "id": "def:arxiv:2112.11611v1",
@@ -13203,7 +13305,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.25,
-      "pitch": "This paper presents a continuous optimization approach to DCOC and its application to spacecraft high-precision attitude control. The approach computes a control input sequence that maximizes the time-before-exit by solving a nonlinear programming problem with an exponentially weighted cost function and purely continuous variables.\n\n[linear programming · Sensitivity analysis]"
+      "pitch": "Continuous Optimization-Based Drift Counteraction Optimal Control: A Spacecraft Attitude Control Case Study This paper presents a continuous optimization approach to DCOC and its application to spacecraft high-precision attitude control The approach computes a control input sequence that maximizes the time-before-exit by solving a nonlinear programming problem with an exponentially weighted cost function and purely continuous variables",
+      "key_finding": "optimality guarantee of our approach"
     },
     {
       "id": "def:arxiv:2103.04470v5",
@@ -13297,7 +13400,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.25,
-      "pitch": "We study a family of invariants of compact metric spaces that combines the Curvature Sets defined by Gromov in the 1980s with Vietoris-Rips Persistent Homology. For given integers $k\\geq 0$ and $n\\geq 1$ we consider the dimension $k$ Vietoris-Rips persistence diagrams of \\emph{all} subsets of a given metric space with cardinality at most $n$.\n\n[metric space · Metric spaces]"
+      "pitch": "We call these invariants \\emph{persistence sets} and denote them as $\\mathbf{D}_{n,k}^\\textrm{VR}$ We precisely characterize some of them in the case of spheres and surfaces with constant curvature using a generalization of Ptolemy's inequality",
+      "key_finding": "useful properties of Vietoris-Rips persistence diagrams using Mayer-Vietori"
     },
     {
       "id": "arx:2604.02917v1",
@@ -13371,7 +13475,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.21,
-      "pitch": "Starting from the sample covariance factor 𝐿, the method combines randomized subspace embedding, spectral truncation, and ridge stabilization to construct an effective factor 𝐿eff. It then solves\nthe resulting constrained problem with a structured projection computed by scalar dual search and GPU-friendly\nmatrix–vector kernels, yielding one computational pipeline for the baseline, sketched, and Sketch–Truncate–\nRidge (STR)-regularized models.\n\n[GPU acceleration]"
+      "pitch": "We also establish approximation, conditioning, and stability guarantees for the sketching and STR models, including explicit 𝑂(𝜀) bounds for the covariance approximation, the optimal value error, and the solution perturbation under (𝜀, 𝛿)-subspace embeddings Starting from the sample covariance factor 𝐿, the method combines randomized subspace embedding, spectral truncation, and ridge stabilization to construct an effective factor 𝐿eff",
+      "key_finding": "sketch-based factor reduction and a Nesterov-accelerated projected gradient algo"
     },
     {
       "id": "arx:2604.05153v1",
@@ -13467,7 +13572,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.07,
-      "pitch": "A COLUMN-GENERATION APPROACH FOR AN ELECTRICITY\nTECHNICIAN ROUTING AND SCHEDULING PROBLEM WITH A\nLEXICOGRAPHIC OBJECTIVE\nELISE BANGERTER, DAVID SCHINDL, MERITXELL PACHECO PANEQUE,\nNOUR ELHOUDA TELLACHE, AND RODOLPHE GRISET\nAbstract. Electric utility companies perform numerous technical interventions every day.\n\n[pricing subproblem · dynamic programming]"
+      "pitch": "In this paper, we introduce a multi-objective variant of the technician routing and scheduling problem in which both objectives are optimized in lexicographic order We propose a compact mixed-integer linear formulation and an extended set-packing-based formulation",
+      "key_finding": "multi-objective variant of the technician routing and scheduling problem in whic"
     },
     {
       "id": "arx:2601.19541v1",
@@ -13526,7 +13632,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.03,
-      "pitch": "Published as a conference paper at ICLR 2026. Many mainstream approaches face challenges when dealing with decoupled\ndata.\n\n[sampling]"
+      "pitch": "We also utilize operator-splitting theory in the space of probability evolution to establish error controllability guarantees for this “conditional-to-joint” sampling scheme We evaluate our paradigm on a synthetic setting and three challenging multiphysics scenarios to demonstrate both principled insight and superior application performance of GenCP",
+      "key_finding": "sampling"
     },
     {
       "id": "arx:2604.00995v1",
@@ -13603,7 +13710,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.02,
-      "pitch": "Its multidimensional\nextension (MD-CRT) generalizes this principle to integer vectors\nand integer matrix moduli, enabling reconstruction in multidimensional signal processing scenarios. However, since matrices\nare generally non-commutative, the multidimensional extension\nintroduces new theoretical and algorithmic challenges.\n\n[Chinese Remainder Theorem · sampling]"
+      "pitch": "This work first investigates whether non-diagonal (non-separable) moduli offer fundamental advantages over traditional diagonal ones We show that under the same determinant constraint, non-diagonal matrices do not increase the dynamic range but yield more balanced and better-conditioned sampling patterns",
+      "key_finding": "MD-CRT framework"
     },
     {
       "id": "arx:2604.09303v1",
@@ -13708,7 +13816,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 17.0,
-      "pitch": "The problem is formulated as an inverse optimal control /\ninverse reinforcement learning task, with the intention treated\nas a parameter in the objective. A shifting horizon strategy\ndiscounts outdated information, while online control-informed\nlearning enables efficient gradient computation and online\nparameter updates.\n\n[Kalman filter · Support Vector Machines · reinforcement learning]"
+      "pitch": "In this work, we focus on cases where an agent’s intention is represented as its goal state, so intention prediction is formulated as estimating the underlying goal state from observed trajectories The problem is formulated as an inverse optimal control / inverse reinforcement learning task, with the intention treated as a parameter in the objective",
+      "key_finding": "online intention prediction framework for estimating the goal state of autonomou"
     },
     {
       "id": "arx:2603.14599v1",
@@ -13775,7 +13884,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.9,
-      "pitch": "CONTINUITY OF ASYMPTOTIC ENTROPY ON FREE SOLVABLE\nGROUPS\nEDUARDO SILVA\nAbstract. We prove the continuity of asymptotic entropy, as a function of the step\ndistribution, among non-degenerate probability measures with finite Shannon entropy\non the free solvable group Sd,m of rank d ≥3 and derived length m ≥2.\n1.\n\n[random walk]"
+      "pitch": "We prove the continuity of asymptotic entropy, as a function of the step distribution, among non-degenerate probability measures with finite Shannon entropy on the free solvable group Sd,m of rank d ≥3 and derived length m ≥2. 1 Continuity of asymptotic entropy on free solvable groups CONTINUITY OF ASYMPTOTIC ENTROPY ON FREE SOLVABLE GROUPS EDUARDO SILVA Abstract",
+      "key_finding": "continuity of asymptotic entropy"
     },
     {
       "id": "def:openalex:W4396552442",
@@ -13842,7 +13952,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.9,
-      "pitch": "In recent years, satellite communication systems (SCSs) have rapidly developed in terms of their role and capabilities, promoted by advancements in space launch technologies. However, this rapid development has also led to the emergence of significant security vulnerabilities, demonstrated through real-world targeted attacks such as AcidRain and AcidPour that demand immediate attention from the security community.\n\n[Quantum communication]"
+      "pitch": "In this paper, we systematically categorize and analyze both attacks and defenses within the framework of confidentiality, integrity, and availability, focusing on specific threats that pose substantial risks to SCSs A Survey on Satellite Communication System Security In recent years, satellite communication systems (SCSs) have rapidly developed in terms of their role and capabilities, promoted by advancements in space launch technologies",
+      "key_finding": "prospective security challenges and solutions for future SCSs"
     },
     {
       "id": "def:openalex:W4396552442",
@@ -13909,7 +14020,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.9,
-      "pitch": "In recent years, satellite communication systems (SCSs) have rapidly developed in terms of their role and capabilities, promoted by advancements in space launch technologies. However, this rapid development has also led to the emergence of significant security vulnerabilities, demonstrated through real-world targeted attacks such as AcidRain and AcidPour that demand immediate attention from the security community.\n\n[Quantum communication]"
+      "pitch": "In this paper, we systematically categorize and analyze both attacks and defenses within the framework of confidentiality, integrity, and availability, focusing on specific threats that pose substantial risks to SCSs A Survey on Satellite Communication System Security In recent years, satellite communication systems (SCSs) have rapidly developed in terms of their role and capabilities, promoted by advancements in space launch technologies",
+      "key_finding": "prospective security challenges and solutions for future SCSs"
     },
     {
       "id": "arx:2604.04551v1",
@@ -13983,7 +14095,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.85,
-      "pitch": "To the best of our knowledge, this improves upon the\nbest-known complexity for IAPG. The key theoretical ingredient is a quadratic growth\ncondition on the dual of the inexact proximal problem, which arises from the conic\npolyhedral structure of ω and implies linear convergence of the inner proximal gradient\nloop.\n\n[Linear convergence]"
+      "pitch": "The key theoretical ingredient is a quadratic growth condition on the dual of the inexact proximal problem, which arises from the conic polyhedral structure of ω and implies linear convergence of the inner proximal gradient loop To the best of our knowledge, this improves upon the best-known complexity for IAPG",
+      "key_finding": "in this paper that when ω is a conic polyhedral function"
     },
     {
       "id": "def:arxiv:1304.0755v7",
@@ -14064,7 +14177,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.73,
-      "pitch": "We propose a topological approach to the problem of determining a curve from its iterated integrals. In particular, we prove that a family of terms in the signature series of a two dimensional closed curve with finite p variation, 1\\leq p&lt;2, are in fact moments of its winding number.\n\n[Fourier transform]"
+      "pitch": "Our calculations also enable us to express the Fourier transform of the n-point functions of SLE curves in terms of the expected signature of SLE curves Uniqueness of signature for simple curves We propose a topological approach to the problem of determining a curve from its iterated integrals",
+      "key_finding": "topological approach to the problem of determining a curve from its iterated int"
     },
     {
       "id": "def:arxiv:1304.0755v7",
@@ -14145,7 +14259,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.73,
-      "pitch": "We propose a topological approach to the problem of determining a curve from its iterated integrals. In particular, we prove that a family of terms in the signature series of a two dimensional closed curve with finite p variation, 1\\leq p&lt;2, are in fact moments of its winding number.\n\n[Fourier transform]"
+      "pitch": "Our calculations also enable us to express the Fourier transform of the n-point functions of SLE curves in terms of the expected signature of SLE curves Uniqueness of signature for simple curves We propose a topological approach to the problem of determining a curve from its iterated integrals",
+      "key_finding": "topological approach to the problem of determining a curve from its iterated int"
     },
     {
       "id": "def:openalex:W4402540191",
@@ -14211,7 +14326,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.72,
-      "pitch": "When unmanned combat aerial vehicles (UCAVs) egress from the battlefield after attacking the target, the defensive radar systems detect signals reflected by the cavity structure of the nozzle and engine of the UCAVs, threatening their survivability. Infrared (IR) guided missiles can also threaten them by detecting the gaseous plume and hot engine parts.\n\n[Observability]"
+      "pitch": "We present a comprehensive investigation of the effects of the cross-sectional shape of double serpentine nozzles on thrust, IR signature, and radar cross section (RCS), which are associated with propulsive performance and low observability When unmanned combat aerial vehicles (UCAVs) egress from the battlefield after attacking the target, the defensive radar systems detect signals reflected by the cavity structure of the nozzle and engine of the UCAVs, threatening their survivability",
+      "key_finding": "comprehensive investigation of the effects of the cross-sectional shape of doubl"
     },
     {
       "id": "def:openalex:W4402540191",
@@ -14277,7 +14393,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.72,
-      "pitch": "When unmanned combat aerial vehicles (UCAVs) egress from the battlefield after attacking the target, the defensive radar systems detect signals reflected by the cavity structure of the nozzle and engine of the UCAVs, threatening their survivability. Infrared (IR) guided missiles can also threaten them by detecting the gaseous plume and hot engine parts.\n\n[Observability]"
+      "pitch": "We present a comprehensive investigation of the effects of the cross-sectional shape of double serpentine nozzles on thrust, IR signature, and radar cross section (RCS), which are associated with propulsive performance and low observability When unmanned combat aerial vehicles (UCAVs) egress from the battlefield after attacking the target, the defensive radar systems detect signals reflected by the cavity structure of the nozzle and engine of the UCAVs, threatening their survivability",
+      "key_finding": "comprehensive investigation of the effects of the cross-sectional shape of doubl"
     },
     {
       "id": "def:openalex:W2921409350",
@@ -14353,7 +14470,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.63,
-      "pitch": "Aerial infrared target tracking is the basis of many weapon systems, especially the air‐to‐air missile. Till now, it is still challenging research to track the aircraft in the event of complex background.\n\n[Target tracking · Filter]"
+      "pitch": "In this paper, we focus on developing an algorithm that could track the aircraft fast and accurately based on infrared image sequence We proposed a framework composed of a tracker T based on correlation filter and a detector D based on deep learning, which we call combined tracking and detecting (CTAD",
+      "key_finding": "experiments performed on two sequences from AMCOM FLIR dataset of the proposed a"
     },
     {
       "id": "def:openalex:W4327948426",
@@ -14420,7 +14538,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.63,
-      "pitch": "This paper proposes an impact time control guidance law based on exact nonlinear kinematics equations. To address the impact time control problem of providing enhanced intercept accuracy, we formulated an error variable whose regulation ensures the fulfillment of the required tasks without time-to-go estimation.\n\n[Lyapunov stability]"
+      "pitch": "Lyapunov-Based Impact Time Control Guidance Law with Performance Prediction This paper proposes an impact time control guidance law based on exact nonlinear kinematics equations To address the impact time control problem of providing enhanced intercept accuracy, we formulated an error variable whose regulation ensures the fulfillment of the required tasks without time-to-go estimation",
+      "key_finding": "impact time control guidance law based on exact nonlinear kinematics equations"
     },
     {
       "id": "def:openalex:W2921409350",
@@ -14496,7 +14615,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.63,
-      "pitch": "Aerial infrared target tracking is the basis of many weapon systems, especially the air‐to‐air missile. Till now, it is still challenging research to track the aircraft in the event of complex background.\n\n[Target tracking · Filter]"
+      "pitch": "In this paper, we focus on developing an algorithm that could track the aircraft fast and accurately based on infrared image sequence We proposed a framework composed of a tracker T based on correlation filter and a detector D based on deep learning, which we call combined tracking and detecting (CTAD",
+      "key_finding": "experiments performed on two sequences from AMCOM FLIR dataset of the proposed a"
     },
     {
       "id": "arx:2511.10135v4",
@@ -14570,7 +14690,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.56,
-      "pitch": "We demonstrate the expressiveness of Foxtrot on a wide range of examples, including the adversarial von\nNeumann coin and the randombytes_uniform function of the Sodium cryptography software library. All results have been mechanized in the Rocq proof assistant and the Iris separation logic framework.\n\n[Randomized algorithm]"
+      "pitch": "We demonstrate the expressiveness of Foxtrot on a wide range of examples, including the adversarial von Neumann coin and the randombytes_uniform function of the Sodium cryptography software library We demonstrate the expressiveness of Foxtrot on a wide range of examples, including the adversarial von Neumann coin and the randombytes_uniform function of the Sodium cryptography software library",
+      "key_finding": "Foxtrot"
     },
     {
       "id": "arx:2603.26963v1",
@@ -14650,7 +14771,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.56,
-      "pitch": "1\nOn the Optimal Number of Grids for Differentially\nPrivate Non-Interactive K-Means Clustering\nGokularam Muthukrishnan*, Anshoo Tandon*\nAbstract—Differentially private K-means clustering enables\nreleasing cluster centers derived from a dataset while protecting\nthe privacy of the individuals. Non-interactive clustering techniques based on privatized histograms are attractive because the\nreleased data synopsis can be reused for other downstream tasks\nwithout additional privacy loss.\n\n[k-means clustering · Differential privacy · clustering algorithm]"
+      "pitch": "In this work, we revisit this choice and propose a refined grid-size selection rule derived by minimizing an upper bound on the expected deviation in the K-means objective function, leading to a more principled discretization strategy for non-interactive private clustering Non-interactive clustering techniques based on privatized histograms are attractive because the released data synopsis can be reused for other downstream tasks without additional privacy loss",
+      "key_finding": "k-means clustering"
     },
     {
       "id": "arx:2311.13333v2",
@@ -14729,7 +14851,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.45,
-      "pitch": "Recent years have seen increased interest\nin developing model-based timing analysis and schedule optimization approaches for ROS2-based applications. To complement these approaches, we propose a tracing and measurement\nframework to obtain timing models of ROS2-based applications.\n\n[Sensor fusion · Filter]"
+      "pitch": "We demonstrate our framework’s capabilities by synthesizing the timing model of a real-world benchmark implementing LIDAR-based localization in Autoware’s Autonomous Valet Parking Recent years have seen increased interest in developing model-based timing analysis and schedule optimization approaches for ROS2-based applications",
+      "key_finding": "tracing and measurement framework to obtain timing models of ROS2-based applicat"
     },
     {
       "id": "arx:2601.18498v1",
@@ -14791,7 +14914,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.42,
-      "pitch": "Uncovering Regulatory Hubs and Molecular Subtypes in Major\nDepressive Disorder through Integrative Methylome Analysis\nMingyan Liu *, Min Huang *\n(*) These authors contributed equally to this work. Correspondence: msfocus@gmail.com (Mingyan Liu), minhuang1@link.cuhk.edu.cn (Min Huang)\nAbstract\nMajor Depressive Disorder (MDD) is a clinically heterogeneous syndrome with diverse etiological pathways.\n\n[Synaptic plasticity]"
+      "pitch": "This study is hypothesis-generating rather than hypothesis-confirming Correspondence: msfocus@gmail.com (Mingyan Liu), minhuang1@link.cuhk.edu.cn (Min Huang) Major Depressive Disorder (MDD) is a clinically heterogeneous syndrome with diverse etiological pathways",
+      "key_finding": "Synaptic plasticity"
     },
     {
       "id": "def:ntrs:19950049809",
@@ -14850,7 +14974,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.42,
-      "pitch": "The Clementine mission is designed to test Strategic Defense Initiative Organization (SDIO) technology, the Brilliant Pebbles and Brilliant Eyes sensors, by mapping the moon surface and flying by the asteroid Geographos. The capability of two of the instruments available on board the spacecraft, the lidar (laser radar) and the UV/Visible camera is used in the covariance analysis to obtain the spacecraft delivery uncertainties at the asteroid.\n\n[variance analysis]"
+      "pitch": "The capability of two of the instruments available on board the spacecraft, the lidar (laser radar) and the UV/Visible camera is used in the covariance analysis to obtain the spacecraft delivery uncertainties at the asteroid These uncertainties are due primarily to asteroid ephemeris uncertainties",
+      "key_finding": "variance analysis"
     },
     {
       "id": "def:ntrs:19950049809",
@@ -14909,7 +15034,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.42,
-      "pitch": "The Clementine mission is designed to test Strategic Defense Initiative Organization (SDIO) technology, the Brilliant Pebbles and Brilliant Eyes sensors, by mapping the moon surface and flying by the asteroid Geographos. The capability of two of the instruments available on board the spacecraft, the lidar (laser radar) and the UV/Visible camera is used in the covariance analysis to obtain the spacecraft delivery uncertainties at the asteroid.\n\n[variance analysis]"
+      "pitch": "The capability of two of the instruments available on board the spacecraft, the lidar (laser radar) and the UV/Visible camera is used in the covariance analysis to obtain the spacecraft delivery uncertainties at the asteroid These uncertainties are due primarily to asteroid ephemeris uncertainties",
+      "key_finding": "variance analysis"
     },
     {
       "id": "def:ntrs:20205010306",
@@ -14968,7 +15094,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.42,
-      "pitch": "As human exploration once again targets the surface of the Moon, questions continue to emerge regarding the necessity of Earth-based tracking systems, such as the Deep Space Network, for spacecraft navigation in support of lunar descent and landing. This paper will derive an extensive Deep Space Network sensor model for use in linear covariance analysis and demonstrate the resulting trajectory dispersions and navigation performance in comparison with alternate solutions, such as terrain relative navigation.\n\n[variance analysis]"
+      "pitch": "This paper will derive an extensive Deep Space Network sensor model for use in linear covariance analysis and demonstrate the resulting trajectory dispersions and navigation performance in comparison with alternate solutions, such as terrain relative navigation This paper will derive an extensive Deep Space Network sensor model for use in linear covariance analysis and demonstrate the resulting trajectory dispersions and navigation performance in comparison with alternate solutions, such as terrain relative navigation",
+      "key_finding": "variance analysis"
     },
     {
       "id": "arx:2604.04026v1",
@@ -15035,7 +15162,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.41,
-      "pitch": "Optimal triangulations for piecewise linear approximations of\nnon-convex variable products\nRobert Burlacu∗\nLukas Hager†\nRobert Hildebrand‡\nAbstract\nWe show optimal triangulations for piecewise linear (pwl. ) approximations of indefinite quadratic\nfunctions over the plane. Optimal triangulations have minimum triangle density while allowing\na pwl. approximation that fulfills a prescribed error bound measured in the L8-norm.\n\n[triangulation]"
+      "pitch": "In this paper, we resolve this open question: allowing varying deviations at vertices reduces the optimal triangle density by 25% compared to Atariah et al., and we prove this is globally optimal We thus show that the potential of general pwl. approximations is significantly lower for indefinite than for definite quadratic functions, where the triangle density can be halved when allowing general approximations compared to interpolations",
+      "key_finding": "is globally optimal"
     },
     {
       "id": "arx:2602.05514v1",
@@ -15117,7 +15245,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.36,
-      "pitch": "Under review at ICLR 2026 Workshop on Advances in Financial AI\nDETECTING INFORMATION CHANNELS IN CONGRES-\nSIONAL TRADING VIA TEMPORAL GRAPH LEARNING\nBenjamin Pham Roodman∗\nNational Taiwan University\nR12922210@ntu.edu.tw\nEugene Sy∗\nNational Taiwan University\nd13949006@ntu.edu.tw\nJ. We introduce a temporal graph network (TGN) framework to identify information channels through\nwhich members of Congress may obtain advantageous knowledge when trading\ncompany stocks.\n\n[Ion channel]"
+      "pitch": "We introduce a temporal graph network (TGN) framework to identify information channels through which members of Congress may obtain advantageous knowledge when trading company stocks We construct a multimodal dynamic graph integrating diverse publicly available datasets, concerning congressional stock transactions, lobbying relationships, campaign finance contributions, and geographical connections between legislators and corporations",
+      "key_finding": "temporal graph network"
     },
     {
       "id": "arx:2602.16387v1",
@@ -15195,7 +15324,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.35,
-      "pitch": "Computing Tarski Fixed Points in Financial Networks\nLeander Besting∗\nMartin Hoefer†\nLars Huth‡\nAbstract\nModern financial networks are highly connected and result in complex interdependencies of\nthe involved institutions. In the prominent Eisenberg-Noe model [12], a fundamental aspect\nis clearing – to determine the amount of assets available to each financial institution in the\npresence of potential defaults and bankruptcy.\n\n[polynomial-time algorithm]"
+      "pitch": "In this paper, we provide an efficient algorithm to compute a minimal fixed point that runs in strongly polynomial time We also study claims trading, a local network adjustment to improve clearing, when networks are evaluated with minimal clearing",
+      "key_finding": "Eisenberg-Noe model"
     },
     {
       "id": "arx:2604.11138v1",
@@ -15272,7 +15402,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.35,
-      "pitch": "We successfully deploy these\npolicies to the real world using a single monocular RGB camera, demonstrating robust in-hand reorientation of complex object geometries\neven under adversarial lighting conditions. Abstract—In-hand object reorientation requires precise estimation of the object pose to handle complex task dynamics.\n\n[reinforcement learning · ray tracing]"
+      "pitch": "We successfully deploy these policies to the real world using a single monocular RGB camera, demonstrating robust in-hand reorientation of complex object geometries even under adversarial lighting conditions We present a sim-to-real framework for monocular RGB in-hand reorientation that integrates 3D Gaussian Splatting (3DGS) to bridge the visual sim-to-real gap",
+      "key_finding": "pipeline for training vision-based policies in simulation using 3D Gaussian Spla"
     },
     {
       "id": "arx:2603.28736v1",
@@ -15356,7 +15487,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.24,
-      "pitch": "The approach leverages high-resolution ray tracing\nin combination with wideband channel sounding to ensure\nconsistency between simulated and measured propagation. The\nmethodology is validated in urban scenarios featuring both\nmono-static and bi-static configurations, as well as moving user\nplatforms and vehicles.\n\n[ray tracing · calibration]"
+      "pitch": "In this context, accurate channel models are essential, as they determine the fidelity of sensing/communication co-design and the reliability of data-driven algorithms The approach leverages high-resolution ray tracing in combination with wideband channel sounding to ensure consistency between simulated and measured propagation",
+      "key_finding": "methodology to calibrate Radio-Frequency Digital Twins"
     },
     {
       "id": "arx:2604.08328v1",
@@ -15423,7 +15555,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.22,
-      "pitch": "1\nData-Driven Moving Horizon Estimators for Linear\nSystems with Sample Complexity Analysis\nPeihu Duan, Jiabao He, Yuezu Lv, Guanghui Wen\nAbstract—This paper investigates the state estimation problem\nfor\nlinear systems subject to Gaussian noise, where the model\nparameters are unknown. By formulating and solving an optimization problem that incorporates both offline and online system\ndata, a novel data-driven moving horizon estimator (DDMHE) is\ndesigned.\n\n[sample complexity]"
+      "pitch": "We prove that the expected 2-norm of the estimation error of the proposed DDMHE is ultimately bounded We also quantify the performance gap between the proposed DDMHE using noisy data and the traditional moving horizon estimator with known system matrices",
+      "key_finding": "that the expected 2-norm of the estimation error of the proposed DDMHE is ultima"
     },
     {
       "id": "def:openalex:W2801001784",
@@ -15490,7 +15623,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.22,
-      "pitch": "In this thesis, a Proportional-Integral-Derivative (PID) guidance scheme is discussed to improve the miss distance accuracy and the finite time stability problem in the Proportional Navigation Guidance (PNG). The primary goal of this study is to design the PID guidance that can accurately intercept the fast maneuvering target.\n\n[PID control]"
+      "pitch": "The primary goal of this study is to design the PID guidance that can accurately intercept the fast maneuvering target The primary goal of this study is to design the PID guidance that can accurately intercept the fast maneuvering target",
+      "key_finding": "PNG model"
     },
     {
       "id": "def:openalex:W2801001784",
@@ -15557,7 +15691,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.22,
-      "pitch": "In this thesis, a Proportional-Integral-Derivative (PID) guidance scheme is discussed to improve the miss distance accuracy and the finite time stability problem in the Proportional Navigation Guidance (PNG). The primary goal of this study is to design the PID guidance that can accurately intercept the fast maneuvering target.\n\n[PID control]"
+      "pitch": "The primary goal of this study is to design the PID guidance that can accurately intercept the fast maneuvering target The primary goal of this study is to design the PID guidance that can accurately intercept the fast maneuvering target",
+      "key_finding": "PNG model"
     },
     {
       "id": "def:openalex:W2964054096",
@@ -15615,7 +15750,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.16,
-      "pitch": "Guidance systems are important to autonomous rendezvous with uncooperative targets such as an active debris removal (ADR) mission. A novel guidance frame is established in rotating line-of-sight (LOS) coordinates, which resolves the coupling effect between pitch and yaw planes in a general 3D scenario.\n\n[Monte Carlo simulation]"
+      "pitch": "This paper builds on previous efforts in polynomial chaos expansion (PCE) to develop an efficient analysis technique for guidance algorithms Nonlinear Augmented Proportional Navigation for Midrange Rendezvous Guidance and Performance Assessment Guidance systems are important to autonomous rendezvous with uncooperative targets such as an active debris removal (ADR) mission",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "def:openalex:W2964054096",
@@ -15673,7 +15809,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.16,
-      "pitch": "Guidance systems are important to autonomous rendezvous with uncooperative targets such as an active debris removal (ADR) mission. A novel guidance frame is established in rotating line-of-sight (LOS) coordinates, which resolves the coupling effect between pitch and yaw planes in a general 3D scenario.\n\n[Monte Carlo simulation]"
+      "pitch": "This paper builds on previous efforts in polynomial chaos expansion (PCE) to develop an efficient analysis technique for guidance algorithms Nonlinear Augmented Proportional Navigation for Midrange Rendezvous Guidance and Performance Assessment Guidance systems are important to autonomous rendezvous with uncooperative targets such as an active debris removal (ADR) mission",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "def:openalex:W4327736838",
@@ -15765,7 +15902,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.16,
-      "pitch": "In the realm of providing space-based internet access services, utilizing large-scale low Earth orbit (LEO) satellite networks have emerged as a promising solution for bridging the digital divide and connecting previously unconnected regions. The deployment of LEO satellites can augment terrestrial networks, with increased efficiency and reduced costs.\n\n[linear programming]"
+      "pitch": "In this study, we present a novel routing algorithm, designated as Internet Fast Access Routing (IFAR), aimed at facilitating faster internet access for users The deployment of LEO satellites can augment terrestrial networks, with increased efficiency and reduced costs",
+      "key_finding": "novel routing algorithm"
     },
     {
       "id": "def:openalex:W4327736838",
@@ -15857,7 +15995,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.16,
-      "pitch": "In the realm of providing space-based internet access services, utilizing large-scale low Earth orbit (LEO) satellite networks have emerged as a promising solution for bridging the digital divide and connecting previously unconnected regions. The deployment of LEO satellites can augment terrestrial networks, with increased efficiency and reduced costs.\n\n[linear programming]"
+      "pitch": "In this study, we present a novel routing algorithm, designated as Internet Fast Access Routing (IFAR), aimed at facilitating faster internet access for users The deployment of LEO satellites can augment terrestrial networks, with increased efficiency and reduced costs",
+      "key_finding": "novel routing algorithm"
     },
     {
       "id": "def:ntrs:20250002065",
@@ -15915,7 +16054,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.16,
-      "pitch": "To ensure a sustainable use of low earth orbit and for Earth orbiting missions in general, reliable and effective collision prediction between space objects is key. In addition, the space object catalog is expected to increase tremendously in size in the very near future.\n\n[Monte Carlo simulation]"
+      "pitch": "This paper documents the results of the studies that CARA has undertaken and shows that the ai/ML solutions undertaken to date have not shown promise for applicability in risk assessment In addition, the space object catalog is expected to increase tremendously in size in the very near future",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "arx:2602.17918v2",
@@ -16011,7 +16151,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.13,
-      "pitch": "This semi-adversarial setting naturally sits between the classical stochastic\ncase with i.i.d. instances for which function classes with finite VC dimension are learnable; and\nthe adversarial case with arbitrary instances, known to be significantly more restrictive. For\nthis problem, [GHMS23] showed that, if the learner knows the distribution µ of clean samples in advance, learning can be achieved for all VC classes without restrictions on adversary\ncorruptions.\n\n[lower bounds · VC dimension · PAC learning]"
+      "pitch": "We therefore focus on the distribution-free setting where µ is unknown and propose an algorithm AbstainBoost based on a boosting procedure of weak learners, which guarantees sublinear error for general VC classes in distribution-free abstention learning for oblivious adversaries We study the classical online prediction problem in which a learner sequentially observes an instance xt ∈X and makes a prediction about a value yt before observing the true label",
+      "key_finding": "sequential prediction problem in which an adversary is allowed to inject arbitra"
     },
     {
       "id": "def:openalex:W3086645455",
@@ -16070,7 +16211,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.1,
-      "pitch": "The CUS, also known as a counter-drone system, protects personal, commercial, public, and military facilities and areas from uncontrollable and belligerent UAVs by neutralizing or destroying them. This paper provides a comprehensive survey of the CUS to describe the key technologies of the CUS and provide sufficient information with wich to comprehend this system.\n\n[Network design]"
+      "pitch": "This paper provides a comprehensive survey of the CUS to describe the key technologies of the CUS and provide sufficient information with wich to comprehend this system The CUS, also known as a counter-drone system, protects personal, commercial, public, and military facilities and areas from uncontrollable and belligerent UAVs by neutralizing or destroying them",
+      "key_finding": "Network design"
     },
     {
       "id": "def:openalex:W3086645455",
@@ -16129,7 +16271,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.1,
-      "pitch": "The CUS, also known as a counter-drone system, protects personal, commercial, public, and military facilities and areas from uncontrollable and belligerent UAVs by neutralizing or destroying them. This paper provides a comprehensive survey of the CUS to describe the key technologies of the CUS and provide sufficient information with wich to comprehend this system.\n\n[Network design]"
+      "pitch": "This paper provides a comprehensive survey of the CUS to describe the key technologies of the CUS and provide sufficient information with wich to comprehend this system The CUS, also known as a counter-drone system, protects personal, commercial, public, and military facilities and areas from uncontrollable and belligerent UAVs by neutralizing or destroying them",
+      "key_finding": "Network design"
     },
     {
       "id": "def:openalex:W2568833009",
@@ -16188,7 +16331,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.1,
-      "pitch": "Resource optimization and scheduling is a costly, challenging problem that affects almost every aspect of our lives. One example that affects each of us is health care: Poor systems design and scheduling of resources can lead to higher rates of patient noncompliance and burnout of health care providers, as highlighted by the Institute of Medicine (Brandenburg et al. 2015).\n\n[scheduling algorithm]"
+      "pitch": "Apprenticeship Scheduling for Human-Robot Teams Resource optimization and scheduling is a costly, challenging problem that affects almost every aspect of our lives One example that affects each of us is health care: Poor systems design and scheduling of resources can lead to higher rates of patient noncompliance and burnout of health care providers, as highlighted by the Institute of Medicine (Brandenburg et al. 2015",
+      "key_finding": "scheduling algorithm"
     },
     {
       "id": "def:openalex:W2568833009",
@@ -16247,7 +16391,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.1,
-      "pitch": "Resource optimization and scheduling is a costly, challenging problem that affects almost every aspect of our lives. One example that affects each of us is health care: Poor systems design and scheduling of resources can lead to higher rates of patient noncompliance and burnout of health care providers, as highlighted by the Institute of Medicine (Brandenburg et al. 2015).\n\n[scheduling algorithm]"
+      "pitch": "Apprenticeship Scheduling for Human-Robot Teams Resource optimization and scheduling is a costly, challenging problem that affects almost every aspect of our lives One example that affects each of us is health care: Poor systems design and scheduling of resources can lead to higher rates of patient noncompliance and burnout of health care providers, as highlighted by the Institute of Medicine (Brandenburg et al. 2015",
+      "key_finding": "scheduling algorithm"
     },
     {
       "id": "def:ntrs:20070029424",
@@ -16315,7 +16460,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.09,
-      "pitch": "During the Columbia Accident Investigation, imaging teams supporting debris shedding analysis were hampered by poor entry image quality and the general lack of information on optical signatures associated with a nominal Shuttle entry. After the accident, recommendations were made to NASA management to develop and maintain a state-of-the-art imagery database for Shuttle engineering performance assessments and to improve entry imaging capability to support anomaly and contingency analysis during a mission.\n\n[Boundary layer · Mach number]"
+      "pitch": "This paper reviews the process used by the engineering community to influence data collection methods and analysis of global infrared images of the Shuttle obtained during hypersonic entry After the accident, recommendations were made to NASA management to develop and maintain a state-of-the-art imagery database for Shuttle engineering performance assessments and to improve entry imaging capability to support anomaly and contingency analysis during a mission",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "def:ntrs:20070029424",
@@ -16383,7 +16529,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.09,
-      "pitch": "During the Columbia Accident Investigation, imaging teams supporting debris shedding analysis were hampered by poor entry image quality and the general lack of information on optical signatures associated with a nominal Shuttle entry. After the accident, recommendations were made to NASA management to develop and maintain a state-of-the-art imagery database for Shuttle engineering performance assessments and to improve entry imaging capability to support anomaly and contingency analysis during a mission.\n\n[Boundary layer · Mach number]"
+      "pitch": "This paper reviews the process used by the engineering community to influence data collection methods and analysis of global infrared images of the Shuttle obtained during hypersonic entry After the accident, recommendations were made to NASA management to develop and maintain a state-of-the-art imagery database for Shuttle engineering performance assessments and to improve entry imaging capability to support anomaly and contingency analysis during a mission",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "arx:2603.08261v2",
@@ -16441,7 +16588,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 16.01,
-      "pitch": "Magnetoconvection in a spherical shell: Equatorial symmetry\nduring the transition from the weak- to the strong-field regime\nL. Teed\nAbstract\nAt small but supercritical Rayleigh numbers, simulations of dynamos in spherical shells often separate into two broad regimes characterised either by their relative magnetic field strength (weak/strong)\nor by their dominant force balance (VAC/MAC).\n\n[Compressible flow]"
+      "pitch": "We show that in either case the transition correlates with a breaking of equatorial symmetry Magnetoconvection in a spherical shell: Equatorial symmetry during the transition from the weak- to the strong-field regime Magnetoconvection in a spherical shell: Equatorial symmetry during the transition from the weak- to the strong-field regime L",
+      "key_finding": "Compressible flow"
     },
     {
       "id": "arx:2604.10953v1",
@@ -16569,7 +16717,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.93,
-      "pitch": "Solutions to this problem have gradually shifted from traditional \nheuristic algorithms to deep reinforcement learning-based approaches. However, deep reinforcement learning faces challenges \nsuch as low sample efficiency, high dimensionality, and unstable \npolicy optimization in online 3D bin packing tasks, which limit the \nalgorithm’s generalization and adaptability to items of various sizes.\n\n[bin packing · reinforcement learning · Diffusion]"
+      "pitch": "This paper proposes an online 3D bin packing algorithm based on diffusion reinforcement learning Solutions to this problem have gradually shifted from traditional heuristic algorithms to deep reinforcement learning-based approaches",
+      "key_finding": "AC algorithm"
     },
     {
       "id": "arx:2603.26344v1",
@@ -16657,7 +16806,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.86,
-      "pitch": "However, its Gaussian structure often limits its ability\nto represent the diverse amplitude characteristics observed in individual source signals. On the\nother hand, many existing non-Gaussian amplitude distributions derived from hyperspherical models\nachieve good empirical fit due to their power-law structures, while they do not explicitly account for\nthe complex-plane geometry inherent in complex-valued observations.\n\n[Gaussian distribution · Fourier transform · Diffusion]"
+      "pitch": "In this paper, we propose a new probabilistic model for complex-valued random variables, which can be interpreted as a powerweighted noncentral complex Gaussian distribution We formulate the proposed distribution and analyze the statistical properties of the induced amplitude distribution",
+      "key_finding": "new probabilistic model for complex-valued random variables"
     },
     {
       "id": "arx:2603.23799v1",
@@ -16731,7 +16881,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.85,
-      "pitch": "However, training these hybrid\nnetworks is often unstable due to competing optimization objectives. As established in\nrecent literature on “gradient pathology,” the gradient vectors derived from the data loss\nand the physical residual often point in conflicting directions, leading to slow convergence or\noptimization deadlock.\n\n[Convex optimization]"
+      "pitch": "We prove that this gating mechanism preserves the standard O(1/T) convergence rate for smooth non-convex objectives, a guarantee that fails under fixed-weight or magnitude-balanced training when gradients conflict We demonstrate that this mechanism autonomously induces a curriculum learning effect, improving parameter estimation in stiff epidemiological systems compared to magnitude-based baselines",
+      "key_finding": "novel method"
     },
     {
       "id": "arx:2604.04206v1",
@@ -16806,7 +16957,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.85,
-      "pitch": "On the optimal relaxation parameter of\ngraph-based splitting methods for subspaces\nFrancisco J. Aragón-Artacho∗\nCésar López-Pastor∗\nAbstract\nIn this paper, we investigate the behavior of the family of graph-based splitting algorithms specialized to the problem of finding a point in the intersection of linear subspaces.\n\n[Linear convergence]"
+      "pitch": "Our main result establishes that when the graph and subgraph coincide, the optimal relaxation parameter is exactly 1, thereby extending known results for the Douglas–Rachford algorithm to a much broader class of methods Our analysis hinges on some properties of iso-averaged linear operators, which are defined as the average of an isometry and the identity, and are characterized by a specific symmetry of the norm of their relaxation",
+      "key_finding": "behavior of the family of graph-based splitting algorithms specialized to the pr"
     },
     {
       "id": "def:openalex:W2108904868",
@@ -16865,7 +17017,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.83,
-      "pitch": "This paper addresses observer-based optimal zero-sliding midcourse guidance for missiles with thrust vector control (TVC) and a divert control system (DCS) for the interception of a theater ballistic missile. First, a three degree-of-freedom observer-based optimal zero-sliding midcourse guidance law is designed to minimize the control effort and to narrow the distance between the missile and the target.\n\n[Lyapunov stability]"
+      "pitch": "First, a three degree-of-freedom observer-based optimal zero-sliding midcourse guidance law is designed to minimize the control effort and to narrow the distance between the missile and the target Then, the exponential stability of the overall system is analyzed thoroughly via the Lyapunov stability theory",
+      "key_finding": "Lyapunov stability"
     },
     {
       "id": "def:openalex:W4412353437",
@@ -16924,7 +17077,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.83,
-      "pitch": "To solve the problem of providing the best initial situation for terminal guidance when multiple missiles intercept multiple targets, a group cooperative midcourse guidance law (GCMGL) considering time-to-go is proposed. Firstly, a three-dimensional (3D) guidance model is established and a cooperative trajectory shaping guidance law is given.\n\n[Lyapunov stability]"
+      "pitch": "Firstly, a three-dimensional (3D) guidance model is established and a cooperative trajectory shaping guidance law is given Then, to ensure time-to-go cooperation among missiles within the same group and across different groups, the group consensus protocols of virtual collision point mean and the inter-group cooperative consensus protocol are designed respectively",
+      "key_finding": "Lyapunov stability"
     },
     {
       "id": "arx:2603.11852v2",
@@ -17005,7 +17159,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.77,
-      "pitch": "EXPONENTIAL MIXING FOR HYPERBOLIC FLOWS ON\nNON-COMPACT SPACES\nNICOLA BERTOZZI, CLAUDIO BONANNO, AND PAULO VARANDAS\nAbstract. We introduce a family of hyperbolic flows on non-compact phase spaces that\nincludes the geodesic flow on the modular surface.\n\n[Partition]"
+      "pitch": "We introduce a family of hyperbolic flows on non-compact phase spaces that includes the geodesic flow on the modular surface Our approach follows the dynamical method of Dolgopyat and subsequent developments for suspension flows with uniformly hyperbolic Poincaré maps satisfying a uniform nonintegrability condition",
+      "key_finding": "family of hyperbolic flows on non-compact phase spaces that includes the geodesi"
     },
     {
       "id": "arx:2604.06406v1",
@@ -17117,7 +17272,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.76,
-      "pitch": "1\nAugmented Graphs of Convex Sets and the Traveling Salesman Problem\nGael Luna and Tyler Summers\nAbstract— We present a trajectory optimization algorithm for\nthe traveling salesman problem (TSP) in graphs of convex sets\n(GCS). Our framework uses an augmented graph of convex sets\nto encode the TSP speciﬁcation and solve it exactly as a shortest\npath problem in GCS.\n\n[lower bounds · Combinatorial optimization · dynamic programming]"
+      "pitch": "Our framework uses an augmented graph of convex sets to encode the TSP speciﬁcation and solve it exactly as a shortest path problem in GCS We establish a precise relationship between the landmark Bellman-Held-Karp algorithm and the augmented graph of convex sets with a TSP speciﬁcation",
+      "key_finding": "trajectory optimization algorithm for the traveling salesman problem"
     },
     {
       "id": "def:openalex:W4390480707",
@@ -17184,7 +17340,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.76,
-      "pitch": "We propose a high-altitude terminal control scheme for anti-air missiles that uses a terminal booster and one-off front lateral impulse thrusters. The terminal booster does not have an actuator such as thrust vector control, and the front lateral thrusters are cheaper and simpler than the Divert Attitude Control System while providing a faster response than aerodynamic control at high altitudes.\n\n[greedy algorithm]"
+      "pitch": "High-Altitude Terminal Control of Anti-Air Missiles With a Terminal Booster and Front Lateral Impulse Thrusters We propose a high-altitude terminal control scheme for anti-air missiles that uses a terminal booster and one-off front lateral impulse thrusters The terminal booster does not have an actuator such as thrust vector control, and the front lateral thrusters are cheaper and simpler than the Divert Attitude Control System while providing a faster response than aerodynamic control at high altitudes",
+      "key_finding": "high-altitude terminal control scheme for anti-air missiles that uses a terminal"
     },
     {
       "id": "def:openalex:W4390480707",
@@ -17251,7 +17408,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.76,
-      "pitch": "We propose a high-altitude terminal control scheme for anti-air missiles that uses a terminal booster and one-off front lateral impulse thrusters. The terminal booster does not have an actuator such as thrust vector control, and the front lateral thrusters are cheaper and simpler than the Divert Attitude Control System while providing a faster response than aerodynamic control at high altitudes.\n\n[greedy algorithm]"
+      "pitch": "High-Altitude Terminal Control of Anti-Air Missiles With a Terminal Booster and Front Lateral Impulse Thrusters We propose a high-altitude terminal control scheme for anti-air missiles that uses a terminal booster and one-off front lateral impulse thrusters The terminal booster does not have an actuator such as thrust vector control, and the front lateral thrusters are cheaper and simpler than the Divert Attitude Control System while providing a faster response than aerodynamic control at high altitudes",
+      "key_finding": "high-altitude terminal control scheme for anti-air missiles that uses a terminal"
     },
     {
       "id": "arx:2602.19657v1",
@@ -17340,7 +17498,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.75,
-      "pitch": "Exploration problems are one of the most\nfundamental and most heavily studied problems on temporal graphs, asking if a set of m agents can\nvisit every vertex in the graph, with each agent only allowed to traverse a single edge per snapshot. In this paper, we introduce and study always S-connected temporal graphs, a generalisation of\nalways connected temporal graphs where, rather than forming a single connected component in\neach snapshot, we have at most |S| components, each defined by the connection to a single vertex\nin the set S.\n\n[Treewidth · Interval Graph · connected components]"
+      "pitch": "We use this formulation as a tool for exploring graphs admitting an (r, b)-division, a partitioning of the vertex set into disconnected components, each of which is S-connected, where |S| ≤b We show that an always S-connected temporal graph with m = |S| and an average degree of ∆ can be explored by m agents in O(n1.5m3∆1.5 log1.5(n)) snapshots",
+      "key_finding": "and study always S-connected temporal graphs"
     },
     {
       "id": "def:arxiv:1712.00611v1",
@@ -17424,7 +17583,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.7,
-      "pitch": "Applications of the new results in the article are given to restricted divisor sums over several classical special arithmetic functions which define the cases of well-known, so-termed \"ordinary\" Lambert series expansions cited in the introduction. We prove several new forms of factorization theorems for Lambert series over a convolution of two arithmetic functions which similarly lead to new applications relating convolutions of special multiplicative functions to partition functions and $n$-fold convolutions of one of the special functions.\n\n[partition function · Partition]"
+      "pitch": "Applications of the new results in the article are given to restricted divisor sums over several classical special arithmetic functions which define the cases of well-known, so-termed \"ordinary\" Lambert series expansions cited in the introduction",
+      "key_finding": "variants of the Lambert series factorization theorems studied by Merca and Schmi"
     },
     {
       "id": "def:arxiv:1712.00611v1",
@@ -17508,7 +17668,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.7,
-      "pitch": "Applications of the new results in the article are given to restricted divisor sums over several classical special arithmetic functions which define the cases of well-known, so-termed \"ordinary\" Lambert series expansions cited in the introduction. We prove several new forms of factorization theorems for Lambert series over a convolution of two arithmetic functions which similarly lead to new applications relating convolutions of special multiplicative functions to partition functions and $n$-fold convolutions of one of the special functions.\n\n[partition function · Partition]"
+      "pitch": "Applications of the new results in the article are given to restricted divisor sums over several classical special arithmetic functions which define the cases of well-known, so-termed \"ordinary\" Lambert series expansions cited in the introduction",
+      "key_finding": "variants of the Lambert series factorization theorems studied by Merca and Schmi"
     },
     {
       "id": "def:arxiv:1805.03351v1",
@@ -17585,7 +17746,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.7,
-      "pitch": "In the classic Symmetric Rendezvous problem on a Line (SRL), two robots at known distance 2 but unknown direction execute the same randomized algorithm trying to minimize the expected rendezvous time. A long standing conjecture is that the best possible rendezvous time is 4.25 with known upper and lower bounds being very close to that value.\n\n[Randomized algorithm · lower bounds]"
+      "pitch": "We introduce and study a geometric variation of SRL that we call Symmetric Rendezvous in a Disk (SRD) where two robots at distance 2 have a common reference point at distance $ρ$ We show that even when $ρ$ is not too small, the two robots can meet in expected time that is less than $4.25$",
+      "key_finding": "and study a geometric variation of SRL that we call Symmetric Rendezvous in a Di"
     },
     {
       "id": "def:ntrs:20250007577",
@@ -17677,7 +17839,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.69,
-      "pitch": "This presentation summarizes initial flight results for optical sensor based navigation of a swarm of small spacecraft, implemented during the Starling mission, which utilizes four SmallSats launched in July 2023. Optical sensor based navigation algorithm, called StarFOX (Starling Formation-Flying Optical Experiment) is one of four experiments conducted by the Starling mission.\n\n[Kalman filter · Filter · sampling]"
+      "pitch": "Optical sensor based navigation algorithm, called StarFOX (Starling Formation-Flying Optical Experiment) is one of four experiments conducted by the Starling mission StarFOX uses on-board star tracker camera as a vision sensor to collect image of other Starling satellites and process the images to produce inter-satellite bearing angles",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:ntrs:20250007577",
@@ -17769,7 +17932,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.69,
-      "pitch": "This presentation summarizes initial flight results for optical sensor based navigation of a swarm of small spacecraft, implemented during the Starling mission, which utilizes four SmallSats launched in July 2023. Optical sensor based navigation algorithm, called StarFOX (Starling Formation-Flying Optical Experiment) is one of four experiments conducted by the Starling mission.\n\n[Kalman filter · Filter · sampling]"
+      "pitch": "Optical sensor based navigation algorithm, called StarFOX (Starling Formation-Flying Optical Experiment) is one of four experiments conducted by the Starling mission StarFOX uses on-board star tracker camera as a vision sensor to collect image of other Starling satellites and process the images to produce inter-satellite bearing angles",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "arx:2603.17849v1",
@@ -17846,7 +18010,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.61,
-      "pitch": "Koopman Generator Decomposition for\nPort-Hamiltonian Systems\nVictor M. This infinitedimensional splitting carries over exactly to finite-dimensional\nGalerkin approximations, yielding structure-constrained surrogate models that provably inherit passivity with a quadratic\nstorage function in the lifted observable space.\n\n[spectral methods]"
+      "pitch": "Koopman Generator Decomposition for Port-Hamiltonian System Koopman Generator Decomposition for Port-Hamiltonian Systems Victor M This infinitedimensional splitting carries over exactly to finite-dimensional Galerkin approximations, yielding structure-constrained surrogate models that provably inherit passivity with a quadratic storage function in the lifted observable space",
+      "key_finding": "passivity-based controllers directly in the lifted space and establish asymptoti"
     },
     {
       "id": "def:openalex:W7133562683",
@@ -17905,7 +18070,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.61,
-      "pitch": "This study evaluates the fundamental shift in the United States space-based missile defense architecture from a reliance on a limited number of high-altitude satellites to the deployment of large constellations in Low Earth Orbit. Driven by the enactment of Public Law 119-21 and the proposed \"Golden Dome\" system, the study examines how and whether space-based infrared sensors are evolving to detect and track modern threats, such as Hypersonic Glide Vehicles and Fractional Orbital Bombardment Systems.\n\n[triangulation]"
+      "pitch": "The Golden Dome and Beyond: Assessing the Future of U.S Space-Based Infrared Sensors This study evaluates the fundamental shift in the United States space-based missile defense architecture from a reliance on a limited number of high-altitude satellites to the deployment of large constellations in Low Earth Orbit",
+      "key_finding": "triangulation"
     },
     {
       "id": "def:openalex:W7133562683",
@@ -17964,7 +18130,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.61,
-      "pitch": "This study evaluates the fundamental shift in the United States space-based missile defense architecture from a reliance on a limited number of high-altitude satellites to the deployment of large constellations in Low Earth Orbit. Driven by the enactment of Public Law 119-21 and the proposed \"Golden Dome\" system, the study examines how and whether space-based infrared sensors are evolving to detect and track modern threats, such as Hypersonic Glide Vehicles and Fractional Orbital Bombardment Systems.\n\n[triangulation]"
+      "pitch": "The Golden Dome and Beyond: Assessing the Future of U.S Space-Based Infrared Sensors This study evaluates the fundamental shift in the United States space-based missile defense architecture from a reliance on a limited number of high-altitude satellites to the deployment of large constellations in Low Earth Orbit",
+      "key_finding": "triangulation"
     },
     {
       "id": "def:ntrs:20010046981",
@@ -18023,7 +18190,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.6,
-      "pitch": "On September 28, 2000 the SHARP-B2 flight experiment was launched from Vandenberg Air Force Base, California. SHARP-B2 is the 2nd Ballistic flight test in the SHARP (Slender Hypervelocity Aerothermodynamic Research Probes) program which develops and tests new thermal protection materials and sharp body concepts.\n\n[Reduce]"
+      "pitch": "SHARP-B2: Flight Test Objectives, Project Implementation and Initial Results On September 28, 2000 the SHARP-B2 flight experiment was launched from Vandenberg Air Force Base, California SHARP-B2 is the 2nd Ballistic flight test in the SHARP (Slender Hypervelocity Aerothermodynamic Research Probes) program which develops and tests new thermal protection materials and sharp body concepts",
+      "key_finding": "Reduce"
     },
     {
       "id": "arx:2604.08327v1",
@@ -18116,7 +18284,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.57,
-      "pitch": "Our technique builds on a recent method to control\nconstrained nonlinear systems by building a simple, linear driftless approximation at the initial state. We construct a partition\nof the finite time horizon into successively smaller intervals, and\ndesign controlled inputs based on the approximate dynamics in\neach partition.\n\n[Partition]"
+      "pitch": "Our technique builds on a recent method to control constrained nonlinear systems by building a simple, linear driftless approximation at the initial state We construct a partition of the finite time horizon into successively smaller intervals, and design controlled inputs based on the approximate dynamics in each partition",
+      "key_finding": "that these inputs result in bounded error from the target state in the original"
     },
     {
       "id": "def:openalex:W2127875509",
@@ -18176,7 +18345,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.56,
-      "pitch": "The steps necessary to achieve the strong coupling between a flowfield solver and a material response solver are presented. This type of coupling is required to accurately capture the complex aerothermodynamic physics occurring during hypersonic atmospheric entries.\n\n[Boundary layer]"
+      "pitch": "Strongly Coupled Computation of Material Response and Nonequilibrium Flow for Hypersonic Ablation The steps necessary to achieve the strong coupling between a flowfield solver and a material response solver are presented This type of coupling is required to accurately capture the complex aerothermodynamic physics occurring during hypersonic atmospheric entries",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "def:openalex:W2127875509",
@@ -18236,7 +18406,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.56,
-      "pitch": "The steps necessary to achieve the strong coupling between a flowfield solver and a material response solver are presented. This type of coupling is required to accurately capture the complex aerothermodynamic physics occurring during hypersonic atmospheric entries.\n\n[Boundary layer]"
+      "pitch": "Strongly Coupled Computation of Material Response and Nonequilibrium Flow for Hypersonic Ablation The steps necessary to achieve the strong coupling between a flowfield solver and a material response solver are presented This type of coupling is required to accurately capture the complex aerothermodynamic physics occurring during hypersonic atmospheric entries",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "arx:2603.08875v1",
@@ -18308,7 +18479,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.52,
-      "pitch": "Improving boundary-layer separation prediction by an IDDES\nturbulence model using a pressure-gradient sensor\nBenjamin S. Savino1, Kevin Patrick Griﬃn,2 Bumseok Lee,2 Ganesh Vijayakumar,2\nWen Wu,1 and Michael A.\n\n[Drag polar]"
+      "pitch": "Improving boundary-layer separation prediction by an IDDES turbulence model using a pressure-gradient sensor Improving boundary-layer separation prediction by an IDDES turbulence model using a pressure-gradient sensor Benjamin S Savino1, Kevin Patrick Griﬃn,2 Bumseok Lee,2 Ganesh Vijayakumar,2 Wen Wu,1 and Michael A",
+      "key_finding": "RANS model"
     },
     {
       "id": "def:openalex:W3119008007",
@@ -18377,7 +18549,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.51,
-      "pitch": "Tracking a target is an essential function of a seeker for missiles. The target tracking mechanism of a seeker consists of gimbals, mounted with gyroscopes, and an antenna or some other energy receiving devices such as radar, infrared (IR), or laser.\n\n[PID control · Target tracking]"
+      "pitch": "A Novel Self-Tuning Fuzzy Logic-Based PID Controllers for Two-Axis Gimbal Stabilization in a Missile Seeker Tracking a target is an essential function of a seeker for missiles The target tracking mechanism of a seeker consists of gimbals, mounted with gyroscopes, and an antenna or some other energy receiving devices such as radar, infrared (IR), or laser",
+      "key_finding": "PID control"
     },
     {
       "id": "def:openalex:W3119008007",
@@ -18446,7 +18619,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.51,
-      "pitch": "Tracking a target is an essential function of a seeker for missiles. The target tracking mechanism of a seeker consists of gimbals, mounted with gyroscopes, and an antenna or some other energy receiving devices such as radar, infrared (IR), or laser.\n\n[PID control · Target tracking]"
+      "pitch": "A Novel Self-Tuning Fuzzy Logic-Based PID Controllers for Two-Axis Gimbal Stabilization in a Missile Seeker Tracking a target is an essential function of a seeker for missiles The target tracking mechanism of a seeker consists of gimbals, mounted with gyroscopes, and an antenna or some other energy receiving devices such as radar, infrared (IR), or laser",
+      "key_finding": "PID control"
     },
     {
       "id": "def:ntrs:20010018568",
@@ -18514,7 +18688,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.5,
-      "pitch": "Major elements of an experiment called the Infrared Sensing Aeroheating Flight Experiment are discussed. The primary experiment goal is to provide reentry global temperature images from infrared measurements to define the characteristics of hypersonic boundary-layer transition during flight.\n\n[Boundary layer · calibration]"
+      "pitch": "The primary experiment goal is to provide reentry global temperature images from infrared measurements to define the characteristics of hypersonic boundary-layer transition during flight Infrared Sensing Aeroheating Flight Experiement: STS-96 Flight Results Major elements of an experiment called the Infrared Sensing Aeroheating Flight Experiment are discussed",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "def:ntrs:20010003921",
@@ -18582,7 +18757,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.5,
-      "pitch": "Major elements of an experiment called the Infrared Sensing Aeroheating Flight Experiment are discussed. The primary experiment goal is to provide reentry global temperature images from infrared measurements to define the characteristics of hypersonic boundary-layer transition during flight.\n\n[Boundary layer · calibration]"
+      "pitch": "The primary experiment goal is to provide reentry global temperature images from infrared measurements to define the characteristics of hypersonic boundary-layer transition during flight Infrared Sensing Aeroheating Flight Experiment: STS-96 Flight Results Major elements of an experiment called the Infrared Sensing Aeroheating Flight Experiment are discussed",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "def:ntrs:20010018568",
@@ -18650,7 +18826,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.5,
-      "pitch": "Major elements of an experiment called the Infrared Sensing Aeroheating Flight Experiment are discussed. The primary experiment goal is to provide reentry global temperature images from infrared measurements to define the characteristics of hypersonic boundary-layer transition during flight.\n\n[Boundary layer · calibration]"
+      "pitch": "The primary experiment goal is to provide reentry global temperature images from infrared measurements to define the characteristics of hypersonic boundary-layer transition during flight Infrared Sensing Aeroheating Flight Experiement: STS-96 Flight Results Major elements of an experiment called the Infrared Sensing Aeroheating Flight Experiment are discussed",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "def:ntrs:20010003921",
@@ -18718,7 +18895,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.5,
-      "pitch": "Major elements of an experiment called the Infrared Sensing Aeroheating Flight Experiment are discussed. The primary experiment goal is to provide reentry global temperature images from infrared measurements to define the characteristics of hypersonic boundary-layer transition during flight.\n\n[Boundary layer · calibration]"
+      "pitch": "The primary experiment goal is to provide reentry global temperature images from infrared measurements to define the characteristics of hypersonic boundary-layer transition during flight Infrared Sensing Aeroheating Flight Experiment: STS-96 Flight Results Major elements of an experiment called the Infrared Sensing Aeroheating Flight Experiment are discussed",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "arx:2602.21138v2",
@@ -18814,7 +18992,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.43,
-      "pitch": "For non-accelerated methods (ISTA) (Bec17), the best known worst-case\nwork is e\nO((αρ)−1), where α is the teleportation parameter and ρ is the ℓ1-regularization parameter. It is not known\nwhether classical acceleration methods can improve 1/α to 1/√α while preserving the 1/ρ locality scaling, or whether\nthey can be asymptotically worse.\n\n[Laplacian matrix · graph clustering · Diffusion]"
+      "pitch": "We also provide graph-structural sufficient conditions that imply such confinement For non-accelerated methods (ISTA) (Bec17), the best known worst-case work is e O((αρ)−1), where α is the teleportation parameter and ρ is the ℓ1-regularization parameter",
+      "key_finding": "degree-weighted work required to compute ℓ1-regularized PageRank using the stand"
     },
     {
       "id": "def:arxiv:2405.14200v2",
@@ -18873,7 +19052,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.42,
-      "pitch": "Multi-modal object tracking (MMOT) is an emerging field that combines data from various modalities, \\eg vision (RGB), depth, thermal infrared, event, language and audio, to estimate the state of an arbitrary object in a video sequence. It is of great significance for many applications such as autonomous driving and intelligent surveillance.\n\n[State space model]"
+      "pitch": "Multi-modal object tracking (MMOT) is an emerging field that combines data from various modalities, \\eg vision (RGB), depth, thermal infrared, event, language and audio, to estimate the state of an arbitrary object in a video sequence It is of great significance for many applications such as autonomous driving and intelligent surveillance",
+      "key_finding": "State space model"
     },
     {
       "id": "def:arxiv:2405.14200v2",
@@ -18932,7 +19112,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.42,
-      "pitch": "Multi-modal object tracking (MMOT) is an emerging field that combines data from various modalities, \\eg vision (RGB), depth, thermal infrared, event, language and audio, to estimate the state of an arbitrary object in a video sequence. It is of great significance for many applications such as autonomous driving and intelligent surveillance.\n\n[State space model]"
+      "pitch": "Multi-modal object tracking (MMOT) is an emerging field that combines data from various modalities, \\eg vision (RGB), depth, thermal infrared, event, language and audio, to estimate the state of an arbitrary object in a video sequence It is of great significance for many applications such as autonomous driving and intelligent surveillance",
+      "key_finding": "State space model"
     },
     {
       "id": "def:openalex:W2172143602",
@@ -18999,7 +19180,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.41,
-      "pitch": "This paper considers the subject of straight-line target tracking for unmanned surface vehicles (USVs). Target-tracking represents motion control scenarios where no information about the target behavior is known in advance, i.e., the path that the target traverses is not defined apriori.\n\n[Target tracking]"
+      "pitch": "Straight-Line Target Tracking for Unmanned Surface Vehicles This paper considers the subject of straight-line target tracking for unmanned surface vehicles (USVs Target-tracking represents motion control scenarios where no information about the target behavior is known in advance, i.e., the path that the target traverses is not defined apriori",
+      "key_finding": "design of a motion control system which enables an underactuated USV to track a"
     },
     {
       "id": "def:openalex:W2172143602",
@@ -19066,7 +19248,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.41,
-      "pitch": "This paper considers the subject of straight-line target tracking for unmanned surface vehicles (USVs). Target-tracking represents motion control scenarios where no information about the target behavior is known in advance, i.e., the path that the target traverses is not defined apriori.\n\n[Target tracking]"
+      "pitch": "Straight-Line Target Tracking for Unmanned Surface Vehicles This paper considers the subject of straight-line target tracking for unmanned surface vehicles (USVs Target-tracking represents motion control scenarios where no information about the target behavior is known in advance, i.e., the path that the target traverses is not defined apriori",
+      "key_finding": "design of a motion control system which enables an underactuated USV to track a"
     },
     {
       "id": "def:ntrs:19940032995",
@@ -19145,7 +19328,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.37,
-      "pitch": "The use of the Global Positioning System for position and attitude determination is evaluated for an automated rendezvous and docking mission. The typical mission scenario involves the chaser docking with the target for resupply or repair purposes, and is divided into three sections.\n\n[Kalman filter · Filter]"
+      "pitch": "Evaluation of GPS position and attitude determination for automated rendezvous and docking missions The use of the Global Positioning System for position and attitude determination is evaluated for an automated rendezvous and docking mission The typical mission scenario involves the chaser docking with the target for resupply or repair purposes, and is divided into three sections",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:ntrs:19940032995",
@@ -19224,7 +19408,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.37,
-      "pitch": "The use of the Global Positioning System for position and attitude determination is evaluated for an automated rendezvous and docking mission. The typical mission scenario involves the chaser docking with the target for resupply or repair purposes, and is divided into three sections.\n\n[Kalman filter · Filter]"
+      "pitch": "Evaluation of GPS position and attitude determination for automated rendezvous and docking missions The use of the Global Positioning System for position and attitude determination is evaluated for an automated rendezvous and docking mission The typical mission scenario involves the chaser docking with the target for resupply or repair purposes, and is divided into three sections",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "arx:2604.02807v1",
@@ -19317,7 +19502,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.33,
-      "pitch": "1\nDeception Equilibrium Analysis for Three-Party\nStackelberg Game with Insider\nXiaoyu Xin, Gehui Xu, and Yiguang Hong\nAbstract—This paper investigates strategic interactions within\na three-party deception security game involving a defender, an\ninsider, and external attackers. We propose a robust deception\nmechanism where the leader manipulates game parameters\nperceived by followers to enhance defense performance when\nfollowers operate under misperceived and uncertain observation.\n\n[Nash equilibrium]"
+      "pitch": "We propose a robust deception mechanism where the leader manipulates game parameters perceived by followers to enhance defense performance when followers operate under misperceived and uncertain observation We develop necessary and sufficient conditions for the consistency between DSE and HNE, ensuring that the defender’s utility remains invariant when the hierarchical structure degenerates into a simultaneous-move scenario",
+      "key_finding": "robust deception mechanism where the leader manipulates game parameters perceive"
     },
     {
       "id": "arx:2602.16697v1",
@@ -19407,7 +19593,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.32,
-      "pitch": "We demonstrate that this approach, and security definitions\nthat enable it, carry significant privacy risks for the remaining (undeleted) data points. We present\na reconstruction attack showing that for certain tasks, which can be computed securely without\ndeletions, a mechanism adhering to perfect retraining allows an adversary controlling merely ω(1)\ndata points to reconstruct almost the entire dataset merely by issuing deletion requests.\n\n[machine unlearning · perfect retraining]"
+      "pitch": "We demonstrate that this approach, and security definitions that enable it, carry significant privacy risks for the remaining (undeleted) data points We survey existing definitions for machine unlearning, showing they are either susceptible to such attacks or too restrictive to support basic functionalities like exact summation",
+      "key_finding": "reconstruction attack showing that for certain tasks"
     },
     {
       "id": "arx:2603.16618v1",
@@ -19486,7 +19673,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.32,
-      "pitch": "March 18, 2026\nAbstract\nWe study the problem of detecting the onset of path splitting in stochastic interpolation between probability\ndistributions. This question is especially subtle when the target distribution is nonconvex or supported on\ndisconnected components, where interpolating trajectories may separate into distinct branches.\n\n[connected components]"
+      "pitch": "Our approach is based on the Jacobi field associated with the linearization of an induced interpolating flow March 18, 2026 We study the problem of detecting the onset of path splitting in stochastic interpolation between probability distributions",
+      "key_finding": "problem of detecting the onset of path splitting in stochastic interpolation bet"
     },
     {
       "id": "def:openalex:W4200266712",
@@ -19553,7 +19741,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.31,
-      "pitch": "This paper describes the design, parametric study, and IR signature analysis of plume of a slit-shaped exhaust nozzle. Circular-shaped exhaust nozzles are generally used to get the essential thrust necessary for an aircraft flight.\n\n[Compressible flow]"
+      "pitch": "In this paper, the compressible flow CFD model using a realizable k-ε turbulence model is used to study the flow characteristics of the exhaust nozzle with different aspect ratios Parametric design and IR signature study of exhaust plume from elliptical-shaped exhaust nozzles of a low flying UAV using CFD approach This paper describes the design, parametric study, and IR signature analysis of plume of a slit-shaped exhaust nozzle",
+      "key_finding": "CFD model"
     },
     {
       "id": "def:openalex:W4200266712",
@@ -19620,7 +19809,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.31,
-      "pitch": "This paper describes the design, parametric study, and IR signature analysis of plume of a slit-shaped exhaust nozzle. Circular-shaped exhaust nozzles are generally used to get the essential thrust necessary for an aircraft flight.\n\n[Compressible flow]"
+      "pitch": "In this paper, the compressible flow CFD model using a realizable k-ε turbulence model is used to study the flow characteristics of the exhaust nozzle with different aspect ratios Parametric design and IR signature study of exhaust plume from elliptical-shaped exhaust nozzles of a low flying UAV using CFD approach This paper describes the design, parametric study, and IR signature analysis of plume of a slit-shaped exhaust nozzle",
+      "key_finding": "CFD model"
     },
     {
       "id": "arx:2602.14625v1",
@@ -19689,7 +19879,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.26,
-      "pitch": "Recently, they have found important applications in\nstructural graph theory: set systems with linear shatter functions correspond to graph classes\nwith linear neighborhood complexity. For such systems, Welzl’s theorem guarantees the existence of orders with only O(log2 n) crossings.\n\n[Randomized algorithm]"
+      "pitch": "We present a randomized algorithm that computes Welzl orders for set systems with linear primal and dual shatter functions in time O(∥S∥log ∥S∥), where ∥S∥= |U| + P X∈F |X| is the size of the canonical input representation We call an order achieving a small crossing number a Welzl order",
+      "key_finding": "randomized algorithm that computes Welzl orders for set systems with linear prim"
     },
     {
       "id": "arx:2511.02164v1",
@@ -19748,7 +19939,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.25,
-      "pitch": "ScenicProver: A Framework for Compositional\nProbabilistic Verification of Learning-Enabled Systems\nEric Vin1 , Kyle A. Miller1 , Inigo Incer2\n,\nSanjit A.\n\n[Sensor fusion]"
+      "pitch": "This paper introduces ScenicProver, a verification framework that aims to fill this gap We demonstrate the framework’s effectiveness through a case study on an autonomous vehicle’s automatic emergency braking system with sensor fusion",
+      "key_finding": "Sensor fusion"
     },
     {
       "id": "arx:2603.29940v1",
@@ -19807,7 +19999,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.25,
-      "pitch": "We\npropose a fusion framework extending the covariance matrix fitting\nmethod with an unbalanced optimal transport regularization term\nthat softly aligns sensor array responses with visual priors while allowing flexibility in mass allocation. To solve the resulting largescale problem, we adopt a greedy coordinate descent algorithm that\nefficiently updates the transport plan.\n\n[Sensor fusion]"
+      "pitch": "We propose a fusion framework extending the covariance matrix fitting method with an unbalanced optimal transport regularization term that softly aligns sensor array responses with visual priors while allowing flexibility in mass allocation The main contribution of this work is a proof of concept for sensor array–camera fusion framework based on optimal transport",
+      "key_finding": "Sensor fusion"
     },
     {
       "id": "arx:2603.26287v1",
@@ -19905,7 +20098,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.25,
-      "pitch": "A GALERKIN FINITE ELEMENT METHOD FOR THE FRACTIONAL\nCALDER´ON PROBLEM\nMUKUL DWIVEDI\n, JESSE RAILO\n, AND ANDREAS RUPP\nAbstract. We study a numerical reconstruction strategy for the potential in the fractional\nCalder´on problem from a single partial exterior measurement.\n\n[Diffusion]"
+      "pitch": "We study a numerical reconstruction strategy for the potential in the fractional Calder´on problem from a single partial exterior measurement We prove the existence and uniqueness of the discrete reconstructor and establish conditional convergence under natural consistency and parameter choice assumptions",
+      "key_finding": "numerical reconstruction strategy for the potential in the fractional Calder´on"
     },
     {
       "id": "def:ntrs:20210025534",
@@ -19964,7 +20158,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.25,
-      "pitch": "Autonomous operations are a crucial aspect in the context of Urban Air Mobility and other emerging aviation markets. This paper focuses on the object tracking part that relies on adaptive multi-sensor fusion, taking into account specific properties and limitations of different sensor types.\n\n[Sensor fusion]"
+      "pitch": "This paper focuses on the object tracking part that relies on adaptive multi-sensor fusion, taking into account specific properties and limitations of different sensor types Adaptive Multi-Sensor Fusion Based Object Tracking for Autonomous Urban Air Mobility Operations Autonomous operations are a crucial aspect in the context of Urban Air Mobility and other emerging aviation markets",
+      "key_finding": "Sensor fusion"
     },
     {
       "id": "def:ntrs:20210025534",
@@ -20023,7 +20218,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.25,
-      "pitch": "Autonomous operations are a crucial aspect in the context of Urban Air Mobility and other emerging aviation markets. This paper focuses on the object tracking part that relies on adaptive multi-sensor fusion, taking into account specific properties and limitations of different sensor types.\n\n[Sensor fusion]"
+      "pitch": "This paper focuses on the object tracking part that relies on adaptive multi-sensor fusion, taking into account specific properties and limitations of different sensor types Adaptive Multi-Sensor Fusion Based Object Tracking for Autonomous Urban Air Mobility Operations Autonomous operations are a crucial aspect in the context of Urban Air Mobility and other emerging aviation markets",
+      "key_finding": "Sensor fusion"
     },
     {
       "id": "arx:2602.16867v1",
@@ -20124,7 +20320,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.22,
-      "pitch": "Offline green bin packing and its constrained variant\nMingyang Gong∗\nBrendan Mumey†\nAbstract\nIn this paper, we study the green bin packing (GBP) problem where β ≥0 and G ∈[0, 1]\nare two given values as part of the input. The energy consumed by a bin is max{0, β(x −G)}\nwhere x is the total size of the items packed into the bin.\n\n[bin packing · approximation algorithm · 2-approximation algorithm]"
+      "pitch": "We present an APTAS and a 3 2-approximation algorithm for both GBP and CGBP, where the ratio 3 2 matches the lower bound of BP Offline green bin packing and its constrained variant Offline green bin packing and its constrained variant Mingyang Gong∗ Brendan Mumey† In this paper, we study the green bin packing (GBP) problem where β ≥0 and G ∈[0, 1] are two given values as part of the input",
+      "key_finding": "green bin packing"
     },
     {
       "id": "arx:2603.22534v1",
@@ -20198,7 +20395,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.21,
-      "pitch": "Continuous-data-assimilation-enabled fast and robust convergence\nof an Uzawa-based solver for Navier-Stokes equations with large\nReynolds number\nVictoria Luongo Fisher ∗\nJessica C. Herein we develop, analyze and test an Uzawa-based nonlinear solver for incompressible NSE that incorporates partial solution data into the iteration through continuous\ndata assimilation (CDA-Uzawa).\n\n[Reynolds number]"
+      "pitch": "Herein we develop, analyze and test an Uzawa-based nonlinear solver for incompressible NSE that incorporates partial solution data into the iteration through continuous data assimilation (CDA-Uzawa In the case of noisy data, we prove that the convergence results hold down to the size of the noise, and we propose a strategy to pass to Newton once CDA-Uzawa convergence reaches its lower limit",
+      "key_finding": "that the convergence results hold down to the size of the noise"
     },
     {
       "id": "arx:2511.15028v3",
@@ -20279,7 +20477,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.19,
-      "pitch": "Their performance depends critically on data layout choices that affect cache utilization, memory\nbandwidth, and vectorization—increasingly dominant factors in modern computing. Yet, in most programming\nsystems, these layout choices are hopelessly entangled with the traversal logic.\n\n[ray tracing · Cache utilization · Pareto-optimality]"
+      "pitch": "We introduce Scion, a domain-specific language and compiler for specifying the data layouts of bounding volume hierarchies independent of tree traversal algorithms We show that Scion can express a broad spectrum of layout optimizations used in high-performance computing while remaining architecture-agnostic",
+      "key_finding": "ray tracing"
     },
     {
       "id": "arx:2602.17423v1",
@@ -20354,7 +20553,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.13,
-      "pitch": "This scenario corresponds to Gaussian dropout at the input\nlevel, or noisy input training common in sensor networks, privacy-preserving training, and\nfederated learning, where each user may have access to partial or corrupted features. Using\na Neural Tangent Kernel (NTK) analysis, we demonstrate that training a two-layer ReLU\nnetwork with Gaussian randomly masked inputs achieves linear convergence up to an error\nregion proportional to the mask’s variance.\n\n[Gaussian input masking · Linear convergence]"
+      "pitch": "This scenario corresponds to Gaussian dropout at the input level, or noisy input training common in sensor networks, privacy-preserving training, and federated learning, where each user may have access to partial or corrupted features Using a Neural Tangent Kernel (NTK) analysis, we demonstrate that training a two-layer ReLU network with Gaussian randomly masked inputs achieves linear convergence up to an error region proportional to the mask’s variance",
+      "key_finding": "convergence guarantee of two-layer neural network training with Gaussian randoml"
     },
     {
       "id": "def:openalex:W3007669051",
@@ -20425,7 +20625,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.13,
-      "pitch": "Divert attitude and control system (DACS) is a one-shot system and provides attitude correction and translation of the Launch vehicle. DACS consists of many flight critical sub systems which are arranged in a series configuration.\n\n[Markov chain]"
+      "pitch": "In this paper, Bayesian network modelling of DAC system was carried out for estimating the reliability using multi-level data System Reliability Estimation of Divert Attitude Control System of a Launch Vehicle using Bayesian Networks Divert attitude and control system (DACS) is a one-shot system and provides attitude correction and translation of the Launch vehicle",
+      "key_finding": "algorithm"
     },
     {
       "id": "def:openalex:W3007669051",
@@ -20496,7 +20697,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.13,
-      "pitch": "Divert attitude and control system (DACS) is a one-shot system and provides attitude correction and translation of the Launch vehicle. DACS consists of many flight critical sub systems which are arranged in a series configuration.\n\n[Markov chain]"
+      "pitch": "In this paper, Bayesian network modelling of DAC system was carried out for estimating the reliability using multi-level data System Reliability Estimation of Divert Attitude Control System of a Launch Vehicle using Bayesian Networks Divert attitude and control system (DACS) is a one-shot system and provides attitude correction and translation of the Launch vehicle",
+      "key_finding": "algorithm"
     },
     {
       "id": "def:openalex:W2343912161",
@@ -20563,7 +20765,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.13,
-      "pitch": "In this paper, we propose a data-driven supplementary control approach with adaptive learning capability for air-breathing hypersonic vehicle tracking control based on action-dependent heuristic dynamic programming (ADHDP). The control action is generated by the combination of sliding mode control (SMC) and the ADHDP controller to track the desired velocity and the desired altitude.\n\n[dynamic programming]"
+      "pitch": "We verify the adaptive supplementary control approach versus the traditional SMC in the cruising flight, and provide three simulation studies to illustrate the improved performance with the proposed approach The control action is generated by the combination of sliding mode control (SMC) and the ADHDP controller to track the desired velocity and the desired altitude",
+      "key_finding": "data-driven supplementary control approach with adaptive learning capability for"
     },
     {
       "id": "def:openalex:W2343912161",
@@ -20630,7 +20833,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.13,
-      "pitch": "In this paper, we propose a data-driven supplementary control approach with adaptive learning capability for air-breathing hypersonic vehicle tracking control based on action-dependent heuristic dynamic programming (ADHDP). The control action is generated by the combination of sliding mode control (SMC) and the ADHDP controller to track the desired velocity and the desired altitude.\n\n[dynamic programming]"
+      "pitch": "We verify the adaptive supplementary control approach versus the traditional SMC in the cruising flight, and provide three simulation studies to illustrate the improved performance with the proposed approach The control action is generated by the combination of sliding mode control (SMC) and the ADHDP controller to track the desired velocity and the desired altitude",
+      "key_finding": "data-driven supplementary control approach with adaptive learning capability for"
     },
     {
       "id": "def:openalex:W1964199973",
@@ -20689,7 +20893,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.1,
-      "pitch": "Following a brief comparison of three collision-seeking types of navigation—pure pursuit, constant-bearing collision, and proportional navigation—the usual definition of planar proportional navigation is extended to three dimensions. Based upon a simple criterion for optimum navigation to the line-of-sight motion, a proper formulation is found in terms of the geodesic and normal curvatures of the missile path on the surface generated by the line of sight.\n\n[Transfer function]"
+      "pitch": "Based upon a simple criterion for optimum navigation to the line-of-sight motion, a proper formulation is found in terms of the geodesic and normal curvatures of the missile path on the surface generated by the line of sight By a suitable choice of a reference coordinate system, the missile-target kinematic relationships are then linearized, assuming relatively small deviations of the missile from a collision course",
+      "key_finding": "Transfer function"
     },
     {
       "id": "def:openalex:W1964199973",
@@ -20748,7 +20953,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.1,
-      "pitch": "Following a brief comparison of three collision-seeking types of navigation—pure pursuit, constant-bearing collision, and proportional navigation—the usual definition of planar proportional navigation is extended to three dimensions. Based upon a simple criterion for optimum navigation to the line-of-sight motion, a proper formulation is found in terms of the geodesic and normal curvatures of the missile path on the surface generated by the line of sight.\n\n[Transfer function]"
+      "pitch": "Based upon a simple criterion for optimum navigation to the line-of-sight motion, a proper formulation is found in terms of the geodesic and normal curvatures of the missile path on the surface generated by the line of sight By a suitable choice of a reference coordinate system, the missile-target kinematic relationships are then linearized, assuming relatively small deviations of the missile from a collision course",
+      "key_finding": "Transfer function"
     },
     {
       "id": "def:openalex:W2011438594",
@@ -20807,7 +21013,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.1,
-      "pitch": "A guidance law tailored for an interceptor missile steered by aerodynamic lift and divert-thruster and with its attitude oriented by forward attitude-thruster (dual-thruster control) is proposed. The bang-bang strategy has the maximal capture zone.\n\n[Transfer function]"
+      "pitch": "In this paper, the guidance law is derived using a linear-quadratic differential game formulation and then modified for bounded controls The bang-bang strategy has the maximal capture zone",
+      "key_finding": "Transfer function"
     },
     {
       "id": "def:openalex:W2011438594",
@@ -20866,7 +21073,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.1,
-      "pitch": "A guidance law tailored for an interceptor missile steered by aerodynamic lift and divert-thruster and with its attitude oriented by forward attitude-thruster (dual-thruster control) is proposed. The bang-bang strategy has the maximal capture zone.\n\n[Transfer function]"
+      "pitch": "In this paper, the guidance law is derived using a linear-quadratic differential game formulation and then modified for bounded controls The bang-bang strategy has the maximal capture zone",
+      "key_finding": "Transfer function"
     },
     {
       "id": "arx:2604.06895v1",
@@ -20993,7 +21201,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.09,
-      "pitch": "To capture such effects, we develop\na unified tensor framework for modeling higher-order Markov\nchains with memory. Our formulation introduces an even-order\npaired tensor that links folded and unfolded dynamics and\ncharacterizes their steady states and convergence.\n\n[random walk · Markov chain · Markov chains]"
+      "pitch": "Our formulation introduces an even-order paired tensor that links folded and unfolded dynamics and characterizes their steady states and convergence We further show that a Markov chain with memory can be approximated by a low-dimensional nonlinear tensor-based system and then provide a full system analysis",
+      "key_finding": "unified tensor framework for modeling higher-order Markov chains with memory"
     },
     {
       "id": "arx:2511.13769v1",
@@ -21067,7 +21276,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.06,
-      "pitch": "Compiling to linear neurons\nJOEY VELEZ-GINORIO, University of Pennsylvania, USA\nNADA AMIN, Harvard University, USA\nKONRAD PAUL KORDING, University of Pennsylvania, USA\nSTEVE ZDANCEWIC, University of Pennsylvania, USA\nWe don’t program neural networks directly. Instead, we rely on an indirect style where learning algorithms,\nlike gradient descent, determine a neural network’s function by learning from data.\n\n[linear programming]"
+      "pitch": "We can’t compile most algorithms into a neural network—even if these algorithms could help the network learn We prove Cajal programs compile to linear neurons, allowing discrete algorithms to be expressed in a differentiable form compatible with gradient-based learning",
+      "key_finding": "Cajal programs compile to linear neurons"
     },
     {
       "id": "arx:2604.04301v1",
@@ -21134,7 +21344,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.05,
-      "pitch": "On the Regularity of Generalized Conjugate Functions\nKonstantinos Oikonomidis∗\nEmanuel Laude†\nPanagiotis Patrinos∗\nApril 7, 2026\nAbstract\nWe investigate regularity properties of generalized conjugate functions induced by a\ngeneral coupling function and the associated generalized proximal mapping. Our main\nresults provide verifiable conditions ensuring local single-valuedness, continuity, Lipschitz\ncontinuity, and differentiability of the generalized proximal mapping, and transfer these\nproperties to generalized conjugates providing explicit derivative formulas.\n\n[Convex optimization]"
+      "pitch": "Our main results provide verifiable conditions ensuring local single-valuedness, continuity, Lipschitz continuity, and differentiability of the generalized proximal mapping, and transfer these properties to generalized conjugates providing explicit derivative formulas Our main results provide verifiable conditions ensuring local single-valuedness, continuity, Lipschitz continuity, and differentiability of the generalized proximal mapping, and transfer these properties to generalized conjugates providing explicit derivative formulas",
+      "key_finding": "regularity properties of generalized conjugate functions induced by a general co"
     },
     {
       "id": "def:openalex:W2015808525",
@@ -21200,7 +21411,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.05,
-      "pitch": "Normal ageing is associated with characteristic changes in brain microstructure. Although in vivo neuroimaging captures spatial and temporal patterns of age-related changes of anatomy at the macroscopic scale, our knowledge of the underlying (patho)physiological processes at cellular and molecular levels is still limited.\n\n[Diffusion]"
+      "pitch": "We found age-related reductions in cortical and subcortical grey matter volume paralleled by changes in fractional anisotropy (FA), mean diffusivity (MD), MT and R2* We interpret our findings, based on current biophysical models, as a fingerprint of age-dependent brain atrophy and underlying microstructural changes in myelin, iron deposits and water",
+      "key_finding": "allows for systematic unbiased exploration of the interaction between imaging pa"
     },
     {
       "id": "def:openalex:W2015808525",
@@ -21266,7 +21478,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.05,
-      "pitch": "Normal ageing is associated with characteristic changes in brain microstructure. Although in vivo neuroimaging captures spatial and temporal patterns of age-related changes of anatomy at the macroscopic scale, our knowledge of the underlying (patho)physiological processes at cellular and molecular levels is still limited.\n\n[Diffusion]"
+      "pitch": "We found age-related reductions in cortical and subcortical grey matter volume paralleled by changes in fractional anisotropy (FA), mean diffusivity (MD), MT and R2* We interpret our findings, based on current biophysical models, as a fingerprint of age-dependent brain atrophy and underlying microstructural changes in myelin, iron deposits and water",
+      "key_finding": "allows for systematic unbiased exploration of the interaction between imaging pa"
     },
     {
       "id": "arx:2604.03001v1",
@@ -21365,7 +21578,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.04,
-      "pitch": "THE VARIATIONAL APPROACH IN FILTERING AND CORRELATED\nNOISE\nSHARAN SRINIVASAN, VIJAY GUPTA, AND HARSHA HONNAPPA\nAbstract. The variational formulation of nonlinear filtering due to Mitter and Newton\ncharacterizes the filtering distribution as the unique minimizer of a free energy functional\ninvolving the relative entropy with respect to the prior and an expected energy.\n\n[Filter]"
+      "pitch": "We prove that this condition necessarily fails whenever the signal and observation diffusions share a common noise source We then introduce a conditional variational principle that replaces the prior with a reference measure that preserves the noise correlation structure",
+      "key_finding": "that this condition necessarily fails whenever the signal and observation diffus"
     },
     {
       "id": "arx:2603.29715v1",
@@ -21440,7 +21654,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.02,
-      "pitch": "NONNEGATIVE MATRIX FACTORIZATION IN THE\nCOMPONENT-WISE L1 NORM FOR SPARSE DATA∗\nGIOVANNI SERAGHITI†, K´EVIN DUBRULLE‡, ARNAUD VANDAELE‡, AND NICOLAS GILLIS‡\nAbstract. Nonnegative matrix factorization (NMF) approximates a nonnegative matrix, X, by the product of two nonnegative\nfactors, WH, where W has r columns and H has r rows.\n\n[Low-rank matrix approximation · NP-hardness]"
+      "pitch": "In this paper, we consider NMF using the component-wise L1 norm as the error measure (L1-NMF), which is suited for data corrupted by heavy-tailed noise, such as Laplace noise or salt and pepper noise, or in the presence of outliers Our first contribution is an NP-hardness proof for L1-NMF, even when r = 1, in contrast to the standard NMF that uses least squares",
+      "key_finding": "L1-NMF model"
     },
     {
       "id": "arx:2603.07046v1",
@@ -21533,7 +21748,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.01,
-      "pitch": "A semi-analytical pseudo-spectral method for 3D Boussinesq\nequations of rotating, stratified flows in unbounded cylindrical\ndomains\nJinge Wanga, Philip S. To effectively capture the global geometry without sacrificing spectral\naccuracy, the spatial discretization employs Fourier expansions in the azimuthal and axial\ndirections alongside mapped associated Legendre polynomials in the radial direction.\n\n[spectral methods]"
+      "pitch": "To effectively capture the global geometry without sacrificing spectral accuracy, the spatial discretization employs Fourier expansions in the azimuthal and axial directions alongside mapped associated Legendre polynomials in the radial direction This basis spans the semi-infinite domain while analytically resolving the coordinate singularity at the origin",
+      "key_finding": "pseudo-spectral method for solving the three-dimensional Boussinesq equations in"
     },
     {
       "id": "arx:2603.07046v1",
@@ -21626,7 +21842,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 15.01,
-      "pitch": "A semi-analytical pseudo-spectral method for 3D Boussinesq\nequations of rotating, stratified flows in unbounded cylindrical\ndomains\nJinge Wanga, Philip S. To effectively capture the global geometry without sacrificing spectral\naccuracy, the spatial discretization employs Fourier expansions in the azimuthal and axial\ndirections alongside mapped associated Legendre polynomials in the radial direction.\n\n[spectral methods]"
+      "pitch": "To effectively capture the global geometry without sacrificing spectral accuracy, the spatial discretization employs Fourier expansions in the azimuthal and axial directions alongside mapped associated Legendre polynomials in the radial direction This basis spans the semi-infinite domain while analytically resolving the coordinate singularity at the origin",
+      "key_finding": "pseudo-spectral method for solving the three-dimensional Boussinesq equations in"
     },
     {
       "id": "arx:2603.10778v1",
@@ -21700,7 +21917,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.97,
-      "pitch": "The Desert Fireball Network Clear-Sky Survey\nKonstantinos S. Stevenson1\n1Space Science and Technology Centre, Curtin University, GPO Box U1987,\nPerth WA 6845, Australia\n2International Centre for Radio Astronomy Research, Curtin University, GPO\nBox U1987, Perth WA 6845, Australia\nCorrespondence: K.\n\n[Partition]"
+      "pitch": "We present a novel automated methodology for debiasing meteor observations from multi-camera networks, applied to data from the Desert Fireball Network (DFN Our approach utilizes the Hierarchical Equal Area isoLatitude Pixelisation (HEALPix) framework to partition the sky into equal-area pixels at 70 km altitude, enabling precise and convenient measurement of effective survey coverage and fireball counting across the network",
+      "key_finding": "novel automated methodology for debiasing meteor observations from multi-camera"
     },
     {
       "id": "def:ntrs:19940018325",
@@ -21759,7 +21977,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.96,
-      "pitch": "Mobile Satellite Systems (MSS) in Highly Elliptical (HEO) and circular Earth orbits at Medium (MEO) and Low (LEO) altitudes have been intensively studied in the last few years as an effective means of providing global communication services. Such global coverage MSS networks are also expected to mitigate typical channel impairments usually encountered in geostationary Land Mobile Satellite (LMS) systems.\n\n[Ion channel]"
+      "pitch": "Such global coverage MSS networks are also expected to mitigate typical channel impairments usually encountered in geostationary Land Mobile Satellite (LMS) systems In the design stages of these satellite networks, information regarding the mobile propagation channel is needed to assess the overall link availability versus elevation angle and environmental scenarios",
+      "key_finding": "Ion channel"
     },
     {
       "id": "def:ntrs:19940018325",
@@ -21818,7 +22037,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.96,
-      "pitch": "Mobile Satellite Systems (MSS) in Highly Elliptical (HEO) and circular Earth orbits at Medium (MEO) and Low (LEO) altitudes have been intensively studied in the last few years as an effective means of providing global communication services. Such global coverage MSS networks are also expected to mitigate typical channel impairments usually encountered in geostationary Land Mobile Satellite (LMS) systems.\n\n[Ion channel]"
+      "pitch": "Such global coverage MSS networks are also expected to mitigate typical channel impairments usually encountered in geostationary Land Mobile Satellite (LMS) systems In the design stages of these satellite networks, information regarding the mobile propagation channel is needed to assess the overall link availability versus elevation angle and environmental scenarios",
+      "key_finding": "Ion channel"
     },
     {
       "id": "def:dtic:ADA387398",
@@ -21877,7 +22097,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.96,
-      "pitch": "ERDCTN-D0ER-E13 \nFebruary 2001 \nSturgeon Detection \nUsing Biochemical Methods \nPURPOSE: This technical note explores the concept of biochemical methodologies to survey wa- \nterways for the presence of sturgeon. Such a tool would enhance capabilities to detect sturgeon oc- \ncupation of channel reaches in advance of dredging operations, and to direct longer-term inventories \nof habitat use within entire water basins.\n\n[Ion channel]"
+      "pitch": "PURPOSE: This technical note explores the concept of biochemical methodologies to survey wa- terways for the presence of sturgeon Such a tool would enhance capabilities to detect sturgeon oc- cupation of channel reaches in advance of dredging operations, and to direct longer-term inventories of habitat use within entire water basins",
+      "key_finding": "Ion channel"
     },
     {
       "id": "arx:2603.19859v1",
@@ -21965,7 +22186,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.95,
-      "pitch": "SIR model with random di!usion, reinfection, and random\ntransmission: exponential attractors and spread of the disease\nT. Seminario-Huertasb\na Dpto. de Ecuaciones Diferenciales y Analysis Num´erico, Universidad de Sevilla, Campus Reina Mercedes, Sevilla, Spain.\na Department of Mathematics, Wenzhou University, Wenzhou, Zhejiang Province,\n325035, P.\n\n[Diffusion]"
+      "pitch": "We construct a nonstationary, random disease-free global solution, which serves to localize the random attractor SIR model with random diffusion, reinfection, and random transmission: exponential attractors and spread of the disease SIR model with random di!usion, reinfection, and random transmission: exponential attractors and spread of the disease T",
+      "key_finding": "stochastic SIR-type partial di!erential equation model incorporating random di!u"
     },
     {
       "id": "arx:2603.27988v1",
@@ -22053,7 +22275,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.95,
-      "pitch": "A GENERALIZED MATRIX-VALUED ALLEN–CAHN MODEL\nAND ITS NUMERICAL SOLUTION\nYARU LIU, CHAOYU QUAN, AND DONG WANG\nAbstract. This paper introduces a generalized matrix-valued Allen–Cahn\nmodel, where the unknown matrix-valued field belongs to Rm1×m2 with dimension m1 ≥m2.\n\n[Diffusion]"
+      "pitch": "This paper introduces a generalized matrix-valued Allen–Cahn model, where the unknown matrix-valued field belongs to Rm1×m2 with dimension m1 ≥m2 In this paper, we propose a generalized matrix-valued Allen–Cahn model of the field U(t, x) ∈Rm1×m2 with m1 ≥m2 ≥1: (1.1) ( Ut(t, x) = LU(t, x) + f(U(t, x)), (t, x) ∈(0, T] × Ω, U(0, x) = U0(x), (t, x) ∈{t = 0} × Ω, equipped with the periodic boundary condition",
+      "key_finding": "that the first- and second-order ETDRK schemes satisfy the discrete energy dissi"
     },
     {
       "id": "def:ntrs:20110008023",
@@ -22111,7 +22334,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.94,
-      "pitch": "The Solar Dynamics Observatory (SDO) was designed and built at the Goddard Space Flight Center, launched from Cape Canaveral on February 11, 2010, and reached its final geosynchronous science orbit on March 16, 2010. The purpose of SDO is to observe the Sun and continuously relay data to a dedicated ground station.\n\n[calibration]"
+      "pitch": "This paper details the final overall design of the SDO guidance, navigation, and control (GN&C) system and how it was used in practice during SDO launch, commissioning, and nominal operations The purpose of SDO is to observe the Sun and continuously relay data to a dedicated ground station",
+      "key_finding": "calibration"
     },
     {
       "id": "def:ntrs:20110008023",
@@ -22169,7 +22393,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.94,
-      "pitch": "The Solar Dynamics Observatory (SDO) was designed and built at the Goddard Space Flight Center, launched from Cape Canaveral on February 11, 2010, and reached its final geosynchronous science orbit on March 16, 2010. The purpose of SDO is to observe the Sun and continuously relay data to a dedicated ground station.\n\n[calibration]"
+      "pitch": "This paper details the final overall design of the SDO guidance, navigation, and control (GN&C) system and how it was used in practice during SDO launch, commissioning, and nominal operations The purpose of SDO is to observe the Sun and continuously relay data to a dedicated ground station",
+      "key_finding": "calibration"
     },
     {
       "id": "arx:2604.07051v1",
@@ -22241,7 +22466,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.93,
-      "pitch": "Moreover, existing\nreal-time STVS assessment methods often provide only binary\nstability classifications. This paper proposes novel indices that\nenable early detection and quantify the degree of stability.\n\n[stability index]"
+      "pitch": "This paper proposes novel indices that enable early detection and quantify the degree of stability Moreover, existing real-time STVS assessment methods often provide only binary stability classifications",
+      "key_finding": "indices that enable early detection and quantify the degree of stability"
     },
     {
       "id": "def:arxiv:1706.00393v2",
@@ -22318,7 +22544,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.9,
-      "pitch": "We summarize the known useful and interesting results and formulas we have discovered so far in this collaborative article summarizing results from two related articles by Merca and Schmidt arriving at related so-termed Lambert series factorization theorems. We unify the matrix representations that underlie two of our separate papers, and which commonly arise in identities involving partition functions and other functions generated by Lambert series.\n\n[partition function · Partition]"
+      "pitch": "We unify the matrix representations that underlie two of our separate papers, and which commonly arise in identities involving partition functions and other functions generated by Lambert series We unify the matrix representations that underlie two of our separate papers, and which commonly arise in identities involving partition functions and other functions generated by Lambert series",
+      "key_finding": "through our new results unifying the expansions of the Lambert series factorizat"
     },
     {
       "id": "def:arxiv:1706.02359v1",
@@ -22395,7 +22622,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.9,
-      "pitch": "We prove several new variants of the Lambert series factorization theorem established in the first article \"Generating special arithmetic functions by Lambert series factorizations\" by Merca and Schmidt (2017). Several characteristic examples of our new results are presented in the article to motivate the formulations of the generalized factorization theorems.\n\n[partition function · Partition]"
+      "pitch": "Several characteristic examples of our new results are presented in the article to motivate the formulations of the generalized factorization theorems",
+      "key_finding": "several new variants of the Lambert series factorization theorem established in"
     },
     {
       "id": "def:arxiv:1706.00393v2",
@@ -22472,7 +22700,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.9,
-      "pitch": "We summarize the known useful and interesting results and formulas we have discovered so far in this collaborative article summarizing results from two related articles by Merca and Schmidt arriving at related so-termed Lambert series factorization theorems. We unify the matrix representations that underlie two of our separate papers, and which commonly arise in identities involving partition functions and other functions generated by Lambert series.\n\n[partition function · Partition]"
+      "pitch": "We unify the matrix representations that underlie two of our separate papers, and which commonly arise in identities involving partition functions and other functions generated by Lambert series We unify the matrix representations that underlie two of our separate papers, and which commonly arise in identities involving partition functions and other functions generated by Lambert series",
+      "key_finding": "through our new results unifying the expansions of the Lambert series factorizat"
     },
     {
       "id": "def:arxiv:1706.02359v1",
@@ -22549,7 +22778,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.9,
-      "pitch": "We prove several new variants of the Lambert series factorization theorem established in the first article \"Generating special arithmetic functions by Lambert series factorizations\" by Merca and Schmidt (2017). Several characteristic examples of our new results are presented in the article to motivate the formulations of the generalized factorization theorems.\n\n[partition function · Partition]"
+      "pitch": "Several characteristic examples of our new results are presented in the article to motivate the formulations of the generalized factorization theorems",
+      "key_finding": "several new variants of the Lambert series factorization theorem established in"
     },
     {
       "id": "def:openalex:W4295883465",
@@ -22618,7 +22848,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.88,
-      "pitch": "Rapid and accurate rendezvous and proximity operations for spacecraft are crucial to the success of most space missions. In this paper, a sequential convex programming method, combined with the first-order and second-order Birkhoff pseudospectral methods, is proposed for the autonomous rendezvous and proximity operations of spacecraft.\n\n[Convex optimization · spectral methods]"
+      "pitch": "In this paper, a sequential convex programming method, combined with the first-order and second-order Birkhoff pseudospectral methods, is proposed for the autonomous rendezvous and proximity operations of spacecraft Convex Optimization for Rendezvous and Proximity Operation via Birkhoff Pseudospectral Method Rapid and accurate rendezvous and proximity operations for spacecraft are crucial to the success of most space missions",
+      "key_finding": "Convex optimization"
     },
     {
       "id": "def:openalex:W4295883465",
@@ -22687,7 +22918,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.88,
-      "pitch": "Rapid and accurate rendezvous and proximity operations for spacecraft are crucial to the success of most space missions. In this paper, a sequential convex programming method, combined with the first-order and second-order Birkhoff pseudospectral methods, is proposed for the autonomous rendezvous and proximity operations of spacecraft.\n\n[Convex optimization · spectral methods]"
+      "pitch": "In this paper, a sequential convex programming method, combined with the first-order and second-order Birkhoff pseudospectral methods, is proposed for the autonomous rendezvous and proximity operations of spacecraft Convex Optimization for Rendezvous and Proximity Operation via Birkhoff Pseudospectral Method Rapid and accurate rendezvous and proximity operations for spacecraft are crucial to the success of most space missions",
+      "key_finding": "Convex optimization"
     },
     {
       "id": "arx:2603.15927v1",
@@ -22782,7 +23014,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.83,
-      "pitch": "Our approach aims at identifying the functional form of nonlocal interaction and diffusion terms directly from trajectory data, without any a priori knowledge of the underlying interaction structure. Starting from a discrete stochastic binary-interaction model, we formulate the inverse problem as\na sequence of sparse regression tasks in structured finite-dimensional spaces spanned by compactly\nsupported basis functions, such as piecewise linear polynomials.\n\n[Diffusion · batch sampling · sampling]"
+      "pitch": "Our approach aims at identifying the functional form of nonlocal interaction and diffusion terms directly from trajectory data, without any a priori knowledge of the underlying interaction structure In this setting, one typically assumes little or no a priori knowledge of the governing laws, and t",
+      "key_finding": "data-driven framework to learn interaction kernels in stochastic multi-agent sys"
     },
     {
       "id": "def:arxiv:2512.14682v1",
@@ -22849,7 +23082,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.83,
-      "pitch": "Orbital debris poses an escalating threat to space missions and the long-term sustainability of Earth's orbital environment. The literature proposes various approaches for orbital debris remediation, including the use of multiple space-based lasers that collaboratively engage debris targets.\n\n[Combinatorial optimization]"
+      "pitch": "This paper introduces constellation reconfiguration as a system-level strategy to address these limitations Our experiments reveal that reconfigurable constellations significantly outperform static ones, achieving greater debris remediation capacity and successfully deorbiting substantially more debris objects",
+      "key_finding": "constellation reconfiguration as a system-level strategy to address these limita"
     },
     {
       "id": "def:arxiv:2512.14682v1",
@@ -22916,7 +23150,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.83,
-      "pitch": "Orbital debris poses an escalating threat to space missions and the long-term sustainability of Earth's orbital environment. The literature proposes various approaches for orbital debris remediation, including the use of multiple space-based lasers that collaboratively engage debris targets.\n\n[Combinatorial optimization]"
+      "pitch": "This paper introduces constellation reconfiguration as a system-level strategy to address these limitations Our experiments reveal that reconfigurable constellations significantly outperform static ones, achieving greater debris remediation capacity and successfully deorbiting substantially more debris objects",
+      "key_finding": "constellation reconfiguration as a system-level strategy to address these limita"
     },
     {
       "id": "arx:2604.04478v1",
@@ -23000,7 +23235,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.81,
-      "pitch": "The controlled\nstate process is characterized by a forward–backward stochastic differential equation (FBSDE), in which the jump\nperturbations are introduced through a system of Teugels martingales to describe the random features of general\nL´evy processes. Based on the comparison theorem and stability theory for backward stochastic differential equations\n(BSDEs) driven by L´evy processes, the corresponding dynamic programming principle is established.\n\n[dynamic programming · Reduce]"
+      "pitch": "The controlled state process is characterized by a forward–backward stochastic differential equation (FBSDE), in which the jump perturbations are introduced through a system of Teugels martingales to describe the random features of general L´evy processes Based on the comparison theorem and stability theory for backward stochastic differential equations (BSDEs) driven by L´evy processes, the corresponding dynamic programming principle is established",
+      "key_finding": "class of stochastic optimal control problems driven by L´evy processes"
     },
     {
       "id": "def:openalex:W2107726111",
@@ -23058,7 +23294,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.77,
-      "pitch": "This paper surveys the field of reinforcement learning from a computer-science perspective. It is written to be accessible to researchers familiar with machine learning.\n\n[reinforcement learning]"
+      "pitch": "Reinforcement Learning: A Survey This paper surveys the field of reinforcement learning from a computer-science perspective It is written to be accessible to researchers familiar with machine learning",
+      "key_finding": "reinforcement learning"
     },
     {
       "id": "def:openalex:W2107726111",
@@ -23116,7 +23353,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.77,
-      "pitch": "This paper surveys the field of reinforcement learning from a computer-science perspective. It is written to be accessible to researchers familiar with machine learning.\n\n[reinforcement learning]"
+      "pitch": "Reinforcement Learning: A Survey This paper surveys the field of reinforcement learning from a computer-science perspective It is written to be accessible to researchers familiar with machine learning",
+      "key_finding": "reinforcement learning"
     },
     {
       "id": "def:arxiv:2404.04365v3",
@@ -23201,7 +23439,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.73,
-      "pitch": "Objective: Lung auscultation is a valuable tool in diagnosing and monitoring various respiratory diseases. However, lung sounds (LS) are significantly affected by numerous sources of contamination, especially when recorded in real-world clinical settings.\n\n[Ising model · Ising models]"
+      "pitch": "Our end-to-end model, with an average SNR improvement of 19.31 dB, outperforms the existing model when evaluated with ambient noise and fewer parameters A Self-Attention-Driven Deep Denoiser Model for Real Time Lung Sound Denoising in Noisy Environments Objective: Lung auscultation is a valuable tool in diagnosing and monitoring various respiratory diseases",
+      "key_finding": "specialized deep-learning model"
     },
     {
       "id": "def:arxiv:2404.04365v3",
@@ -23286,7 +23525,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.73,
-      "pitch": "Objective: Lung auscultation is a valuable tool in diagnosing and monitoring various respiratory diseases. However, lung sounds (LS) are significantly affected by numerous sources of contamination, especially when recorded in real-world clinical settings.\n\n[Ising model · Ising models]"
+      "pitch": "Our end-to-end model, with an average SNR improvement of 19.31 dB, outperforms the existing model when evaluated with ambient noise and fewer parameters A Self-Attention-Driven Deep Denoiser Model for Real Time Lung Sound Denoising in Noisy Environments Objective: Lung auscultation is a valuable tool in diagnosing and monitoring various respiratory diseases",
+      "key_finding": "specialized deep-learning model"
     },
     {
       "id": "arx:2604.07315v1",
@@ -23351,7 +23591,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.72,
-      "pitch": "Topological Magneto-Optical Switching in\nEven-Layered MnBi2Te4\nShahid Sattar,∗Roman Stepanov, and C. In this work, using a low-energy coupled Dirac\ncone model together with Wannier-based tight-binding Hamiltonian derived from abinitio calculations, we investigate topological MO switching in even-layered MBT films.\n\n[Topological order]"
+      "pitch": "In this work, using a low-energy coupled Dirac cone model together with Wannier-based tight-binding Hamiltonian derived from abinitio calculations, we investigate topological MO switching in even-layered MBT films We argue that the relative spin alignment of the outermost septuple-layers (SL) mainly controls the total Chern number, optical conductibility, and consequently, the MO response",
+      "key_finding": "topological MO switching in even-layered MBT films"
     },
     {
       "id": "arx:2603.11576v1",
@@ -23416,7 +23657,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.72,
-      "pitch": "STATISTICAL REGULARITY AND LINEAR RESPONSE OF MATHER MEASURES\nFOR TONELLI LAGRANGIAN SYSTEMS\nALFONSO SORRENTINO, JIANLU ZHANG, AND SIYAO ZHU\nABSTRACT. We study the statistical regularity of Mather measures associated with C1 perturbations of a Tonelli Lagrangian.\n\n[Lipschitz continuity]"
+      "pitch": "We study the statistical regularity of Mather measures associated with C1 perturbations of a Tonelli Lagrangian We also discuss the possibility of achieving Lipschitz regularity using KAM theory. 1",
+      "key_finding": "statistical regularity of Mather measures associated with C1 perturbations of a"
     },
     {
       "id": "def:ntrs:19870055527",
@@ -23475,7 +23717,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.72,
-      "pitch": "The present conference discusses the effect of target signatures on active tracking, the high resolution obtainable with a two-degrees-of-freedom angle sensor having a high update rate, solar object tracking for the Hubble Space Telescope,\n\n[Scan]"
+      "pitch": "",
+      "key_finding": "Scan"
     },
     {
       "id": "def:dtic:ADA021898",
@@ -23534,7 +23777,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.72,
-      "pitch": ",**•> \nKSD-TR-75-285 \nO \nO \nCD \nLIST \nS copy NO.__7        *^ \nProject Report \nTT-5 \nF.\n\n[Scan]"
+      "pitch": "**•> ,**•> KSD-TR-75-285 O O CD LIST S copy NO.__7 *^ Project Report TT-5 F",
+      "key_finding": "Scan"
     },
     {
       "id": "arx:2602.04537v1",
@@ -23610,7 +23854,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.63,
-      "pitch": "Bayesian optimization is employed to\nadaptively construct accurate Gaussian process surrogate models using a minimal number\nof high-fidelity model evaluations, strategically focusing sampling in regions of high predictive uncertainty. The trained surrogate model is then leveraged within a Bayesian inversion\nscheme to infer optimal parameter values by combining prior knowledge with observed quantities of interest, resulting in posterior distributions that rigorously characterize epistemic\nuncertainty.\n\n[sampling]"
+      "pitch": "Bayesian optimization is employed to adaptively construct accurate Gaussian process surrogate models using a minimal number of high-fidelity model evaluations, strategically focusing sampling in regions of high predictive uncertainty The trained surrogate model is then leveraged within a Bayesian inversion scheme to infer optimal parameter values by combining prior knowledge with observed quantities of interest, resulting in posterior distributions that rigorously characterize epistemic uncertainty",
+      "key_finding": "Bayesian framework"
     },
     {
       "id": "arx:2602.21315v2",
@@ -23705,7 +23950,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.59,
-      "pitch": "The Instability of all Backoff Protocols*\nLeslie Ann Goldberg and John Lapinskas\n3rd March 2026\nAbstract\nIn this paper we prove Aldous’s conjecture from 1987 that there is no backoff protocol that is stable\nfor any positive arrival rate. The setting is a communication channel for coordinating requests for a\nshared resource.\n\n[send sequence · Ion channel]"
+      "pitch": "We prove this conjecture. *For the purpose of Open Access, the authors have applied a CC BY public copyright licence to any Author Accepted Manuscript (AAM) version arising from this submission. arXiv:2602.21315v2 [math.PR] 3 Mar 2026 Proof sketch The Instability of all Backoff Protocols The Instability of all Backoff Protocols* Leslie Ann Goldberg and John Lapinskas 3rd March 2026 In this paper we prove Aldous’s conjecture from 1987 that there is no backoff protocol that is stable for any positive arrival rate",
+      "key_finding": "Aldous’s conjecture from 1987 that there is no backoff protocol that is stable f"
     },
     {
       "id": "def:openalex:W3006078660",
@@ -23781,7 +24027,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.56,
-      "pitch": "The use of regional-coverage satellite constellations is on the rise, urging the need for an optimal constellation design method for complex regional coverage. Traditional constellations are often designed for continuous global coverage, and the few existing regional constellation design methods lead to suboptimal solutions for periodically time-varying or spatially varying regional-coverage requirements.\n\n[linear programming]"
+      "pitch": "This paper introduces a new general approach to design an optimal constellation pattern that satisfies such complex regional-coverage requirements Satellite Constellation Pattern Optimization for Complex Regional Coverage The use of regional-coverage satellite constellations is on the rise, urging the need for an optimal constellation design method for complex regional coverage",
+      "key_finding": "new general approach to design an optimal constellation pattern that satisfies s"
     },
     {
       "id": "def:openalex:W3006078660",
@@ -23857,7 +24104,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.56,
-      "pitch": "The use of regional-coverage satellite constellations is on the rise, urging the need for an optimal constellation design method for complex regional coverage. Traditional constellations are often designed for continuous global coverage, and the few existing regional constellation design methods lead to suboptimal solutions for periodically time-varying or spatially varying regional-coverage requirements.\n\n[linear programming]"
+      "pitch": "This paper introduces a new general approach to design an optimal constellation pattern that satisfies such complex regional-coverage requirements Satellite Constellation Pattern Optimization for Complex Regional Coverage The use of regional-coverage satellite constellations is on the rise, urging the need for an optimal constellation design method for complex regional coverage",
+      "key_finding": "new general approach to design an optimal constellation pattern that satisfies s"
     },
     {
       "id": "def:openalex:W2151512268",
@@ -23915,7 +24163,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.53,
-      "pitch": "The Compact Muon Solenoid (CMS) detector is described. The detector operates at the Large Hadron Collider (LHC) at CERN.\n\n[sampling]"
+      "pitch": "The CMS experiment at the CERN LHC The Compact Muon Solenoid (CMS) detector is described The detector operates at the Large Hadron Collider (LHC) at CERN",
+      "key_finding": "sampling"
     },
     {
       "id": "arx:2604.06430v1",
@@ -23990,7 +24239,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.52,
-      "pitch": "Asynchronous Distributed Bandit Submodular Maximization under\nHeterogeneous Communication Delays\nPranjal Sharma, Zirui Xu, Vasileios Tzoumas†\nAbstract— We study asynchronous distributed decision-making for scalable multi-agent bandit submodular maximization. We are motivated by distributed information-gathering tasks in\nunknown environments and under heterogeneous inter-agent\ncommunication delays.\n\n[submodular maximization · Target tracking]"
+      "pitch": "We are motivated by distributed information-gathering tasks in unknown environments and under heterogeneous inter-agent communication delays In this paper, we provide an asynchronous coordination algorithm to overcome the challenges",
+      "key_finding": "asynchronous distributed decision-making for scalable multi-agent bandit submodu"
     },
     {
       "id": "def:openalex:W3183282730",
@@ -24084,7 +24334,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.47,
-      "pitch": "State estimation of dynamical systems in real-time is a fundamental task in signal processing. For systems that are well-represented by a fully known linear Gaussian state space (SS) model, the celebrated Kalman filter (KF) is a low complexity optimal solution.\n\n[Kalman filter · Filter]"
+      "pitch": "We demonstrate numerically that KalmanNet overcomes non-linearities and model mismatch, outperforming classic filtering methods operating with both mismatched and accurate domain knowledge KalmanNet: Neural Network Aided Kalman Filtering for Partially Known Dynamics State estimation of dynamical systems in real-time is a fundamental task in signal processing",
+      "key_finding": "KalmanNet"
     },
     {
       "id": "def:openalex:W3183282730",
@@ -24178,7 +24429,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.47,
-      "pitch": "State estimation of dynamical systems in real-time is a fundamental task in signal processing. For systems that are well-represented by a fully known linear Gaussian state space (SS) model, the celebrated Kalman filter (KF) is a low complexity optimal solution.\n\n[Kalman filter · Filter]"
+      "pitch": "We demonstrate numerically that KalmanNet overcomes non-linearities and model mismatch, outperforming classic filtering methods operating with both mismatched and accurate domain knowledge KalmanNet: Neural Network Aided Kalman Filtering for Partially Known Dynamics State estimation of dynamical systems in real-time is a fundamental task in signal processing",
+      "key_finding": "KalmanNet"
     },
     {
       "id": "def:ntrs:19780065949",
@@ -24245,7 +24497,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.46,
-      "pitch": "This paper describes an augmented Costas loop for use in low-cost avionics for the Navstar Global Positioning System. A standard loop has been augmented with supplementing feed-back to give a tracking error voltage proportional to the tangent of the phase error, rather than to the sine.\n\n[Monte Carlo simulation]"
+      "pitch": "A Costas loop with tangent error signal for use in Navstar GPS avionics This paper describes an augmented Costas loop for use in low-cost avionics for the Navstar Global Positioning System A standard loop has been augmented with supplementing feed-back to give a tracking error voltage proportional to the tangent of the phase error, rather than to the sine",
+      "key_finding": "augmented Costas loop for use in low-cost avionics for the Navstar Global Positi"
     },
     {
       "id": "def:ntrs:19780065949",
@@ -24312,7 +24565,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.46,
-      "pitch": "This paper describes an augmented Costas loop for use in low-cost avionics for the Navstar Global Positioning System. A standard loop has been augmented with supplementing feed-back to give a tracking error voltage proportional to the tangent of the phase error, rather than to the sine.\n\n[Monte Carlo simulation]"
+      "pitch": "A Costas loop with tangent error signal for use in Navstar GPS avionics This paper describes an augmented Costas loop for use in low-cost avionics for the Navstar Global Positioning System A standard loop has been augmented with supplementing feed-back to give a tracking error voltage proportional to the tangent of the phase error, rather than to the sine",
+      "key_finding": "augmented Costas loop for use in low-cost avionics for the Navstar Global Positi"
     },
     {
       "id": "def:arxiv:2604.17811v1",
@@ -24379,7 +24633,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.46,
-      "pitch": "Classical guidance laws aim at minimizing the miss distance, thus implicitly determining the minimum warhead lethality radius required against nominal targets. However, nonnominal targets or scenarios might render the designed warhead insufficient, causing a significant degradation in the single-shot kill probability (SSKP).\n\n[Monte Carlo simulation]"
+      "pitch": "We propose a guidance methodology that shifts the interceptor's objective from minimizing the miss distance to directly maximizing the SSKP, while taking into account the warhead's probabilistic lethality model Kill-Probability-Maximization Guidance: Breaking from the Miss-Distance-Minimization Paradigm Classical guidance laws aim at minimizing the miss distance, thus implicitly determining the minimum warhead lethality radius required against nominal targets",
+      "key_finding": "guidance methodology that shifts the interceptor's objective from minimizing the"
     },
     {
       "id": "arx:2604.03407v1",
@@ -24460,7 +24715,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.43,
-      "pitch": "Reach-Avoid Model Predictive Control with Guaranteed Recursive\nFeasibility via Input Constrained Backstepping\nJianqiang Ding1∗, Nishant Jayesh Bhave2 and Shankar A. Deka1∗, Member, IEEE\nAbstract— This letter proposes a novel sampled-data model\npredictive control framework for continuous control-affine nonlinear systems that provides rigorous reach-avoid and recursive\nfeasibility guarantees under physical constraints.\n\n[sampling]"
+      "pitch": "Reach-Avoid Model Predictive Control with Guaranteed Recursive Feasibility via Input Constrained Backstepping Reach-Avoid Model Predictive Control with Guaranteed Recursive Feasibility via Input Constrained Backstepping Jianqiang Ding1∗, Nishant Jayesh Bhave2 and Shankar A Deka1∗, Member, IEEE Abstract— This letter proposes a novel sampled-data model predictive control framework for continuous control-affine nonlinear systems that provides rigorous reach-avoid and recursive feasibility guarantees under physical constraints",
+      "key_finding": "constructive approach to synthesize a reach-avoid invariant set that complies wi"
     },
     {
       "id": "arx:2512.00127v3",
@@ -24522,7 +24778,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.42,
-      "pitch": "Current synthetic Chain-of-Thought (CoT) training data often consists of plausible-sounding explanations\ngenerated by teacher models, and not verifiable\naccounts of actual program behavior. Models\ntrained on such data learn logically flawed reasoning patterns despite syntactic correctness.\n\n[Chain-of-thought]"
+      "pitch": "We systematically create 54,000 verified, bi-directional rationales that teach models to reason both forward (input→output) and backward (output→input Our work is the first to systematically combine execution-grounded verification with bi-directional CoT generation at scale",
+      "key_finding": "Chain-of-thought"
     },
     {
       "id": "arx:2601.16816v1",
@@ -24588,7 +24845,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.4,
-      "pitch": "1 \nHarnessing Quantum Computing for Energy \nMaterials: Opportunities and Challenges \n \nSeongmin Kim1*, In-Saeng Suh1, Travis S. AUTHOR INFORMATION \nCorresponding Author \nSeongmin Kim – National Center for Computational Sciences, Oak Ridge National Laboratory; \nOak Ridge, Tennessee, 37830, United States.\n\n[Reduce]"
+      "pitch": "We present cases on how QC, when combined with classical computing methods, can be used for the design and simulation of practical energy materials We also outline the outlook for error-corrected, fault-tolerant QC capable of achieving predictive accuracy and quantum advantage for complex material systems",
+      "key_finding": "cases on how QC"
     },
     {
       "id": "arx:2604.04245v1",
@@ -24654,7 +24912,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.33,
-      "pitch": "CT-STL provides a natural framework\nfor encoding rich temporal and logical task requirements, but\nexisting trajectory-optimization formulations typically enforce\nsuch specifications only at discrete sampling nodes. These two dense-time constructions also serve as the main building blocks for handling more\ngeneral CT-STL formulas, including complex until specifications.\n\n[sampling]"
+      "pitch": "CT-STL provides a natural framework for encoding rich temporal and logical task requirements, but existing trajectory-optimization formulations typically enforce such specifications only at discrete sampling nodes These two dense-time constructions also serve as the main building blocks for handling more general CT-STL formulas, including complex until specifications",
+      "key_finding": "smooth parameterization of continuous-time Signal Temporal Logic"
     },
     {
       "id": "arx:2603.08892v2",
@@ -24721,7 +24980,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.31,
-      "pitch": "Phase-shifting\nmethods provide a more efficient alternative by canceling aliasing errors by combining nonlinear terms evaluated on shifted grids, allowing the same physical resolution\nto be achieved on a coarser numerical grid. Despite their use in high-resolution turbulence codes, these methods remain poorly documented in the literature and no\nopen-source implementation exists.\n\n[spectral methods]"
+      "pitch": "This paper presents a comprehensive analysis of phase-shifting dealiasing for pseudo-spectral simulations of the incompressible Navier-Stokes equations We derive the aliasing mechanism from quadratic nonlinearities in discrete Fourier space and explain how phase shifting cancels aliasing contributions exactly or approximately depending on the time-stepping scheme",
+      "key_finding": "comprehensive analysis of phase-shifting dealiasing for pseudo-spectral simulati"
     },
     {
       "id": "arx:2603.08892v2",
@@ -24788,7 +25048,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.31,
-      "pitch": "Phase-shifting\nmethods provide a more efficient alternative by canceling aliasing errors by combining nonlinear terms evaluated on shifted grids, allowing the same physical resolution\nto be achieved on a coarser numerical grid. Despite their use in high-resolution turbulence codes, these methods remain poorly documented in the literature and no\nopen-source implementation exists.\n\n[spectral methods]"
+      "pitch": "This paper presents a comprehensive analysis of phase-shifting dealiasing for pseudo-spectral simulations of the incompressible Navier-Stokes equations We derive the aliasing mechanism from quadratic nonlinearities in discrete Fourier space and explain how phase shifting cancels aliasing contributions exactly or approximately depending on the time-stepping scheme",
+      "key_finding": "comprehensive analysis of phase-shifting dealiasing for pseudo-spectral simulati"
     },
     {
       "id": "def:openalex:W2077609405",
@@ -24858,7 +25119,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.27,
-      "pitch": "The Multiple Kill Vehicle (MKV) system, which is being developed by the US Missile Defense Agency (MDA), is a midcourse payload that includes a carrier vehicle and a number of small kill vehicles. During the mission, the carrier vehicle dispenses the kill vehicles to address a complex threat environment and directs each kill vehicle toward the intercept point for its assigned threat object.\n\n[calibration · Reduce]"
+      "pitch": "This paper provides an overview of calibration benefits, requirements, approach, facility, measurements, and preliminary results of the pathfinder calibration MKV carrier vehicle sensor calibration The Multiple Kill Vehicle (MKV) system, which is being developed by the US Missile Defense Agency (MDA), is a midcourse payload that includes a carrier vehicle and a number of small kill vehicles",
+      "key_finding": "calibration"
     },
     {
       "id": "def:openalex:W2974558023",
@@ -24925,7 +25187,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.26,
-      "pitch": "This paper is aimed at providing a semianalytical method to solve the optimal exoatmospheric interception problem with the minimum fuel consumption. A nonlinear programming (NLP) problem with the minimum velocity increment, which involves Lambert’s problem with unspecified time-of-flight, is firstly formulated.\n\n[linear programming]"
+      "pitch": "Optimal Midcourse Guidance Algorithm for Exoatmospheric Interception Using Analytical Gradients This paper is aimed at providing a semianalytical method to solve the optimal exoatmospheric interception problem with the minimum fuel consumption A nonlinear programming (NLP) problem with the minimum velocity increment, which involves Lambert’s problem with unspecified time-of-flight, is firstly formulated",
+      "key_finding": "Newton-Raphson method"
     },
     {
       "id": "def:openalex:W2974558023",
@@ -24992,7 +25255,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.26,
-      "pitch": "This paper is aimed at providing a semianalytical method to solve the optimal exoatmospheric interception problem with the minimum fuel consumption. A nonlinear programming (NLP) problem with the minimum velocity increment, which involves Lambert’s problem with unspecified time-of-flight, is firstly formulated.\n\n[linear programming]"
+      "pitch": "Optimal Midcourse Guidance Algorithm for Exoatmospheric Interception Using Analytical Gradients This paper is aimed at providing a semianalytical method to solve the optimal exoatmospheric interception problem with the minimum fuel consumption A nonlinear programming (NLP) problem with the minimum velocity increment, which involves Lambert’s problem with unspecified time-of-flight, is firstly formulated",
+      "key_finding": "Newton-Raphson method"
     },
     {
       "id": "def:openalex:W4285228977",
@@ -25051,7 +25315,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.25,
-      "pitch": "This paper focuses on securing confidential communication in multiple intelligent reflecting surfaces (IRS) assisted terahertz (THz) systems, where a potential eavesdropper can intercept either the base station (BS)-IRS link or the IRS-user link. Notably, the secure transmission may be intercepted and blocked by the eavesdropper due to the blockage-prone nature in THz bands.\n\n[Convex optimization]"
+      "pitch": "Notably, the secure transmission may be intercepted and blocked by the eavesdropper due to the blockage-prone nature in THz bands To characterize the blocking effects of the eavesdropper, the blocking-based path loss is first investigated",
+      "key_finding": "Convex optimization"
     },
     {
       "id": "def:openalex:W2150009200",
@@ -25109,7 +25374,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.25,
-      "pitch": "While traditional models of language comprehension have focused on the left posterior temporal cortex as the neurological basis for language comprehension, lesion and functional imaging studies indicate the involvement of an extensive network of cortical regions. However, the full extent of this network and the white matter pathways that contribute to it remain to be characterized.\n\n[Diffusion]"
+      "pitch": "We also used resting-state functional magnetic resonance imaging data to assess the functional connectivity profiles of these regions However, the full extent of this network and the white matter pathways that contribute to it remain to be characterized",
+      "key_finding": "Diffusion"
     },
     {
       "id": "def:openalex:W2150009200",
@@ -25167,7 +25433,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.25,
-      "pitch": "While traditional models of language comprehension have focused on the left posterior temporal cortex as the neurological basis for language comprehension, lesion and functional imaging studies indicate the involvement of an extensive network of cortical regions. However, the full extent of this network and the white matter pathways that contribute to it remain to be characterized.\n\n[Diffusion]"
+      "pitch": "We also used resting-state functional magnetic resonance imaging data to assess the functional connectivity profiles of these regions However, the full extent of this network and the white matter pathways that contribute to it remain to be characterized",
+      "key_finding": "Diffusion"
     },
     {
       "id": "arx:2604.04003v1",
@@ -25234,7 +25501,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.22,
-      "pitch": "1\nA Periodic Dichotomy in Linear Control Theory\nShichao Ye, Xingwu Zeng, Can Zhang\nAbstract—In this paper, we construct a periodic dichotomy\ntransformation using solutions of periodic Riccati and Lyapunov\nequations. As an application of this transformation, we provide an\nexplicit representation of the optimal extremal for periodic linear\nquadratic optimal control problems.\n\n[Observability]"
+      "pitch": "A Periodic Dichotomy in Linear Control Theory A Periodic Dichotomy in Linear Control Theory Shichao Ye, Xingwu Zeng, Can Zhang Abstract—In this paper, we construct a periodic dichotomy transformation using solutions of periodic Riccati and Lyapunov equations As an application of this transformation, we provide an explicit representation of the optimal extremal for periodic linear quadratic optimal control problems",
+      "key_finding": "periodic dichotomy transformation using solutions of periodic Riccati and Lyapun"
     },
     {
       "id": "arx:2604.10058v1",
@@ -25307,7 +25575,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.2,
-      "pitch": "A Ray Intersection Algorithm for Fast Growth Distance Computation\nBetween Convex Sets\nAkshay Thirugnanam and Koushil Sreenath\nAbstract— In this paper, we discuss an efficient algorithm\nfor computing the growth distance between two compact convex\nsets with representable support functions. The growth distance\nbetween two sets is the minimum scaling factor such that the\nsets intersect when scaled about some center points.\n\n[Reduce]"
+      "pitch": "We first reduce the growth distance problem to an equivalent ray intersection problem on the Minkowski difference set We show that our algorithm satisfies several key properties, such as primal and dual feasibility and monotone convergence",
+      "key_finding": "algorithm to solve the ray intersection problem by iteratively constructing inne"
     },
     {
       "id": "arx:2604.03989v2",
@@ -25384,7 +25653,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.2,
-      "pitch": "Robust H∞Observer Design via Finsler’s Lemma\nand IQCs\nRaktim Bhattacharya and Felix Biertümpfel\nAbstract\nThis paper develops a Finsler-based LMI for robust H∞observer design with integral quadratic constraints (IQCs) and blockstructured uncertainty. For marginally stable dynamics, artificial damping in the design model balances certified versus actual\nperformance.\n\n[Kalman filter]"
+      "pitch": "For marginally stable dynamics, artificial damping in the design model balances certified versus actual performance The framework is demonstrated on quaternion attitude estimation with angular velocity uncertainty and mass-springdamper state estimation with uncertain physical parameters",
+      "key_finding": "Finsler-based LMI for robust H∞observer design with integral quadratic constrain"
     },
     {
       "id": "arx:2604.07693v1",
@@ -25451,7 +25721,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.17,
-      "pitch": "On Linear Critical-Region Boundaries in\nContinuous-Time Multiparametric Optimal Control\nLida Lamakani1,2\nEfstratios N. This is the multiparametric approach to explicit control.\n\n[Partition]"
+      "pitch": "We show that a boundary is a hyperplane if and only if the relevant extremum is attained at either the initial time or the terminal time, regardless of the initial condition We demonstrate the result on a third-order system, obtaining the complete three-dimensional critical-region partition analytically for the first time in this problem class",
+      "key_finding": "INTRODUCTION Multiparametric model"
     },
     {
       "id": "arx:2511.11070v1",
@@ -25540,7 +25811,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.14,
-      "pitch": "They provide a range of algorithms for probabilistic inference, which analyse models by learning their parameters from a dataset or estimating their posterior distributions. However, probabilistic inference is known\nto be very costly.\n\n[Streaming algorithms · streaming algorithm · Parallel algorithms]"
+      "pitch": "Our method achieves high throughput using speculative parallel execution of loop iterations, while preserving the semantics of the original loop through a fixed-point check We formalise our method as a translation from an imperative PPL into a lower-level target language with primitives geared towards vectorisation",
+      "key_finding": "sound and effective method for automatically vectorising loops in probabilistic"
     },
     {
       "id": "arx:2604.09938v1",
@@ -25610,7 +25882,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.13,
-      "pitch": "Yet feasibility studies for novel agricultural vehicles rarely tie mechanics, energy\nharvest, draft, field geometry, economics, life-cycle CO2, and uncertainty quantification together\non a single reproducible code path. This paper builds such a framework and applies it to CableTract, a two-module cabledriven field robot.\n\n[Sensitivity analysis]"
+      "pitch": "This paper builds such a framework and applies it to CableTract, a two-module cabledriven field robot Yet feasibility studies for novel agricultural vehicles rarely tie mechanics, energy harvest, draft, field geometry, economics, life-cycle CO2, and uncertainty quantification together on a single reproducible code path",
+      "key_finding": "framework"
     },
     {
       "id": "arx:2603.09136v1",
@@ -25699,7 +25972,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.1,
-      "pitch": "Wu), minjc@mail.tsinghua.edu.cn (J.C. Min) \nAbstract: Droplet impact in airflow environments is ubiquitous in nature and industry, making the \nunderstanding of this multiphase behavior crucial for technologies such as anti-icing and spray cooling.\n\n[Partition analysis · Reynolds number · Partition]"
+      "pitch": "In this study, the dynamics of droplet impact on a superhydrophobic surface under shear airflow are numerically investigated using the pseudopotential multiphase lattice Boltzmann method Min) Abstract: Droplet impact in airflow environments is ubiquitous in nature and industry, making the understanding of this multiphase behavior crucial for technologies such as anti-icing and spray cooling",
+      "key_finding": "Boltzmann method"
     },
     {
       "id": "def:arxiv:2004.09978v1",
@@ -25771,7 +26045,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.04,
-      "pitch": "We use Reinforcement Meta-Learning to optimize an adaptive integrated guidance, navigation, and control system suitable for exoatmospheric interception of a maneuvering target. The system maps observations consisting of strapdown seeker angles and rate gyro measurements directly to thruster on-off commands.\n\n[Monte Carlo simulation · Observability]"
+      "pitch": "The system maps observations consisting of strapdown seeker angles and rate gyro measurements directly to thruster on-off commands Importantly, the optimized policy gives good performance over a wide range of challenging target maneuvers",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "arx:2603.25282v1",
@@ -25853,7 +26128,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 14.02,
-      "pitch": "In order to better simulate the dynamics, we present an eﬃcient high-order compact\nsplitting Fourier spectral method. This method splits the Hamiltonian into a linear part, which consists of\nthe Laplace, rotation and SOC terms, and a nonlinear part that includes all the remaining terms.\n\n[spectral methods · Fourier transform]"
+      "pitch": "Our method is spectrally accurate in space and high order in time In order to better simulate the dynamics, we present an eﬃcient high-order compact splitting Fourier spectral method",
+      "key_finding": "eﬃcient high-order compact splitting Fourier spectral method"
     },
     {
       "id": "arx:2604.07944v1",
@@ -25935,7 +26211,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.94,
-      "pitch": "However, deploying capable LLMs in\nresource-constrained onboard systems remains a fundamental\nchallenge. In this paper, we study how to effectively transfer\nmotion planning knowledge from a large teacher LLM to\na smaller, more deployable student model.\n\n[reinforcement learning · Chain-of-thought]"
+      "pitch": "In this paper, we study how to effectively transfer motion planning knowledge from a large teacher LLM to a smaller, more deployable student model However, deploying capable LLMs in resource-constrained onboard systems remains a fundamental challenge",
+      "key_finding": "how to effectively transfer motion planning knowledge from a large teacher LLM t"
     },
     {
       "id": "arx:2604.07479v1",
@@ -26022,7 +26299,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.93,
-      "pitch": "Linearly Solvable Continuous-Time General-Sum\nStochastic Differential Games\nMonika Tomar and Takashi Tanaka\nAbstract— This paper introduces a class of continuous-time,\nfinite-player stochastic general-sum differential games that admit solutions through an exact linear PDE system. We formulate\na distribution planning game utilizing the cross-log-likelihood\nratio to naturally model multi-agent spatial conflicts, such as\ncongestion avoidance.\n\n[Nash equilibrium · KL divergence]"
+      "pitch": "We formulate a distribution planning game utilizing the cross-log-likelihood ratio to naturally model multi-agent spatial conflicts, such as congestion avoidance We formulate a distribution planning game utilizing the cross-log-likelihood ratio to naturally model multi-agent spatial conflicts, such as congestion avoidance",
+      "key_finding": "class of continuous-time"
     },
     {
       "id": "def:arxiv:1705.06840v1",
@@ -26112,7 +26390,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.91,
-      "pitch": "The assignment problem is a fundamental problem in both computer science and economics with application in many areas including task and resource allocation. We draw inspiration from multi-criteria decision making and voting and use order weighted averages (OWAs) to propose a novel and flexible class of algorithms for the assignment problem.\n\n[NP-hardness · matching problem]"
+      "pitch": "We draw inspiration from multi-criteria decision making and voting and use order weighted averages (OWAs) to propose a novel and flexible class of algorithms for the assignment problem We show an algorithm for finding a $Σ$-OWA assignment in polynomial time, in contrast to the NP-hardness of finding an egalitarian assignment",
+      "key_finding": "novel mechanism for solving the assignment problem when we have a two sided matc"
     },
     {
       "id": "arx:2603.23658v1",
@@ -26187,7 +26466,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.9,
-      "pitch": "Comparable methods for smooth parametric learners, such as neural\nnetworks, remain less developed in both training methodology and theory. To this end, we introduce VPBoost (Variable Projection Boosting), a gradient boosting algorithm for separable smooth\napproximators, i.e., models with a smooth nonlinear featurizer followed by a final linear mapping.\n\n[decision tree · Linear convergence]"
+      "pitch": "We thereby leverage trust-region theory to prove VPBoost converges to a stationary point under mild geometric conditions and, under stronger assumptions, achieves a superlinear convergence rate Comparable methods for smooth parametric learners, such as neural networks, remain less developed in both training methodology and theory",
+      "key_finding": "VPBoost"
     },
     {
       "id": "def:openalex:W3000247919",
@@ -26255,7 +26535,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.9,
-      "pitch": "This paper presents a recurrent convolutional neural network-based estimation method of guidance parameters of the pursuer under augmented proportional navigation (APN) guidance law with a time-varying switching navigation ratio. For the highly maneuvering pursuit-evasion process, realistic factors in the guidance law estimation are considered, such as the pursuer's estimation error and delay of the evader's acceleration in the APN guidance law.\n\n[Reduce]"
+      "pitch": "For the highly maneuvering pursuit-evasion process, realistic factors in the guidance law estimation are considered, such as the pursuer's estimation error and delay of the evader's acceleration in the APN guidance law The features extracted are processed by the recurrent cell to exploit the time dependency and eliminate the error caused by unknown factors",
+      "key_finding": "recurrent convolutional neural network-based estimation method of guidance param"
     },
     {
       "id": "arx:2604.06531v2",
@@ -26337,7 +26618,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.89,
-      "pitch": "Unlike the\nstandard Schr¨odinger bridge, the dynamical constraint for\nMFSB is the mean-field limit of a population of interacting\nagents with controls. It serves as a natural model for large-scale\nmulti-agent systems.\n\n[Action potential · Diffusion]"
+      "pitch": "We propose a generalization of the Hopf-Cole transform for MFSB and, building on it, design a Sinkhorn-type recursive algorithm to solve the associated system of integro-PDEs We present numerical examples with repulsive and attractive interactions to illustrate the theoretical contributions",
+      "key_finding": "generalization of the Hopf-Cole transform for MFSB and"
     },
     {
       "id": "def:openalex:W4289816610",
@@ -26411,7 +26693,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.87,
-      "pitch": "Anti-interception guidance can enhance a hypersonic glide vehicle (HGV) compard to multiple interceptors. In general, anti-interception guidance for aircraft can be divided into procedural guidance, fly-around guidance and active evading guidance.\n\n[reinforcement learning]"
+      "pitch": "In this paper, an anti-interception guidance approach based on deep reinforcement learning (DRL) is proposed We propose a new mechanismcalled repetitive batch training (RBT",
+      "key_finding": "new mechanismcalled repetitive batch training"
     },
     {
       "id": "def:openalex:W4289816610",
@@ -26485,7 +26768,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.87,
-      "pitch": "Anti-interception guidance can enhance a hypersonic glide vehicle (HGV) compard to multiple interceptors. In general, anti-interception guidance for aircraft can be divided into procedural guidance, fly-around guidance and active evading guidance.\n\n[reinforcement learning]"
+      "pitch": "In this paper, an anti-interception guidance approach based on deep reinforcement learning (DRL) is proposed We propose a new mechanismcalled repetitive batch training (RBT",
+      "key_finding": "new mechanismcalled repetitive batch training"
     },
     {
       "id": "arx:2603.15775v1",
@@ -26544,7 +26828,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.83,
-      "pitch": "Counting and entropy for hyperbolic surface amalgams\nHugo Parlier and Yandi Wu\nAbstract\nThis paper is about closed hyperbolic surface amalgams with a focus on the growth of\nthe number of closed geodesics. This topic and related questions\nexemplify the relationship between geometry and dynamics.\n\n[lower bounds]"
+      "pitch": "In this paper, we will study a class of objects that are natural generalizations of surfaces, defined as \"2-dimensional P-manifolds\" in [Laf07] and as \"hyperbolic graph surfaces\" in [Buy05 We consider a particular class of them, which we call proper surface amalgams, where we’ve ruled out surface amalgams with boundary, as well as surface amalgams which are \"just\" closed hyperbolic surfaces",
+      "key_finding": "lower bounds"
     },
     {
       "id": "def:openalex:W1966750397",
@@ -26637,7 +26922,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.83,
-      "pitch": "Recent development in seeker technology explores a new seeker design in which, with larger field-of-view (FOV), optical parts are strapped down to a body (hence, called as a body-fixed seeker or a strapdown seeker). This design has several advantages such as comparatively easier maintenance and calibration by removing complex mechanical moving parts, increasing reliability, and cost savings.\n\n[Kalman filter · Filter · calibration]"
+      "pitch": "In this research, a new framework based on an unscented Kalman filter is developed for estimating missile/target relative motion on the simplified assumption of a point source target Recent development in seeker technology explores a new seeker design in which, with larger field-of-view (FOV), optical parts are strapped down to a body (hence, called as a body-fixed seeker or a strapdown seeker",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:openalex:W1966750397",
@@ -26730,7 +27016,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.83,
-      "pitch": "Recent development in seeker technology explores a new seeker design in which, with larger field-of-view (FOV), optical parts are strapped down to a body (hence, called as a body-fixed seeker or a strapdown seeker). This design has several advantages such as comparatively easier maintenance and calibration by removing complex mechanical moving parts, increasing reliability, and cost savings.\n\n[Kalman filter · Filter · calibration]"
+      "pitch": "In this research, a new framework based on an unscented Kalman filter is developed for estimating missile/target relative motion on the simplified assumption of a point source target Recent development in seeker technology explores a new seeker design in which, with larger field-of-view (FOV), optical parts are strapped down to a body (hence, called as a body-fixed seeker or a strapdown seeker",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:openalex:W2918156784",
@@ -26803,7 +27090,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.83,
-      "pitch": "This study deals with the application of optimization in Finocyl grain design with ballistic objective functions using a genetic algorithm. The classical sampling method is used for space filling; a level-set method is used for simulating the evaluation of a burning surface of the propellant grain.\n\n[sampling]"
+      "pitch": "Finocyl Grain Design Using the Genetic Algorithm in Combination with Adaptive Basis Function Construction This study deals with the application of optimization in Finocyl grain design with ballistic objective functions using a genetic algorithm The classical sampling method is used for space filling; a level-set method is used for simulating the evaluation of a burning surface of the propellant grain",
+      "key_finding": "algorithm"
     },
     {
       "id": "arx:2603.29487v1",
@@ -26883,7 +27171,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.82,
-      "pitch": "ISAC leverages radar signal processing (RSP) to\nlocalize multiple unknown targets amid static clutter by jointly\nestimating range, azimuth, and Doppler velocity (3D), thereby\nenabling highly directional beamforming toward intended mobile\nusers. However, the speed and accuracy of RSP significantly impact communication throughput.\n\n[Radar signal processing]"
+      "pitch": "This work proposes a novel 3D reconfigurable RSP accelerator, implemented on a Zynq Multiprocessor System-on-Chip (MPSoC) using a hardware–software co-design approach and fixed-point optimization We propose two RSP frameworks: (1) high-accuracy and high-complexity, and (2) low-complexity and low-accuracy, along with their respective architectures",
+      "key_finding": "two RSP frameworks"
     },
     {
       "id": "def:arxiv:1712.03931v1",
@@ -26941,7 +27230,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.77,
-      "pitch": "We present MINOS, a simulator designed to support the development of multisensory models for goal-directed navigation in complex indoor environments. The simulator leverages large datasets of complex 3D environments and supports flexible configuration of multimodal sensor suites.\n\n[reinforcement learning]"
+      "pitch": "We use MINOS to benchmark deep-learning-based navigation methods, to analyze the influence of environmental complexity on navigation performance, and to carry out a controlled study of multimodality in sensorimotor learning MINOS: Multimodal Indoor Simulator for Navigation in Complex Environments We present MINOS, a simulator designed to support the development of multisensory models for goal-directed navigation in complex indoor environments",
+      "key_finding": "reinforcement learning"
     },
     {
       "id": "arx:2603.24641v1",
@@ -27016,7 +27306,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.76,
-      "pitch": "Learning Mesh-Free Discrete Differential Operators\nwith Self-Supervised Graph Neural Networks\nLucas Gerken Starepravo,1, ∗Georgios Fourtakas,1 Steven Lind,2\nAjay B. Harish,1 Tianning Tang,1 and Jack R.\n\n[Graph neural networks · spectral methods]"
+      "pitch": "We introduce a parametrised framework for learning mesh-free discrete differential operators using a graph neural network trained via polynomial moment constraints derived from truncated Taylor expansions We evaluate the framework using standard numerical analysis diagnostics, showing improved accuracy over Smoothed Particle Hydrodynamics, and a favourable accuracy–cost trade-off relative to a representative highorder consistent mesh-free method in the moderate-accuracy regime",
+      "key_finding": "parametrised framework for learning mesh-free discrete differential operators us"
     },
     {
       "id": "arx:2310.02959v1",
@@ -27082,7 +27373,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.72,
-      "pitch": "Co-Optimizing Cache Partitioning and Multi-Core\nTask Scheduling: Exploit Cache Sensitivity or Not? Considering that\nthe execution time of a cache-sensitive task strongly depends on\nthe cache available for it to use, co-optimizing cache partitioning\nand task allocation improves the system’s schedulability.\n\n[breadth-first search]"
+      "pitch": "In this paper, we propose a hybrid multi-layer design space exploration technique to solve this multi-resource management problem Co-Optimizing Cache Partitioning and Multi-Core Task Scheduling: Exploit Cache Sensitivity or Not?",
+      "key_finding": "hybrid multi-layer design space exploration technique to solve this multi-resour"
     },
     {
       "id": "def:arxiv:2602.12351v1",
@@ -27163,7 +27455,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.67,
-      "pitch": "This paper develops LongNav-R1, an end-to-end multi-turn reinforcement learning (RL) framework designed to optimize Visual-Language-Action (VLA) models for long-horizon navigation. Unlike existing single-turn paradigm, LongNav-R1 reformulates the navigation decision process as a continuous multi-turn conversation between the VLA policy and the embodied environment.\n\n[reinforcement learning]"
+      "pitch": "LongNav-R1: Horizon-Adaptive Multi-Turn RL for Long-Horizon VLA Navigation This paper develops LongNav-R1, an end-to-end multi-turn reinforcement learning (RL) framework designed to optimize Visual-Language-Action (VLA) models for long-horizon navigation Unlike existing single-turn paradigm, LongNav-R1 reformulates the navigation decision process as a continuous multi-turn conversation between the VLA policy and the embodied environment",
+      "key_finding": "Horizon-Adaptive Policy Optimization"
     },
     {
       "id": "def:arxiv:2602.12351v1",
@@ -27244,7 +27537,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.67,
-      "pitch": "This paper develops LongNav-R1, an end-to-end multi-turn reinforcement learning (RL) framework designed to optimize Visual-Language-Action (VLA) models for long-horizon navigation. Unlike existing single-turn paradigm, LongNav-R1 reformulates the navigation decision process as a continuous multi-turn conversation between the VLA policy and the embodied environment.\n\n[reinforcement learning]"
+      "pitch": "LongNav-R1: Horizon-Adaptive Multi-Turn RL for Long-Horizon VLA Navigation This paper develops LongNav-R1, an end-to-end multi-turn reinforcement learning (RL) framework designed to optimize Visual-Language-Action (VLA) models for long-horizon navigation Unlike existing single-turn paradigm, LongNav-R1 reformulates the navigation decision process as a continuous multi-turn conversation between the VLA policy and the embodied environment",
+      "key_finding": "Horizon-Adaptive Policy Optimization"
     },
     {
       "id": "def:ntrs:20230016651",
@@ -27303,7 +27597,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.66,
-      "pitch": "Flap-based steering systems on blunt-body entry vehicles may improve flight performance relative to heritage bank-angle steering systems. Successful implementation of articulating aerodynamic flaps on a hypersonic entry vehicle requires an active control system to map angle of attack and sidelip angle commands to flap deflection commands.\n\n[Monte Carlo simulation]"
+      "pitch": "Assessment of Control Algorithms for Mars Entry Vehicles With Flap-Based Trajectory Control Under Uncertainty Flap-based steering systems on blunt-body entry vehicles may improve flight performance relative to heritage bank-angle steering systems Successful implementation of articulating aerodynamic flaps on a hypersonic entry vehicle requires an active control system to map angle of attack and sidelip angle commands to flap deflection commands",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "arx:2604.03807v1",
@@ -27377,7 +27672,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.63,
-      "pitch": "Computing Rare Probabilities of Voltage Collapse\nTongtong Jin∗, Anirudh Subramanyam†, D. We formulate the problem\nas finding the most probable failure point (the instanton) on the\nstability boundary and derive both first-order and second-order\napproximations for the collapse probability.\n\n[sampling]"
+      "pitch": "We formulate the problem as finding the most probable failure point (the instanton) on the stability boundary and derive both first-order and second-order approximations for the collapse probability We validate our approach on test systems, demonstrating that the LDT estimates converge to Monte Carlo results in the rare-event regime where direct sampling becomes computationally prohibitive",
+      "key_finding": "framework based on Large Deviation Theory"
     },
     {
       "id": "def:ntrs:19860017806",
@@ -27436,7 +27732,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.61,
-      "pitch": "This study was initiated to assess the feasibility of an eight-passenger, supersonic-cruise long range business jet aircraft that could be converted into a military missile carrying interceptor. The baseline passenger version has a flight crew of two with cabin space for four rows of two passenger seats plus baggage and lavatory room in the aft cabin.\n\n[Mach number]"
+      "pitch": "The baseline passenger version has a flight crew of two with cabin space for four rows of two passenger seats plus baggage and lavatory room in the aft cabin The ramp weight is 61,600 pounds with an internal fuel capacity of 30,904 pounds",
+      "key_finding": "Mach number"
     },
     {
       "id": "def:openalex:W4406808949",
@@ -27495,7 +27792,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.61,
-      "pitch": "Abstract Low-flying aircraft are susceptible to attacks by ground-launched infrared (IR)-guided man portable air defence system (MANPADS) and surface-to-air missiles (SAM). When seen from direct below, a dual band sensor can lock on to either exhaust plume or aircraft surfaces.\n\n[Mach number]"
+      "pitch": "In this study, the IR signature of the aircraft surface and potential plume core is analysed and compared from direct bottom view in different IR bands When seen from direct below, a dual band sensor can lock on to either exhaust plume or aircraft surfaces",
+      "key_finding": "Mach number"
     },
     {
       "id": "def:openalex:W4406808949",
@@ -27554,7 +27852,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.61,
-      "pitch": "Abstract Low-flying aircraft are susceptible to attacks by ground-launched infrared (IR)-guided man portable air defence system (MANPADS) and surface-to-air missiles (SAM). When seen from direct below, a dual band sensor can lock on to either exhaust plume or aircraft surfaces.\n\n[Mach number]"
+      "pitch": "In this study, the IR signature of the aircraft surface and potential plume core is analysed and compared from direct bottom view in different IR bands When seen from direct below, a dual band sensor can lock on to either exhaust plume or aircraft surfaces",
+      "key_finding": "Mach number"
     },
     {
       "id": "def:openalex:W2055948693",
@@ -27613,7 +27912,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.61,
-      "pitch": "An inflatable decelerator is promising as a next-generation atmospheric-entry system owing to its reduced aerodynamic heating and high packing efficiency. In this study, a suborbital reentry demonstration of a flare-type thin-membrane aeroshell sustained by a single inflatable torus using an S-310-41 sounding rocket was carried out.\n\n[Mach number]"
+      "pitch": "In this study, a suborbital reentry demonstration of a flare-type thin-membrane aeroshell sustained by a single inflatable torus using an S-310-41 sounding rocket was carried out Suborbital Reentry Demonstration of Inflatable Flare-Type Thin-Membrane Aeroshell Using a Sounding Rocket An inflatable decelerator is promising as a next-generation atmospheric-entry system owing to its reduced aerodynamic heating and high packing efficiency",
+      "key_finding": "Mach number"
     },
     {
       "id": "def:ntrs:19650075478",
@@ -27672,7 +27972,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.61,
-      "pitch": "A study has been made of a flare-cylinder configuration to investigate its feasibility as a reentry body of an intermediate range ballistic missile. Factors considered were heating, weight, stability, and impact velocity.\n\n[Mach number]"
+      "pitch": "A Feasibility Study of the Flare-Cylinder Configuration as a Reentry Body Shape for an Intermediate Range Ballistic Missile A study has been made of a flare-cylinder configuration to investigate its feasibility as a reentry body of an intermediate range ballistic missile Factors considered were heating, weight, stability, and impact velocity",
+      "key_finding": "Mach number"
     },
     {
       "id": "def:openalex:W2055948693",
@@ -27731,7 +28032,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.61,
-      "pitch": "An inflatable decelerator is promising as a next-generation atmospheric-entry system owing to its reduced aerodynamic heating and high packing efficiency. In this study, a suborbital reentry demonstration of a flare-type thin-membrane aeroshell sustained by a single inflatable torus using an S-310-41 sounding rocket was carried out.\n\n[Mach number]"
+      "pitch": "In this study, a suborbital reentry demonstration of a flare-type thin-membrane aeroshell sustained by a single inflatable torus using an S-310-41 sounding rocket was carried out Suborbital Reentry Demonstration of Inflatable Flare-Type Thin-Membrane Aeroshell Using a Sounding Rocket An inflatable decelerator is promising as a next-generation atmospheric-entry system owing to its reduced aerodynamic heating and high packing efficiency",
+      "key_finding": "Mach number"
     },
     {
       "id": "def:ntrs:19650075478",
@@ -27790,7 +28092,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.61,
-      "pitch": "A study has been made of a flare-cylinder configuration to investigate its feasibility as a reentry body of an intermediate range ballistic missile. Factors considered were heating, weight, stability, and impact velocity.\n\n[Mach number]"
+      "pitch": "A Feasibility Study of the Flare-Cylinder Configuration as a Reentry Body Shape for an Intermediate Range Ballistic Missile A study has been made of a flare-cylinder configuration to investigate its feasibility as a reentry body of an intermediate range ballistic missile Factors considered were heating, weight, stability, and impact velocity",
+      "key_finding": "Mach number"
     },
     {
       "id": "arx:2503.22999v3",
@@ -27848,7 +28151,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.6,
-      "pitch": "It seems that\nthe LB principle is widely accepted in the scientiﬁc debate. In contrast, in this paper we argue for\na modiﬁed S principle and criticize the LB principle with regard to various points.\n\n[Reduce]"
+      "pitch": "Our approach is based on the concept of “conditional action”, which is developed in detail In this famous scenario, an intelligent and skillful being (later called a “demon” by William Thomson) controls a small door between two gas chambers",
+      "key_finding": "Reduce"
     },
     {
       "id": "def:openalex:W2920592781",
@@ -27906,7 +28210,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.6,
-      "pitch": "This guideline provides recommendations for primary care clinicians who are prescribing opioids for chronic pain outside of active cancer treatment, palliative care, and end-of-life care. The guideline addresses 1) when to initiate or continue opioids for chronic pain; 2) opioid selection, dosage, duration, follow-up, and discontinuation; and 3) assessing risk and addressing harms of opioid use.\n\n[Reduce]"
+      "pitch": "This guideline provides recommendations for primary care clinicians who are prescribing opioids for chronic pain outside of active cancer treatment, palliative care, and end-of-life care The guideline addresses 1) when to initiate or continue opioids for chronic pain; 2) opioid selection, dosage, duration, follow-up, and discontinuation; and 3) assessing risk and addressing harms of opioid use",
+      "key_finding": "Reduce"
     },
     {
       "id": "def:openalex:W1983442452",
@@ -27964,7 +28269,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.6,
-      "pitch": "This study investigates the optimal guidance problem for reentry vehicles with focus on novel methods for nominal trajectory generation and tracking. To reduce the dimensionality of reentry trajectory optimisation problem, the inversion‐based approach is utilised to partly eliminate the differential equations by reformulating the states and controls with some desired outputs.\n\n[Reduce]"
+      "pitch": "Optimal guidance for hypersonic reentry using inversion and receding horizon control This study investigates the optimal guidance problem for reentry vehicles with focus on novel methods for nominal trajectory generation and tracking To reduce the dimensionality of reentry trajectory optimisation problem, the inversion‐based approach is utilised to partly eliminate the differential equations by reformulating the states and controls with some desired outputs",
+      "key_finding": "Reduce"
     },
     {
       "id": "def:openalex:W1983442452",
@@ -28022,7 +28328,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.6,
-      "pitch": "This study investigates the optimal guidance problem for reentry vehicles with focus on novel methods for nominal trajectory generation and tracking. To reduce the dimensionality of reentry trajectory optimisation problem, the inversion‐based approach is utilised to partly eliminate the differential equations by reformulating the states and controls with some desired outputs.\n\n[Reduce]"
+      "pitch": "Optimal guidance for hypersonic reentry using inversion and receding horizon control This study investigates the optimal guidance problem for reentry vehicles with focus on novel methods for nominal trajectory generation and tracking To reduce the dimensionality of reentry trajectory optimisation problem, the inversion‐based approach is utilised to partly eliminate the differential equations by reformulating the states and controls with some desired outputs",
+      "key_finding": "Reduce"
     },
     {
       "id": "def:ntrs:19880062942",
@@ -28080,7 +28387,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.6,
-      "pitch": "The classical Krylov-Bogoliubov \"averaging\" technique is used to study a class of nonlinear damping models, for which the damping force is proportional to the product of positive integer or fractional power of absolute values of displacement and that of velocity. The results are compared with linear viscous damping models.\n\n[Reduce]"
+      "pitch": "The results are compared with linear viscous damping models The amplitude decrement of free vibration for a single mode system with nonlinear models depends not only on damping ratio, but also on the initial amplitude, the time to measure the response, frequency of the system, and the powers of displacement and velocity",
+      "key_finding": "Reduce"
     },
     {
       "id": "def:ntrs:19980008542",
@@ -28162,7 +28470,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.59,
-      "pitch": "These data were recorded under laminar, transitional, and turbulent boundary layer conditions with both hot-wall and cold-wall models. This report presents experimental data on 25 configurations of 17 models of both simple and complex geometry taken at M(sub infinity) = 6.00, 6.86, and 8.00 in 4 different hypersonic facilities.\n\n[Reynolds number · Boundary layer · Mach number]"
+      "pitch": "These data were recorded under laminar, transitional, and turbulent boundary layer conditions with both hot-wall and cold-wall models This report presents experimental data on 25 configurations of 17 models of both simple and complex geometry taken at M(sub infinity) = 6.00, 6.86, and 8.00 in 4 different hypersonic facilities",
+      "key_finding": "Reynolds number"
     },
     {
       "id": "def:ntrs:19980008542",
@@ -28244,7 +28553,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.59,
-      "pitch": "These data were recorded under laminar, transitional, and turbulent boundary layer conditions with both hot-wall and cold-wall models. This report presents experimental data on 25 configurations of 17 models of both simple and complex geometry taken at M(sub infinity) = 6.00, 6.86, and 8.00 in 4 different hypersonic facilities.\n\n[Reynolds number · Boundary layer · Mach number]"
+      "pitch": "These data were recorded under laminar, transitional, and turbulent boundary layer conditions with both hot-wall and cold-wall models This report presents experimental data on 25 configurations of 17 models of both simple and complex geometry taken at M(sub infinity) = 6.00, 6.86, and 8.00 in 4 different hypersonic facilities",
+      "key_finding": "Reynolds number"
     },
     {
       "id": "def:openalex:W263573817",
@@ -28313,7 +28623,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.59,
-      "pitch": "Calculations are made of the magnitude of the surface sound presg sure levels that will occur on blunt-nosed vehicles during reentv into the earth's atmosphere.The results presented cover a wide range of reentrance velocities and reentrance\n\n[Boundary layer · Mach number]"
+      "pitch": "An Estimate of the Fluctuating Surface Pressures Encountered in the Reentry of a Ballistic Missile\n\nCalculations are made of the magnitude of the surface sound presg sure levels that will occur on blunt-nosed vehicles during reentv into the",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "def:openalex:W263573817",
@@ -28382,7 +28693,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.59,
-      "pitch": "Calculations are made of the magnitude of the surface sound presg sure levels that will occur on blunt-nosed vehicles during reentv into the earth's atmosphere.The results presented cover a wide range of reentrance velocities and reentrance\n\n[Boundary layer · Mach number]"
+      "pitch": "An Estimate of the Fluctuating Surface Pressures Encountered in the Reentry of a Ballistic Missile\n\nCalculations are made of the magnitude of the surface sound presg sure levels that will occur on blunt-nosed vehicles during reentv into the",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "arx:2604.05398v1",
@@ -28470,7 +28782,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.58,
-      "pitch": "We propose an actor–critic framework that serves as\na mesh-free solver for entropy-regularized control problems and stochastic games with jumps. The\napproach is built on a time-inhomogeneous “little” 𝑞-function and an appropriate occupation measure,\nyielding a policy-gradient representation that accommodates time-dependent drift, volatility, and jump\nterms.\n\n[reinforcement learning · dynamic programming · Diffusion]"
+      "pitch": "We propose an actor–critic framework that serves as a mesh-free solver for entropy-regularized control problems and stochastic games with jumps We validate the method on time-inhomogeneous linear–quadratic control, Merton portfolio optimization, and a multi-agent portfolio game, using explicit solutions or high-accuracy benchmarks",
+      "key_finding": "actor–critic framework that serves as a mesh-free solver for entropy-regularized"
     },
     {
       "id": "arx:2309.03779v1",
@@ -28539,7 +28852,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.57,
-      "pitch": "CPU Frequency Scheduling of Real-Time Applications on Embedded Devices with\nTemporal Encoding-based Deep Reinforcement Learning\nTi Zhou, Man Lin∗\nDepartment of Computer Science, St. Francis Xavier University, Nova Scotia, Canada\nAbstract\nSmall devices are frequently used in IoT and smart-city applications to perform periodic dedicated tasks with soft\ndeadlines.\n\n[reinforcement learning]"
+      "pitch": "This work focuses on developing methods to derive efficient power-management methods for periodic tasks on small devices We first study the limitations of the existing Linux built-in methods used in small devices",
+      "key_finding": "reinforcement-learning-based technique with temporal encoding to derive an effec"
     },
     {
       "id": "arx:2603.23397v2",
@@ -28630,7 +28944,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.56,
-      "pitch": "Kinetic Langevin Splitting Schemes for Constrained Sampling\nNeil K. Chada∗\nLu Yu†\nApril 1, 2026\nAbstract\nConstrained sampling is an important and challenging task in computational statistics, concerned with generating samples from a distribution under certain constraints.\n\n[sampling · Markov chain · Bayesian linear regression]"
+      "pitch": "In this article we propose a series of new sampling algorithms based on the latter of these, specifically the kinetic Langevin dynamics Our series of algorithms are motivated on advanced numerical methods which are splitting order schemes, which include the BU and BAO families of splitting schemes.Their advantage lies in the fact that they have favorable strong order (bias) rates and computationally efficiency",
+      "key_finding": "series of new sampling algorithms based on the latter of these"
     },
     {
       "id": "def:openalex:W3214445552",
@@ -28707,7 +29022,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.56,
-      "pitch": "This work presents the design of rendezvous and close proximity operations for an active debris removal service for maintenance and disposal of a large constellation fleet. The design drivers of the service are safety and robustness of the operations, capability to remove a satellite under every condition, and high level of autonomy to reduce the service-related operations’ cost.\n\n[Reduce · Observability]"
+      "pitch": "The design drivers of the service are safety and robustness of the operations, capability to remove a satellite under every condition, and high level of autonomy to reduce the service-related operations’ cost Accordingly, the most challenging case of a rendezvous with a uncooperative non-collaborative target satellite is considered and a strategy to reduce its rotational motion is also presented",
+      "key_finding": "design of rendezvous and close proximity operations for an active debris removal"
     },
     {
       "id": "def:openalex:W3214445552",
@@ -28784,7 +29100,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.56,
-      "pitch": "This work presents the design of rendezvous and close proximity operations for an active debris removal service for maintenance and disposal of a large constellation fleet. The design drivers of the service are safety and robustness of the operations, capability to remove a satellite under every condition, and high level of autonomy to reduce the service-related operations’ cost.\n\n[Reduce · Observability]"
+      "pitch": "The design drivers of the service are safety and robustness of the operations, capability to remove a satellite under every condition, and high level of autonomy to reduce the service-related operations’ cost Accordingly, the most challenging case of a rendezvous with a uncooperative non-collaborative target satellite is considered and a strategy to reduce its rotational motion is also presented",
+      "key_finding": "design of rendezvous and close proximity operations for an active debris removal"
     },
     {
       "id": "def:ntrs:19880063039",
@@ -28843,7 +29160,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.56,
-      "pitch": "The paper presents a near optimal guidance algorithm for aero-assited orbit plane change, based on minimizing the energy loss during the atmospheric portion of the maneuver. The guidance algorithm makes use of recent results obtained from energy state approximations and singular perturbation analysis of optimal heading change for a hypersonic gliding vehicle.\n\n[Boundary layer]"
+      "pitch": "This paper will demonstrate the near optimality of a predictive/corrective guidance algorithm for the terminal maneuver A near optimal guidance algorithm for aero-assisted orbit transfer The paper presents a near optimal guidance algorithm for aero-assited orbit plane change, based on minimizing the energy loss during the atmospheric portion of the maneuver",
+      "key_finding": "Boundary layer"
     },
     {
       "id": "def:openalex:W2119539043",
@@ -28936,7 +29254,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.55,
-      "pitch": "A framework for positioning, navigation, and tracking problems using particle filters (sequential Monte Carlo methods) is developed. It consists of a class of motion models and a general nonlinear measurement equation in position.\n\n[Kalman filter · Filter · Target tracking]"
+      "pitch": "Particle filters for positioning, navigation, and tracking A framework for positioning, navigation, and tracking problems using particle filters (sequential Monte Carlo methods) is developed It consists of a class of motion models and a general nonlinear measurement equation in position",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:openalex:W2119539043",
@@ -29029,7 +29348,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.55,
-      "pitch": "A framework for positioning, navigation, and tracking problems using particle filters (sequential Monte Carlo methods) is developed. It consists of a class of motion models and a general nonlinear measurement equation in position.\n\n[Kalman filter · Filter · Target tracking]"
+      "pitch": "Particle filters for positioning, navigation, and tracking A framework for positioning, navigation, and tracking problems using particle filters (sequential Monte Carlo methods) is developed It consists of a class of motion models and a general nonlinear measurement equation in position",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "arx:2602.18957v1",
@@ -29115,7 +29435,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.52,
-      "pitch": "EdgeSketch provides\nunbiased estimators for key graph properties with controllable variance and supports implementing graph algorithms on the stored\nsummary directly. It is constructed in a fully streaming manner,\nrequiring a single pass over the edge stream, while offline analysis\nrelies solely on the sketch.\n\n[graph embedding · graph reconstruction]"
+      "pitch": "We evaluate the proposed approach on two representative applications: community detection via the Louvain method and graph reconstruction through node similarity estimation EdgeSketch provides unbiased estimators for key graph properties with controllable variance and supports implementing graph algorithms on the stored summary directly",
+      "key_finding": "EdgeSketch"
     },
     {
       "id": "arx:2603.02039v1",
@@ -29187,7 +29508,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.52,
-      "pitch": "We develop a GNN-based force-field framework for the adiabatic dynamics of lattice Hamiltonians and demonstrate it for the semiclassical Holstein model. Trained on exact-diagonalization\ndata, the GNN achieves high force accuracy, strict linear scaling with system size, and direct transferability to large lattices.\n\n[Graph neural networks]"
+      "pitch": "We develop a GNN-based force-field framework for the adiabatic dynamics of lattice Hamiltonians and demonstrate it for the semiclassical Holstein model We develop a GNN-based force-field framework for the adiabatic dynamics of lattice Hamiltonians and demonstrate it for the semiclassical Holstein model",
+      "key_finding": "GNN-based force-field framework for the adiabatic dynamics of lattice Hamiltonia"
     },
     {
       "id": "arx:2311.03585v1",
@@ -29268,7 +29590,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.5,
-      "pitch": "The seL4 microkernel is currently the only kernel that has\nbeen fully formally veriﬁed. In general, the increased interest in ensuring\nthe security of a kernel’s code results from its important role in the entire operating system.\n\n[Reduce]"
+      "pitch": "In this paper, we choose to model the behavior of a device driver and build the proof that the code implementation matches the expected behavior We choose Isabelle theorem prover because its eﬃciency was already shown through the veriﬁcation of seL4 microkernel",
+      "key_finding": "process of adapting and applying the seL4 veriﬁcation process for verify parts o"
     },
     {
       "id": "arx:2603.18663v1",
@@ -29350,7 +29673,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.5,
-      "pitch": "A JULIA–FATOU THEORY VIA RANDOM SYSTEMS WITH\nCOMPLETE CONNECTIONS\nYOSHIYUKI ENDO\nAbstract. We develop a Julia–Fatou theory for random dynamical systems\nof continuous self-maps on a compact metric space, driven by random systems\nwith complete connections (RSCCs).\n\n[metric space]"
+      "pitch": "We develop a Julia–Fatou theory for random dynamical systems of continuous self-maps on a compact metric space, driven by random systems with complete connections (RSCCs We further identify a new phenomenon specific to RSCCs, namely emptiness jumps of kernel Julia sets along admissible state trajectories, and provide criteria excluding such jumps, including discreteness of the state space and a propagation mechanism under φ-irreducibility",
+      "key_finding": "Julia–Fatou theory for random dynamical systems of continuous self-maps on a com"
     },
     {
       "id": "def:openalex:W3030366951",
@@ -29431,7 +29755,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.5,
-      "pitch": "System Response Time (SRT) is the interval between submitting an imaging request to, and receiving imagery from, Earth Observation (EO) satellites. Reduction of SRT is especially important in natural disaster and national security situations.\n\n[Reduce]"
+      "pitch": "We also present a tool to design RCSCs in Medium Earth Orbit (MEO) that can achieve persistent inter-relay intersatellite links (ISLs) and thereby minimize SRT We demonstrate that a Walker-Delta 4/2/1 RCSC with 4 satellites in two planes achieves much better performance at a much lower cost than a Walker-Delta 3/3/0 RCSC with 3 satellites in three planes when serviced by a single ground station",
+      "key_finding": "framework for designing RCSCs in support of EO constellations based on the indus"
     },
     {
       "id": "def:openalex:W2967810143",
@@ -29490,7 +29815,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.46,
-      "pitch": "This paper investigates the problem of low probability of intercept-based optimal power allocation (LPI-OPA) for an integrated multistatic radar and communication system, which consists of multiple transmitters operating at different frequencies, a radar receiver, and a communication receiver (CR). The integrated multistatic radar and communication system is capable of fulfilling the requirements of both radar and communication subsystems.\n\n[linear programming]"
+      "pitch": "We analytically show that the resulting optimization problem can be reformulated as two subproblems, which can be solved by an efficient solution procedure based on the approach of linear programming and the Karush-Kuhn-Tuckers optimality conditions The integrated multistatic radar and communication system is capable of fulfilling the requirements of both radar and communication subsystems",
+      "key_finding": "linear programming"
     },
     {
       "id": "def:openalex:W2967810143",
@@ -29549,7 +29875,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.46,
-      "pitch": "This paper investigates the problem of low probability of intercept-based optimal power allocation (LPI-OPA) for an integrated multistatic radar and communication system, which consists of multiple transmitters operating at different frequencies, a radar receiver, and a communication receiver (CR). The integrated multistatic radar and communication system is capable of fulfilling the requirements of both radar and communication subsystems.\n\n[linear programming]"
+      "pitch": "We analytically show that the resulting optimization problem can be reformulated as two subproblems, which can be solved by an efficient solution procedure based on the approach of linear programming and the Karush-Kuhn-Tuckers optimality conditions The integrated multistatic radar and communication system is capable of fulfilling the requirements of both radar and communication subsystems",
+      "key_finding": "linear programming"
     },
     {
       "id": "arx:2604.06158v1",
@@ -29616,7 +29943,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.43,
-      "pitch": "A version of this work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible.\n\n[NP-hardness · robust optimization]"
+      "pitch": "We study, to our knowledge, the first tractable multistage ex-ante distributionally robust regret optimization (DRRO) formulation for stochastic control We consider finite-horizon LQR under common stage-law ambiguity: disturbances are independent across time but share an unknown stage law whose mean and covariance lie in a Gelbrich ball around nominal parameters",
+      "key_finding": "NP-hardness"
     },
     {
       "id": "arx:2603.02011v2",
@@ -29692,7 +30020,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.43,
-      "pitch": "Tensor-network methodology for super-moir´e excitons beyond one billion sites\nAnouar Moustaj\n,1, ∗Yitao Sun\n,1, ∗Tiago V. Ant˜ao\n,1 Lumen Eek\n,2 and Jose L.\n\n[tensor network · Tensor network algorithm]"
+      "pitch": "Our method combines a tensor-network encoding of the real-space Bethe-Salpeter Hamiltonian with a Chebyshev tensor network algorithm Our results establish a real-space methodology enabling the simulation of excitonic physics in large-scale quasicrystal and super-moir´e quantum matter",
+      "key_finding": "Tensor-network methodology"
     },
     {
       "id": "def:openalex:W2183101721",
@@ -29751,7 +30080,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.42,
-      "pitch": "When a detector sensitive to the target plume IR seeker is used for tracking airborne targets, the seeker tends to follow the target hot point which is a point farther away from the target exhaust and its fuselage. In order to increase the missile effectiveness, it is necessary to modify the guidance law by adding a lead bias command.\n\n[Observability]"
+      "pitch": "The main idea is based on the distinction between angular rate vector and rotation vector conceptions In order to increase the missile effectiveness, it is necessary to modify the guidance law by adding a lead bias command",
+      "key_finding": "Observability"
     },
     {
       "id": "def:openalex:W2183101721",
@@ -29810,7 +30140,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.42,
-      "pitch": "When a detector sensitive to the target plume IR seeker is used for tracking airborne targets, the seeker tends to follow the target hot point which is a point farther away from the target exhaust and its fuselage. In order to increase the missile effectiveness, it is necessary to modify the guidance law by adding a lead bias command.\n\n[Observability]"
+      "pitch": "The main idea is based on the distinction between angular rate vector and rotation vector conceptions In order to increase the missile effectiveness, it is necessary to modify the guidance law by adding a lead bias command",
+      "key_finding": "Observability"
     },
     {
       "id": "def:openalex:W4406559828",
@@ -29877,7 +30208,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.4,
-      "pitch": "Resident Space Objects (RSO) are human-made objects in orbit around Earth and can remain there for an extended period. These objects can include active satellites, rockets, and space stations, as well as debris caused by previous space endeavours.\n\n[Reduce]"
+      "pitch": "The main contribution of this study lies in the development of data fusion frameworks tailored for constrained computational environments, ensuring seamless real-time implementation on intelligent Distributed Satellite Systems (iDSS This study proposes and rigorously compares three distinct data fusion methodologies—Measurement Fusion-1 (MF-1), Measurement Fusion-2 (MF-2), and Track-to-Track (T2T) fusion—examining their impact on tracking accuracy across varying sensor-to-target geometries",
+      "key_finding": "and rigorously compares three distinct data fusion methodologies—Measurement Fus"
     },
     {
       "id": "def:openalex:W4406559828",
@@ -29944,7 +30276,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.4,
-      "pitch": "Resident Space Objects (RSO) are human-made objects in orbit around Earth and can remain there for an extended period. These objects can include active satellites, rockets, and space stations, as well as debris caused by previous space endeavours.\n\n[Reduce]"
+      "pitch": "The main contribution of this study lies in the development of data fusion frameworks tailored for constrained computational environments, ensuring seamless real-time implementation on intelligent Distributed Satellite Systems (iDSS This study proposes and rigorously compares three distinct data fusion methodologies—Measurement Fusion-1 (MF-1), Measurement Fusion-2 (MF-2), and Track-to-Track (T2T) fusion—examining their impact on tracking accuracy across varying sensor-to-target geometries",
+      "key_finding": "and rigorously compares three distinct data fusion methodologies—Measurement Fus"
     },
     {
       "id": "arx:2603.24056v1",
@@ -30018,7 +30351,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.35,
-      "pitch": "ELLIPTIC PDES ON LOG-GAUSSIAN SHAPES:\nSPARSITY AND FINITE ELEMENT DISCRETIZATION\nDINH D˜UNG, HELMUT HARBRECHT, VAN KIEN NGUYEN, AND CHRISTOPH SCHWAB\nAbstract. In this article, we consider the solution to elliptic diffusion problems on a class of random domains obtained by log-Gaussian random homothety of the unit disk respectively an annulus.\n\n[Diffusion]"
+      "pitch": "In this article, we consider the solution to elliptic diffusion problems on a class of random domains obtained by log-Gaussian random homothety of the unit disk respectively an annulus We model the problem under consideration and verify the existence and uniqueness of the random solution by path-wise pullback to the nominal unit disk respectively annulus",
+      "key_finding": "analytic regularity of the solution with respect to the random input paramet"
     },
     {
       "id": "arx:2601.15458v1",
@@ -30077,7 +30411,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.33,
-      "pitch": "MUSALS: A FAST MULTIPLE SEQUENCE ALIGNMENT\nAPPROACH USING HIERARCHICAL CLUSTERING\nA PREPRINT\nEmily G. Light\nDepartment of Computer Science and Statistics\nUniversity of Rhode Island\nKingston, RI\nMorgan E.\n\n[dynamic programming]"
+      "pitch": "We introduce MuSAlS (Multiple Sequence Alignment at Scale), a fast and scalable de novo MSA aligner MuSAlS: A Fast Multiple Sequence Alignment Approach Using Hierarchical Clustering MUSALS: A FAST MULTIPLE SEQUENCE ALIGNMENT APPROACH USING HIERARCHICAL CLUSTERING A PREPRINT Emily G",
+      "key_finding": "dynamic programming"
     },
     {
       "id": "arx:2604.00728v1",
@@ -30134,7 +30469,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.33,
-      "pitch": "1\nLearning Laplacian Forms for Graph Signal\nProcessing via the Deformed Laplacian\nStefania Sardellitti, Senior Member, IEEE\nAbstract—Learning the graph Laplacian from observed data\nis one of the most investigated and fundamental tasks in Graph\nSignal Processing (GSP). Different variants of the Laplacian, such\nas the combinatorial, signless or signed Laplacians have been considered depending on the type of features to be extracted from the\ndata.\n\n[Laplacian matrix]"
+      "pitch": "The main contribution of this paper is the introduction of a parametric Laplacian, called the deformed Laplacian, defined as a quadratic matrix polynomial that provides a parametric dictionary for graph signal processing We then develop a method to jointly learn the deformed Laplacian and the graph signals from data, showing how its use improves signal representation across a broad class of graphs compared to standard Laplacian forms",
+      "key_finding": "Laplacian matrix"
     },
     {
       "id": "arx:2604.09478v1",
@@ -30212,7 +30548,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.28,
-      "pitch": "We propose a modular, incremental RGB+LiDAR pipeline that generates\nincremental semantics-aided high-quality meshes from indoor scans through scan frame-based direct label transfer. A vision foundation model labels each incoming RGB frame; labels are incrementally projected and fused onto a LiDAR-inertial odometry map;\nand an incremental semantics-aware Truncated Signed Distance Function (TSDF) fusion step produces the final mesh via marching\ncubes.\n\n[Scan · Sensor fusion]"
+      "pitch": "We propose a modular, incremental RGB+LiDAR pipeline that generates incremental semantics-aided high-quality meshes from indoor scans through scan frame-based direct label transfer We demonstrate that semantic guidance improves geometric reconstruction quality; quantitative evaluation is therefore performed using geometric metrics on the Oxford Spires dataset, while results from the NTU VIRAL dataset are analyzed qualitatively",
+      "key_finding": "modular"
     },
     {
       "id": "arx:2603.11928v1",
@@ -30270,7 +30607,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.25,
-      "pitch": "Rubin Observatory and the space-based Euclid mission. While they\npromise an unprecedented view of the Universe across depth, resolution, and wavelength, their differences in observational modality,\nsky coverage, point-spread function, and scanning cadence make\njoint analysis beneficial, but also challenging.\n\n[Diffusion]"
+      "pitch": "We show that this formulation enables new scientific capabilities beyond single-survey analysis, including faithful probabilistic predictions of missing survey observations and inter-survey detection of rare events Rubin Observatory and the space-based Euclid mission",
+      "key_finding": "Diffusion"
     },
     {
       "id": "arx:2604.05574v1",
@@ -30328,7 +30666,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.25,
-      "pitch": "Yet, there is a gap in modeling the effect of the kinetics of hydrogen\nsegregation at dislocations and the resulting interaction between ductile tearing and hydrogen-induced brittle\nfracture. In this work, a comprehensive chemo-mechanical framework is developed by coupling the fully kinetic\nhydrogen transport model with the geometric phase-field fracture method.\n\n[Diffusion]"
+      "pitch": "In this work, a comprehensive chemo-mechanical framework is developed by coupling the fully kinetic hydrogen transport model with the geometric phase-field fracture method Yet, there is a gap in modeling the effect of the kinetics of hydrogen segregation at dislocations and the resulting interaction between ductile tearing and hydrogen-induced brittle fracture",
+      "key_finding": "Diffusion"
     },
     {
       "id": "def:openalex:W3002375207",
@@ -30395,7 +30734,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.24,
-      "pitch": "Iodine is considered as a feasible alternative to xenon as a propellant for electric propulsion systems, thanks to its good propulsive performance, high availability, and high storage density. However, as iodine is stored in solid state at ambient temperature, current state-of-the-art propellant management systems are not suitable to be used with it.\n\n[calibration]"
+      "pitch": "However, as iodine is stored in solid state at ambient temperature, current state-of-the-art propellant management systems are not suitable to be used with it Moreover, due to its high reactivity, iodine imposes requirements on material-compatibility, hindering the use of mass flow measurement and control systems typically used with other propellants",
+      "key_finding": "architecture"
     },
     {
       "id": "def:openalex:W3002375207",
@@ -30462,7 +30802,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.24,
-      "pitch": "Iodine is considered as a feasible alternative to xenon as a propellant for electric propulsion systems, thanks to its good propulsive performance, high availability, and high storage density. However, as iodine is stored in solid state at ambient temperature, current state-of-the-art propellant management systems are not suitable to be used with it.\n\n[calibration]"
+      "pitch": "However, as iodine is stored in solid state at ambient temperature, current state-of-the-art propellant management systems are not suitable to be used with it Moreover, due to its high reactivity, iodine imposes requirements on material-compatibility, hindering the use of mass flow measurement and control systems typically used with other propellants",
+      "key_finding": "architecture"
     },
     {
       "id": "arx:2603.22683v1",
@@ -30534,7 +30875,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.2,
-      "pitch": "The method maintains one point on each surface and updates their locations in the θ −φ\nparametric space. The tension along the connecting segment between the two surface points serves\nas the guidance for the sliding direction and the distance between them thus decreases gradually.\n\n[metric space]"
+      "pitch": "The method maintains one point on each surface and updates their locations in the θ −φ parametric space The tension along the connecting segment between the two surface points serves as the guidance for the sliding direction and the distance between them thus decreases gradually",
+      "key_finding": "novel iterative process to establish the minimum separation between two ellipsoi"
     },
     {
       "id": "def:openalex:W2152913958",
@@ -30624,7 +30966,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.17,
-      "pitch": "In this paper, after defining pure proportional navigation guidance in the 3-dimensional state from a new point of view, range estimation for passive homing missiles isexplained. Modeling has been performed by using line of sight coordinates with a particulardefinition.\n\n[Kalman filter · Filter]"
+      "pitch": "A Modified Proportional Navigation Guidance for Range Estimation In this paper, after defining pure proportional navigation guidance in the 3-dimensional state from a new point of view, range estimation for passive homing missiles isexplained Modeling has been performed by using line of sight coordinates with a particulardefinition",
+      "key_finding": "U-Dextended Kalman filter"
     },
     {
       "id": "def:openalex:W2152913958",
@@ -30714,7 +31057,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.17,
-      "pitch": "In this paper, after defining pure proportional navigation guidance in the 3-dimensional state from a new point of view, range estimation for passive homing missiles isexplained. Modeling has been performed by using line of sight coordinates with a particulardefinition.\n\n[Kalman filter · Filter]"
+      "pitch": "A Modified Proportional Navigation Guidance for Range Estimation In this paper, after defining pure proportional navigation guidance in the 3-dimensional state from a new point of view, range estimation for passive homing missiles isexplained Modeling has been performed by using line of sight coordinates with a particulardefinition",
+      "key_finding": "U-Dextended Kalman filter"
     },
     {
       "id": "def:ntrs:19720017201",
@@ -30803,7 +31147,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.17,
-      "pitch": "The development and testing of nonlinear and adaptive estimators for reentry (e.g. space shuttle) navigation and model parameter estimation or identification are reported. Of particular interest is the identifcation of vehicle lift and drag characteristics in real time.\n\n[Filter · Kalman filter]"
+      "pitch": "Nonlinear and adaptive estimation techniques in reentry The development and testing of nonlinear and adaptive estimators for reentry (e.g. space shuttle) navigation and model parameter estimation or identification are reported Of particular interest is the identifcation of vehicle lift and drag characteristics in real time",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:openalex:W3118095339",
@@ -30896,7 +31241,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.15,
-      "pitch": "In the process of the terminal guidance of a kinetic kill vehicle (KKV), it is very important to accurately estimate the line-of-sight (LOS) rate via the measurements of a target seeker onboard the KKV. The strong impact interference caused by the large lateral thrust produced by the thrusters on the KKV is a main factor that affects the measurements on the LOS angle.\n\n[Kalman filter · Filter · Observability]"
+      "pitch": "The strong impact interference caused by the large lateral thrust produced by the thrusters on the KKV is a main factor that affects the measurements on the LOS angle A method to estimate the impact interference and the LOS rate together via a Kalman filter is proposed to improve the estimation precision of the LOS rate",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:openalex:W3118095339",
@@ -30989,7 +31335,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.15,
-      "pitch": "In the process of the terminal guidance of a kinetic kill vehicle (KKV), it is very important to accurately estimate the line-of-sight (LOS) rate via the measurements of a target seeker onboard the KKV. The strong impact interference caused by the large lateral thrust produced by the thrusters on the KKV is a main factor that affects the measurements on the LOS angle.\n\n[Kalman filter · Filter · Observability]"
+      "pitch": "The strong impact interference caused by the large lateral thrust produced by the thrusters on the KKV is a main factor that affects the measurements on the LOS angle A method to estimate the impact interference and the LOS rate together via a Kalman filter is proposed to improve the estimation precision of the LOS rate",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:openalex:W2903883391",
@@ -31082,7 +31429,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.15,
-      "pitch": "An integrated guidance integrated estimation/guidance law is designed for exoatmospheric interceptors equipped with divert thrusters and optical seekers to intercept maneuvering targets. This paper considers an angles‐only guidance problem for exoatmospheric maneuvering targets.\n\n[Kalman filter · Observability · Filter]"
+      "pitch": "This paper considers an angles‐only guidance problem for exoatmospheric maneuvering targets Integrated Estimation/Guidance Law against Exoatmospheric Maneuvering Targets An integrated guidance integrated estimation/guidance law is designed for exoatmospheric interceptors equipped with divert thrusters and optical seekers to intercept maneuvering targets",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:openalex:W2903883391",
@@ -31175,7 +31523,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.15,
-      "pitch": "An integrated guidance integrated estimation/guidance law is designed for exoatmospheric interceptors equipped with divert thrusters and optical seekers to intercept maneuvering targets. This paper considers an angles‐only guidance problem for exoatmospheric maneuvering targets.\n\n[Kalman filter · Observability · Filter]"
+      "pitch": "This paper considers an angles‐only guidance problem for exoatmospheric maneuvering targets Integrated Estimation/Guidance Law against Exoatmospheric Maneuvering Targets An integrated guidance integrated estimation/guidance law is designed for exoatmospheric interceptors equipped with divert thrusters and optical seekers to intercept maneuvering targets",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:openalex:W4391831864",
@@ -31242,7 +31591,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.07,
-      "pitch": "Aiming at the rapid development of anti-hypersonic collaborative interception technology, this paper designs an intelligent maneuver strategy of hypersonic vehicles (HV) based on deep reinforcement learning (DRL) to evade the collaborative interception by two interceptors. Under the meticulously designed collaborative interception strategy, the uncertainty and difficulty of evasion are significantly increased and the opportunity for maneuvers is further compressed.\n\n[reinforcement learning]"
+      "pitch": "Under the meticulously designed collaborative interception strategy, the uncertainty and difficulty of evasion are significantly increased and the opportunity for maneuvers is further compressed This paper, accordingly, selects the twin delayed deep deterministic gradient (TD3) strategy acting on the continuous action space and makes targeted improvements combining deep neural networks to grasp the maneuver strategy and achieve successful evasion",
+      "key_finding": "TD3 algorithm"
     },
     {
       "id": "def:openalex:W4391831864",
@@ -31309,7 +31659,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.07,
-      "pitch": "Aiming at the rapid development of anti-hypersonic collaborative interception technology, this paper designs an intelligent maneuver strategy of hypersonic vehicles (HV) based on deep reinforcement learning (DRL) to evade the collaborative interception by two interceptors. Under the meticulously designed collaborative interception strategy, the uncertainty and difficulty of evasion are significantly increased and the opportunity for maneuvers is further compressed.\n\n[reinforcement learning]"
+      "pitch": "Under the meticulously designed collaborative interception strategy, the uncertainty and difficulty of evasion are significantly increased and the opportunity for maneuvers is further compressed This paper, accordingly, selects the twin delayed deep deterministic gradient (TD3) strategy acting on the continuous action space and makes targeted improvements combining deep neural networks to grasp the maneuver strategy and achieve successful evasion",
+      "key_finding": "TD3 algorithm"
     },
     {
       "id": "arx:2604.06140v1",
@@ -31396,7 +31747,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.03,
-      "pitch": "On the Convergence of an Opinion–Action Coevolution Model with\nBounded Confidence\nChen Song1,2, Angela Fontan2, Rong Su1, Julien M. Hendrickx3,\nVladimir Cvetkovic4, Karl H.\n\n[convex hull]"
+      "pitch": "We refer interested readers to [2] and [3] for a comprehensive overview of bounded confidence opinion dynamics This work was supported in part by the National Research Foundation, Singapore through its Medium Sized Center for Advanced Robotics Technology Innovation (CARTIN) under Project WP2.7, and in part by the project “Humanizing the Sustainable Smart City (HiSS)” withi",
+      "key_finding": "theoretical convergence analysis for an opinion–action coevolution model that in"
     },
     {
       "id": "arx:2604.10593v1",
@@ -31469,7 +31821,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 13.02,
-      "pitch": "MonoEM-GS: Monocular Expectation–Maximization Gaussian\nSplatting SLAM\nEvgenii Kruzhkov1 and Sven Behnke1\nAbstract— Feed-forward geometric foundation models can\ninfer dense point clouds and camera motion directly from RGB\nstreams, providing priors for monocular SLAM. However, their\npredictions are often view-dependent and noisy: geometry can\nvary across viewpoints and under image transformations, and\nlocal metric properties may drift between frames.\n\n[geometric optimization]"
+      "pitch": "We present MonoEM-GS, a monocular mapping pipeline that integrates such geometric predictions into a global Gaussian Splatting representation while explicitly addressing these inconsistencies We evaluate MonoEM-GS on 7-Scenes [1], TUM RGB-D [2] and Replica [3], and compare against recent baselines",
+      "key_finding": "MonoEM-GS"
     },
     {
       "id": "arx:2604.05167v1",
@@ -31554,7 +31907,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.94,
-      "pitch": "This paper formulates correlated reserve-set design as an end-to-end trainable robust optimization problem:\nchoose the ellipsoidal uncertainty-set shape to minimize robust dispatch cost subject to a target\ncoverage requirement. By profiling the coverage constraint into a shape-dependent radius, the\noriginal bilevel problem becomes a single-stage differentiable objective, and KKT/dual information from the SCED solve provides task gradients without differentiating through the solver.\n\n[robust optimization · calibration]"
+      "pitch": "This paper formulates correlated reserve-set design as an end-to-end trainable robust optimization problem: choose the ellipsoidal uncertainty-set shape to minimize robust dispatch cost subject to a target coverage requirement This paper formulates correlated reserve-set design as an end-to-end trainable robust optimization problem: choose the ellipsoidal uncertainty-set shape to minimize robust dispatch cost subject to a target coverage requirement",
+      "key_finding": "SCED formulation"
     },
     {
       "id": "def:arxiv:2105.06623v1",
@@ -31638,7 +31992,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.94,
-      "pitch": "Multi-Target Multi-Camera Tracking has a wide range of applications and is the basis for many advanced inferences and predictions. This paper describes our solution to the Track 3 multi-camera vehicle tracking task in 2021 AI City Challenge (AICITY21).\n\n[Filter]"
+      "pitch": "This paper describes our solution to the Track 3 multi-camera vehicle tracking task in 2021 AI City Challenge (AICITY21 This paper proposes a multi-target multi-camera vehicle tracking framework guided by the crossroad zones",
+      "key_finding": "solution to the Track 3 multi-camera vehicle tracking task in 2021 AI City C"
     },
     {
       "id": "def:arxiv:2105.06623v1",
@@ -31722,7 +32077,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.94,
-      "pitch": "Multi-Target Multi-Camera Tracking has a wide range of applications and is the basis for many advanced inferences and predictions. This paper describes our solution to the Track 3 multi-camera vehicle tracking task in 2021 AI City Challenge (AICITY21).\n\n[Filter]"
+      "pitch": "This paper describes our solution to the Track 3 multi-camera vehicle tracking task in 2021 AI City Challenge (AICITY21 This paper proposes a multi-target multi-camera vehicle tracking framework guided by the crossroad zones",
+      "key_finding": "solution to the Track 3 multi-camera vehicle tracking task in 2021 AI City C"
     },
     {
       "id": "arx:2602.16532v1",
@@ -31798,7 +32154,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.93,
-      "pitch": "The S-Hamiltonian Cycle Problem\nAntoine Amarilli #\nUniv. Lille, Inria, CNRS, Centrale Lille, UMR 9189 CRIStAL, F-59000 Lille, France\nArthur Lombardo #\nDI ENS, ENS, PSL University, CNRS, Inria, Paris, France\nUniv.\n\n[Hamiltonian path · NP-completeness]"
+      "pitch": "We consider the following generalization of Hamiltonian cycles: for a fixed set S of natural numbers, we want to visit each vertex of a graph G exactly once and ensure that any two consecutive vertices can be joined in k hops for some choice of k ∈S We study the S-Hamiltonian cycle problem of deciding whether an input graph G has an S-Hamiltonian cycle",
+      "key_finding": "S-Hamiltonian cycle problem of deciding whether an input graph G has an S-Hamilt"
     },
     {
       "id": "arx:2604.06708v1",
@@ -31880,7 +32237,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.91,
-      "pitch": "Uncertainty Propagation in Stochastic Hybrid Systems with\nDimension-Varying Resets\nTejaswi K. C. and Taeyoung Lee\nAbstract— This paper studies probability density evolution\nfor stochastic hybrid systems with reset maps that change\nthe dimension of the continuous state across modes.\n\n[spectral methods]"
+      "pitch": "We develop a weak-form formulation in which reset-induced transfer is represented by the pushforward of probability flux across the guard, yielding a unified description for such systems Uncertainty Propagation in Stochastic Hybrid Systems with Dimension-Varying Resets Uncertainty Propagation in Stochastic Hybrid Systems with Dimension-Varying Resets Tejaswi K",
+      "key_finding": "weak-form formulation in which reset-induced transfer is represented by the push"
     },
     {
       "id": "arx:2603.28974v1",
@@ -31947,7 +32305,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.88,
-      "pitch": "1\nExact Statistical Characterization and Performance Analysis\nof Fluid Reconfigurable Intelligent Surfaces\nMasoud Khazaee, Felipe A. A. de Souza, Senior Member, IEEE,\nFarshad Rostami Ghadi, Member, IEEE, Kai-Kit Wong, Fellow, IEEE, Luciano L.\n\n[Monte Carlo simulation · asymptotic analysis]"
+      "pitch": "This paper addresses this gap by providing the first exact closedform characterization of the end-to-end cascaded channel gain in FRIS-aided systems under general spatial correlation We also conduct an outage-based asymptotic analysis, which reveals the true diversity order of the system",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "def:openalex:W3110440473",
@@ -32016,7 +32375,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.88,
-      "pitch": "Combined Fast multiple model adaptive estimation (Fast MMAE) algorithm, the cooperative guidance law takes detection configuration affecting the accuracy of interception into consideration. Due to the uncertainty of the target bang-bang maneuver switching time and the effective fitting of its multi-modal motion, Fast MMAE is introduced to identify its maneuver switching time and estimate the acceleration of the target to track and intercept the target accurately.\n\n[Monte Carlo simulation · Reduce]"
+      "pitch": "Combined Fast multiple model adaptive estimation (Fast MMAE) algorithm, the cooperative guidance law takes detection configuration affecting the accuracy of interception into consideration Due to the uncertainty of the target bang-bang maneuver switching time and the effective fitting of its multi-modal motion, Fast MMAE is introduced to identify its maneuver switching time and estimate the acceleration of the target to track and intercept the target accurately",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "def:openalex:W3110440473",
@@ -32085,7 +32445,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.88,
-      "pitch": "Combined Fast multiple model adaptive estimation (Fast MMAE) algorithm, the cooperative guidance law takes detection configuration affecting the accuracy of interception into consideration. Due to the uncertainty of the target bang-bang maneuver switching time and the effective fitting of its multi-modal motion, Fast MMAE is introduced to identify its maneuver switching time and estimate the acceleration of the target to track and intercept the target accurately.\n\n[Monte Carlo simulation · Reduce]"
+      "pitch": "Combined Fast multiple model adaptive estimation (Fast MMAE) algorithm, the cooperative guidance law takes detection configuration affecting the accuracy of interception into consideration Due to the uncertainty of the target bang-bang maneuver switching time and the effective fitting of its multi-modal motion, Fast MMAE is introduced to identify its maneuver switching time and estimate the acceleration of the target to track and intercept the target accurately",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "arx:2603.08201v1",
@@ -32159,7 +32520,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.87,
-      "pitch": "While most existing studies focus on adapting motility or steering, the role of active\nmorphological changes in navigation remains poorly explored. Here, we investigate a shape-changing\nspheroidal microswimmer tasked with maximising its displacement from an initial position in twodimensional stochastic and turbulent flows.\n\n[reinforcement learning]"
+      "pitch": "While most existing studies focus on adapting motility or steering, the role of active morphological changes in navigation remains poorly explored Here, we investigate a shape-changing spheroidal microswimmer tasked with maximising its displacement from an initial position in twodimensional stochastic and turbulent flows",
+      "key_finding": "shape-changing spheroidal microswimmer tasked with maximising its displacement f"
     },
     {
       "id": "def:openalex:W3113179673",
@@ -32239,7 +32601,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.87,
-      "pitch": "Trajectory tracking and estimation of hypersonic glide vehicles (HGVs) is a very challenging issue in the defense systems. Insufficient knowledge about the HGV and inaccurate dynamic models for the accelerating HGV are the main challenges in this regard.\n\n[Kalman filter · Filter]"
+      "pitch": "Aerodynamic Statistics-Based Trajectory Estimation of Hypersonic Maneuvering Target Trajectory tracking and estimation of hypersonic glide vehicles (HGVs) is a very challenging issue in the defense systems Insufficient knowledge about the HGV and inaccurate dynamic models for the accelerating HGV are the main challenges in this regard",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:openalex:W3113179673",
@@ -32319,7 +32682,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.87,
-      "pitch": "Trajectory tracking and estimation of hypersonic glide vehicles (HGVs) is a very challenging issue in the defense systems. Insufficient knowledge about the HGV and inaccurate dynamic models for the accelerating HGV are the main challenges in this regard.\n\n[Kalman filter · Filter]"
+      "pitch": "Aerodynamic Statistics-Based Trajectory Estimation of Hypersonic Maneuvering Target Trajectory tracking and estimation of hypersonic glide vehicles (HGVs) is a very challenging issue in the defense systems Insufficient knowledge about the HGV and inaccurate dynamic models for the accelerating HGV are the main challenges in this regard",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:openalex:W2535460739",
@@ -32399,7 +32763,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.87,
-      "pitch": "In order to defend the hypersonic glide vehicle (HGV), a cost-effective single-model tracking algorithm using Cubature Kalman filter (CKF) is proposed in this paper based on modified aerodynamic model (MAM) as process equation and radar measurement model as measurement equation. In the existing aerodynamic model, the two control variables attack angle and bank angle cannot be measured by the existing radar equipment and their control laws cannot be known by defenders.\n\n[Kalman filter · Filter]"
+      "pitch": "In the existing aerodynamic model, the two control variables attack angle and bank angle cannot be measured by the existing radar equipment and their control laws cannot be known by defenders To establish the process equation, the MAM for HGV tracking is proposed by using additive white noise to model the rates of change of the two control variables",
+      "key_finding": "Cubature Kalman filter"
     },
     {
       "id": "def:openalex:W2535460739",
@@ -32479,7 +32844,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.87,
-      "pitch": "In order to defend the hypersonic glide vehicle (HGV), a cost-effective single-model tracking algorithm using Cubature Kalman filter (CKF) is proposed in this paper based on modified aerodynamic model (MAM) as process equation and radar measurement model as measurement equation. In the existing aerodynamic model, the two control variables attack angle and bank angle cannot be measured by the existing radar equipment and their control laws cannot be known by defenders.\n\n[Kalman filter · Filter]"
+      "pitch": "In the existing aerodynamic model, the two control variables attack angle and bank angle cannot be measured by the existing radar equipment and their control laws cannot be known by defenders To establish the process equation, the MAM for HGV tracking is proposed by using additive white noise to model the rates of change of the two control variables",
+      "key_finding": "Cubature Kalman filter"
     },
     {
       "id": "def:arxiv:2403.17377v2",
@@ -32596,7 +32962,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.87,
-      "pitch": "Recent studies have demonstrated that diffusion models are capable of generating high-quality samples, but their quality heavily depends on sampling guidance techniques, such as classifier guidance (CG) and classifier-free guidance (CFG). These techniques are often not applicable in unconditional generation or in various downstream tasks such as image restoration.\n\n[Diffusion · sampling · diffusion sampling]"
+      "pitch": "In this paper, we propose a novel sampling guidance, called Perturbed-Attention Guidance (PAG), which improves diffusion sample quality across both unconditional and conditional settings, achieving this without requiring additional training or the integration of external modules These techniques are often not applicable in unconditional generation or in various downstream tasks such as image restoration",
+      "key_finding": "novel sampling guidance"
     },
     {
       "id": "def:openalex:W4390858839",
@@ -32665,7 +33032,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.85,
-      "pitch": "This article extends the ICG law for mismatched and feedback form equations based on the Active Disturbance Rejection Control (ADRC) method using the back-stepping technique and the Reduced-order Extended State Observer (RESO). The primary consideration is the application of thrusters on the center of mass as the Divert Control System (DCS), along with the daisy-chain technique for control allocation between the fins and thruster commands.\n\n[Monte Carlo simulation · Filter]"
+      "pitch": "The primary consideration is the application of thrusters on the center of mass as the Divert Control System (DCS), along with the daisy-chain technique for control allocation between the fins and thruster commands This article extends the ICG law for mismatched and feedback form equations based on the Active Disturbance Rejection Control (ADRC) method using the back-stepping technique and the Reduced-order Extended State Observer (RESO",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "def:arxiv:2602.11373v2",
@@ -32734,7 +33102,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.85,
-      "pitch": "Using Bayesian decision theory, we modify the perfect-information, differential game-based guidance law (DGL1) to address the inevitable estimation error occurring when driving this guidance law with a separately-designed state estimator. This yields a stochastic guidance law complying with the generalized separation theorem, as opposed to the common approach, that implicitly, but unjustifiably, assumes the validity of the regular separation theorem.\n\n[Monte Carlo simulation · Filter]"
+      "pitch": "This yields a stochastic guidance law complying with the generalized separation theorem, as opposed to the common approach, that implicitly, but unjustifiably, assumes the validity of the regular separation theorem The required posterior probability density function of the game's state is derived from the available noisy measurements using an interacting multiple model particle filter",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "def:openalex:W4390858839",
@@ -32803,7 +33172,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.85,
-      "pitch": "This article extends the ICG law for mismatched and feedback form equations based on the Active Disturbance Rejection Control (ADRC) method using the back-stepping technique and the Reduced-order Extended State Observer (RESO). The primary consideration is the application of thrusters on the center of mass as the Divert Control System (DCS), along with the daisy-chain technique for control allocation between the fins and thruster commands.\n\n[Monte Carlo simulation · Filter]"
+      "pitch": "The primary consideration is the application of thrusters on the center of mass as the Divert Control System (DCS), along with the daisy-chain technique for control allocation between the fins and thruster commands This article extends the ICG law for mismatched and feedback form equations based on the Active Disturbance Rejection Control (ADRC) method using the back-stepping technique and the Reduced-order Extended State Observer (RESO",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "arx:2308.01983v2",
@@ -32870,7 +33240,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.84,
-      "pitch": "This is unfortunate, especially\nsince the eBPF framework itself has seen an increase in scope\nover the years. We propose SandBPF, a software-based kernel isolation technique that dynamically sandboxes eBPF\nprograms to allow unprivileged users to safely extend the\nkernel, unleashing eBPF’s full potential.\n\n[Filter]"
+      "pitch": "We propose SandBPF, a software-based kernel isolation technique that dynamically sandboxes eBPF programs to allow unprivileged users to safely extend the kernel, unleashing eBPF’s full potential Our early proof-ofconcept shows that SandBPF can effectively prevent exploits missed by eBPF’s native safety mechanism (i.e., static verification) while incurring 0%-10% overhead on web server benchmarks",
+      "key_finding": "SandBPF"
     },
     {
       "id": "arx:2604.10057v1",
@@ -32937,7 +33308,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.84,
-      "pitch": "However, this task is challenged by\nnonlinear observation models defined on curved manifolds, where\nexisting filters rely on local linearization in the tangent space\nto handle such nonlinearity, leading to accumulated estimation\nerrors. To address this limitation, we reformulate manifold\nfiltering as a parameter optimization problem over a Gaussiandistributed increment variable, thereby avoiding linearization.\n\n[Filter]"
+      "pitch": "We further propose a natural gradient optimization scheme for solving this problem, whose iteration process leverages the Fisher information matrix of the increment variable to account for the curvature of the tangent space However, this task is challenged by nonlinear observation models defined on curved manifolds, where existing filters rely on local linearization in the tangent space to handle such nonlinearity, leading to accumulated estimation errors",
+      "key_finding": "that for the invariant observation model widely adopted in robotic localization"
     },
     {
       "id": "def:openalex:W1816550026",
@@ -33004,7 +33376,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.84,
-      "pitch": "This study presents a new approach, which integrates the input shaping technique and the constrained adaptive backstepping control method, for constrained adaptive tracking and elastic vibration control of flexible hypersonic vehicles. Specifically, the input shaper as a feedforward part is implemented outside the feedback loop, which can achieve vibration suppression for flexible dynamics; whereas for the feedback loop, the vehicle model is decomposed into functional subsystems, and the decentralised approach is used.\n\n[Filter]"
+      "pitch": "An attractive feature of this proposed control algorithm is that all signals of closed‐loop system are uniformly ultimately bounded and the tracking error converges to a residual set which can be made sufficiently small by properly designing control parameters Moreover, by applying the shaped commands, flexible dynamics with less elastic deformation and vibration can be achieved without destroying the closed‐loop performance",
+      "key_finding": "new approach"
     },
     {
       "id": "def:openalex:W1816550026",
@@ -33071,7 +33444,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.84,
-      "pitch": "This study presents a new approach, which integrates the input shaping technique and the constrained adaptive backstepping control method, for constrained adaptive tracking and elastic vibration control of flexible hypersonic vehicles. Specifically, the input shaper as a feedforward part is implemented outside the feedback loop, which can achieve vibration suppression for flexible dynamics; whereas for the feedback loop, the vehicle model is decomposed into functional subsystems, and the decentralised approach is used.\n\n[Filter]"
+      "pitch": "An attractive feature of this proposed control algorithm is that all signals of closed‐loop system are uniformly ultimately bounded and the tracking error converges to a residual set which can be made sufficiently small by properly designing control parameters Moreover, by applying the shaped commands, flexible dynamics with less elastic deformation and vibration can be achieved without destroying the closed‐loop performance",
+      "key_finding": "new approach"
     },
     {
       "id": "def:openalex:W1963969078",
@@ -33138,7 +33512,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.84,
-      "pitch": "This paper presents a region-adaptive clutter rejection method for small target detection in sea-based infrared search and track. In the real world, clutter normally generates many false detections that impede the deployment of such detection systems.\n\n[Filter]"
+      "pitch": "Small Infrared Target Detection by Region-Adaptive Clutter Rejection for Sea-Based Infrared Search and Track This paper presents a region-adaptive clutter rejection method for small target detection in sea-based infrared search and track In the real world, clutter normally generates many false detections that impede the deployment of such detection systems",
+      "key_finding": "region-adaptive clutter rejection method for small target detection in sea-based"
     },
     {
       "id": "def:openalex:W1963969078",
@@ -33205,7 +33580,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.84,
-      "pitch": "This paper presents a region-adaptive clutter rejection method for small target detection in sea-based infrared search and track. In the real world, clutter normally generates many false detections that impede the deployment of such detection systems.\n\n[Filter]"
+      "pitch": "Small Infrared Target Detection by Region-Adaptive Clutter Rejection for Sea-Based Infrared Search and Track This paper presents a region-adaptive clutter rejection method for small target detection in sea-based infrared search and track In the real world, clutter normally generates many false detections that impede the deployment of such detection systems",
+      "key_finding": "region-adaptive clutter rejection method for small target detection in sea-based"
     },
     {
       "id": "def:openalex:W3198057020",
@@ -33272,7 +33648,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.84,
-      "pitch": "&lt;div&gt;&lt;p class=\"Els-history-head\"&gt;The Anti-Tank Guided-Missile (ATGM) system has a very important role in the modern battlefield. This system proved its effectiveness in many modern conflicts such as the Syrian Civil War and Nagorno-Karabakh War.\n\n[Filter]"
+      "pitch": "This system proved its effectiveness in many modern conflicts such as the Syrian Civil War and Nagorno-Karabakh War The ATGM system has a very simple electronic and mechanism but it has a very high level of accuracy and precision",
+      "key_finding": "SACLOS method"
     },
     {
       "id": "arx:2603.22741v1",
@@ -33339,7 +33716,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.83,
-      "pitch": "Algorithmic warm starts for Hamiltonian Monte Carlo\nMatthew S. Zhang\nUToronto\nmatthew.zhang@mail.utoronto.ca\nJason M.\n\n[sampling]"
+      "pitch": "We resolve this issue for the well-studied setting of sampling from a probability distribution satisfying strong log-concavity (or isoperimetry) and third-order derivative bounds We prove that non-Metropolized HMC generates a warm start in ̃O(d1/4) iterations, after which we can exploit the warm start using Metropolized HMC",
+      "key_finding": "that non-Metropolized HMC generates a warm start in ̃O"
     },
     {
       "id": "arx:2604.04649v1",
@@ -33424,7 +33802,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.82,
-      "pitch": "The α-robust criterion interpolates between worst-case (α = 0) and best-case\n(α = 1) evaluations, generalizing both extremes through a continuous ambiguity attitude parameter. For weighted exponential utilities, we establish via rearrangement inequalities and comonotonicity theory that the α-robust risk measure\nis law-invariant, depending only on marginal distributions.\n\n[Utility maximization]"
+      "pitch": "Our framework naturally accommodates additional risk constraints such as Value-at-Risk and Expected Shortfall The α-robust criterion interpolates between worst-case (α = 0) and best-case (α = 1) evaluations, generalizing both extremes through a continuous ambiguity attitude parameter",
+      "key_finding": "α-robust"
     },
     {
       "id": "arx:2511.15323v1",
@@ -33491,7 +33870,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.78,
-      "pitch": "Current methodologies, including state-of-the-art\nhigh-level synthesis (HLS) tools, artificially separate implementation selection from scheduling, leading to suboptimal designs\nthat cannot fully exploit modern FPGA heterogeneous architectures. Implementation selection is typically performed by ad-hoc\npattern matching on operations, a process that does not consider\nthe impact on scheduling.\n\n[scheduling algorithm · linear programming]"
+      "pitch": "We present SkyEgg, a novel hardware synthesis framework that jointly optimizes implementation selection and scheduling using the e-graph data structure Our key insight is that both algebraic transformations and hardware implementation choices can be uniformly represented as rewrite rules within an e-graph, modeling the complete design space of implementation candidates to be selected and scheduled together",
+      "key_finding": "scheduling algorithm"
     },
     {
       "id": "arx:2602.19328v1",
@@ -33572,7 +33952,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.76,
-      "pitch": "Typically, such networks may have so-called critical\n(elementary) components which encode some significant non-trivial properties of these networks. Identifying critical components of networks are usually preceded by providing details for (1) selection of a network model, (2) definitions of the structure of\ncritical components, and (3) selection\n\n[bipartite graphs · bipartite graph · inapproximability]"
+      "pitch": "Our results show some interesting connections between the exact perfect matching and perfect matching blocker problems for bipartite graphs and our problems Our results show some interesting connections between the exact perfect matching and perfect matching blocker problems for bipartite graphs and our problems",
+      "key_finding": "bipartite graphs"
     },
     {
       "id": "arx:2603.27613v1",
@@ -33648,7 +34029,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.76,
-      "pitch": "Specifically, we compute the Stokes multipliers CM of the one-dimensional\nanharmonic oscillators H = p2/2 + x2/2 + g x2M for M = 2, 3, . . . , 11, extracting 17–\n30 significant digits from up to 1200 perturbation coefficients computed at 300-digit\nworking precision. This pipeline discovers three new exact identities:\nC 2\n3 π4 = 32,\nC 4\n5 Γ(1\n4)4 π5 = 212 · 32,\nC 6\n7 Γ(1\n3)9 π6 = 220 · 33,\nin addition to confirming the known C 2\n2 π3 = 6.\n\n[Richardson extrapolation · asymptotic analysis]"
+      "pitch": "We formulate three conjectures connecting computational constant recognition to classical number theory, and provide all code and data for full reproducibility Specifically, we compute the Stokes multipliers CM of the one-dimensional anharmonic oscillators H = p2/2 + x2/2 + g x2M for M = 2, 3, . . . , 11, extracting 17– 30 significant digits from up to 1200 perturbation coefficients computed at 300-digit working precision",
+      "key_finding": "large-scale computational study combining arbitrary-precision arithmetic"
     },
     {
       "id": "arx:2512.01678v4",
@@ -33737,7 +34119,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.75,
-      "pitch": "Graph Neural Networks (GNNs) present a fundamental hardware challenge by fusing irregular, memory-bound graph traversals with regular, compute-intensive dense matrix operations. While frameworks such as PyTorch Geometric (PyG) and Deep Graph Library (DGL) prioritize high-level usability, they fail to address these divergent execution characteristics.\n\n[graph traversal · Graph neural networks · Reduce]"
+      "pitch": "We evaluate Morphling on eleven real-world datasets spanning diverse graph structures, feature dimensionalities, and sparsity regimes Morphling: Fast, Fused, and Flexible GNN Training at Scale Graph Neural Networks (GNNs) present a fundamental hardware challenge by fusing irregular, memory-bound graph traversals with regular, compute-intensive dense matrix operations",
+      "key_finding": "Morphling"
     },
     {
       "id": "arx:2511.09964v1",
@@ -33802,7 +34185,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.72,
-      "pitch": "Here we introduce EnvTrace, a simulation-based method that evaluates\nexecution traces to assess semantic code equivalence. EnvTrace is demonstrated with a beamline\ncontrol-logic digital twin to facilitate the evaluation of instrument control code, with the digital\ntwin itself also enabling the pre-execution validation of live experiments.\n\n[PID control]"
+      "pitch": "Here we introduce EnvTrace, a simulation-based method that evaluates execution traces to assess semantic code equivalence EnvTrace is demonstrated with a beamline control-logic digital twin to facilitate the evaluation of instrument control code, with the digital twin itself also enabling the pre-execution validation of live experiments",
+      "key_finding": "EnvTrace"
     },
     {
       "id": "arx:2604.03871v1",
@@ -33895,7 +34279,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.68,
-      "pitch": "Efficient Convexification of Kolmogorov-Arnold Networks with\nPolynomial Functional Forms Via a Continuous Graham Scan\nApproach\nOwen Li1†, Daniel Ovalle2†, Barnabas Poczos3, Carl D. April 7, 2026\nAbstract\nDeterministic global optimization of nonlinear models is important in many scientific and engineering applications.\n\n[Scan · convex hull]"
+      "pitch": "In this work, we develop a tailored continuous convexification framework for Kolmogorov–Arnold Networks in which the univariate components are polynomial functions We propose a continuous variant of the classical Graham Scan that constructs these envelopes exactly by identifying the bitangents of the polynomial convex hull without discretization or factorable reformulations",
+      "key_finding": "tailored continuous convexification framework for Kolmogorov–Arnold Networks in"
     },
     {
       "id": "arx:2603.08327v1",
@@ -33962,7 +34347,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.63,
-      "pitch": "Manifold-Adapted Sparse RBF-SINDy:\nUnbiased Library Construction and Unsupervised Discovery of\nDynamical States in Turbulent Wall Flows\nM. Standard\nsparse-identification approaches introduce two structural biases at the library construction\nstage.\n\n[Euclidean distance]"
+      "pitch": "Manifold-Adapted Sparse RBF-SINDy: Unbiased Library Construction and Unsupervised Discovery of Dynamical States in Turbulent Wall Flows Manifold-Adapted Sparse RBF-SINDy: Unbiased Library Construction and Unsupervised Discovery of Dynamical States in Turbulent Wall Flows M Standard sparse-identification approaches introduce two structural biases at the library construction stage",
+      "key_finding": "k-means"
     },
     {
       "id": "arx:2602.17577v1",
@@ -34049,7 +34435,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.62,
-      "pitch": "Simultaneous Blackwell Approachability\nand Applications to Multiclass Omniprediction\nLunjia Hu∗\nKevin Tian†\nChutong Yang‡\nAbstract\nOmniprediction is a learning problem that requires suboptimality bounds for each of a family\nof losses L against a family of comparator predictors C. We initiate the study of omniprediction\nin a multiclass setting, where the comparator family C may be infinite.\n\n[sample complexity]"
+      "pitch": "We initiate the study of omniprediction in a multiclass setting, where the comparator family C may be infinite Our main result is an extension of the recent binary omniprediction algorithm of [OKK25] to the multiclass setting, with sample complexity (in statistical settings) or regret horizon (in online settings) ≈ε−(k+1), for ε-omniprediction in a k-class prediction problem",
+      "key_finding": "framework of potential broader interest for solving Blackwell approachability pr"
     },
     {
       "id": "arx:2603.13069v1",
@@ -34146,7 +34533,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.62,
-      "pitch": "We show that the deterministic DDIM reverse chain operates as a Partitioned Iterated\nFunction System (PIFS) and that this framework serves as a unified design language for\ndenoising diffusion model schedules, architectures, and training objectives. From the PIFS\nstructure we derive three computable geometric quantities: a per-step contraction threshold\nL∗\nt , a diagonal expansion function ft(λ) and a global expansion threshold λ∗∗.\n\n[Diffusion · diffusion models · Score-Based Diffusion Models]"
+      "pitch": "We show that the deterministic DDIM reverse chain operates as a Partitioned Iterated Function System (PIFS) and that this framework serves as a unified design language for denoising diffusion model schedules, architectures, and training objectives We show that the deterministic DDIM reverse chain operates as a Partitioned Iterated Function System (PIFS) and that this framework serves as a unified design language for denoising diffusion model schedules, architectures, and training objectives",
+      "key_finding": "Diffusion"
     },
     {
       "id": "arx:2311.09449v2",
@@ -34204,7 +34592,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.6,
-      "pitch": "HAL 9000: a Risk Manager for ITSs\nTadeu Freitas∗†, Carlos Novo∗, Jo˜ao Soares∗†, Inˆes Dutra∗‡,\nManuel E. It utilizes\ngathered threat knowledge and remains operational,\neven in the absence of updated information.\n\n[Reduce]"
+      "pitch": "Our goal is to reduce the risk linked to the exploitation of recently uncovered vulnerabilities that have not been classified and/or do not have a script to reproduce the exploit, considering the potential that they may have already been exploited as zero-day exploits Our experiments demonstrate that the proposed solution can effectively learn and replicate National Vulnerability Database’s evaluation process with 99% accuracy",
+      "key_finding": "Reduce"
     },
     {
       "id": "arx:2603.28252v1",
@@ -34261,7 +34650,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.6,
-      "pitch": "1\nSecret Key Rate Analysis of RIS-Assisted THz MIMO\nCV-QKD Systems under Localized and Global Eavesdropping\nSushil Kumar, Soumya P. Dash, Senior Member, IEEE, and George C.\n\n[Quantum communication]"
+      "pitch": "We also study, as a benchmark, the case where Eve has access to the puriﬁcation of the overall channel Secret Key Rate Analysis of RIS-Assisted THz MIMO CV-QKD Systems under Localized and Global Eavesdropping Secret Key Rate Analysis of RIS-Assisted THz MIMO CV-QKD Systems under Localized and Global Eavesdropping Sushil Kumar, Soumya P",
+      "key_finding": "Quantum communication"
     },
     {
       "id": "def:ntrs:20190000668",
@@ -34330,7 +34720,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.57,
-      "pitch": "Seeker is an ultra-low cost approach to highly automated extravehicular inspection of crewed or uncrewed spacecraft that has been designed and built in-house at the NASA Johnson Space Center (JSC). The first version of Seeker is intended to be an incremental development towards an advanced inspection capability.\n\n[Kalman filter · Filter]"
+      "pitch": "Seeker Free-Flying Inspector GNC System Overview Seeker is an ultra-low cost approach to highly automated extravehicular inspection of crewed or uncrewed spacecraft that has been designed and built in-house at the NASA Johnson Space Center (JSC The first version of Seeker is intended to be an incremental development towards an advanced inspection capability",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "def:ntrs:20190000668",
@@ -34399,7 +34790,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.57,
-      "pitch": "Seeker is an ultra-low cost approach to highly automated extravehicular inspection of crewed or uncrewed spacecraft that has been designed and built in-house at the NASA Johnson Space Center (JSC). The first version of Seeker is intended to be an incremental development towards an advanced inspection capability.\n\n[Kalman filter · Filter]"
+      "pitch": "Seeker Free-Flying Inspector GNC System Overview Seeker is an ultra-low cost approach to highly automated extravehicular inspection of crewed or uncrewed spacecraft that has been designed and built in-house at the NASA Johnson Space Center (JSC The first version of Seeker is intended to be an incremental development towards an advanced inspection capability",
+      "key_finding": "Kalman filter"
     },
     {
       "id": "arx:2603.24962v1",
@@ -34473,7 +34865,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.56,
-      "pitch": "With a fast-decaying Kolmogorov n-width of the solution\nmanifold, the resulting reduced-order model (ROM) can be an efficient and accurate emulator. However, for parametric partial differential equations with slowly decaying Kolmogorov\nn-width, the dimension of the linear subspace required for a reasonable accuracy becomes\nvery large, which undermines computational efficiency.\n\n[greedy algorithm]"
+      "pitch": "In this paper, we propose and test a novel enhancement to this quadratic manifold approach by introducing a first-of-its-kind double-greedy algorithm on the regularization parameters coupled with a standard greedy algorithm on the physical parameter Our approach balances the trade-off between the accuracy of the quadratic mapping and the stability of the resulting nonlinear ROM, leading to a highly efficient and data-sparse algorithm",
+      "key_finding": "and test a novel enhancement to this quadratic manifold approach by introducing"
     },
     {
       "id": "arx:2604.04241v1",
@@ -34555,7 +34948,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.55,
-      "pitch": "However, existing approaches often focus on optimizing predictive accuracy or likelihood-based criteria,\nwhich may not align with the main goal of maximizing utility. In this paper, we propose a novel risk\nscoring system that directly optimizes net beneﬁt over a range of decision thresholds.\n\n[calibration · linear programming]"
+      "pitch": "In this paper, we propose a novel risk scoring system that directly optimizes net beneﬁt over a range of decision thresholds We also establish fundamental relationships among net beneﬁt, discrimination, and calibration",
+      "key_finding": "novel risk scoring system that directly optimizes net beneﬁt over a range of dec"
     },
     {
       "id": "arx:2401.15558v1",
@@ -34636,7 +35030,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.5,
-      "pitch": "We study these operations in NUMA settings, where\nwe observe up to 40x overhead for basic operations such as\nmunmap or mprotect. The overhead further increases if pagetable replication is used, where complete coherent copies\nof the page-tables are maintained across all NUMA nodes.\n\n[Reduce]"
+      "pitch": "We study these operations in NUMA settings, where we observe up to 40x overhead for basic operations such as munmap or mprotect We then show that numaPTE’s precise knowledge of page-table sharers can be leveraged to significantly reduce the number of TLB shootdowns issued upon any memory-management operation",
+      "key_finding": "operations in NUMA settings"
     },
     {
       "id": "arx:2603.23901v1",
@@ -34716,7 +35111,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.5,
-      "pitch": "DEEP KINETIC JKO SCHEMES FOR VLASOV-FOKKER-PLANCK\nEQUATIONS\nWONJUN LEE, LI WANG, AND WUCHEN LI\nAbstract. We introduce a deep neural network–based numerical method for solving kinetic Fokker\nPlanck equations, including both linear and nonlinear cases.\n\n[Potential function]"
+      "pitch": "We introduce a deep neural network–based numerical method for solving kinetic Fokker Planck equations, including both linear and nonlinear cases We validate the method with extensive numerical experiments and demonstrate that the proposed kinetic JKO–neural ODE framework is effective for high-dimensional numerical simulations. 1",
+      "key_finding": "deep neural network–based numerical method for solving kinetic Fokker Planck equ"
     },
     {
       "id": "def:openalex:W7147115436",
@@ -34775,7 +35171,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.44,
-      "pitch": "This technical position paper extends the Autonomous Operations Model (AOM) to Golden Dome boost-phase and terminal-phase hypersonic glide vehicle (HGV) intercept timelines. First, it quantifies the combined propagation-delay and ground-station-availability argument that closes human-in-the-loop (HITL) control for HGV terminal intercept: GEO relay adds 474 ms round-trip, and direct downlink is available only ~8% of the orbit.\n\n[calibration]"
+      "pitch": "Golden Dome Latency Governance: Autonomous Operations Model Extended to Boost-Phase Intercept Timelines This technical position paper extends the Autonomous Operations Model (AOM) to Golden Dome boost-phase and terminal-phase hypersonic glide vehicle (HGV) intercept timelines First, it quantifies the combined propagation-delay and ground-station-availability argument that closes human-in-the-loop (HITL) control for HGV terminal intercept: GEO relay adds 474 ms round-trip, and direct downlink is available only ~8% of the orbit",
+      "key_finding": "calibration"
     },
     {
       "id": "def:openalex:W2062420556",
@@ -34834,7 +35231,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.44,
-      "pitch": "A Scophony Infrared Scene Projector (IRSP) is being used at Wright Laboratories Armament Directorate, Guided Interceptor Technology Branch, Eglin AFB, to evaluate thermal-imaging guidance systems. This hardware-in-the-loop testing system reduces the number of necessary field trials and has potential for in-laboratory simulation where the performance of entire seeker systems can be analyzed.\n\n[calibration]"
+      "pitch": "This hardware-in-the-loop testing system reduces the number of necessary field trials and has potential for in-laboratory simulation where the performance of entire seeker systems can be analyzed The performance of an optical system, in terms of such characteristics as wavefront error, resolution, and transfer factor, can be measured with knowledge of the system MTF and PSF performance",
+      "key_finding": "calibration"
     },
     {
       "id": "def:openalex:W2105903052",
@@ -34893,7 +35291,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.44,
-      "pitch": "The ESA X-ray Multi Mirror mission, XMM-Newton, carries two identical Reflection Grating Spectrometers (RGS) behind two of its three nested sets of Wolter I type mirrors. The instrument allows high-resolution ( to 500) measurements in the soft X-ray range (6 to 38 Åor 2.1 to 0.3 keV) with a maximum effective area of about 140 cm2 at 15 Å.\n\n[calibration]"
+      "pitch": "We also review details of the calibrations and in-orbit performance including the line spread function, the wavelength calibration, the effective area, and the instrumental background The Reflection Grating Spectrometer on board XMM-Newton The ESA X-ray Multi Mirror mission, XMM-Newton, carries two identical Reflection Grating Spectrometers (RGS) behind two of its three nested sets of Wolter I type mirrors",
+      "key_finding": "calibration"
     },
     {
       "id": "def:openalex:W2105903052",
@@ -34952,7 +35351,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.44,
-      "pitch": "The ESA X-ray Multi Mirror mission, XMM-Newton, carries two identical Reflection Grating Spectrometers (RGS) behind two of its three nested sets of Wolter I type mirrors. The instrument allows high-resolution ( to 500) measurements in the soft X-ray range (6 to 38 Åor 2.1 to 0.3 keV) with a maximum effective area of about 140 cm2 at 15 Å.\n\n[calibration]"
+      "pitch": "We also review details of the calibrations and in-orbit performance including the line spread function, the wavelength calibration, the effective area, and the instrumental background The Reflection Grating Spectrometer on board XMM-Newton The ESA X-ray Multi Mirror mission, XMM-Newton, carries two identical Reflection Grating Spectrometers (RGS) behind two of its three nested sets of Wolter I type mirrors",
+      "key_finding": "calibration"
     },
     {
       "id": "def:ntrs:20130001820",
@@ -35011,7 +35411,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.44,
-      "pitch": "The advent of satellite-based augmentation systems has made it possible to navigate aircraft safely using radio signals emitted by global navigation satellite systems (GNSS) such as the Global Positioning System. As a signal propagates through the earth's ionosphere, it suffers delay that is proportional to the total electron content encountered along the raypath.\n\n[calibration]"
+      "pitch": "This paper examines the impact of space weather on GNSS-based navigation and provides an overview of how the Wide Area Augmentation System protects its users from positioning error due to ionospheric disturbances Addressing the Influence of Space Weather on Airline Navigation The advent of satellite-based augmentation systems has made it possible to navigate aircraft safely using radio signals emitted by global navigation satellite systems (GNSS) such as the Global Positioning System",
+      "key_finding": "calibration"
     },
     {
       "id": "def:ntrs:20130001820",
@@ -35070,7 +35471,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.44,
-      "pitch": "The advent of satellite-based augmentation systems has made it possible to navigate aircraft safely using radio signals emitted by global navigation satellite systems (GNSS) such as the Global Positioning System. As a signal propagates through the earth's ionosphere, it suffers delay that is proportional to the total electron content encountered along the raypath.\n\n[calibration]"
+      "pitch": "This paper examines the impact of space weather on GNSS-based navigation and provides an overview of how the Wide Area Augmentation System protects its users from positioning error due to ionospheric disturbances Addressing the Influence of Space Weather on Airline Navigation The advent of satellite-based augmentation systems has made it possible to navigate aircraft safely using radio signals emitted by global navigation satellite systems (GNSS) such as the Global Positioning System",
+      "key_finding": "calibration"
     },
     {
       "id": "def:ntrs:19950005098",
@@ -35129,7 +35531,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.44,
-      "pitch": "Real-time tracking of multiple targets and three dimensional object features was demonstrated using a laser range scanner. The prototype was immune to ambient illumination and sun interference.\n\n[calibration]"
+      "pitch": "Real-time tracking of objects for space applications using a laser range scanner Real-time tracking of multiple targets and three dimensional object features was demonstrated using a laser range scanner The prototype was immune to ambient illumination and sun interference",
+      "key_finding": "calibration"
     },
     {
       "id": "def:dtic:ADA469649",
@@ -35188,7 +35591,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.44,
-      "pitch": "UNCLASSIFIED/UNLIMITED \nUNCLASSIFIED/UNLIMITED \nHyperspectral Sensors for Military Applications  \nR. Richter \nDLR, German Aerospace Center \nRemote Sensing Data Center \nD-82234 Wessling \nGERMANY \nABSTRACT \nThis paper discusses issues related to the use of hyperspectral sensors.\n\n[calibration]"
+      "pitch": "Hyperspectral Sensors for Military Applications UNCLASSIFIED/UNLIMITED UNCLASSIFIED/UNLIMITED Hyperspectral Sensors for Military Applications R Richter DLR, German Aerospace Center Remote Sensing Data Center D-82234 Wessling GERMANY This paper discusses issues related to the use of hyperspectral sensors",
+      "key_finding": "calibration"
     },
     {
       "id": "arx:2602.16222v1",
@@ -35261,7 +35665,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.43,
-      "pitch": "Near-optimal population protocols on\nbounded-degree trees\nJoel Rybicki · joel.rybicki@hu-berlin.de · Humboldt-Universität zu Berlin\nJakob Solnerzik · jakob.solnerzik@hu-berlin.de · Humboldt-Universität zu Berlin\nRobin Vacus · robin.vacus@cnrs.fr · Sorbonne Université, CNRS, LIP6\nAbstract. We investigate space-time trade-offs for population protocols in sparse\ninteraction graphs.\n\n[leader election]"
+      "pitch": "We investigate space-time trade-offs for population protocols in sparse interaction graphs In this work, we show that – unlike in complete graphs – population protocols on bounded-degree trees do not exhibit significant asymptotic space-time trade-offs for leader election and exact majority",
+      "key_finding": "space-time trade-offs for population protocols in sparse interaction graphs"
     },
     {
       "id": "arx:2603.06895v1",
@@ -35326,7 +35731,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.4,
-      "pitch": "1\nAn analytical model for rotors in confined\nflow across operating regimes\nI.M.L. Confinement induces a streamwise pressure gradient in the channel, modifying the rotor\ninduction, thrust, and power.\n\n[Transfer function]"
+      "pitch": "We develop a generalised engineering model for an actuator disk operating in confined flow at arbitrary misalignment angles and thrust coefficients, termed the Unified Blockage Model An analytical model for rotors in confined flow across operating regimes An analytical model for rotors in confined flow across operating regimes I.M.L",
+      "key_finding": "generalised engineering model for an actuator disk operating in confined flow at"
     },
     {
       "id": "arx:2602.16570v1",
@@ -35419,7 +35825,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.36,
-      "pitch": "Such algorithms have been proposed for tasks\nranging from inverse problems and guided image generation to reasoning. However, the methods\ncurrently deployed in practice are heuristics with a variety of failure modes—and we have very\nlittle understanding of when these heuristics can be efficiently improved.\n\n[Diffusion · diffusion models · sampling]"
+      "pitch": "In this paper, we consider the task of sampling from a reward-tilted diffusion model—that is, sampling from p⋆(x) ∝p(x) exp(r(x))—given a reward function r and pre-trained diffusion oracle for p We provide a fine-grained analysis of the computational tractability of this task for quadratic rewards r(x) = x⊤Ax + b⊤x",
+      "key_finding": "that the problem is intractable even if A is of rank 1"
     },
     {
       "id": "arx:2602.04886v1",
@@ -35527,7 +35934,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.33,
-      "pitch": "Denoising diffusion networks for normative modeling\nin neuroimaging\nLuke Whitbreada,b,c,∗, Lyle J. Most neuroimaging pipelines fit one model\nper imaging-derived phenotype (IDP), which scales well but discards multivariate dependence that may encode coordinated patterns.\n\n[Diffusion · diffusion models · calibration]"
+      "pitch": "We propose denoising diffusion probabilistic models (DDPMs) as a unified conditional density estimator for tabular IDPs, from which univariate centiles and deviation scores are derived by sampling We utilise two denoiser backbones: (i) a feature-wise linear modulation (FiLM) conditioned multilayer perceptron (MLP) and (ii) a tabular transformer with feature self-attention and intersample attention (SAINT), conditioning covariates through learned embeddings",
+      "key_finding": "denoising diffusion probabilistic models"
     },
     {
       "id": "arx:2603.28918v1",
@@ -35617,7 +36025,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.33,
-      "pitch": "In hybrid architectures, only NRF ≪M compressed snapshots are available per\nslot, making the NRF × NRF compressed sample covariance the\nnatural sufficient statistic. We propose the Curvature-Learning\nKL (CL-KL) estimator, which grids only the angle dimension and\nlearns the per-angle inverse range directly from the compressed\ncovariance via KL divergence minimisation.\n\n[KL divergence · sampling]"
+      "pitch": "We propose the Curvature-Learning KL (CL-KL) estimator, which grids only the angle dimension and learns the per-angle inverse range directly from the compressed covariance via KL divergence minimisation In hybrid architectures, only NRF ≪M compressed snapshots are available per slot, making the NRF × NRF compressed sample covariance the natural sufficient statistic",
+      "key_finding": "Curvature-Learning KL"
     },
     {
       "id": "arx:2603.19079v2",
@@ -35707,7 +36116,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.31,
-      "pitch": "This analysis generalizes to any\nlocal bifurcation and provides a clear estimate of the parameter ranges over which a parametric SSM\nmodel can be justified, thus illustrating how globally the model can be extended despite the presence of\nresonances near criticality. We demonstrate these findings on multiple examples, including a data-driven\nSSM approach to the lid-driven cavity flow.\n\n[Reynolds number]"
+      "pitch": "We demonstrate these findings on multiple examples, including a data-driven SSM approach to the lid-driven cavity flow This analysis generalizes to any local bifurcation and provides a clear estimate of the parameter ranges over which a parametric SSM model can be justified, thus illustrating how globally the model can be extended despite the presence of resonances near criticality",
+      "key_finding": "persistence and regularity of spectral submanifolds"
     },
     {
       "id": "def:openalex:W4417212230",
@@ -35766,7 +36176,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.27,
-      "pitch": "International audience\n\n[reinforcement learning]"
+      "pitch": "An on-orbit servicing framework for satellite collision avoidance: Towards autonomous mission planning with reinforcement learning International audience",
+      "key_finding": "reinforcement learning"
     },
     {
       "id": "def:openalex:W4417212230",
@@ -35825,7 +36236,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.27,
-      "pitch": "International audience\n\n[reinforcement learning]"
+      "pitch": "An on-orbit servicing framework for satellite collision avoidance: Towards autonomous mission planning with reinforcement learning International audience",
+      "key_finding": "reinforcement learning"
     },
     {
       "id": "def:openalex:W3176393442",
@@ -35884,7 +36296,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.27,
-      "pitch": "A midcourse maneuver controller is obtained using deep reinforcement learning to maintain the survivability of a ballistic missile. First, the midcourse is abstracted as a Markov decision process (MDP) with an unknown system state equation.\n\n[reinforcement learning]"
+      "pitch": "Realizing Midcourse Penetration With Deep Reinforcement Learning A midcourse maneuver controller is obtained using deep reinforcement learning to maintain the survivability of a ballistic missile First, the midcourse is abstracted as a Markov decision process (MDP) with an unknown system state equation",
+      "key_finding": "reinforcement learning"
     },
     {
       "id": "def:openalex:W3176393442",
@@ -35943,7 +36356,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.27,
-      "pitch": "A midcourse maneuver controller is obtained using deep reinforcement learning to maintain the survivability of a ballistic missile. First, the midcourse is abstracted as a Markov decision process (MDP) with an unknown system state equation.\n\n[reinforcement learning]"
+      "pitch": "Realizing Midcourse Penetration With Deep Reinforcement Learning A midcourse maneuver controller is obtained using deep reinforcement learning to maintain the survivability of a ballistic missile First, the midcourse is abstracted as a Markov decision process (MDP) with an unknown system state equation",
+      "key_finding": "reinforcement learning"
     },
     {
       "id": "arx:2603.06364v1",
@@ -36046,7 +36460,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.26,
-      "pitch": "Substantial amounts of air-shower simulations are needed to derive the instrument response for analyzing Imaging Air Cherenkov Telescope (IACT) data. This process is\nboth computationally intensive and requires repetition under varying observation conditions,\ndue to detector aging, changes in the atmosphere, or the instrument hardware.\n\n[Diffusion · diffusion models · Score-Based Diffusion Models]"
+      "pitch": "In this study, we present the first application of score-based diffusion models to generate monoscopic γ-ray and proton shower images with nearly 2,000 pixels and benchmark the performance against Wasserstein GANs using H.E.S.S. simulations We examine quality using both low-level parameters and well-established shower-shape observables, and assess analysis readiness via state-of-the-art γ–hadron separation",
+      "key_finding": "first application of score-based diffusion models to generate monoscopic γ-ray a"
     },
     {
       "id": "arx:2603.28749v1",
@@ -36111,7 +36526,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.26,
-      "pitch": "1\nSpatial Degrees of Freedom and Channel Strength\nfor Antenna Systems\nMats Gustafsson and Yaniv Brick\nAbstract—The number of spatial degrees of freedom (NDoF)\nand channel strength in antenna systems are examined within\na geometric framework. Starting from a correlation-operator\nrepresentation of the channel between transmitter and receiver\nregions, we analyze the associated eigenspectrum and relate\nthe NDoF to its spectral transition (corner).\n\n[Ion channel]"
+      "pitch": "We compare the spectrum-based effective NDoF and effective rank metrics, clarifying their behavior for both idealized and realistic eigenvalue distributions Starting from a correlation-operator representation of the channel between transmitter and receiver regions, we analyze the associated eigenspectrum and relate the NDoF to its spectral transition (corner",
+      "key_finding": "geometry-based asymptotic estimates in terms of mutual shadow"
     },
     {
       "id": "arx:2603.02751v1",
@@ -36170,7 +36586,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.25,
-      "pitch": "Large-eddy simulations of a lean hydrogen premixed\nturbulent jet flame with tabulated chemistry\nEmiliano M. The approach is extended to turbulent\ncombustion in LES using a presumed-shape probability density function formulation that accounts for sub-filter\neffects.\n\n[Diffusion]"
+      "pitch": "Large-eddy simulations of a lean hydrogen premixed turbulent jet flame with tabulated chemistry Large-eddy simulations of a lean hydrogen premixed turbulent jet flame with tabulated chemistry Emiliano M The approach is extended to turbulent combustion in LES using a presumed-shape probability density function formulation that accounts for sub-filter effects",
+      "key_finding": "Diffusion"
     },
     {
       "id": "arx:2602.15815v2",
@@ -36289,7 +36706,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.24,
-      "pitch": "We develop a general theory that\ncharacterizes the worst-case privacy loss of an interaction involving an analyst that respects\nsome restrictions on what queries they may issue. We apply this theory to develop residue filters,\nwhich unifies existing privacy filters.\n\n[Filter · Differential privacy]"
+      "pitch": "We develop a general theory that characterizes the worst-case privacy loss of an interaction involving an analyst that respects some restrictions on what queries they may issue We apply this theory to develop residue filters, which unifies existing privacy filters",
+      "key_finding": "general theory that characterizes the worst-case privacy loss of an interaction"
     },
     {
       "id": "arx:2604.02858v1",
@@ -36364,7 +36782,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.23,
-      "pitch": "The game\nis motivated as a sample-average approximation of an underlying expected-value stochastic game, while the algorithmic focus\nis placed on the resulting finite-sum equilibrium problem. Unlike existing distributed stochastic Nash equilibrium methods that\nmainly rely on with-replacement sampling, the proposed approach incorporates without-replacement component updates into\nequilibrium computation over networks.\n\n[Nash equilibrium · sampling]"
+      "pitch": "We first consider a full-information benchmark, for which an intermediate reference trajectory and a shuffling variance are introduced to characterize the epoch-wise dynamics induced by RR The game is motivated as a sample-average approximation of an underlying expected-value stochastic game, while the algorithmic focus is placed on the resulting finite-sum equilibrium problem",
+      "key_finding": "random reshuffling"
     },
     {
       "id": "def:ntrs:20070008226",
@@ -36433,7 +36852,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.23,
-      "pitch": "The Global Precipitation Measurement (GPM) Mission is an international satellite mission that uses combined active and passive remote sensing techniques to improve global precipitation measurements derived from dedicated and operational passive microwave sensors. The GPM Mission is currently a partnership between NASA and the Japan Aerospace Exploration Agency (JAXA), with opportunities for additional domestic and international partners in satellite constellation buildup and ground validation activities.\n\n[calibration · sampling]"
+      "pitch": "The GPM Mission is currently a partnership between NASA and the Japan Aerospace Exploration Agency (JAXA), with opportunities for additional domestic and international partners in satellite constellation buildup and ground validation activities Building on the siccess of TRMM, GPM extends combined radadradiometer precipitation measurements into the mid and high latitudes, with new science foci on improved capabilities for light-rain and snowfall measurements, as well as more accurate precipitation retrievals over land",
+      "key_finding": "calibration"
     },
     {
       "id": "arx:2602.01728v1",
@@ -36499,7 +36919,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.22,
-      "pitch": "However, EEG\ndata exhibit heterogeneity across subjects and sessions, limiting the generalization of existing methods. Representation learning approaches sacrifice subject-specific information for domain invariance, while ensemble learning methods risk error accumulation for unseen subjects.\n\n[Reducibility]"
+      "pitch": "We validate our theoretical findings on synthetic datasets, and experiments on seven benchmarks demonstrate that MGEC outperforms state-of-the-art methods However, EEG data exhibit heterogeneity across subjects and sessions, limiting the generalization of existing methods",
+      "key_finding": "Mutual-Guided Expert Collaboration"
     },
     {
       "id": "def:arxiv:1512.01700v5",
@@ -36565,7 +36986,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.22,
-      "pitch": "We propose a general technique for extracting a larger set of stable information from persistent homology computations than is currently done. The persistent homology algorithm is usually viewed as a procedure which starts with a filtered complex and ends with a persistence diagram.\n\n[Lipschitz function]"
+      "pitch": "We recast these problems as real-valued functions which are discontinuous but measurable, and then observe that convolving such a function with a suitable function produces a Lipschitz function We illustrate this approach with a number of examples, including a stable localization of a persistent homology generator from brain imaging data",
+      "key_finding": "general technique for extracting a larger set of stable information from persist"
     },
     {
       "id": "arx:2604.02968v1",
@@ -36654,7 +37076,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.2,
-      "pitch": "Separable QCQPs and Their Exact SDP Relaxations\nMasakazu Kojima∗\nSunyoung Kim†\nNaohiko Arima‡\nApril 6, 2026\nAbstract\nThis paper studies exact semidefinite programming relaxations (SDPRs) for separable\nquadratically constrained quadratic programs (QCQPs). We consider the construction\nof a larger separable QCQP from multiple QCQPs with exact SDPRs.\n\n[SDP relaxation · lower bounds · Combinatorial optimization]"
+      "pitch": "We consider the construction of a larger separable QCQP from multiple QCQPs with exact SDPRs We show that exactness is preserved when such QCQPs are combined through a separable horizontal connection, where the coupling is induced through the right-hand-side parameters of the constraints",
+      "key_finding": "exact semidefinite programming relaxations"
     },
     {
       "id": "def:arxiv:1210.6365v1",
@@ -36730,7 +37153,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.2,
-      "pitch": "This paper establishes a connection between the notion of observation (or monitoring) structure in game theory and the one of communication channels in Shannon theory. One of the objectives is to know under which conditions an arbitrary monitoring structure can be transformed into a more pertinent monitoring structure.\n\n[graph coloring · Ion channel]"
+      "pitch": "The price of re-establishing perfect, almost perfect or public monitoring in games with arbitrary monitoring This paper establishes a connection between the notion of observation (or monitoring) structure in game theory and the one of communication channels in Shannon theory One of the objectives is to know under which conditions an arbitrary monitoring structure can be transformed into a more pertinent monitoring structure",
+      "key_finding": "connection between the notion of observation"
     },
     {
       "id": "arx:2602.22300v1",
@@ -36824,7 +37248,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.16,
-      "pitch": "Testable Learning of General Halfspaces under Massart Noise\nIlias Diakonikolas∗\nUW Madison\nilias@cs.wisc.edu\nGiannis Iakovidis†\nUW Madison\niakovidis@wisc.edu\nDaniel M. Kane‡\nUC San Diego\ndakane@ucsd.edu\nSihan Liu\nUC San Diego\nsil046@ucsd.edu\nAbstract\nWe study the algorithmic task of testably learning general Massart halfspaces under the\nGaussian distribution.\n\n[Halfspaces · Gaussian distribution]"
+      "pitch": "Our main result is the first testable learning algorithm for general halfspaces with Massart noise and Gaussian marginals Testable Learning of General Halfspaces under Massart Noise Testable Learning of General Halfspaces under Massart Noise Ilias Diakonikolas∗ UW Madison ilias@cs.wisc.edu Giannis Iakovidis† UW Madison iakovidis@wisc.edu Daniel M",
+      "key_finding": "PAC model"
     },
     {
       "id": "arx:2604.04130v1",
@@ -36900,7 +37325,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.13,
-      "pitch": "The Riemannian approach has become a popular technique for\naddressing these problems due to the advantageous computational and analytical properties of the\nStiefel manifold. Nonetheless, the interplay of nonsmoothness alongside orthogonality constraints\nintroduces substantial challenges to current Riemannian methods, including scalability, parallelizability, complicated subproblems, and cumulative numerical errors that threaten feasibility.\n\n[Convex optimization · KKT points]"
+      "pitch": "In this paper, we take a retraction-free primal-dual approach and propose a linearized smoothing augmented Lagrangian method specifically designed for nonsmooth and nonconvex optimization with orthogonality constraints Our proposed method is single-loop and free of subproblem solving",
+      "key_finding": "Lagrangian method"
     },
     {
       "id": "def:arxiv:1706.10220v1",
@@ -36965,7 +37391,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.13,
-      "pitch": "Sensors (e.g., light, gyroscope, accelerotmeter) and sensing enabled applications on a smart device make the applications more user-friendly and efficient. However, the current permission-based sensor management systems of smart devices only focus on certain sensors and any App can get access to other sensors by just accessing the generic sensor API.\n\n[Markov chain]"
+      "pitch": "In this way, attackers can exploit these sensors in numerous ways: they can extract or leak users' sensitive information, transfer malware, or record or steal sensitive information from other nearby devices We implemented 6thSense on a sensor-rich Android smart device (i.e., smartphone) and collected data from typical daily activities of 50 real users",
+      "key_finding": "6thSense"
     },
     {
       "id": "arx:2604.07225v1",
@@ -37057,7 +37484,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.03,
-      "pitch": "A Trajectory-based Approach to the Computation of Controlled\nInvariants with application to MPC\nEmmanuel J. Wafo Wembe and Adnane Saoud\nAbstract— In this paper, we revisit the computation of controlled invariant sets for linear discrete-time systems through a\ntrajectory-based viewpoint.\n\n[convex hull]"
+      "pitch": "We begin by introducing the notion of convex feasible points, which provides a new characterization of controlled invariance using finitely long state trajectories We further show that combining this notion with the classical backward fixed-point algorithm allows us to compute the maximal controlled invariant set",
+      "key_finding": "two MPC schemes that guarantee recursive feasibility without relying on precompu"
     },
     {
       "id": "def:ntrs:20080014830",
@@ -37116,7 +37544,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.03,
-      "pitch": "On January 11, 2007, the Chinese military conducted a test of an anti-satellite (ASAT) system, destroying their own Fengyun-1C spacecraft with an interceptor missile. The resulting hypervelocity collision created an unprecedented number of tracked debris - more than 2500 objects.\n\n[sampling]"
+      "pitch": "In this paper we will present the results of these and other measurement The resulting hypervelocity collision created an unprecedented number of tracked debris - more than 2500 objects",
+      "key_finding": "sampling"
     },
     {
       "id": "def:openalex:W3152495044",
@@ -37175,7 +37604,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.03,
-      "pitch": "In this paper, a prescribed fast tracking control scheme is proposed for Flexible Air-breathing Hypersonic Vehicles (FAHV) subject to lumped disturbances and limited resources. Subsequently, Uncertainty and Disturbance Estimators (UDE) and Sigmoid function-based Tracking Differentiators (STD) are employed to provide disturbance estimation and reference derivation with a low computational complexity.\n\n[sampling]"
+      "pitch": "Subsequently, Uncertainty and Disturbance Estimators (UDE) and Sigmoid function-based Tracking Differentiators (STD) are employed to provide disturbance estimation and reference derivation with a low computational complexity Finally, robust control laws are designed to compensate for the sampling error induced by event-triggered conditions, meanwhile Zeno phenomena can be effectively eliminated",
+      "key_finding": "sampling"
     },
     {
       "id": "def:openalex:W3152495044",
@@ -37234,7 +37664,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.03,
-      "pitch": "In this paper, a prescribed fast tracking control scheme is proposed for Flexible Air-breathing Hypersonic Vehicles (FAHV) subject to lumped disturbances and limited resources. Subsequently, Uncertainty and Disturbance Estimators (UDE) and Sigmoid function-based Tracking Differentiators (STD) are employed to provide disturbance estimation and reference derivation with a low computational complexity.\n\n[sampling]"
+      "pitch": "Subsequently, Uncertainty and Disturbance Estimators (UDE) and Sigmoid function-based Tracking Differentiators (STD) are employed to provide disturbance estimation and reference derivation with a low computational complexity Finally, robust control laws are designed to compensate for the sampling error induced by event-triggered conditions, meanwhile Zeno phenomena can be effectively eliminated",
+      "key_finding": "sampling"
     },
     {
       "id": "def:dtic:ADA373475",
@@ -37293,7 +37724,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.03,
-      "pitch": "US Army Corps\nof Engineers®\nCold Regions Research &\nEngineering Laboratory\nSampling and On-Site Analytical Methods\nfor Volatiles in Soil and Groundwater\nField Guidance Manual\nAlan D. Myers \nNovember 1999\nOh',\nApproved for Public Release \n2 0 0 1 \n1\nDistribution Unlimited\nVao QUAL~n M-IWTED 1\n4 \nI \nI \nI,\n\n[sampling]"
+      "pitch": "of Engineers® Cold Regions Research & Engineering Laboratory Sampling and On-Site Analytical Methods for Volatiles in Soil and Groundwater Field Guidance Manual Alan D Myers November 1999 Oh', Approved for Public Release 2 0 0 1 Distribution Unlimited Vao QUAL~n M-IWTED 1 I I I",
+      "key_finding": "sampling"
     },
     {
       "id": "arx:2603.14978v1",
@@ -37372,7 +37804,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.02,
-      "pitch": "Gravity from surface triangulation: convergence\nacceleration with nested grids\nHuré Jean-Marc\nUniversity of Bordeaux, CNRS, Laboratoire d’Astrophysique de\nBordeaux, UMR 5804, Pessac, 33600, France. Contributing authors: jean-marc.hure@u-bordeaux.fr;\nAbstract\nThe determination of the gravitational potential by the polyhedral method is\nrevisited in the case where the surface of a body is composed of triangular facets.\n\n[triangulation · Richardson extrapolation]"
+      "pitch": "We then show that the accuracy or computing time can be drastically enhanced by implementing the Repeated Richardson Extrapolation Gravity from surface triangulation: convergence acceleration with nested grids Gravity from surface triangulation: convergence acceleration with nested grids Huré Jean-Marc University of Bordeaux, CNRS, Laboratoire d’Astrophysique de Bordeaux, UMR 5804, Pessac, 33600, France",
+      "key_finding": "technique"
     },
     {
       "id": "arx:2603.03912v1",
@@ -37437,7 +37870,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.02,
-      "pitch": "FAST PROTON TRANSPORT AND NEUTRON PRODUCTION IN\nPROTON THERAPY USING FOURIER NEURAL OPERATORS\nFrancesco Blangiardi\nFraunhofer ENAS, Technical University Chemnitz\nChemnitz, Germany\nfrancesco.blangiardi@enas.fraunhofer.de\nHunter N. We present a surrogate model based\non Fourier Neural Operators (FNO) for fast prediction of angle- and energy-resolved proton transport\nand neutron production within proton therapy.\n\n[Scan]"
+      "pitch": "We present a surrogate model based on Fourier Neural Operators (FNO) for fast prediction of angle- and energy-resolved proton transport and neutron production within proton therapy We present a surrogate model based on Fourier Neural Operators (FNO) for fast prediction of angle- and energy-resolved proton transport and neutron production within proton therapy",
+      "key_finding": "surrogate model based on Fourier Neural Operators"
     },
     {
       "id": "def:arxiv:2104.13230v1",
@@ -37510,7 +37944,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.02,
-      "pitch": "Data poisoning is a type of adversarial attack on training data where an attacker manipulates a fraction of data to degrade the performance of machine learning model. Therefore, applications that rely on external data-sources for training data are at a significantly higher risk.\n\n[robust statistics]"
+      "pitch": "In this work, we propose a defense mechanism to minimize the degradation caused by the poisoned training data on a learner's model in an online setup Our proposed method utilizes an influence function which is a classic technique in robust statistics",
+      "key_finding": "defense mechanism to minimize the degradation caused by the poisoned training da"
     },
     {
       "id": "def:arxiv:2104.13230v1",
@@ -37583,7 +38018,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.02,
-      "pitch": "Data poisoning is a type of adversarial attack on training data where an attacker manipulates a fraction of data to degrade the performance of machine learning model. Therefore, applications that rely on external data-sources for training data are at a significantly higher risk.\n\n[robust statistics]"
+      "pitch": "In this work, we propose a defense mechanism to minimize the degradation caused by the poisoned training data on a learner's model in an online setup Our proposed method utilizes an influence function which is a classic technique in robust statistics",
+      "key_finding": "defense mechanism to minimize the degradation caused by the poisoned training da"
     },
     {
       "id": "def:arxiv:2410.03354v3",
@@ -37656,7 +38092,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.02,
-      "pitch": "The recent advancement in research on distributed space systems that operate a large number of satellites as a single system urges the need for the investigation of satellite constellations. Communication constellations can be used to construct global or regional communication networks using inter-satellite and ground-to-satellite links.\n\n[Voronoi diagram]"
+      "pitch": "This study examines two challenges of communication constellations: continuous coverage and inter-satellite link connectivity Communication constellations can be used to construct global or regional communication networks using inter-satellite and ground-to-satellite links",
+      "key_finding": "APC decomposition"
     },
     {
       "id": "def:arxiv:2410.03354v3",
@@ -37729,7 +38166,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.02,
-      "pitch": "The recent advancement in research on distributed space systems that operate a large number of satellites as a single system urges the need for the investigation of satellite constellations. Communication constellations can be used to construct global or regional communication networks using inter-satellite and ground-to-satellite links.\n\n[Voronoi diagram]"
+      "pitch": "This study examines two challenges of communication constellations: continuous coverage and inter-satellite link connectivity Communication constellations can be used to construct global or regional communication networks using inter-satellite and ground-to-satellite links",
+      "key_finding": "APC decomposition"
     },
     {
       "id": "arx:2604.07333v1",
@@ -37819,7 +38257,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.0,
-      "pitch": "When waves meet rays: Seismic vibrations and cosmic showers to test gravity\nAneta Wojnar1, ∗\n1Institute of Theoretical Physics, University of Wrocław, pl. Maxa Borna 9, 50-206 Wrocław, Poland\nWe propose a novel laboratory test of gravity combining seismic-wave measurements with cosmicray muon detections.\n\n[partition function · Partition]"
+      "pitch": "We show that this setup can constrain gravity parameters at a level comparable to current laboratory experiments In this context, the generalized uncertainty principle (GUP) has emerged as a powerful tool for capturing quantum-gravity-induced modifications [13–18",
+      "key_finding": "novel laboratory test of gravity combining seismic-wave measurements with cosmic"
     },
     {
       "id": "arx:2603.17466v4",
@@ -37900,7 +38339,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.0,
-      "pitch": "The novelty of this\nwork is that full probability densities of the state vectors are propagated stepwise through the iterations\navoiding the need of repetitive pathwise Monte Carlo simulations of the iteration equation. The presentation of the methodology is conceptually efficient based on recent work on static random equations and\nintentionally accessible.\n\n[Monte Carlo simulation · Transfer function · Diffusion]"
+      "pitch": "The novelty of this work is that full probability densities of the state vectors are propagated stepwise through the iterations avoiding the need of repetitive pathwise Monte Carlo simulations of the iteration equation The presentation of the methodology is conceptually efficient based on recent work on static random equations and intentionally accessible",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "def:arxiv:9703050v1",
@@ -37967,7 +38407,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 12.0,
-      "pitch": "The many-body dynamics of a quantum computer can be reduced to the time evolution of non-interacting quantum bits in auxiliary fields by use of the Hubbard-Stratonovich representation of two-bit quantum gates in terms of one-bit gates. This makes it possible to perform the stochastic simulation of a quantum algorithm, based on the Monte Carlo evaluation of an integral of dimension polynomial in the number of quantum bits.\n\n[Monte Carlo simulation · Fourier transform]"
+      "pitch": "This makes it possible to perform the stochastic simulation of a quantum algorithm, based on the Monte Carlo evaluation of an integral of dimension polynomial in the number of quantum bits As an example, the simulation of the quantum circuit for the Fast Fourier Transform is discussed",
+      "key_finding": "Monte Carlo simulation"
     },
     {
       "id": "arx:2604.06060v1",
@@ -38042,7 +38483,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.98,
-      "pitch": "Linear Reformulation of Event-Triggered LQG Control under\nUnreliable Communication\nZahra Hashemi and Dipankar Maity\nAbstract—We consider event-triggered linear-quadratic Gaussian (LQG) control when sensor updates are transmitted over\nan i.i.d. packet–erasure channel. By\ncertainty equivalence, the co-design problem becomes choosing a\nbinary send/skip sequence that balances control performance and\ncommunication cost.\n\n[dynamic programming · sampling]"
+      "pitch": "We derive a closed-form expansion of the error covariance as precomputable Gramian terms scaled by a survival factor that depends only on the number of transmission attempts on each interval By certainty equivalence, the co-design problem becomes choosing a binary send/skip sequence that balances control performance and communication cost",
+      "key_finding": "architecture"
     },
     {
       "id": "arx:2603.17536v1",
@@ -38125,7 +38567,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.93,
-      "pitch": "Hierarchical Stability Notions and Lyapunov Functions for PDEs\nMatthew M. Peet\nAbstract— Unlike\nlinear\nordinary\ndifferential\nequations\n(ODEs), linear partial differential equations (PDEs) admit a\nmultitude of non-equivalent notions of stability.\n\n[Lyapunov stability · lower bounds]"
+      "pitch": "Hierarchical Stability Notions and Lyapunov Functions for PDEs Hierarchical Stability Notions and Lyapunov Functions for PDEs Matthew M Peet Abstract— Unlike linear ordinary differential equations (ODEs), linear partial differential equations (PDEs) admit a multitude of non-equivalent notions of stability",
+      "key_finding": "framework for hierarchical classification of notions of stability and Lyapunov c"
     },
     {
       "id": "def:openalex:W2554939085",
@@ -38192,7 +38635,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.9,
-      "pitch": "This study presents a novel integrated guidance and control method for near space interceptor, considering the coupling among different channels of the missile dynamics, which makes the most of the overall performance of guidance and control system. Subsequently, regarding the acceleration of the target as bounded uncertainty of the system, an integrated guidance and control algorithm is designed based on robust adaptive backstepping method, with the upper bound of the uncertainties unknown.\n\n[Reduce]"
+      "pitch": "Subsequently, regarding the acceleration of the target as bounded uncertainty of the system, an integrated guidance and control algorithm is designed based on robust adaptive backstepping method, with the upper bound of the uncertainties unknown Moreover, a nonlinear tracking differentiator is introduced to reduce the “compute explosion” caused by backstepping method",
+      "key_finding": "novel integrated guidance and control method for near space interceptor"
     },
     {
       "id": "def:ntrs:19760028370",
@@ -38259,7 +38703,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.9,
-      "pitch": "This paper describes principally the ascent phase of the Mars Surface Sample Return mission, where the terminal rendezvous phase is emphasized to describe a newly developed automatic rendezvous and docking system. The autonomous rendezvous and docking in Mars orbit is used to reduce the payload necessary to achieve the mission so that today's-sized spacecraft can be used.\n\n[Reduce]"
+      "pitch": "Autonomous rendezvous and docking in Mars orbit This paper describes principally the ascent phase of the Mars Surface Sample Return mission, where the terminal rendezvous phase is emphasized to describe a newly developed automatic rendezvous and docking system The autonomous rendezvous and docking in Mars orbit is used to reduce the payload necessary to achieve the mission so that today's-sized spacecraft can be used",
+      "key_finding": "principally the ascent phase of the Mars Surface Sample Return mission"
     },
     {
       "id": "def:openalex:W7154136457",
@@ -38326,7 +38771,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.9,
-      "pitch": "First, the two-dimensional relative motion relationship between the aircraft and the target is analyzed, and the shortcomings of the classical Proportional Navigation law and Augmented Proportional Navigation (APN) law are clarified. Then, a prediction term for the target’s LOS angular rate is introduced, and an improved guidance model is constructed by combining the remaining interception time and LOS angular acceleration, which optimizes the guidance trajectory by predicting the encounter point.\n\n[Reduce]"
+      "pitch": "First, the two-dimensional relative motion relationship between the aircraft and the target is analyzed, and the shortcomings of the classical Proportional Navigation law and Augmented Proportional Navigation (APN) law are clarified Then, a prediction term for the target’s LOS angular rate is introduced, and an improved guidance model is constructed by combining the remaining interception time and LOS angular acceleration, which optimizes the guidance trajectory by predicting the encounter point",
+      "key_finding": "improved augmented proportional navigation law for the terminal guidance phase"
     },
     {
       "id": "def:ntrs:19760028370",
@@ -38393,7 +38839,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.9,
-      "pitch": "This paper describes principally the ascent phase of the Mars Surface Sample Return mission, where the terminal rendezvous phase is emphasized to describe a newly developed automatic rendezvous and docking system. The autonomous rendezvous and docking in Mars orbit is used to reduce the payload necessary to achieve the mission so that today's-sized spacecraft can be used.\n\n[Reduce]"
+      "pitch": "Autonomous rendezvous and docking in Mars orbit This paper describes principally the ascent phase of the Mars Surface Sample Return mission, where the terminal rendezvous phase is emphasized to describe a newly developed automatic rendezvous and docking system The autonomous rendezvous and docking in Mars orbit is used to reduce the payload necessary to achieve the mission so that today's-sized spacecraft can be used",
+      "key_finding": "principally the ascent phase of the Mars Surface Sample Return mission"
     },
     {
       "id": "def:openalex:W7154136457",
@@ -38460,7 +38907,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.9,
-      "pitch": "First, the two-dimensional relative motion relationship between the aircraft and the target is analyzed, and the shortcomings of the classical Proportional Navigation law and Augmented Proportional Navigation (APN) law are clarified. Then, a prediction term for the target’s LOS angular rate is introduced, and an improved guidance model is constructed by combining the remaining interception time and LOS angular acceleration, which optimizes the guidance trajectory by predicting the encounter point.\n\n[Reduce]"
+      "pitch": "First, the two-dimensional relative motion relationship between the aircraft and the target is analyzed, and the shortcomings of the classical Proportional Navigation law and Augmented Proportional Navigation (APN) law are clarified Then, a prediction term for the target’s LOS angular rate is introduced, and an improved guidance model is constructed by combining the remaining interception time and LOS angular acceleration, which optimizes the guidance trajectory by predicting the encounter point",
+      "key_finding": "improved augmented proportional navigation law for the terminal guidance phase"
     },
     {
       "id": "def:openalex:W2737314204",
@@ -38527,7 +38975,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.9,
-      "pitch": "We propose a dual-band metamaterial perfect absorber with a metal-insulator-metal structure (MIM) for use in infrared (IR) stealth technology. We designed the MIM structure to have surface plasmon polariton (SPP) and magnetic polariton (MP) resonance peaks at 1.54 μm and 6.2 μm, respectively.\n\n[Reduce]"
+      "pitch": "We designed the MIM structure to have surface plasmon polariton (SPP) and magnetic polariton (MP) resonance peaks at 1.54 μm and 6.2 μm, respectively We analysed the spectral properties of the resonance peaks by comparing the wavelength of the MP peak calculated using the finite-difference time-domain method with that obtained by utilizing an inductor-capacitor circuit model",
+      "key_finding": "dual-band metamaterial perfect absorber with a metal-insulator-metal structure"
     },
     {
       "id": "def:openalex:W2737314204",
@@ -38594,7 +39043,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.9,
-      "pitch": "We propose a dual-band metamaterial perfect absorber with a metal-insulator-metal structure (MIM) for use in infrared (IR) stealth technology. We designed the MIM structure to have surface plasmon polariton (SPP) and magnetic polariton (MP) resonance peaks at 1.54 μm and 6.2 μm, respectively.\n\n[Reduce]"
+      "pitch": "We designed the MIM structure to have surface plasmon polariton (SPP) and magnetic polariton (MP) resonance peaks at 1.54 μm and 6.2 μm, respectively We analysed the spectral properties of the resonance peaks by comparing the wavelength of the MP peak calculated using the finite-difference time-domain method with that obtained by utilizing an inductor-capacitor circuit model",
+      "key_finding": "dual-band metamaterial perfect absorber with a metal-insulator-metal structure"
     },
     {
       "id": "arx:2511.06120v1",
@@ -38690,7 +39140,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.88,
-      "pitch": "While such a legality\ncheck needs to be precisely computed in general, we can use an\napproximate legality prediction model in certain cases, such as\ntraining a reinforcement learning (RL) agent for schedule prediction. In this paper, we propose an approximate method for legality\nchecks.\n\n[reinforcement learning · Reduce]"
+      "pitch": "In this paper, we propose an approximate method for legality checks We propose a novel DL model for predicting the legality of transformations",
+      "key_finding": "approximate method for legality checks"
     },
     {
       "id": "arx:2603.14500v1",
@@ -38768,7 +39219,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.8,
-      "pitch": "Astr. (0000) 000:\nDOI\nCompact and Physically Interpretable Feature Models for Photometric\nType Ia Supernova Classification\nAnurag Garg1, *\n1Ministry of Education, Abu Dhabi, UAE.\n*Corresponding author. E-mail: anurag.garg@moe.sch.ae\nMS received 13 March 2026; accepted\nAbstract.\n\n[decision tree · Filter]"
+      "pitch": "In this work, we investigate a compact and physically interpretable feature representation derived from multi-band light curves and evaluate its performance using gradient-boosted decision trees on the Supernova Photometric Classification Challenge (SPCC) dataset Compact and Physically Interpretable Feature Models for Photometric Type Ia Supernova Classification J",
+      "key_finding": "compact and physically interpretable feature representation derived from multi-b"
     },
     {
       "id": "arx:2604.07246v1",
@@ -38843,7 +39295,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.76,
-      "pitch": "Flexible Electric Vehicle Charging with Karma\nEzzat Elokda, Ruiting Wang, Karl H. We consider a charging facility with\nlimited capacity that must schedule arriving EVs to charge in\nreal-time.\n\n[Nash equilibrium · Reduce]"
+      "pitch": "We consider a charging facility with limited capacity that must schedule arriving EVs to charge in real-time The main contribution is to extend previous karma Dynamic Population Game (DPG) formulations to this setting which features novel State of Charge (SOC) dynamics and private trip deadlines in addition to urgency",
+      "key_finding": "to extend previous karma Dynamic Population Game"
     },
     {
       "id": "def:arxiv:1905.13220v5",
@@ -38911,7 +39364,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.72,
-      "pitch": "Persistent homology studies the birth and death of cycles in a parameterized family of spaces. In this paper, we study the birth and death of cycles in a multifiltration of a chain complex with the goal of producing a persistence diagram that satisfies bottleneck stability.\n\n[chain complex]"
+      "pitch": "In this paper, we study the birth and death of cycles in a multifiltration of a chain complex with the goal of producing a persistence diagram that satisfies bottleneck stability Positivity of Multiparameter Persistence Diagrams and Bottleneck Stability Persistent homology studies the birth and death of cycles in a parameterized family of spaces",
+      "key_finding": "birth and death of cycles in a multifiltration of a chain complex with the goal"
     },
     {
       "id": "arx:2603.11363v1",
@@ -38983,7 +39437,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.71,
-      "pitch": "The simulations\nemploy a Herschel–Bulkley formulation that captures the yieldstress-driven plug, its breakdown, and the emergence of near-wall\nturbulent structures, enabling direct resolution of the transition\nmechanisms. The DNS cover a broad range of generalized Reynolds numbers, 𝑅𝑒𝐺= 378 to 5300, allowing us to resolve plug formation, transition onset, and fully turbulent regimes.\n\n[Reynolds number]"
+      "pitch": "This work provides the first DNS resolving the complete laminar to turbulent transition in HB fluids for both pipe and channel configurations, offering unified insight into plug breakdown, turbulence localization, and the role of yield stress in transition mechanisms The simulations employ a Herschel–Bulkley formulation that captures the yieldstress-driven plug, its breakdown, and the emergence of near-wall turbulent structures, enabling direct resolution of the transition mechanisms",
+      "key_finding": "direct numerical simulations"
     },
     {
       "id": "arx:2309.07657v2",
@@ -39059,7 +39514,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.7,
-      "pitch": "Sync+Sync: A Covert Channel Built on fsync with Storage\nQisheng Jiang\nChundong Wang∗\nShanghaiTech University, Shanghai, China\nAbstract\nScientists have built a variety of covert channels for secretive\ninformation transmission with CPU cache and main memory. In this paper, we turn to a lower level in the memory hierarchy,\ni.e., persistent storage.\n\n[B-tree · Partition]"
+      "pitch": "In this paper, we turn to a lower level in the memory hierarchy, i.e., persistent storage Our quantitative study shows that one program would undergo significantly longer response time for fsync call if the other program is concurrently calling fsync, although they do not share any data",
+      "key_finding": "lower layer in the memory hierarchy"
     },
     {
       "id": "arx:2604.04499v1",
@@ -39132,7 +39588,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.7,
-      "pitch": "1\nDistributed Covariance Steering via Non-Convex\nADMM for Large-Scale Multi-Agent Systems\nAugustinos D. Balci, Arshiya Taj Abdul, Efstathios Bakolas\nand Evangelos A.\n\n[Gaussian distribution]"
+      "pitch": "We introduce a family of distributed covariance steering (DCS) methods based on the Alternating Direction Method of Multipliers (ADMM), each offering different trade-offs between conservatism and computational efficiency Distributed Covariance Steering via Non-Convex ADMM for Large-Scale Multi-Agent Systems Distributed Covariance Steering via Non-Convex ADMM for Large-Scale Multi-Agent Systems Augustinos D",
+      "key_finding": "family of distributed covariance steering"
     },
     {
       "id": "def:arxiv:2311.02463v2",
@@ -39214,7 +39671,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.69,
-      "pitch": "Hypersonic boundary layers exhibit diverse transition pathways, influenced by various flow conditions and environments. Non-modal mechanisms, such as the lift-up effect, are recognized as pivotal contributors to transition, particularly over complex geometries like rough walls or blunted forebodies.\n\n[Boundary layer · Mach number]"
+      "pitch": "In this study, we investigate the impact of steady streaks on the transition to turbulence in hypersonic boundary layers We conduct linearized direct numerical simulations on these baseflows at Mach number $M_\\infty=6.0$, using white noise forcing to trigger instabilities",
+      "key_finding": "impact of steady streaks on the transition to turbulence in hypersonic boundary"
     },
     {
       "id": "def:arxiv:2311.02463v2",
@@ -39296,7 +39754,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.69,
-      "pitch": "Hypersonic boundary layers exhibit diverse transition pathways, influenced by various flow conditions and environments. Non-modal mechanisms, such as the lift-up effect, are recognized as pivotal contributors to transition, particularly over complex geometries like rough walls or blunted forebodies.\n\n[Boundary layer · Mach number]"
+      "pitch": "In this study, we investigate the impact of steady streaks on the transition to turbulence in hypersonic boundary layers We conduct linearized direct numerical simulations on these baseflows at Mach number $M_\\infty=6.0$, using white noise forcing to trigger instabilities",
+      "key_finding": "impact of steady streaks on the transition to turbulence in hypersonic boundary"
     },
     {
       "id": "arx:2602.16465v1",
@@ -39385,7 +39844,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.67,
-      "pitch": "In the two-stage setting, discrete and continuous\nbudgeted uncertainty have to be distinguished. The complexity of such problems is\nlargely unexplored, in particular if the underlying nominal optimization problem is\nsimple, such as for selection problems.\n\n[Combinatorial optimization · robust optimization · lower bounds]"
+      "pitch": "In this paper, we give a comprehensive answer to long-standing open complexity questions for three types of selection problems and three types of budgeted uncertainty sets Our hardness result implies that also the two-stage assignment problem with continuous budgeted uncertainty is NP-hard",
+      "key_finding": "more fundamental setting of single-stage robustness"
     },
     {
       "id": "arx:2603.09922v1",
@@ -39474,7 +39934,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.64,
-      "pitch": "RASTI 000, 1–13 (2026)\nPreprint 11 March 2026\nCompiled using rasti LATEX style file v3.0\nData reduction method for OPTICAM multiband time series of transiting\nexoplanets\nS. Hebb2\n1Universidad Nacional Autónoma de México, Instituto de Astronomía, AP 70-264, 04510.\n\n[Filter · calibration]"
+      "pitch": "We evaluate six pre-processing methods applied to science and calibration images using the transit of TOI-7149 b observed in g′r′i′ We fit a multiband transit model to the light curves, measuring photometric precision, correlated noise, and retrieved planetary parameters",
+      "key_finding": "methodology for acquiring and reducing transiting exoplanet light curves obtaine"
     },
     {
       "id": "arx:2604.05998v1",
@@ -39560,7 +40021,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.64,
-      "pitch": "Accordingly, cant-angle selection\nshould be optimized to ensure high performance while avoiding\nabrupt variations and preserving real-world feasibility. In this\ncontext, this work proposes a lightweight control framework\nfor star-shaped interdependent cant-tilting hexarotor UAVs performing interaction tasks.\n\n[Monte Carlo simulation · polytope]"
+      "pitch": "In this context, this work proposes a lightweight control framework for star-shaped interdependent cant-tilting hexarotor UAVs performing interaction tasks Accordingly, cant-angle selection should be optimized to ensure high performance while avoiding abrupt variations and preserving real-world feasibility",
+      "key_finding": "lightweight control framework for star-shaped interdependent cant-tilting hexaro"
     },
     {
       "id": "arx:2604.10836v1",
@@ -39626,7 +40088,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.63,
-      "pitch": "It outperforms the state-of-the-art\nLatentHOI [21] across three benchmarks (right), namely GRAB [42], DexYCB [5] and\nOakInk [51]. SD and Phy refer to sample diversity and physical plausibility.\n\n[Flow Matching]"
+      "pitch": "In this paper, we present HO-Flow, a framework for synthesizing realistic handobject motion sequences from texts and canoncial 3D objects It outperforms the state-of-the-art LatentHOI [21] across three benchmarks (right), namely GRAB [42], DexYCB [5] and OakInk [51",
+      "key_finding": "HO-Flow"
     },
     {
       "id": "def:arxiv:2010.13860v2",
@@ -39693,7 +40156,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.63,
-      "pitch": "Many important real-world settings contain multiple players interacting over an unknown duration with probabilistic state transitions, and are naturally modeled as stochastic games. Prior research on algorithms for stochastic games has focused on two-player zero-sum games, games with perfect information, and games with imperfect-information that is local and does not extend between game states.\n\n[Nash equilibrium]"
+      "pitch": "We present an algorithm for approximating Nash equilibrium in multiplayer general-sum stochastic games with persistent imperfect information that extends throughout game play We experiment on a 4-player imperfect-information naval strategic planning scenario",
+      "key_finding": "algorithm for approximating Nash equilibrium in multiplayer general-sum stochast"
     },
     {
       "id": "arx:2604.02916v1",
@@ -39789,7 +40253,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.62,
-      "pitch": "Memory-Type Null Controllability for Non-Autonomous\nDegenerate Parabolic Equations with Boundary Degeneracy\nDev Prakash Jhaa,∗, Raju K. The diffusion operator is considered in both divergence and non-divergence forms and\nmay exhibit weak or strong degeneracy at the boundary, while the diffusion coefficient\ndepends explicitly on time.\n\n[Diffusion · Observability · diffusion models]"
+      "pitch": "Memory-Type Null Controllability for Non-Autonomous Degenerate Parabolic Equations with Boundary Degeneracy Memory-Type Null Controllability for Non-Autonomous Degenerate Parabolic Equations with Boundary Degeneracy Dev Prakash Jhaa,∗, Raju K The diffusion operator is considered in both divergence and non-divergence forms and may exhibit weak or strong degeneracy at the boundary, while the diffusion coefficient depends explicitly on time",
+      "key_finding": "memory-type null controllability of a class of one-dimensional non-autonomous de"
     },
     {
       "id": "arx:2602.14704v1",
@@ -39849,7 +40314,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.6,
-      "pitch": "Virtual machine placement can be\nformulated as a MinUsageTime Dynamic Vector Bin Packing\n(DVBP) problem, aiming to minimize the total usage time\nof the physical machines. This paper evaluates state-of-the-art\nMinUsageTime DVBP algorithms in non-clairvoyant, clairvoyant\nand learning-augmented online settings, where item durations\n(virtual machine lifetimes) are unknown, known and predicted,\nrespectively.\n\n[bin packing]"
+      "pitch": "This paper evaluates state-of-the-art MinUsageTime DVBP algorithms in non-clairvoyant, clairvoyant and learning-augmented online settings, where item durations (virtual machine lifetimes) are unknown, known and predicted, respectively Virtual machine placement can be formulated as a MinUsageTime Dynamic Vector Bin Packing (DVBP) problem, aiming to minimize the total usage time of the physical machines",
+      "key_finding": "bin packing"
     },
     {
       "id": "arx:2604.02943v1",
@@ -39914,7 +40380,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.55,
-      "pitch": "Stabilized Proximal Point Method via Trust Region Control\nHanmin Li 1 Kaja Gruntkowska 1 Peter Richt´arik 1\nAbstract\nThe Proximal Point Method (PPM) (Rockafellar,\n1976) is a fundamental tool for nonsmooth convex optimization. However, its convergence is not\nlinear under general convexity in the absence of\nstrong convexity or other structural assumptions.\n\n[Convex optimization]"
+      "pitch": "We show that this simple stabilization enforces non-vanishing steps and yields a linear decrease in objective values outside any prescribed neighborhood, without assuming smoothness or strong convexity Stabilized Proximal Point Method via Trust Region Control Stabilized Proximal Point Method via Trust Region Control Hanmin Li 1 Kaja Gruntkowska 1 Peter Richt´arik 1 The Proximal Point Method (PPM) (Rockafellar, 1976) is a fundamental tool for nonsmooth convex optimization",
+      "key_finding": "trust-region stabilized proximal point scheme in which each proximal update is c"
     },
     {
       "id": "arx:2604.06078v1",
@@ -39986,7 +40453,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.52,
-      "pitch": "A main difficulty compared to the classical Schr¨odinger bridge formulation\nis that our problem is not strictly convex and standard Sinkhorntype methods cannot be directly applied. To address this issue, we\npropose a scalable computational method based on an entropic\nproximal scheme.\n\n[Observability]"
+      "pitch": "We validate the method on the problem of estimating contamination in a water distribution network, where the partial marginals correspond to measured pollutant concentrations at the sensor locations A main difficulty compared to the classical Schr¨odinger bridge formulation is that our problem is not strictly convex and standard Sinkhorntype methods cannot be directly applied",
+      "key_finding": "discrete Schr¨odinger bridge problem with partial marginal observations"
     },
     {
       "id": "arx:2604.10962v1",
@@ -40075,7 +40543,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.51,
-      "pitch": "However, FM policies trained via imitation\nlearning inherit the limitations of demonstration\ndata; surpassing suboptimal behaviors requires\nreinforcement learning (RL) fine-tuning. Recent\nmethods convert deterministic flows into stochastic differential equations (SDEs) with learnable\nnoise injection, enabling exploration and tractable\nlikelihoods, but such noise-only control can compromise training efficiency when demonstrations\nalready provide strong priors.\n\n[Flow Matching · reinforcement learning · sampling]"
+      "pitch": "We observe that modulating the drift via the score function, i.e., the gradient of log-density, steers exploration toward high-probability regions, improving stability However, FM policies trained via imitation learning inherit the limitations of demonstration data; surpassing suboptimal behaviors requires reinforcement learning (RL) fine-tuning",
+      "key_finding": "ScoRe- Flow"
     },
     {
       "id": "arx:2604.05390v1",
@@ -40161,7 +40630,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.5,
-      "pitch": "1\nDistributed Load Frequency Control of Multi-Area\nSmart Grid\nWenjing Yang, Zhaorong Zhang, Xun Li, Juanjuan Xu\nAbstract—In this paper, we investigate the distributed load\nfrequency control problem in a multi-area smart grid under\nexternal load disturbances and measurement noise. The novelty\nlies in that the information privacy is fully taken into account,\nthat is, the internal structural parameters and operational states\nof each area are not shared with non-neighboring areas, which\nmakes traditional distributed optimal control methods ineffective.\n\n[distributed algorithm]"
+      "pitch": "The main contribution is to propose a distributed algorithm for the global optimal power regulation command under information privacy constraints via distributed approximation of the control Riccati equation, the estimation Riccati equation, and the state estimation The novelty lies in that the information privacy is fully taken into account, that is, the internal structural parameters and operational states of each area are not shared with non-neighboring areas, which makes traditional distributed optimal control methods ineffective",
+      "key_finding": "distributed load frequency control problem in a multi-area smart grid under exte"
     },
     {
       "id": "arx:2604.05443v1",
@@ -40247,7 +40717,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.5,
-      "pitch": "In particular,\nboth the state and the system dynamic structures of each agent are private and can only be shared among communicating agents. This type of information structure is inevitable in fields such as collaborative control for industrial confidentiality, and renders\ntraditional distributed control methods using all systems’ dynamic structures ineffective.\n\n[distributed algorithm]"
+      "pitch": "The primary contribution is the proposal of a distributed algorithm for the global optimal controller under such practical information structure via distributed approximation of the Hamilton-Jacobi-Bellman equation In particular, both the state and the system dynamic structures of each agent are private and can only be shared among communicating agents",
+      "key_finding": "distributed optimal control problem for a kind of nonlinear multi-agent systems"
     },
     {
       "id": "arx:2603.24523v1",
@@ -40319,7 +40790,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.47,
-      "pitch": "ESAIM: PROCEEDINGS AND SURVEYS, Vol. ?, 2026, 1-10\nEditors: Will be set by the publisher\nMITIGATING BARREN PLATEAUS VIA DOMAIN DECOMPOSITION IN\nVARIATIONAL QUANTUM ALGORITHMS FOR NONLINEAR PDES\nLaila S. Busaleh1, Jeonghyeuk Kwon2, Orlane Zang3, Muhammad Hassan4 and\nYvon Maday5\nAbstract.\n\n[Partition]"
+      "pitch": "In this work, we introduce a domain decomposition framework to mitigate barren plateaus by localizing the cost functional Our strategy is based on partitioning the spatial domain into overlapping subdomains, each associated with a localized parameterized quantum circuit and measurement operator",
+      "key_finding": "domain decomposition framework to mitigate barren plateaus by localizing the cos"
     },
     {
       "id": "arx:2401.05641v1",
@@ -40376,7 +40848,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.46,
-      "pitch": "This paper presents\nO2C, a pioneering system designed to enforce OS kernel compartmentalization on the fly. It not only provides immediate\nremediation for sudden threats but also maintains consistent\nsystem availability through the enforcement process.\n\n[decision tree]"
+      "pitch": "This paper presents O2C, a pioneering system designed to enforce OS kernel compartmentalization on the fly Our comprehensive evaluation shows that O2C effectively confines damage within the compartment",
+      "key_finding": "decision tree"
     },
     {
       "id": "def:arxiv:2004.09632v1",
@@ -40443,7 +40916,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.44,
-      "pitch": "Surveillance camera networks are a useful infrastructure for various visual analytics applications, where high-level inferences and predictions could be made based on target tracking across the network. Most multi-camera tracking works focus on target re-identification and trajectory association problems to track the target.\n\n[Target tracking · reinforcement learning]"
+      "pitch": "In this paper, we address the problem of intelligent scheduling of re-identification queries in a multi-camera tracking setting We have also shown that such a policy can be learnt directly from data",
+      "key_finding": "Target tracking"
     },
     {
       "id": "def:ntrs:20170000480",
@@ -40505,7 +40979,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.44,
-      "pitch": "NASA needs methods to unobtrusively collect NHV data without impacting crew time. Data required includes metrics such as location and orientation of crew, volume used to complete tasks, internal translation paths, flow of work, and task completion times.\n\n[calibration]"
+      "pitch": "NASA needs methods to unobtrusively collect NHV data without impacting crew time Data required includes metrics such as location and orientation of crew, volume used to complete tasks, internal translation paths, flow of work, and task completion times",
+      "key_finding": "calibration"
     },
     {
       "id": "def:ntrs:20150001649",
@@ -40567,7 +41042,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.44,
-      "pitch": "NASA is looking for innovative methods to unobtrusively collect NHV data without impacting crew time. Data required includes metrics such as location and orientation of crew, volume used to complete tasks, internal translation paths, flow of work, and task completion times.\n\n[calibration]"
+      "pitch": "NASA is looking for innovative methods to unobtrusively collect NHV data without impacting crew time Data required includes metrics such as location and orientation of crew, volume used to complete tasks, internal translation paths, flow of work, and task completion times",
+      "key_finding": "calibration"
     },
     {
       "id": "arx:2604.04125v1",
@@ -40640,7 +41116,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.43,
-      "pitch": "This transformation has driven the transition from traditional\nconsumers to prosumers and given rise to new energy sharing\nbusiness models. Existing works have extensively studied prosumer energy sharing mechanisms, yet little attention has been\npaid to privacy protection, particularly when communication\nconstraints are taken into account.\n\n[Differential privacy]"
+      "pitch": "In this paper, we study an energy sharing mechanism where information is exchanged over wireless channels via over-the-air (OTA) multiple-input multipleoutput (MIMO) aggregation to exploit spectral efficiency for scalable prosumer coordination This transformation has driven the transition from traditional consumers to prosumers and given rise to new energy sharing business models",
+      "key_finding": "energy sharing mechanism where information is exchanged over wireless channel"
     },
     {
       "id": "def:arxiv:2406.09759v2",
@@ -40713,7 +41190,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.43,
-      "pitch": "To address the need for robust positioning, navigation, and timing services in lunar environments, this paper proposes a novel fault detection framework for satellite constellations using inter-satellite ranging (ISR). Traditionally, navigation satellites can depend on a robust network of ground-based stations for fault monitoring.\n\n[Euclidean distance]"
+      "pitch": "Our approach leverages vertex redundantly rigid graphs to detect faults without relying on precise ephemeris We model satellite constellations as graphs where satellites are vertices and inter-satellite links are edges",
+      "key_finding": "novel fault detection framework for satellite constellations using inter-satelli"
     },
     {
       "id": "arx:2401.03523v1",
@@ -40771,7 +41249,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.42,
-      "pitch": "Characterizing Physical Memory Fragmentation\nMark Mansi\nUniversity of Wisconsin-Madison\nMichael M. Swift\nUniversity of Wisconsin-Madison\nAbstract\nExternal fragmentation of physical memory occurs when\nadjacent differently sized regions of allocated physical\nmemory are freed at different times, causing free memory\nto be physically discontiguous.\n\n[memory fragmentation]"
+      "pitch": "Our work fills these gaps in knowledge and methodology We conduct a study of memory fragmentation in production by observing 248 machines in the Computer Sciences Department at University of Wisconsin - Madison for a week",
+      "key_finding": "memory fragmentation"
     },
     {
       "id": "arx:2511.15820v1",
@@ -40829,7 +41308,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.42,
-      "pitch": "Chorex: Restartable, Language-Integrated Choreographies\nAshton Wiersdorfa\nand Ben Greenmana\na\nUniversity of Utah, Salt Lake City, UT, USA\nAbstract\nWe built Chorex, a language that brings choreographic programming to Elixir as a path toward\nrobust distributed applications. Chorex is unique among choreographic languages because it tolerates failure\namong actors: when an actor crashes, Chorex spawns a new process, restores state using a checkpoint, and\nupdates the network configuration for all actors.\n\n[extensible languages]"
+      "pitch": "This paper illustrates Chorex on several examples, ranging from a higher-order bookseller to a secure remote password protocol, details its implementation, and measures the overhead of checkpointing We conjecture that Chorex’s projection strategy, which outputs sets of stateless functions, is a viable approach for other languages to support restartable actors",
+      "key_finding": "extensible languages"
     },
     {
       "id": "arx:2511.22075v1",
@@ -40887,7 +41367,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.42,
-      "pitch": "Expanding Specification Capabilities of a Gradual Verifier\nwith Pure Functions\nDORUK ALP MUTLU, Michigan State University, USA\nGradual verification soundly combines static checking and dynamic checking to provide an incremental approach for software verification. With gradual verification, programs can be partially\nspecified first, and then the full specification of a program can be achieved in incremental steps.\n\n[Heap data structure]"
+      "pitch": "This work explores an extension to Gradual C0’s design with a common construct supported by many static verification tools, pure functions, which both extend the specification capabilities of Gradual C0 and increase the ease of encoding observer methods in Gradual C0 Our approach addresses the technical challenges related to the axiomatisation of pure functions with imprecise specifications",
+      "key_finding": "Heap data structure"
     },
     {
       "id": "arx:2603.13996v1",
@@ -40945,7 +41426,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.42,
-      "pitch": "The proposed method further enables a detailed analysis of the\nmixing behavior by computing expected residence times and mixing times. Additionally, a Markov-state-model describes the macroscopic transport dynamics between compartments in the reactor.\n1\nIntroduction\nUnderstanding and modeling the complex interactions between chemical reactions\nand ﬂuid dynamics are key in the design and analysis of large-scale chemical reactors.\n\n[Mixing time]"
+      "pitch": "The proposed method further enables a detailed analysis of the mixing behavior by computing expected residence times and mixing times Additionally, a Markov-state-model describes the macroscopic transport dynamics between compartments in the reactor",
+      "key_finding": "Mixing time"
     },
     {
       "id": "arx:2604.10974v2",
@@ -41034,7 +41516,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.37,
-      "pitch": "Distributionally robust RL provides a formal remedy but still\nrelies on surrogate adversaries to approximate intractable primal problems, leaving blind spots that potentially cause instability and over-conservatism. We propose a dual formulation that directly exposes the robustness–performance tradeoff.\n\n[reinforcement learning · sequential decision-making · sampling]"
+      "pitch": "We propose a dual formulation that directly exposes the robustness–performance tradeoff Distributionally robust RL provides a formal remedy but still relies on surrogate adversaries to approximate intractable primal problems, leaving blind spots that potentially cause instability and over-conservatism",
+      "key_finding": "dual formulation that directly exposes the robustness–performance tradeoff"
     },
     {
       "id": "arx:2604.04801v1",
@@ -41117,7 +41600,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.36,
-      "pitch": "Feasibility-Aware Imitation Learning for Benders Decomposition*\nBernard T. Agyeman1, Zhe Li1, Ilias Mitrai2, and Prodromos Daoutidis1\nAbstract— Mixed-integer optimization problems arise in a\nwide range of control applications.\n\n[Branch-and-bound algorithm · Reduce]"
+      "pitch": "Feasibility-Aware Imitation Learning for Benders Decomposition Feasibility-Aware Imitation Learning for Benders Decomposition* Bernard T Agyeman1, Zhe Li1, Ilias Mitrai2, and Prodromos Daoutidis1 Abstract— Mixed-integer optimization problems arise in a wide range of control applications",
+      "key_finding": "feasibility-aware imitation learning framework that predicts the values of the i"
     },
     {
       "id": "arx:2604.03658v1",
@@ -41193,7 +41677,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.34,
-      "pitch": "A Hybrid Algorithm for Monotone Variational Inequalities\nReza Rahimi Baghbadorania, Peyman Mohajerin Esfahania,b, Sergio Grammaticoa\nAbstract— Inspired by the adaptive Golden Ratio Algorithm\n(aGRAAL), we propose two new methods for solving monotone\nvariational inequalities. We show that by selecting the momentum\nparameter beyond the golden ratio in aGRAAL, the convergence\nspeed can be improved, which motivates us to study the switching\nbetween small and large momentum parameters to accelerate\nconvergence.\n\n[Nash equilibrium · robust optimization]"
+      "pitch": "We show that by selecting the momentum parameter beyond the golden ratio in aGRAAL, the convergence speed can be improved, which motivates us to study the switching between small and large momentum parameters to accelerate convergence We impose local constraints on each agent’s control input ui ∈Vi and global constraints on the state trajectory xt ∈X",
+      "key_finding": "two new methods for solving monotone variational inequalities"
     },
     {
       "id": "arx:2601.10557v2",
@@ -41278,7 +41763,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.33,
-      "pitch": "CHEBYSHEV ACCELERATED SUBSPACE EIGENSOLVER FOR\nPSEUDO-HERMITIAN HAMILTONIANS\nEDOARDO DI NAPOLI∗, CL´EMENT RICHEFORT∗, AND XINZHE WU∗\nAbstract. Studying the optoelectronic structure of materials can require the computation of\nseveral thousands of the smallest positive eigenpairs of a pseudo-hermitian Hamiltonian.\n\n[matrix-vector multiplications · Filter]"
+      "pitch": "This work presents an extension of ChASE to solve for a portion of the smallest positive eigenpairs of pseudohermitian Hamiltonians as they appear in the treatment of excitonic materials Our development is supported by a full numerical analysis and experimental tests",
+      "key_finding": "parallel implementation of the recursive matrix-product operation appearing in t"
     },
     {
       "id": "def:arxiv:1006.3652v1",
@@ -41335,7 +41821,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.33,
-      "pitch": "This research investigated the simulation model behaviour of a traditional and combined discrete event as well as agent based simulation models when modelling human reactive and proactive behaviour in human centric complex systems. A departmental store was chosen as human centric complex case study where the operation system of a fitting room in WomensWear department was investigated.\n\n[Sensitivity analysis]"
+      "pitch": "We have looked at ways to determine the efficiency of new management policies for the fitting room operation through simulating the reactive and proactive behaviour of staff towards customers A departmental store was chosen as human centric complex case study where the operation system of a fitting room in WomensWear department was investigated",
+      "key_finding": "Sensitivity analysis"
     },
     {
       "id": "def:arxiv:1006.3652v1",
@@ -41392,7 +41879,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.33,
-      "pitch": "This research investigated the simulation model behaviour of a traditional and combined discrete event as well as agent based simulation models when modelling human reactive and proactive behaviour in human centric complex systems. A departmental store was chosen as human centric complex case study where the operation system of a fitting room in WomensWear department was investigated.\n\n[Sensitivity analysis]"
+      "pitch": "We have looked at ways to determine the efficiency of new management policies for the fitting room operation through simulating the reactive and proactive behaviour of staff towards customers A departmental store was chosen as human centric complex case study where the operation system of a fitting room in WomensWear department was investigated",
+      "key_finding": "Sensitivity analysis"
     },
     {
       "id": "def:arxiv:1505.01539v1",
@@ -41458,7 +41946,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.22,
-      "pitch": "Potential games, originally introduced in the early 1990's by Lloyd Shapley, the 2012 Nobel Laureate in Economics, and his colleague Dov Monderer, are a very important class of models in game theory. They have special properties such as the existence of Nash equilibria in pure strategies.\n\n[graphical models]"
+      "pitch": "This note introduces graphical versions of potential games This note provides several characterizations of graphical potential games by leveraging well-known results from the literature on probabilistic graphical models",
+      "key_finding": "graphical versions of potential games"
     },
     {
       "id": "def:arxiv:1505.01539v1",
@@ -41524,7 +42013,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.22,
-      "pitch": "Potential games, originally introduced in the early 1990's by Lloyd Shapley, the 2012 Nobel Laureate in Economics, and his colleague Dov Monderer, are a very important class of models in game theory. They have special properties such as the existence of Nash equilibria in pure strategies.\n\n[graphical models]"
+      "pitch": "This note introduces graphical versions of potential games This note provides several characterizations of graphical potential games by leveraging well-known results from the literature on probabilistic graphical models",
+      "key_finding": "graphical versions of potential games"
     },
     {
       "id": "def:arxiv:2009.13787v1",
@@ -41590,7 +42080,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.22,
-      "pitch": "We propose a method to compute approximate solutions to the minimum-fuel far-field rendezvous problem for thrust-vectoring spacecraft. It is well-known that the use of linearized spacecraft rendezvous equations may not give sufficiently accurate results for far-field rendezvous.\n\n[State space model]"
+      "pitch": "In this paper, we use a nonlinear state space model which corresponds to more accurate description of dynamics than linearized models but at the same time poses the known challenges of nonlinear control design Far-Field Minimum-Fuel Spacecraft Rendezvous using Koopman Operator and $\\ell_2/\\ell_1$ Optimization We propose a method to compute approximate solutions to the minimum-fuel far-field rendezvous problem for thrust-vectoring spacecraft",
+      "key_finding": "method to compute approximate solutions to the minimum-fuel far-field rendezvous"
     },
     {
       "id": "arx:2603.08593v1",
@@ -41663,7 +42154,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.21,
-      "pitch": "Draft version March 10, 2026\nTypeset using LATEX twocolumn style in AASTeX631\nA GPU-Accelerated Transient Detection Pipeline for DECam Time-Domain Surveys\nLei Hu\n,1, 2 Tom´as Cabrera\n,1 Antonella Palmese\n,1 Lifan Wang\n,3 Igor Andreoni\n,4 Xander J. University, Department of Physics and Astronomy, 4242 TAMU, College Station, TX 77843, USA\n4 Department of Physics and Astronomy, University of North Carolina at Chapel Hill, Chapel Hill, NC 27599-3255, USA\n5Texas A&M Institute of Data Science John R.\n\n[GPU acceleration]"
+      "pitch": "We validate the pipeline using archival DECam data from the DESIRT survey University, Department of Physics and Astronomy, 4242 TAMU, College Station, TX 77843, USA 4 Department of Physics and Astronomy, University of North Carolina at Chapel Hill, Chapel Hill, NC 27599-3255, USA 5Texas A&M Institute of Data Science John R",
+      "key_finding": "GPU-accelerated transient detection pipeline developed for time-domain surveys w"
     },
     {
       "id": "arx:2602.16306v1",
@@ -41749,7 +42241,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.2,
-      "pitch": "Dynamic and Streaming Algorithms\nfor Union Volume Estimation\nSujoy Bhore*\nsujoy@cse.iitb.ac.in\nKarl Bringmann†\nbringmann@cs.uni-saarland.de\nTimothy M. Chan‡\ntmc@illinois.edu\nYanheng Wang†\nyanhwang@cs.uni-saarland.de\nAbstract\nThe union volume estimation problem asks to (1±ϵ)-approximate the volume of the union of n\ngiven objects X1,..., Xn ⊂Rd.\n\n[Streaming algorithms · streaming algorithm]"
+      "pitch": "In this paper, we study algorithms for union volume estimation in the oracle model that support both insertions and deletions of objects This work is supported in part by ANRF ARG-MATRICS, Grant 002465. †Saarland University and Max-Planck-Institute for Informatics, Saarland Informatics Campus, Saarbrücken, Germany",
+      "key_finding": "algorithms for union volume estimation in the oracle model that support both ins"
     },
     {
       "id": "arx:2601.10115v1",
@@ -41840,7 +42333,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.14,
-      "pitch": "Bayesian Model Selection for Complex Flows\nof Yield Stress Fluids\nAricia Rinkens1, Clemens V. Verhoosel1, Alexandra Alicke1, Patrick D.\n\n[calibration]"
+      "pitch": "In this work, we propose a Bayesian uncertainty quantification framework for the calibration and selection of constitutive models for yield stress fluids, explicitly accounting for uncertainties in both modeling accuracy and experimental observations We apply the Bayesian framework to rheological measurements and squeeze flow experiments on Carbopol 980, comparing a range of constitutive models",
+      "key_finding": "Bayesian framework"
     },
     {
       "id": "arx:2603.03266v1",
@@ -41908,7 +42402,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.13,
-      "pitch": "Version March 4, 2026\nA MORE RIGOROUS TEST PROBLEM FOR VISCOUS HYDRODYNAMICS CODES\nAlexander J. Dittmann1,∗,† and Geoffrey Ryan2\n1 Institute for Advanced Study, 1 Einstein Drive, Princeton, NJ 08540, USA and\n2 Perimeter Institute for Theoretical Physics, 31 Caroline St.\n\n[Navier Stokes equations]"
+      "pitch": "We assume that the fluid pressure is related simply to the density and a spatially-dependent sound speed, P = c2 s(x)ρ, that the fluid is static in the z-direction, and that the bulk viscosity of the fluid is zero A More Rigorous Test Problem For Viscous Hydrodynamics Codes Version March 4, 2026 A MORE RIGOROUS TEST PROBLEM FOR VISCOUS HYDRODYNAMICS CODES Alexander J",
+      "key_finding": "detailed exposition of the Navier Stokes equations"
     },
     {
       "id": "arx:2603.03266v1",
@@ -41976,7 +42471,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.13,
-      "pitch": "Version March 4, 2026\nA MORE RIGOROUS TEST PROBLEM FOR VISCOUS HYDRODYNAMICS CODES\nAlexander J. Dittmann1,∗,† and Geoffrey Ryan2\n1 Institute for Advanced Study, 1 Einstein Drive, Princeton, NJ 08540, USA and\n2 Perimeter Institute for Theoretical Physics, 31 Caroline St.\n\n[Navier Stokes equations]"
+      "pitch": "We assume that the fluid pressure is related simply to the density and a spatially-dependent sound speed, P = c2 s(x)ρ, that the fluid is static in the z-direction, and that the bulk viscosity of the fluid is zero A More Rigorous Test Problem For Viscous Hydrodynamics Codes Version March 4, 2026 A MORE RIGOROUS TEST PROBLEM FOR VISCOUS HYDRODYNAMICS CODES Alexander J",
+      "key_finding": "detailed exposition of the Navier Stokes equations"
     },
     {
       "id": "def:openalex:W31904992",
@@ -42035,7 +42531,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.1,
-      "pitch": "Space Based Interceptor (SBI) have ranges that are adequate to address rogue ICBMs. They are not overly sensitive to 30-60 s delay times.\n\n[Reduce]"
+      "pitch": "Space Based Interceptor (SBI) have ranges that are adequate to address rogue ICBMs They are not overly sensitive to 30-60 s delay times",
+      "key_finding": "Reduce"
     },
     {
       "id": "def:openalex:W2885060061",
@@ -42094,7 +42591,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.1,
-      "pitch": "Nonnuclear weapons are increasingly able to threaten dual-use command, control, communication, and intelligence assets that are spaced based or distant from probable theaters of conflict. This form of “entanglement” between nuclear and nonnuclear capabilities creates the potential for Chinese or Russian nonnuclear strikes against the United States or U.S. strikes against either China or Russia to spark inadvertent nuclear escalation.\n\n[Reduce]"
+      "pitch": "This form of “entanglement” between nuclear and nonnuclear capabilities creates the potential for Chinese or Russian nonnuclear strikes against the United States or U.S. strikes against either China or Russia to spark inadvertent nuclear escalation These risks would be serious for two reasons",
+      "key_finding": "Reduce"
     },
     {
       "id": "def:ntrs:19930075821",
@@ -42153,7 +42651,8 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.1,
-      "pitch": "Miniature, 50 kg class, strategic satellites intended for extended deployment in space require an on-board propulsion capability to perform needed attitude control adjustments and drag compensation maneuvers. Even on such very small spacecraft, these orbit maintenance functions can be significant and result in a substantial propellant mass requirement.\n\n[Reduce]"
+      "pitch": "Miniature, 50 kg class, strategic satellites intended for extended deployment in space require an on-board propulsion capability to perform needed attitude control adjustments and drag compensation maneuvers Even on such very small spacecraft, these orbit maintenance functions can be significant and result in a substantial propellant mass requirement",
+      "key_finding": "Reduce"
     },
     {
       "id": "def:openalex:W2809288697",
@@ -42212,83 +42711,147 @@ window.ARXIVIS = {
         }
       },
       "composite": 11.1,
-      "pitch": "Faster trajectory correction and control mechanisms are required to correct the radar handing-over error coupled with homing guidance demands for Missile Interceptors. Solid Divert and Attitude Control System (SDACS), which typically have a very low time constant, is one of the most efficient and accurate way to meet these demands.\n\n[Reduce]"
+      "pitch": "Normalized Pseudo-Control for Solid Divert &amp; Attitude Control System Faster trajectory correction and control mechanisms are required to correct the radar handing-over error coupled with homing guidance demands for Missile Interceptors Solid Divert and Attitude Control System (SDACS), which typically have a very low time constant, is one of the most efficient and accurate way to meet these demands",
+      "key_finding": "Reduce"
     }
   ],
   "concept_universe": [
     {
-      "id": "dynamic_algorithms",
-      "name": "dynamic algorithms",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Gibbs_states",
-      "name": "Gibbs states",
+      "id": "batch_sampling",
+      "name": "batch sampling",
       "cluster": 2,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "breadth-first_search",
-      "name": "breadth-first search",
+      "id": "pricing_subproblem",
+      "name": "pricing subproblem",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Halfspaces",
-      "name": "Halfspaces",
+      "id": "minimal_redundant_sets",
+      "name": "minimal redundant sets",
       "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "leader_election",
+      "name": "leader election",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "contrastive_reasons",
+      "name": "contrastive reasons",
+      "cluster": 11,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "dynamic_enumeration",
+      "name": "dynamic enumeration",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "semi-extensible_ZG_languages",
+      "name": "semi-extensible ZG languages",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "LOCAL_model",
+      "name": "LOCAL model",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "polytope",
+      "name": "polytope",
+      "cluster": 8,
       "degree": 3,
       "kind": "wiki"
     },
     {
-      "id": "graph_traversal",
-      "name": "graph traversal",
+      "id": "greedy_algorithm",
+      "name": "greedy algorithm",
+      "cluster": 9,
+      "degree": 8,
+      "kind": "wiki"
+    },
+    {
+      "id": "online_algorithms",
+      "name": "online algorithms",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Laplacian_matrix",
+      "name": "Laplacian matrix",
+      "cluster": 5,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "minimum_spanning_trees",
+      "name": "minimum spanning trees",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "KL_divergence",
+      "name": "KL divergence",
+      "cluster": 2,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "shortest_paths",
+      "name": "shortest paths",
       "cluster": 1,
       "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "calibration",
-      "name": "calibration",
-      "cluster": 3,
-      "degree": 31,
+      "id": "fairness_constraints",
+      "name": "fairness constraints",
+      "cluster": 6,
+      "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "communication_complexity",
-      "name": "communication complexity",
+      "id": "matrix-vector_multiplications",
+      "name": "matrix-vector multiplications",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "polynomial_time_algorithms",
-      "name": "polynomial time algorithms",
-      "cluster": 0,
+      "id": "Bayesian_linear_regression",
+      "name": "Bayesian linear regression",
+      "cluster": 2,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Filter",
-      "name": "Filter",
-      "cluster": 0,
-      "degree": 47,
+      "id": "Approximation_algorithms",
+      "name": "Approximation algorithms",
+      "cluster": 6,
+      "degree": 6,
       "kind": "wiki"
     },
     {
-      "id": "randomized_rounding",
-      "name": "randomized rounding",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Synaptic_plasticity",
-      "name": "Synaptic plasticity",
+      "id": "Mixing_time",
+      "name": "Mixing time",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
@@ -42301,379 +42864,43 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "Cache_utilization",
-      "name": "Cache utilization",
-      "cluster": 0,
-      "degree": 1,
+      "id": "Kalman_filter",
+      "name": "Kalman filter",
+      "cluster": 4,
+      "degree": 30,
       "kind": "wiki"
     },
     {
-      "id": "balanced_separator",
-      "name": "balanced separator",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Parallel_algorithms",
-      "name": "Parallel algorithms",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Polynomial_time_algorithm",
-      "name": "Polynomial time algorithm",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Pareto_optimality",
-      "name": "Pareto optimality",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "NP-completeness",
-      "name": "NP-completeness",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Ising_models",
-      "name": "Ising models",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "chain_complex",
-      "name": "chain complex",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Action_potential",
-      "name": "Action potential",
-      "cluster": 5,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "leader_election",
-      "name": "leader election",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "lossless_data_compression",
-      "name": "lossless data compression",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "streaming_algorithm",
-      "name": "streaming algorithm",
+      "id": "Compressible_flow",
+      "name": "Compressible flow",
       "cluster": 0,
       "degree": 4,
       "kind": "wiki"
     },
     {
-      "id": "color_coding",
-      "name": "color coding",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "H-free_graphs",
-      "name": "H-free graphs",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Bellman-Ford_algorithm",
-      "name": "Bellman-Ford algorithm",
-      "cluster": 1,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Query_complexity",
-      "name": "Query complexity",
-      "cluster": 9,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "biclique",
-      "name": "biclique",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Polynomial-time_approximation",
-      "name": "Polynomial-time approximation",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "arboricity",
-      "name": "arboricity",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "VC_dimension",
-      "name": "VC dimension",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "minor-free_graphs",
-      "name": "minor-free graphs",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Flow_Matching",
-      "name": "Flow Matching",
-      "cluster": 2,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "split_graph",
-      "name": "split graph",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "identifying_sets",
-      "name": "identifying sets",
-      "cluster": 11,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "distance_oracle",
-      "name": "distance oracle",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Diffusion",
-      "name": "Diffusion",
-      "cluster": 5,
-      "degree": 28,
-      "kind": "wiki"
-    },
-    {
-      "id": "clique",
-      "name": "clique",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "competitive_analysis",
-      "name": "competitive analysis",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "convex_hull",
-      "name": "convex hull",
-      "cluster": 11,
-      "degree": 5,
-      "kind": "wiki"
-    },
-    {
-      "id": "low_out-degree_orientation",
-      "name": "low out-degree orientation",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "asymptotic_analysis",
-      "name": "asymptotic analysis",
-      "cluster": 8,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Fourier_transform",
-      "name": "Fourier transform",
-      "cluster": 5,
-      "degree": 6,
-      "kind": "wiki"
-    },
-    {
-      "id": "Maximal_Matching",
-      "name": "Maximal Matching",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "arborescences",
-      "name": "arborescences",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "polytope",
-      "name": "polytope",
-      "cluster": 8,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "Topological_order",
-      "name": "Topological order",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "spanning_trees",
-      "name": "spanning trees",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "regular_languages",
-      "name": "regular languages",
-      "cluster": 2,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Potential_function",
-      "name": "Potential function",
+      "id": "k-center_problem",
+      "name": "k-center problem",
       "cluster": 6,
       "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "enumeration_algorithm",
-      "name": "enumeration algorithm",
+      "id": "planar_graph",
+      "name": "planar graph",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "2-approximation_algorithm",
-      "name": "2-approximation algorithm",
-      "cluster": 0,
-      "degree": 1,
+      "id": "metric_space",
+      "name": "metric space",
+      "cluster": 6,
+      "degree": 6,
       "kind": "wiki"
     },
     {
-      "id": "learning-augmented_algorithms",
-      "name": "learning-augmented algorithms",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Pareto-optimal_matching",
-      "name": "Pareto-optimal matching",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "hypergraph_matching",
-      "name": "hypergraph matching",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Network_design",
-      "name": "Network design",
-      "cluster": 11,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "distributed_algorithm",
-      "name": "distributed algorithm",
-      "cluster": 0,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "Ion_channel",
-      "name": "Ion channel",
-      "cluster": 0,
-      "degree": 8,
-      "kind": "wiki"
-    },
-    {
-      "id": "shortest_paths",
-      "name": "shortest paths",
-      "cluster": 1,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "necklace_cover",
-      "name": "necklace cover",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "regular_language",
-      "name": "regular language",
-      "cluster": 2,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "graph_decomposition",
-      "name": "graph decomposition",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "replicability",
-      "name": "replicability",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Drag_polar",
-      "name": "Drag polar",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Heap_data_structure",
-      "name": "Heap data structure",
+      "id": "online_learning_algorithm",
+      "name": "online learning algorithm",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
@@ -42686,6 +42913,20 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
+      "id": "transitive_closure",
+      "name": "transitive closure",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "cost_analysis",
+      "name": "cost analysis",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
       "id": "Hamming_distance",
       "name": "Hamming distance",
       "cluster": 6,
@@ -42693,71 +42934,99 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "FPT_algorithm",
-      "name": "FPT algorithm",
-      "cluster": 11,
+      "id": "induced_minor",
+      "name": "induced minor",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "NP-completeness",
+      "name": "NP-completeness",
+      "cluster": 0,
       "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "Convex_optimization",
-      "name": "Convex optimization",
+      "id": "replicability",
+      "name": "replicability",
       "cluster": 0,
-      "degree": 11,
-      "kind": "wiki"
-    },
-    {
-      "id": "bond_dimension",
-      "name": "bond dimension",
-      "cluster": 1,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "fixed-parameter_tractability",
-      "name": "fixed-parameter tractability",
-      "cluster": 11,
+      "id": "Polynomial_time_algorithm",
+      "name": "Polynomial time algorithm",
+      "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "ray_tracing",
-      "name": "ray tracing",
-      "cluster": 3,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "Markov_chains",
-      "name": "Markov chains",
-      "cluster": 1,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "SDP_relaxation",
-      "name": "SDP relaxation",
-      "cluster": 11,
+      "id": "Ising_model",
+      "name": "Ising model",
+      "cluster": 0,
       "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "LZ77_compression",
-      "name": "LZ77 compression",
+      "id": "Ising_models",
+      "name": "Ising models",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "necklace_cover",
+      "name": "necklace cover",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Lipschitz_function",
-      "name": "Lipschitz function",
+      "id": "fair_k-center_problem",
+      "name": "fair k-center problem",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Support_Vector_Machines",
+      "name": "Support Vector Machines",
+      "cluster": 2,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Ion_channel",
+      "name": "Ion channel",
+      "cluster": 0,
+      "degree": 8,
+      "kind": "wiki"
+    },
+    {
+      "id": "Sensor_fusion",
+      "name": "Sensor fusion",
+      "cluster": 0,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "cost_bounds",
+      "name": "cost bounds",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Compressible_flow",
-      "name": "Compressible flow",
+      "id": "twin-width",
+      "name": "twin-width",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Linear_convergence",
+      "name": "Linear convergence",
       "cluster": 0,
       "degree": 4,
       "kind": "wiki"
@@ -42770,85 +43039,78 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "k-clustering",
-      "name": "k-clustering",
+      "id": "matching_problem",
+      "name": "matching problem",
       "cluster": 0,
-      "degree": 1,
+      "degree": 3,
       "kind": "wiki"
     },
     {
-      "id": "weight_function",
-      "name": "weight function",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "sufficient_reasons",
-      "name": "sufficient reasons",
-      "cluster": 11,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Minimum_Spanning_Tree",
-      "name": "Minimum Spanning Tree",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "single-source_shortest_paths",
-      "name": "single-source shortest paths",
+      "id": "random_walk",
+      "name": "random walk",
       "cluster": 1,
-      "degree": 2,
+      "degree": 4,
       "kind": "wiki"
     },
     {
-      "id": "Interval_Graph",
-      "name": "Interval Graph",
+      "id": "spanning_trees",
+      "name": "spanning trees",
       "cluster": 0,
       "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "matrix-vector_multiplications",
-      "name": "matrix-vector multiplications",
+      "id": "SDP_relaxation",
+      "name": "SDP relaxation",
+      "cluster": 11,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "low_out-degree_orientation",
+      "name": "low out-degree orientation",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Sample_complexity_bounds",
-      "name": "Sample complexity bounds",
+      "id": "neutral_letter",
+      "name": "neutral letter",
       "cluster": 9,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "perfect_retraining",
-      "name": "perfect retraining",
+      "id": "Gibbs_states",
+      "name": "Gibbs states",
+      "cluster": 2,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "communication_protocols",
+      "name": "communication protocols",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "matroid_constraints",
-      "name": "matroid constraints",
+      "id": "bipartite_graphs",
+      "name": "bipartite graphs",
       "cluster": 0,
-      "degree": 2,
+      "degree": 5,
       "kind": "wiki"
     },
     {
-      "id": "signed_tree_models",
-      "name": "signed tree models",
-      "cluster": 0,
-      "degree": 1,
+      "id": "linear_programming",
+      "name": "linear programming",
+      "cluster": 10,
+      "degree": 16,
       "kind": "wiki"
     },
     {
-      "id": "cost_analysis",
-      "name": "cost analysis",
+      "id": "send_sequence",
+      "name": "send sequence",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
@@ -42861,59 +43123,66 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "sampling",
-      "name": "sampling",
-      "cluster": 2,
-      "degree": 36,
+      "id": "Sensitivity_analysis",
+      "name": "Sensitivity analysis",
+      "cluster": 10,
+      "degree": 5,
       "kind": "wiki"
     },
     {
-      "id": "Chinese_Remainder_Theorem",
-      "name": "Chinese Remainder Theorem",
-      "cluster": 2,
+      "id": "Synaptic_plasticity",
+      "name": "Synaptic plasticity",
+      "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Distributed_algorithms",
-      "name": "Distributed algorithms",
+      "id": "machine_unlearning",
+      "name": "machine unlearning",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Pareto-optimality",
+      "name": "Pareto-optimality",
       "cluster": 0,
       "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "Approximation_factor",
-      "name": "Approximation factor",
+      "id": "tensor_network",
+      "name": "tensor network",
+      "cluster": 1,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "weight_function",
+      "name": "weight function",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "decision_tree",
-      "name": "decision tree",
-      "cluster": 11,
-      "degree": 6,
-      "kind": "wiki"
-    },
-    {
-      "id": "inapproximability",
-      "name": "inapproximability",
-      "cluster": 6,
-      "degree": 5,
-      "kind": "wiki"
-    },
-    {
-      "id": "Scan",
-      "name": "Scan",
-      "cluster": 0,
-      "degree": 7,
-      "kind": "wiki"
-    },
-    {
-      "id": "competitive_ratio",
-      "name": "competitive ratio",
-      "cluster": 0,
+      "id": "directed_graphs",
+      "name": "directed graphs",
+      "cluster": 1,
       "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "polynomial-time_approximation_scheme",
+      "name": "polynomial-time approximation scheme",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "clique",
+      "name": "clique",
+      "cluster": 0,
+      "degree": 1,
       "kind": "wiki"
     },
     {
@@ -42931,198 +43200,44 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "k-center_problem",
-      "name": "k-center problem",
-      "cluster": 6,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Pareto-optimality",
-      "name": "Pareto-optimality",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Linear_convergence",
-      "name": "Linear convergence",
-      "cluster": 0,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "graph_clustering",
-      "name": "graph clustering",
-      "cluster": 5,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "polynomial-time_approximation_scheme",
-      "name": "polynomial-time approximation scheme",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "controlling_sets",
-      "name": "controlling sets",
+      "id": "decision_tree",
+      "name": "decision tree",
       "cluster": 11,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "KKT_points",
-      "name": "KKT points",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Boundary_layer",
-      "name": "Boundary layer",
-      "cluster": 3,
-      "degree": 15,
-      "kind": "wiki"
-    },
-    {
-      "id": "Maximum_matching",
-      "name": "Maximum matching",
-      "cluster": 10,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "mean-shift_contamination_model",
-      "name": "mean-shift contamination model",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "connected_components",
-      "name": "connected components",
-      "cluster": 0,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "cost_bounds",
-      "name": "cost bounds",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Sensor_fusion",
-      "name": "Sensor fusion",
-      "cluster": 0,
       "degree": 6,
       "kind": "wiki"
     },
     {
-      "id": "Bayesian_linear_regression",
-      "name": "Bayesian linear regression",
-      "cluster": 2,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "false_positive_rate",
-      "name": "false positive rate",
+      "id": "Convex_optimization",
+      "name": "Convex optimization",
       "cluster": 0,
-      "degree": 1,
+      "degree": 11,
       "kind": "wiki"
     },
     {
-      "id": "graph_coloring",
-      "name": "graph coloring",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "binary_search",
-      "name": "binary search",
-      "cluster": 1,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "characteristic_function",
-      "name": "characteristic function",
-      "cluster": 6,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "linear_programming_relaxation",
-      "name": "linear programming relaxation",
-      "cluster": 10,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "online_algorithm",
-      "name": "online algorithm",
+      "id": "competitive_ratio",
+      "name": "competitive ratio",
       "cluster": 0,
       "degree": 4,
       "kind": "wiki"
     },
     {
-      "id": "Combinatorial_optimization",
-      "name": "Combinatorial optimization",
+      "id": "Network_design",
+      "name": "Network design",
       "cluster": 11,
-      "degree": 15,
+      "degree": 3,
       "kind": "wiki"
     },
     {
-      "id": "deBruijn_graph",
-      "name": "deBruijn graph",
+      "id": "bond_dimension",
+      "name": "bond dimension",
+      "cluster": 1,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "H-minor-free_graphs",
+      "name": "H-minor-free graphs",
       "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Steiner_tree",
-      "name": "Steiner tree",
-      "cluster": 10,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "contraction_sequence",
-      "name": "contraction sequence",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Matroid_intersection",
-      "name": "Matroid intersection",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Partition_analysis",
-      "name": "Partition analysis",
-      "cluster": 6,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "self-stabilizing_leader_election",
-      "name": "self-stabilizing leader election",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "query_lower_bounds",
-      "name": "query lower bounds",
-      "cluster": 9,
       "degree": 1,
       "kind": "wiki"
     },
@@ -43134,101 +43249,206 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "Mixing_time",
-      "name": "Mixing time",
+      "id": "NP-hardness",
+      "name": "NP-hardness",
+      "cluster": 6,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "Radar_signal_processing",
+      "name": "Radar signal processing",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Nash_equilibrium",
-      "name": "Nash equilibrium",
-      "cluster": 1,
-      "degree": 7,
+      "id": "graph_embedding",
+      "name": "graph embedding",
+      "cluster": 0,
+      "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "vertex_degree",
-      "name": "vertex degree",
+      "id": "breadth-first_search",
+      "name": "breadth-first search",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "connected_components",
+      "name": "connected components",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "2-approximation_algorithm",
+      "name": "2-approximation algorithm",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "independent_set",
+      "name": "independent set",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "contraction_sequence",
+      "name": "contraction sequence",
       "cluster": 0,
       "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "Max-3-Cut_problem",
-      "name": "Max-3-Cut problem",
+      "id": "parameterized_complexity",
+      "name": "parameterized complexity",
       "cluster": 6,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Potential_function",
+      "name": "Potential function",
+      "cluster": 6,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Minimum_Spanning_Tree",
+      "name": "Minimum Spanning Tree",
+      "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Transfer_function",
-      "name": "Transfer function",
+      "id": "Spectral_gap",
+      "name": "Spectral gap",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Differential_privacy",
+      "name": "Differential privacy",
+      "cluster": 9,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "vertex-disjoint_paths",
+      "name": "vertex-disjoint paths",
+      "cluster": 11,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "localization_schemes",
+      "name": "localization schemes",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "low-rank_approximation",
+      "name": "low-rank approximation",
+      "cluster": 1,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Shortcutting_procedure",
+      "name": "Shortcutting procedure",
+      "cluster": 1,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "streaming_algorithm",
+      "name": "streaming algorithm",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "k-center_clustering",
+      "name": "k-center clustering",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Gaussian_input_masking",
+      "name": "Gaussian input masking",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Score-Based_Diffusion_Models",
+      "name": "Score-Based Diffusion Models",
       "cluster": 5,
-      "degree": 8,
+      "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "scheduling_algorithm",
-      "name": "scheduling algorithm",
-      "cluster": 10,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "Metric_spaces",
-      "name": "Metric spaces",
-      "cluster": 6,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "hardness_of_approximation",
-      "name": "hardness of approximation",
-      "cluster": 6,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "pricing_subproblem",
-      "name": "pricing subproblem",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "random_walk",
-      "name": "random walk",
+      "id": "Bellman-Ford_algorithm",
+      "name": "Bellman-Ford algorithm",
       "cluster": 1,
-      "degree": 4,
+      "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "geometric_optimization",
-      "name": "geometric optimization",
+      "id": "graph_clustering",
+      "name": "graph clustering",
+      "cluster": 5,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "diffusion_sampling",
+      "name": "diffusion sampling",
+      "cluster": 2,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "ε-approximation_algorithm",
+      "name": "ε-approximation algorithm",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Mechanism_design",
-      "name": "Mechanism design",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "spanning_tree",
-      "name": "spanning tree",
+      "id": "randomized_rounding",
+      "name": "randomized rounding",
       "cluster": 0,
       "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "correlation_clustering",
-      "name": "correlation clustering",
-      "cluster": 6,
+      "id": "Pareto-optimal_matching",
+      "name": "Pareto-optimal matching",
+      "cluster": 0,
       "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "ordered_partition",
+      "name": "ordered partition",
+      "cluster": 2,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Navier_Stokes_equations",
+      "name": "Navier Stokes equations",
+      "cluster": 0,
+      "degree": 2,
       "kind": "wiki"
     },
     {
@@ -43239,30 +43459,51 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "contrastive_reasons",
-      "name": "contrastive reasons",
+      "id": "approximation_ratio",
+      "name": "approximation ratio",
+      "cluster": 10,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "lower_bounds",
+      "name": "lower bounds",
+      "cluster": 9,
+      "degree": 16,
+      "kind": "wiki"
+    },
+    {
+      "id": "Matroid_intersection",
+      "name": "Matroid intersection",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "characteristic_function",
+      "name": "characteristic function",
+      "cluster": 6,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "bin_packing",
+      "name": "bin packing",
+      "cluster": 11,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Decision_Diagrams",
+      "name": "Decision Diagrams",
       "cluster": 11,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Reynolds_number",
-      "name": "Reynolds number",
-      "cluster": 6,
-      "degree": 6,
-      "kind": "wiki"
-    },
-    {
-      "id": "B-tree",
-      "name": "B-tree",
-      "cluster": 6,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "facility_location",
-      "name": "facility location",
-      "cluster": 10,
+      "id": "learning-augmented_algorithms",
+      "name": "learning-augmented algorithms",
+      "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
@@ -43274,87 +43515,143 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "vertex-disjoint_paths",
-      "name": "vertex-disjoint paths",
-      "cluster": 11,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Hamiltonian_path",
-      "name": "Hamiltonian path",
-      "cluster": 0,
+      "id": "Minimum-cost_flow",
+      "name": "Minimum-cost flow",
+      "cluster": 1,
       "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "minimal_redundant_sets",
-      "name": "minimal redundant sets",
+      "id": "Utility_maximization",
+      "name": "Utility maximization",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "induced_minor",
-      "name": "induced minor",
+      "id": "Condorcet-winning_set",
+      "name": "Condorcet-winning set",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "recursive_decomposition",
-      "name": "recursive decomposition",
+      "id": "hypergraph_matching",
+      "name": "hypergraph matching",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "parameterized_complexity",
-      "name": "parameterized complexity",
-      "cluster": 6,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "mean_estimation",
-      "name": "mean estimation",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "variance_analysis",
-      "name": "variance analysis",
-      "cluster": 0,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "position_tracking",
-      "name": "position tracking",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Treewidth",
-      "name": "Treewidth",
-      "cluster": 6,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "clustering_algorithm",
-      "name": "clustering algorithm",
+      "id": "Query_complexity",
+      "name": "Query complexity",
       "cluster": 9,
       "degree": 2,
       "kind": "wiki"
     },
     {
-      "id": "Quantum_communication",
-      "name": "Quantum communication",
-      "cluster": 0,
+      "id": "reinforcement_learning",
+      "name": "reinforcement learning",
+      "cluster": 7,
+      "degree": 26,
+      "kind": "wiki"
+    },
+    {
+      "id": "Chain-of-thought",
+      "name": "Chain-of-thought",
+      "cluster": 7,
       "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Reduce",
+      "name": "Reduce",
+      "cluster": 1,
+      "degree": 42,
+      "kind": "wiki"
+    },
+    {
+      "id": "Maximal_Matching",
+      "name": "Maximal Matching",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "spectral_methods",
+      "name": "spectral methods",
+      "cluster": 0,
+      "degree": 10,
+      "kind": "wiki"
+    },
+    {
+      "id": "B-tree",
+      "name": "B-tree",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "deBruijn_graph",
+      "name": "deBruijn graph",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Max-3-Cut_problem",
+      "name": "Max-3-Cut problem",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "diffusion_models",
+      "name": "diffusion models",
+      "cluster": 5,
+      "degree": 7,
+      "kind": "wiki"
+    },
+    {
+      "id": "geometric_optimization",
+      "name": "geometric optimization",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "enumeration_algorithm",
+      "name": "enumeration algorithm",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "sequential_decision-making",
+      "name": "sequential decision-making",
+      "cluster": 1,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "lossless_data_compression",
+      "name": "lossless data compression",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "facility_location_problem",
+      "name": "facility location problem",
+      "cluster": 10,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "graph_decomposition",
+      "name": "graph decomposition",
+      "cluster": 0,
+      "degree": 1,
       "kind": "wiki"
     },
     {
@@ -43365,17 +43662,73 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "Observability",
-      "name": "Observability",
+      "id": "arboricity",
+      "name": "arboricity",
       "cluster": 0,
-      "degree": 14,
+      "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "dynamic_programming",
-      "name": "dynamic programming",
-      "cluster": 1,
-      "degree": 10,
+      "id": "k-clustering",
+      "name": "k-clustering",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Agnostic_learning",
+      "name": "Agnostic learning",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "pathwidth",
+      "name": "pathwidth",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "sampling",
+      "name": "sampling",
+      "cluster": 2,
+      "degree": 36,
+      "kind": "wiki"
+    },
+    {
+      "id": "convex_hull",
+      "name": "convex hull",
+      "cluster": 11,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "Combinatorial_optimization",
+      "name": "Combinatorial optimization",
+      "cluster": 11,
+      "degree": 15,
+      "kind": "wiki"
+    },
+    {
+      "id": "sufficient_reasons",
+      "name": "sufficient reasons",
+      "cluster": 11,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "clustering_algorithm",
+      "name": "clustering algorithm",
+      "cluster": 9,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "mean_estimation",
+      "name": "mean estimation",
+      "cluster": 9,
+      "degree": 1,
       "kind": "wiki"
     },
     {
@@ -43386,22 +43739,15 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "Condorcet_winner",
-      "name": "Condorcet winner",
-      "cluster": 0,
-      "degree": 1,
+      "id": "scheduling_algorithm",
+      "name": "scheduling algorithm",
+      "cluster": 10,
+      "degree": 3,
       "kind": "wiki"
     },
     {
-      "id": "Mach_number",
-      "name": "Mach number",
-      "cluster": 0,
-      "degree": 15,
-      "kind": "wiki"
-    },
-    {
-      "id": "symmetric_difference",
-      "name": "symmetric difference",
+      "id": "Lipschitz_continuity",
+      "name": "Lipschitz continuity",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
@@ -43414,9 +43760,184 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "LOCAL_model",
-      "name": "LOCAL model",
+      "id": "State_space_model",
+      "name": "State space model",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "extensible_languages",
+      "name": "extensible languages",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "recursive_decomposition",
+      "name": "recursive decomposition",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "position_tracking",
+      "name": "position tracking",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "partition_function",
+      "name": "partition function",
+      "cluster": 6,
+      "degree": 9,
+      "kind": "wiki"
+    },
+    {
+      "id": "Entity_Resolution",
+      "name": "Entity Resolution",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "chain_complex",
+      "name": "chain complex",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "arborescences",
+      "name": "arborescences",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "PAC_learning",
+      "name": "PAC learning",
       "cluster": 9,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "color_coding",
+      "name": "color coding",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "fixed-parameter_tractability",
+      "name": "fixed-parameter tractability",
+      "cluster": 11,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "monotonicity_testing",
+      "name": "monotonicity testing",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "approximation_algorithm",
+      "name": "approximation algorithm",
+      "cluster": 6,
+      "degree": 10,
+      "kind": "wiki"
+    },
+    {
+      "id": "induced_subgraph",
+      "name": "induced subgraph",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Sample_complexity_bounds",
+      "name": "Sample complexity bounds",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Quantum_communication",
+      "name": "Quantum communication",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Maximum_matching",
+      "name": "Maximum matching",
+      "cluster": 10,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "H-subgraph-free_graphs",
+      "name": "H-subgraph-free graphs",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Topological_order",
+      "name": "Topological order",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "regular_languages",
+      "name": "regular languages",
+      "cluster": 2,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "graph_reconstruction",
+      "name": "graph reconstruction",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Parallel_algorithms",
+      "name": "Parallel algorithms",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Flow_Matching",
+      "name": "Flow Matching",
+      "cluster": 2,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "planar_graphs",
+      "name": "planar graphs",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "shortest_path",
+      "name": "shortest path",
+      "cluster": 1,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "controlling_sets",
+      "name": "controlling sets",
+      "cluster": 11,
       "degree": 1,
       "kind": "wiki"
     },
@@ -43428,15 +43949,15 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "bicriteria_approximation",
-      "name": "bicriteria approximation",
-      "cluster": 0,
-      "degree": 1,
+      "id": "calibration",
+      "name": "calibration",
+      "cluster": 3,
+      "degree": 31,
       "kind": "wiki"
     },
     {
-      "id": "minimum_spanning_trees",
-      "name": "minimum spanning trees",
+      "id": "round_complexity",
+      "name": "round complexity",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
@@ -43456,150 +43977,31 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "Navier_Stokes_equations",
-      "name": "Navier Stokes equations",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "k-center_clustering",
-      "name": "k-center clustering",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "send_sequence",
-      "name": "send sequence",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "H-subgraph-free_graphs",
-      "name": "H-subgraph-free graphs",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Condorcet_dimension",
-      "name": "Condorcet dimension",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Laplacian_matrix",
-      "name": "Laplacian matrix",
-      "cluster": 5,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "dynamic_membership",
-      "name": "dynamic membership",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "polynomial-time_algorithm",
-      "name": "polynomial-time algorithm",
+      "id": "Reynolds_number",
+      "name": "Reynolds number",
       "cluster": 6,
       "degree": 6,
       "kind": "wiki"
     },
     {
-      "id": "Spectral_gap",
-      "name": "Spectral gap",
+      "id": "LZ77_compression",
+      "name": "LZ77 compression",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "bin_packing",
-      "name": "bin packing",
-      "cluster": 11,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "monotonicity_testing",
-      "name": "monotonicity testing",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Differential_privacy",
-      "name": "Differential privacy",
-      "cluster": 9,
-      "degree": 5,
-      "kind": "wiki"
-    },
-    {
-      "id": "planar_graphs",
-      "name": "planar graphs",
+      "id": "distance_oracle",
+      "name": "distance oracle",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "ε-approximation_algorithm",
-      "name": "ε-approximation algorithm",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "round_complexity",
-      "name": "round complexity",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "communication_protocols",
-      "name": "communication protocols",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Support_Vector_Machines",
-      "name": "Support Vector Machines",
-      "cluster": 2,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Graph_neural_networks",
-      "name": "Graph neural networks",
+      "id": "graph_traversal",
+      "name": "graph traversal",
       "cluster": 1,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "facility_location_problem",
-      "name": "facility location problem",
-      "cluster": 10,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Agnostic_learning",
-      "name": "Agnostic learning",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "independent_set",
-      "name": "independent set",
-      "cluster": 0,
-      "degree": 4,
+      "degree": 2,
       "kind": "wiki"
     },
     {
@@ -43610,227 +44012,31 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "machine_unlearning",
-      "name": "machine unlearning",
+      "id": "Approximation_factor",
+      "name": "Approximation factor",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "Ising_model",
-      "name": "Ising model",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Letter_substitution_updates",
-      "name": "Letter substitution updates",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Monte_Carlo_simulation",
-      "name": "Monte Carlo simulation",
-      "cluster": 8,
-      "degree": 20,
-      "kind": "wiki"
-    },
-    {
-      "id": "metric_space",
-      "name": "metric space",
-      "cluster": 6,
-      "degree": 6,
-      "kind": "wiki"
-    },
-    {
-      "id": "induced_subgraph",
-      "name": "induced subgraph",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Condorcet-winning_set",
-      "name": "Condorcet-winning set",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "robust_statistics",
-      "name": "robust statistics",
-      "cluster": 9,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "Sensitivity_analysis",
-      "name": "Sensitivity analysis",
-      "cluster": 10,
-      "degree": 5,
-      "kind": "wiki"
-    },
-    {
-      "id": "Tensor_network_algorithm",
-      "name": "Tensor network algorithm",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "graphical_models",
-      "name": "graphical models",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "sequential_decision-making",
-      "name": "sequential decision-making",
-      "cluster": 1,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "graph_embedding",
-      "name": "graph embedding",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "PAC_learning",
-      "name": "PAC learning",
-      "cluster": 9,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Chain-of-thought",
-      "name": "Chain-of-thought",
-      "cluster": 7,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "Partition",
-      "name": "Partition",
-      "cluster": 6,
-      "degree": 26,
-      "kind": "wiki"
-    },
-    {
-      "id": "matching_problem",
-      "name": "matching problem",
-      "cluster": 0,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "submodularity",
-      "name": "submodularity",
-      "cluster": 11,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Decision_Diagrams",
-      "name": "Decision Diagrams",
-      "cluster": 11,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "fairness_constraints",
-      "name": "fairness constraints",
-      "cluster": 6,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "spectral_methods",
-      "name": "spectral methods",
-      "cluster": 0,
-      "degree": 10,
-      "kind": "wiki"
-    },
-    {
-      "id": "Kalman_filter",
-      "name": "Kalman filter",
-      "cluster": 4,
-      "degree": 30,
-      "kind": "wiki"
-    },
-    {
-      "id": "diffusion_sampling",
-      "name": "diffusion sampling",
-      "cluster": 2,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Score-Based_Diffusion_Models",
-      "name": "Score-Based Diffusion Models",
+      "id": "Transfer_function",
+      "name": "Transfer function",
       "cluster": 5,
-      "degree": 2,
+      "degree": 8,
       "kind": "wiki"
     },
     {
-      "id": "Approximation_algorithms",
-      "name": "Approximation algorithms",
-      "cluster": 6,
-      "degree": 6,
+      "id": "Filter",
+      "name": "Filter",
+      "cluster": 0,
+      "degree": 47,
       "kind": "wiki"
     },
     {
-      "id": "transitive_closure",
-      "name": "transitive closure",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "batch_sampling",
-      "name": "batch sampling",
-      "cluster": 2,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "dynamic_enumeration",
-      "name": "dynamic enumeration",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "tensor_network",
-      "name": "tensor network",
+      "id": "dynamic_programming",
+      "name": "dynamic programming",
       "cluster": 1,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "shortest_path",
-      "name": "shortest path",
-      "cluster": 1,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "NP-hardness",
-      "name": "NP-hardness",
-      "cluster": 6,
-      "degree": 6,
-      "kind": "wiki"
-    },
-    {
-      "id": "reinforcement_learning",
-      "name": "reinforcement learning",
-      "cluster": 7,
-      "degree": 26,
+      "degree": 10,
       "kind": "wiki"
     },
     {
@@ -43841,9 +44047,79 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "robust_mean_estimation",
-      "name": "robust mean estimation",
+      "id": "PID_control",
+      "name": "PID control",
+      "cluster": 0,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "Boundary_layer",
+      "name": "Boundary layer",
+      "cluster": 3,
+      "degree": 15,
+      "kind": "wiki"
+    },
+    {
+      "id": "hardness_of_approximation",
+      "name": "hardness of approximation",
+      "cluster": 6,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "signed_tree_models",
+      "name": "signed tree models",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "competitive_analysis",
+      "name": "competitive analysis",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "spanning_tree",
+      "name": "spanning tree",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "robust_statistics",
+      "name": "robust statistics",
       "cluster": 9,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Graph_neural_networks",
+      "name": "Graph neural networks",
+      "cluster": 1,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "polynomial-time_algorithm",
+      "name": "polynomial-time algorithm",
+      "cluster": 6,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "distributed_algorithm",
+      "name": "distributed algorithm",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "linear_programming_relaxation",
+      "name": "linear programming relaxation",
+      "cluster": 10,
       "degree": 1,
       "kind": "wiki"
     },
@@ -43855,48 +44131,6 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "neutral_letter",
-      "name": "neutral letter",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "kernelization",
-      "name": "kernelization",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Gaussian_distribution",
-      "name": "Gaussian distribution",
-      "cluster": 5,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "online_learning_algorithm",
-      "name": "online learning algorithm",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "GPU_acceleration",
-      "name": "GPU acceleration",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "Utility_maximization",
-      "name": "Utility maximization",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
       "id": "submodular_maximization",
       "name": "submodular maximization",
       "cluster": 0,
@@ -43904,267 +44138,8 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "semi-extensible_ZG_languages",
-      "name": "semi-extensible ZG languages",
-      "cluster": 9,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Shortcutting_procedure",
-      "name": "Shortcutting procedure",
-      "cluster": 1,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "bipartite_graphs",
-      "name": "bipartite graphs",
-      "cluster": 0,
-      "degree": 5,
-      "kind": "wiki"
-    },
-    {
-      "id": "approximation_ratio",
-      "name": "approximation ratio",
-      "cluster": 10,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "Randomized_algorithm",
-      "name": "Randomized algorithm",
-      "cluster": 1,
-      "degree": 10,
-      "kind": "wiki"
-    },
-    {
-      "id": "fair_k-center_problem",
-      "name": "fair k-center problem",
-      "cluster": 6,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "KL_divergence",
-      "name": "KL divergence",
-      "cluster": 2,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "online_algorithms",
-      "name": "online algorithms",
-      "cluster": 0,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "property_testing",
-      "name": "property testing",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "matroid",
-      "name": "matroid",
-      "cluster": 11,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "Reduce",
-      "name": "Reduce",
-      "cluster": 1,
-      "degree": 42,
-      "kind": "wiki"
-    },
-    {
-      "id": "twin-width",
-      "name": "twin-width",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "PID_control",
-      "name": "PID control",
-      "cluster": 0,
-      "degree": 5,
-      "kind": "wiki"
-    },
-    {
-      "id": "Radar_signal_processing",
-      "name": "Radar signal processing",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "pathwidth",
-      "name": "pathwidth",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Steiner_forest",
-      "name": "Steiner forest",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Lipschitz_continuity",
-      "name": "Lipschitz continuity",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Minimum-cost_flow",
-      "name": "Minimum-cost flow",
-      "cluster": 1,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "approximation_algorithm",
-      "name": "approximation algorithm",
-      "cluster": 6,
-      "degree": 10,
-      "kind": "wiki"
-    },
-    {
-      "id": "partition_function",
-      "name": "partition function",
-      "cluster": 6,
-      "degree": 9,
-      "kind": "wiki"
-    },
-    {
-      "id": "triangulation",
-      "name": "triangulation",
-      "cluster": 0,
-      "degree": 6,
-      "kind": "wiki"
-    },
-    {
-      "id": "linear_programming",
-      "name": "linear programming",
-      "cluster": 10,
-      "degree": 16,
-      "kind": "wiki"
-    },
-    {
-      "id": "lower_bounds",
-      "name": "lower bounds",
-      "cluster": 9,
-      "degree": 16,
-      "kind": "wiki"
-    },
-    {
-      "id": "Score_matching",
-      "name": "Score matching",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Gaussian_input_masking",
-      "name": "Gaussian input masking",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "State_space_model",
-      "name": "State space model",
-      "cluster": 0,
-      "degree": 3,
-      "kind": "wiki"
-    },
-    {
-      "id": "low-rank_approximation",
-      "name": "low-rank approximation",
-      "cluster": 1,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "greedy_algorithm",
-      "name": "greedy algorithm",
-      "cluster": 9,
-      "degree": 8,
-      "kind": "wiki"
-    },
-    {
-      "id": "directed_graphs",
-      "name": "directed graphs",
-      "cluster": 1,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "Low-rank_matrix_approximation",
-      "name": "Low-rank matrix approximation",
-      "cluster": 1,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "diffusion_models",
-      "name": "diffusion models",
-      "cluster": 5,
-      "degree": 7,
-      "kind": "wiki"
-    },
-    {
-      "id": "localization_schemes",
-      "name": "localization schemes",
-      "cluster": 0,
-      "degree": 2,
-      "kind": "wiki"
-    },
-    {
-      "id": "ordered_partition",
-      "name": "ordered partition",
-      "cluster": 2,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Streaming_algorithms",
-      "name": "Streaming algorithms",
-      "cluster": 0,
-      "degree": 4,
-      "kind": "wiki"
-    },
-    {
-      "id": "Entity_Resolution",
-      "name": "Entity Resolution",
-      "cluster": 3,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "H-minor-free_graphs",
-      "name": "H-minor-free graphs",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "graph_reconstruction",
-      "name": "graph reconstruction",
-      "cluster": 0,
-      "degree": 1,
-      "kind": "wiki"
-    },
-    {
-      "id": "Richardson_extrapolation",
-      "name": "Richardson extrapolation",
+      "id": "Distributed_algorithms",
+      "name": "Distributed algorithms",
       "cluster": 0,
       "degree": 2,
       "kind": "wiki"
@@ -44177,6 +44152,216 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
+      "id": "minor-free_graphs",
+      "name": "minor-free graphs",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Pareto_optimality",
+      "name": "Pareto optimality",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "variance_analysis",
+      "name": "variance analysis",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "property_testing",
+      "name": "property testing",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "vertex_degree",
+      "name": "vertex degree",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "graphical_models",
+      "name": "graphical models",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Interval_Graph",
+      "name": "Interval Graph",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Score_matching",
+      "name": "Score matching",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "KKT_points",
+      "name": "KKT points",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Condorcet_dimension",
+      "name": "Condorcet dimension",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "GPU_acceleration",
+      "name": "GPU acceleration",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Steiner_tree",
+      "name": "Steiner tree",
+      "cluster": 10,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Lipschitz_function",
+      "name": "Lipschitz function",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "bicriteria_approximation",
+      "name": "bicriteria approximation",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Monte_Carlo_simulation",
+      "name": "Monte Carlo simulation",
+      "cluster": 8,
+      "degree": 20,
+      "kind": "wiki"
+    },
+    {
+      "id": "Mach_number",
+      "name": "Mach number",
+      "cluster": 0,
+      "degree": 15,
+      "kind": "wiki"
+    },
+    {
+      "id": "polynomial_time_algorithms",
+      "name": "polynomial time algorithms",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Low-rank_matrix_approximation",
+      "name": "Low-rank matrix approximation",
+      "cluster": 1,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Action_potential",
+      "name": "Action potential",
+      "cluster": 5,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Steiner_forest",
+      "name": "Steiner forest",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "communication_complexity",
+      "name": "communication complexity",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Polynomial-time_approximation",
+      "name": "Polynomial-time approximation",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "dynamic_algorithms",
+      "name": "dynamic algorithms",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Condorcet_winner",
+      "name": "Condorcet winner",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "split_graph",
+      "name": "split graph",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "dynamic_membership",
+      "name": "dynamic membership",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "online_algorithm",
+      "name": "online algorithm",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Heap_data_structure",
+      "name": "Heap data structure",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "biclique",
+      "name": "biclique",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "H-free_graphs",
+      "name": "H-free graphs",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
       "id": "Approximate_Nearest_Neighbors",
       "name": "Approximate Nearest Neighbors",
       "cluster": 0,
@@ -44184,15 +44369,288 @@ window.ARXIVIS = {
       "kind": "wiki"
     },
     {
-      "id": "planar_graph",
-      "name": "planar graph",
+      "id": "Diffusion",
+      "name": "Diffusion",
+      "cluster": 5,
+      "degree": 28,
+      "kind": "wiki"
+    },
+    {
+      "id": "symmetric_difference",
+      "name": "symmetric difference",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
     },
     {
-      "id": "extensible_languages",
-      "name": "extensible languages",
+      "id": "Partition_analysis",
+      "name": "Partition analysis",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Tensor_network_algorithm",
+      "name": "Tensor network algorithm",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "single-source_shortest_paths",
+      "name": "single-source shortest paths",
+      "cluster": 1,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "query_lower_bounds",
+      "name": "query lower bounds",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Richardson_extrapolation",
+      "name": "Richardson extrapolation",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "facility_location",
+      "name": "facility location",
+      "cluster": 10,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "correlation_clustering",
+      "name": "correlation clustering",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Gaussian_distribution",
+      "name": "Gaussian distribution",
+      "cluster": 5,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "self-stabilizing_leader_election",
+      "name": "self-stabilizing leader election",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "asymptotic_analysis",
+      "name": "asymptotic analysis",
+      "cluster": 8,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Observability",
+      "name": "Observability",
+      "cluster": 0,
+      "degree": 14,
+      "kind": "wiki"
+    },
+    {
+      "id": "false_positive_rate",
+      "name": "false positive rate",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Drag_polar",
+      "name": "Drag polar",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Mechanism_design",
+      "name": "Mechanism design",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Metric_spaces",
+      "name": "Metric spaces",
+      "cluster": 6,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Partition",
+      "name": "Partition",
+      "cluster": 6,
+      "degree": 26,
+      "kind": "wiki"
+    },
+    {
+      "id": "mean-shift_contamination_model",
+      "name": "mean-shift contamination model",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "kernelization",
+      "name": "kernelization",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "identifying_sets",
+      "name": "identifying sets",
+      "cluster": 11,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Nash_equilibrium",
+      "name": "Nash equilibrium",
+      "cluster": 1,
+      "degree": 7,
+      "kind": "wiki"
+    },
+    {
+      "id": "matroid",
+      "name": "matroid",
+      "cluster": 11,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Streaming_algorithms",
+      "name": "Streaming algorithms",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "matroid_constraints",
+      "name": "matroid constraints",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "graph_coloring",
+      "name": "graph coloring",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "VC_dimension",
+      "name": "VC dimension",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "inapproximability",
+      "name": "inapproximability",
+      "cluster": 6,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "perfect_retraining",
+      "name": "perfect retraining",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Letter_substitution_updates",
+      "name": "Letter substitution updates",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Cache_utilization",
+      "name": "Cache utilization",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "binary_search",
+      "name": "binary search",
+      "cluster": 1,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "triangulation",
+      "name": "triangulation",
+      "cluster": 0,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "Treewidth",
+      "name": "Treewidth",
+      "cluster": 6,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "robust_mean_estimation",
+      "name": "robust mean estimation",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Halfspaces",
+      "name": "Halfspaces",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Hamiltonian_path",
+      "name": "Hamiltonian path",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Chinese_Remainder_Theorem",
+      "name": "Chinese Remainder Theorem",
+      "cluster": 2,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Fourier_transform",
+      "name": "Fourier transform",
+      "cluster": 5,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "Randomized_algorithm",
+      "name": "Randomized algorithm",
+      "cluster": 1,
+      "degree": 10,
+      "kind": "wiki"
+    },
+    {
+      "id": "balanced_separator",
+      "name": "balanced separator",
       "cluster": 0,
       "degree": 1,
       "kind": "wiki"
@@ -44202,6 +44660,48 @@ window.ARXIVIS = {
       "name": "bicliques",
       "cluster": 0,
       "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "submodularity",
+      "name": "submodularity",
+      "cluster": 11,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "ray_tracing",
+      "name": "ray tracing",
+      "cluster": 3,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Markov_chains",
+      "name": "Markov chains",
+      "cluster": 1,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "FPT_algorithm",
+      "name": "FPT algorithm",
+      "cluster": 11,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "regular_language",
+      "name": "regular language",
+      "cluster": 2,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Scan",
+      "name": "Scan",
+      "cluster": 0,
+      "degree": 7,
       "kind": "wiki"
     }
   ],
@@ -49545,13 +50045,13 @@ window.ARXIVIS = {
     "wiki:fair_k-center_problem|wiki:inapproximability": 1,
     "wiki:Partition|wiki:fair_k-center_problem": 1
   },
-  "generated_at": "2026-05-11T12:48:41.889035+00:00",
+  "generated_at": "2026-05-11T13:09:22.031832+00:00",
   "stats": {
     "total_papers_scanned": 3581,
     "papers_with_acts": 988,
     "concepts_in_vocab": 1242,
     "concept_universe_size": 284,
     "concept_edges_count": 929,
-    "elapsed_s": 26.7
+    "elapsed_s": 62.2
   }
 };

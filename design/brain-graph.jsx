@@ -32,6 +32,8 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
 }, ref) {
   const containerRef = useRef(null);
   const fgRef = useRef(null);
+  const highlightSetRef = useRef(highlightSet);
+  highlightSetRef.current = highlightSet;
   const [ready, setReady] = useState(false);
 
   // Initial graph build
@@ -112,6 +114,13 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
       .showNavInfo(false)
       .nodeRelSize(6)
       .nodeOpacity(0.95)
+      .nodeVal(node => {
+        const hs = highlightSetRef.current;
+        if (hs && hs.size > 0 && hs.has(node.id)) {
+          return Math.max(8, 3 + (node.degree || 1) * 1.2);
+        }
+        return 1 + (node.degree || 1) * 0.4;
+      })
       .linkOpacity(linkOpacity)
       .linkWidth(linkWidth)
       .linkColor(() => {
@@ -162,7 +171,8 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
     Graph.nodeThreeObjectExtend(true);
     Graph.nodeThreeObject(node => makeLabelSprite(node, showLabels));
 
-    // Slow auto-rotate when idle
+    // Slow auto-rotate when idle. If a highlightSet is active, orbit the
+    // CENTROID of those nodes at close range; otherwise orbit the origin.
     let lastInteract = Date.now();
     const onUserInput = () => { lastInteract = Date.now(); };
     containerRef.current.addEventListener("mousedown", onUserInput);
@@ -172,14 +182,35 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
     let rotateAngle = 0;
     const tick = () => {
       if (!fgRef.current) return;
-      if (cinematic && Date.now() - lastInteract > 4000) {
-        rotateAngle += 0.0015;
-        const dist = 360;
+      if (cinematic && Date.now() - lastInteract > 3000) {
+        rotateAngle += 0.0022;
+        const data = fgRef.current.graphData();
+        const hs = highlightSetRef.current;
+        let cx = 0, cy = 0, cz = 0, radius = 360;
+        if (hs && hs.size > 0 && data?.nodes) {
+          let n = 0, maxR = 0;
+          for (const node of data.nodes) {
+            if (!hs.has(node.id)) continue;
+            cx += node.x || 0; cy += node.y || 0; cz += node.z || 0;
+            n++;
+          }
+          if (n > 0) {
+            cx /= n; cy /= n; cz /= n;
+            for (const node of data.nodes) {
+              if (!hs.has(node.id)) continue;
+              const dx = (node.x || 0) - cx;
+              const dy = (node.y || 0) - cy;
+              const dz = (node.z || 0) - cz;
+              maxR = Math.max(maxR, Math.hypot(dx, dy, dz));
+            }
+            radius = Math.max(140, maxR * 2.6);
+          }
+        }
         Graph.cameraPosition({
-          x: dist * Math.sin(rotateAngle),
-          y: 60 + 30 * Math.sin(rotateAngle * 0.7),
-          z: dist * Math.cos(rotateAngle),
-        });
+          x: cx + radius * Math.sin(rotateAngle),
+          y: cy + 40 * Math.sin(rotateAngle * 0.7),
+          z: cz + radius * Math.cos(rotateAngle),
+        }, { x: cx, y: cy, z: cz });
       }
       requestAnimationFrame(tick);
     };
@@ -215,6 +246,12 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
     fgRef.current.linkColor(link => linkColorFor(link, { tourPath, currentNode, defaultColor: linkColor, defaultOpacity: linkOpacity, highlightSet }));
     fgRef.current.linkWidth(link => linkWidthFor(link, { tourPath, defaultWidth: linkWidth, highlightSet }));
     fgRef.current.nodeThreeObject(node => makeLabelSprite(node, showLabels, { highlightSet }));
+    fgRef.current.nodeVal(node => {
+      if (highlightSet && highlightSet.size > 0 && highlightSet.has(node.id)) {
+        return Math.max(8, 3 + (node.degree || 1) * 1.2);
+      }
+      return 1 + (node.degree || 1) * 0.4;
+    });
   }, [currentNode, visited, tourPath, highlightCluster, showLabels, ready, linkColor, linkOpacity, linkWidth, highlightSet]);
 
   function focusOn(node, distance = 90) {

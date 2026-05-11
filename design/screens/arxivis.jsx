@@ -347,7 +347,8 @@ function ArXivis({ onClose, onJumpToConcept }) {
           </div>
         )}
 
-        {/* Bottom HUD: pitch + flythrough controls */}
+        {/* Bottom HUD: KEY FINDING (one-liner) + flythrough controls.
+            Long pitch text moved to the paper card so the brain stays the focus. */}
         {selected && (
           <div style={{
             position: "absolute", bottom: 0, left: 0, right: 0,
@@ -356,34 +357,35 @@ function ArXivis({ onClose, onJumpToConcept }) {
             pointerEvents: "none",
           }}>
             <div style={{
-              maxWidth: 700, margin: "0 auto",
-              background: "color-mix(in oklch, var(--c-bg-elev) 90%, transparent)",
+              maxWidth: 720, margin: "0 auto",
+              background: "color-mix(in oklch, var(--c-bg-elev) 88%, transparent)",
               backdropFilter: "blur(10px)",
               border: "1px solid var(--c-line)",
               borderRadius: "var(--r-lg, 12px)",
-              padding: "14px 18px",
+              padding: "10px 16px",
               pointerEvents: "auto",
+              display: "flex", alignItems: "center", gap: 14,
             }}>
-              <div style={{
-                display: "flex", justifyContent: "space-between",
-                alignItems: "center", marginBottom: 6,
-              }}>
-                <span style={{
-                  fontFamily: "var(--f-mono)", fontSize: 10,
-                  color: "var(--c-ink-muted)", letterSpacing: "0.10em",
-                  textTransform: "uppercase",
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{
+                  fontFamily: "var(--f-mono)", fontSize: 9,
+                  color: "#60FFA8", letterSpacing: "0.12em",
+                  textTransform: "uppercase", marginBottom: 3,
                 }}>
-                  30-second pitch
-                </span>
-                <button className="btn"
-                  onClick={() => setFlythrough(f => !f)}
-                  style={{ padding: "5px 14px", fontSize: 11.5 }}>
-                  {flythrough ? "⏸ Pause flythrough" : "▶ Fly through concepts"}
-                </button>
+                  Key finding
+                </div>
+                <div style={{
+                  fontSize: 13.5, lineHeight: 1.35, fontWeight: 500,
+                  whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                }} title={selected.key_finding || selected.pitch}>
+                  {selected.key_finding || (selected.pitch || "").split(/[.!?]/)[0]}
+                </div>
               </div>
-              <div style={{ fontSize: 13.5, lineHeight: 1.55, whiteSpace: "pre-line" }}>
-                {selected.pitch}
-              </div>
+              <button className="btn"
+                onClick={() => setFlythrough(f => !f)}
+                style={{ padding: "5px 14px", fontSize: 11.5, flex: "0 0 auto" }}>
+                {flythrough ? "⏸ Pause" : "▶ Fly through"}
+              </button>
             </div>
           </div>
         )}
@@ -405,31 +407,60 @@ function ArXivis({ onClose, onJumpToConcept }) {
         )}
       </div>
 
-      {/* RIGHT — paper card */}
+      {/* RIGHT — video-first paper card. Video sits at the top, prominent,
+          and the rest of the metadata scrolls below as supplement. */}
       <aside style={{
         borderLeft: narrow ? "none" : "1px solid var(--c-line)",
         borderTop:  narrow ? "1px solid var(--c-line)" : "none",
         background: "var(--c-bg-elev)",
         overflowY: "auto",
-        padding: "18px 20px",
+        padding: 0,
         maxHeight: narrow ? 320 : "none",
       }}>
         {selected && (
           <>
-            <div style={{
-              fontFamily: "var(--f-mono)", fontSize: 10,
-              color: badgeColor(selected.source), letterSpacing: "0.10em",
-              marginBottom: 6,
-            }}>
-              {selected.source}{selected.year ? ` · ${selected.year}` : ""}
-              {selected.category_hint ? ` · ${selected.category_hint}` : ""}
+            {/* Video FIRST — the primary way to learn this paper */}
+            <PaperVideo paperId={selected.id} hero />
+
+            {/* Title + key finding strip below video */}
+            <div style={{ padding: "16px 20px 6px" }}>
+              <div style={{
+                fontFamily: "var(--f-mono)", fontSize: 10,
+                color: badgeColor(selected.source), letterSpacing: "0.10em",
+                marginBottom: 6,
+              }}>
+                {selected.source}{selected.year ? ` · ${selected.year}` : ""}
+                {selected.category_hint ? ` · ${selected.category_hint}` : ""}
+              </div>
+              <h2 style={{
+                fontSize: 17, lineHeight: 1.3, margin: "0 0 10px 0",
+                fontFamily: "var(--f-display, var(--f-sans))",
+              }}>
+                {selected.title}
+              </h2>
+
+              {selected.key_finding && (
+                <div style={{
+                  padding: "10px 12px", marginBottom: 12,
+                  border: "1px solid #60FFA8",
+                  borderLeft: "3px solid #60FFA8",
+                  borderRadius: 8,
+                  background: "color-mix(in oklch, #60FFA8 6%, transparent)",
+                  fontSize: 13, lineHeight: 1.5,
+                }}>
+                  <span style={{
+                    fontFamily: "var(--f-mono)", fontSize: 9,
+                    color: "#60FFA8", letterSpacing: "0.12em",
+                    textTransform: "uppercase", display: "block", marginBottom: 4,
+                  }}>
+                    Key finding
+                  </span>
+                  {selected.key_finding}
+                </div>
+              )}
             </div>
-            <h2 style={{
-              fontSize: 18, lineHeight: 1.3, margin: "0 0 12px 0",
-              fontFamily: "var(--f-display, var(--f-sans))",
-            }}>
-              {selected.title}
-            </h2>
+
+            <div style={{ padding: "0 20px 18px" }}>
 
             {selected.url && (
               <a href={selected.url} target="_blank" rel="noreferrer"
@@ -538,13 +569,26 @@ function ArXivis({ onClose, onJumpToConcept }) {
               <ResearchAssistantPanel rigor={selected.rigor} composite={selected.composite} />
             )}
 
-            {/* Video player — 9:16 explainer (protein-viz aesthetic) */}
-            <PaperVideo paperId={selected.id} />
+            {/* Full pitch — supplement only, after video */}
+            {selected.pitch && (
+              <details style={{
+                marginTop: 14, fontSize: 12, lineHeight: 1.55,
+              }}>
+                <summary style={{
+                  cursor: "pointer", opacity: 0.55,
+                  fontFamily: "var(--f-mono)", fontSize: 10,
+                  letterSpacing: "0.10em", textTransform: "uppercase",
+                  marginBottom: 6,
+                }}>Abstract excerpt</summary>
+                <div style={{ opacity: 0.75 }}>{selected.pitch}</div>
+              </details>
+            )}
 
             {/* Activation edges count */}
-            <div style={{ marginTop: 22, fontSize: 12, opacity: 0.55 }}>
+            <div style={{ marginTop: 18, fontSize: 11.5, opacity: 0.55 }}>
               <strong>{selected.pair_edges?.length || 0}</strong> concept-pair edges activated
-              ·  highlighted amber in graph
+              · highlighted amber in brain
+            </div>
             </div>
           </>
         )}
@@ -661,15 +705,19 @@ function ResearchAssistantPanel({ rigor, composite }) {
   );
 }
 
-function PaperVideo({ paperId }) {
+function PaperVideo({ paperId, hero = false }) {
   const src = window.ARXIVIS_VIDEOS?.[paperId];
   if (!src) {
     return (
       <div style={{
-        marginTop: 18, padding: 14,
-        border: "1px dashed var(--c-line)",
-        borderRadius: 10,
-        fontSize: 12, opacity: 0.55, textAlign: "center",
+        margin: hero ? "0" : "18px 0 0",
+        padding: hero ? "60px 20px" : 14,
+        border: hero ? "none" : "1px dashed var(--c-line)",
+        borderBottom: hero ? "1px solid var(--c-line)" : undefined,
+        background: hero ? "#000" : "transparent",
+        color: hero ? "#fff" : undefined,
+        borderRadius: hero ? 0 : 10,
+        fontSize: 12, opacity: 0.7, textAlign: "center",
       }}>
         No 30-second explainer rendered yet.
         <br/>
@@ -680,24 +728,33 @@ function PaperVideo({ paperId }) {
     );
   }
   return (
-    <div style={{
+    <div style={hero ? {
+      background: "#000",
+      borderBottom: "1px solid var(--c-line)",
+    } : {
       marginTop: 18,
       borderRadius: 12, overflow: "hidden",
       background: "#000",
       border: "1px solid var(--c-line)",
     }}>
       <div style={{
-        padding: "6px 10px",
+        padding: "8px 14px",
         fontFamily: "var(--f-mono)", fontSize: 10,
         color: "#60FFA8", letterSpacing: "0.10em",
         textTransform: "uppercase",
         background: "rgba(96,255,168,0.06)",
-        borderBottom: "1px solid var(--c-line)",
+        borderBottom: "1px solid rgba(96,255,168,0.15)",
+        display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
-        30-SECOND EXPLAINER · 9:16
+        <span>30-sec explainer · 9:16</span>
+        <span style={{ opacity: 0.5 }}>tap to learn</span>
       </div>
       <video src={src} controls autoPlay loop muted playsInline
-             style={{ display: "block", width: "100%", maxHeight: 520 }} />
+             style={{
+               display: "block", width: "100%",
+               maxHeight: hero ? 640 : 520,
+               background: "#000",
+             }} />
     </div>
   );
 }

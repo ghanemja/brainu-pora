@@ -322,21 +322,102 @@ def novelty_bits(
 
 # ── Elevator pitch ───────────────────────────────────────────────────────
 
+_RE_EMAIL  = re.compile(r"\S+@\S+\.\S+")
+_RE_AFFIL  = re.compile(r"\b(?:university|institute|college|laboratory|laboratoire|inc\.?|llc|gmbh|ltd\.?|corp\.?|hospital|department|école|universität|università|universidad)\b", re.I)
+_RE_DAGGER = re.compile(r"[\*†‡§¶#0-9]{1,3}\s*$")
+_RE_NAME_BIB = re.compile(r"^[A-Z][a-zA-Z'.-]+(?:\s+[A-Z][a-zA-Z'.-]+){0,3}$")
+
+
+_RE_TOC_LINE  = re.compile(r"^\s*\d+(\.\d+)*(\s+[A-Z][\w\s-]+)?\s*$")
+_RE_PAGE_NUM  = re.compile(r"^\s*\d{1,3}\s*$")
+_RE_SECTION_H = re.compile(r"^\s*\d+(\.\d+)*\s+[A-Z]")  # "1 Introduction" / "2.3 Method"
+
+
+_TOC_KEYWORDS = {
+    "contents", "abstract", "introduction", "references", "bibliography",
+    "acknowledgments", "acknowledgements", "appendix", "notation",
+    "preliminaries", "background", "related work", "conclusion",
+    "discussion", "results", "methods", "method", "table of contents",
+    "future work",
+}
+
+
+def _clean_body(text: str) -> str:
+    """Drop TOC entries, page numbers, lone section headers / keywords."""
+    out = []
+    for line in text.splitlines():
+        s = line.strip()
+        if not s:
+            out.append("")
+            continue
+        if _RE_TOC_LINE.match(s) or _RE_PAGE_NUM.match(s):
+            continue
+        if len(s) < 30 and _RE_SECTION_H.match(s):
+            continue
+        # Drop lone TOC keywords
+        if s.lower().rstrip(".:") in _TOC_KEYWORDS:
+            continue
+        out.append(line)
+    return "\n".join(out)
+
+
+def _strip_author_block(text: str) -> str:
+    """Strip leading title/author/affil lines until we hit the abstract."""
+    text = _clean_body(text)
+    lines = text.splitlines()
+    # Find "Abstract" line and start after it
+    for i, line in enumerate(lines):
+        if line.strip().lower() in ("abstract", "abstract.", "abstract:"):
+            return "\n".join(lines[i+1:]).strip()
+    # Otherwise drop the first ~12 lines if they look like author block
+    out_start = 0
+    for i, line in enumerate(lines[:25]):
+        s = line.strip()
+        if not s:
+            continue
+        if _RE_EMAIL.search(s) or _RE_AFFIL.search(s) or _RE_DAGGER.search(s):
+            out_start = i + 1
+            continue
+        if _RE_NAME_BIB.match(s):
+            out_start = i + 1
+            continue
+        # First substantive line — keep
+        break
+    return "\n".join(lines[out_start:]).strip()
+
+
 def make_pitch(paper: dict, acts: list[tuple[str, float]],
                concepts: dict[str, dict], innovations: list[dict]) -> str:
-    # First 2 sentences of abstract/intro
-    body = paper["text"]
-    # skip the title line
-    body = body.split("\n", 1)[1].strip() if "\n" in body else body
-    sents = SENT_SPLIT.split(body)
-    sents = [s.strip() for s in sents if 30 < len(s) < 300][:2]
-    pitch_core = " ".join(sents).strip()
+    body = _strip_author_block(paper["text"])
+    # First sentence that starts w/ "We ", "This paper", "Our ", "In this",
+    # otherwise first 1-2 sentences >=40 chars
+    sents_all = SENT_SPLIT.split(body)
+    sents_clean = []
+    for s in sents_all:
+        s = re.sub(r"\s+", " ", s).strip(" ,.;:()[]")
+        if 40 < len(s) < 280:
+            sents_clean.append(s)
+    # Prioritize sentences that look authorial
+    authorial = [s for s in sents_clean if re.match(r"^(We |This (?:paper|work|study|note) |Our |In this |The (?:main|key|primary))", s)]
+    picks = (authorial + sents_clean)[:2]
+    pitch_core = " ".join(picks).strip()
     if not pitch_core:
         pitch_core = body[:240].strip()
-    # Tag activated concepts
-    concept_names = [concepts[a[0]]["display"] for a in acts[:3]]
-    concept_tag = " · ".join(concept_names)
-    return f"{pitch_core}\n\n[{concept_tag}]"
+    return pitch_core
+
+
+def make_key_finding(innovations: list[dict], concepts: dict[str, dict],
+                     acts: list[tuple[str, float]]) -> str:
+    """One-line headline for video + UI — the single most-important claim."""
+    # Prefer first "proposes" innovation, then any innovation, then top concept
+    for innov in innovations:
+        if innov.get("kind") == "proposes":
+            return innov["phrase"]
+    if innovations:
+        return innovations[0]["phrase"]
+    if acts:
+        return concepts[acts[0][0]]["display"]
+    return ""
 
 
 # ── Main ─────────────────────────────────────────────────────────────────
@@ -409,6 +490,7 @@ def main():
             "rigor":         rigor,
             "composite":     composite,
             "pitch":         make_pitch(p, acts, concepts, innovations),
+            "key_finding":   make_key_finding(innovations, concepts, acts),
         })
 
     enriched.sort(key=lambda x: -x["composite"])
