@@ -47,6 +47,7 @@ PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from agents.arxivis_innovations import extract_innovations, classify_against_vocab
+from agents.arxivis_rigor import score_paper as score_rigor
 
 WIKI_DIR        = PROJECT_ROOT / "wiki" / "concepts"
 ARXIV_DIR       = PROJECT_ROOT / "data" / "raw" / "arxiv"
@@ -387,6 +388,8 @@ def main():
             for j in range(i + 1, len(ids)):
                 a, b = sorted([ids[i], ids[j]])
                 pair_edges.append([a, b])
+        rigor = score_rigor(p)
+        composite = round(score + rigor["total"], 2)
         enriched.append({
             "id":            p["id"],
             "title":         p["title"][:240],
@@ -403,10 +406,12 @@ def main():
             "pair_edges":    pair_edges,
             "novelty_bits":  round(score, 2),
             "novelty_breakdown": breakdown,
+            "rigor":         rigor,
+            "composite":     composite,
             "pitch":         make_pitch(p, acts, concepts, innovations),
         })
 
-    enriched.sort(key=lambda x: -x["novelty_bits"])
+    enriched.sort(key=lambda x: -x["composite"])
     keep = enriched[: args.keep_top]
     print(f"→ kept top {len(keep)}/{len(enriched)} by novelty")
 

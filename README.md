@@ -151,9 +151,35 @@ exact concepts and edges it lights up, plus a 30-second elevator pitch.
   ```bash
   python3 scripts/build_arxivis_data.py --max-per-cat 100 --keep-top 500
   python3 scripts/arxivis_daily_brief.py --top 10
+  python3 scripts/render_arxivis_video.py --top 500   # 9:16 explainer per paper
   ```
   Output → `design/arxivis_data.js` + `design/arxivis_daily.js` consumed
   by the new **arXivis** tab in `design/Brain University.html`.
+
+#### Research-assistant rigor scoring
+Every paper is scored on the 10 criteria a careful reviewer would check
+before quoting it (`agents/arxivis_rigor.py`):
+1. Hierarchy of evidence — proof / RCT / meta-analysis vs descriptive
+2. Preliminary findings — flag "pilot" / "initial" language
+3. Correlation vs. causation — flag causal claims w/o controlled evidence
+4. Confounding variables — credit ablations / controlled baselines
+5. Conflicts of interest — industry affiliations, funding declared
+6. Publication bias — preprint vs peer-reviewed venue (word-bounded match)
+7. Replication — code/data release link extracted
+8. Sample size — N=… / dataset count parsed from abstract
+9. Relative vs. absolute risk — flag % improvement w/o absolute baseline
+10. P-value — explicit p< vs hand-wavy "statistically significant"
+
+Composite = `novelty_bits + rigor.total`. Default list ordering uses
+composite; the UI also exposes a search input that re-ranks by relevance
+to the query × composite (concept name + title + innovation phrase match).
+
+#### Future — code-sandbox reproducibility
+Next phase (not yet implemented): if a paper publishes a GitHub repo,
+pull it into an ephemeral sandbox, run the README's reproduce script,
+diff numbers against the paper's claimed results. Green-flag papers
+whose claims reproduce; red-flag those that don't. This would close the
+loop between "the paper says X" and "the code actually does X."
 
 Corpus paths (symlinked from the gemma-engineering-ft fine-tune repo —
 both gitignored):

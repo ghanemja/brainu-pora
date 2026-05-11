@@ -16,8 +16,9 @@ const { useState, useEffect, useRef, useMemo } = React;
 
 function ArXivis({ onClose, onJumpToConcept }) {
   const graphRef = useRef(null);
-  const [sortBy, setSortBy] = useState("novelty");        // novelty | year | edges
+  const [sortBy, setSortBy] = useState("composite");      // composite | novelty | year | rigor
   const [sourceFilter, setSourceFilter] = useState("ALL"); // ALL | arXiv | NTRS | DTIC | …
+  const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [flythrough, setFlythrough] = useState(false);
   const [flyIdx, setFlyIdx] = useState(0);
@@ -40,15 +41,44 @@ function ArXivis({ onClose, onJumpToConcept }) {
     return ["ALL", ...Array.from(s).sort()];
   }, [PAPERS]);
 
+  // Search-relevance score: title + concept-name token match
+  const relevanceFor = (p, q) => {
+    if (!q) return 0;
+    const ql = q.toLowerCase();
+    let s = 0;
+    const title = (p.title || "").toLowerCase();
+    if (title.includes(ql)) s += 30;
+    for (const c of p.concepts || []) {
+      const n = (c.name || "").toLowerCase();
+      if (n.includes(ql)) s += 12 + (c.weight || 0) * 0.5;
+    }
+    for (const innov of p.innovations || []) {
+      if ((innov.phrase || "").toLowerCase().includes(ql)) s += 8;
+    }
+    return s;
+  };
+
   const filtered = useMemo(() => {
     let xs = PAPERS;
     if (sourceFilter !== "ALL") xs = xs.filter(p => p.source === sourceFilter);
     xs = [...xs];
-    if (sortBy === "novelty") xs.sort((a,b) => b.novelty_bits - a.novelty_bits);
-    if (sortBy === "year")    xs.sort((a,b) => (b.year || 0) - (a.year || 0));
-    if (sortBy === "edges")   xs.sort((a,b) => (b.pair_edges?.length || 0) - (a.pair_edges?.length || 0));
+    const q = search.trim();
+    if (q) {
+      // Restrict to anything that scores above zero, then sort by
+      // relevance × composite (search-aware ranking).
+      xs = xs.map(p => ({ p, rel: relevanceFor(p, q) }))
+             .filter(x => x.rel > 0)
+             .sort((a, b) => (b.rel * (1 + (b.p.composite || 0) / 100))
+                            - (a.rel * (1 + (a.p.composite || 0) / 100)))
+             .map(x => x.p);
+      return xs;
+    }
+    if (sortBy === "composite") xs.sort((a,b) => (b.composite || 0) - (a.composite || 0));
+    if (sortBy === "novelty")   xs.sort((a,b) => b.novelty_bits - a.novelty_bits);
+    if (sortBy === "rigor")     xs.sort((a,b) => (b.rigor?.total || 0) - (a.rigor?.total || 0));
+    if (sortBy === "year")      xs.sort((a,b) => (b.year || 0) - (a.year || 0));
     return xs;
-  }, [PAPERS, sortBy, sourceFilter]);
+  }, [PAPERS, sortBy, sourceFilter, search]);
 
   const selected = useMemo(
     () => filtered.find(p => p.id === selectedId) || filtered[0],
@@ -175,12 +205,26 @@ function ArXivis({ onClose, onJumpToConcept }) {
         background: "var(--c-bg-elev)",
         maxHeight: narrow ? 280 : "none",
       }}>
+        <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--c-line)" }}>
+          <input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="🔎 Search by concept or claim…"
+            style={{
+              width: "100%", padding: "8px 12px", fontSize: 12.5,
+              fontFamily: "var(--f-sans)",
+              border: "1px solid var(--c-line-strong)",
+              borderRadius: 999,
+              background: "var(--c-bg)", color: "var(--c-ink)",
+              outline: "none",
+            }} />
+        </div>
         <div style={{
           padding: "10px 14px", borderBottom: "1px solid var(--c-line)",
           display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center",
         }}>
           <span style={{ fontSize: 11, opacity: 0.55, fontFamily: "var(--f-mono)" }}>SORT</span>
-          {["novelty", "year", "edges"].map(s => (
+          {["composite", "novelty", "rigor", "year"].map(s => (
             <button key={s}
               className={"btn ghost" + (sortBy === s ? " active" : "")}
               onClick={() => setSortBy(s)}
@@ -235,10 +279,10 @@ function ArXivis({ onClose, onJumpToConcept }) {
                 }}>
                   {p.source}{p.year ? ` · ${p.year}` : ""}
                 </span>
-                <span title="information-theoretic novelty bits" style={{
-                  fontFamily: "var(--f-mono)", fontSize: 11, opacity: 0.85,
+                <span title="composite (novelty + rigor)" style={{
+                  fontFamily: "var(--f-mono)", fontSize: 11, opacity: 0.9,
                 }}>
-                  ◆ {p.novelty_bits.toFixed(1)}
+                  ◆ {(p.composite ?? p.novelty_bits ?? 0).toFixed(1)}
                 </span>
               </div>
               <div style={{ fontSize: 13.5, lineHeight: 1.35, fontWeight: 500 }}>
@@ -247,6 +291,20 @@ function ArXivis({ onClose, onJumpToConcept }) {
               <div style={{ fontSize: 11, opacity: 0.55, marginTop: 4 }}>
                 {p.concepts.slice(0, 3).map(c => c.name).join(" · ")}
               </div>
+              {p.rigor && (
+                <div style={{
+                  marginTop: 6,
+                  display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap",
+                  fontFamily: "var(--f-mono)", fontSize: 10,
+                }}>
+                  <span style={{ color: "#60FFA8" }}>● {p.rigor.flags.green.length}</span>
+                  <span style={{ color: "#F96167" }}>● {p.rigor.flags.red.length}</span>
+                  <span style={{ opacity: 0.45 }}>
+                    {p.rigor.scores.peer_reviewed ? "peer-reviewed" : "preprint"}
+                    {p.rigor.scores.replication?.code ? " · code" : ""}
+                  </span>
+                </div>
+              )}
             </button>
           ))}
         </div>
@@ -475,6 +533,11 @@ function ArXivis({ onClose, onJumpToConcept }) {
               </div>
             )}
 
+            {/* Research-assistant panel — 10-criteria rigor scoring */}
+            {selected.rigor && (
+              <ResearchAssistantPanel rigor={selected.rigor} composite={selected.composite} />
+            )}
+
             {/* Video player — 9:16 explainer (protein-viz aesthetic) */}
             <PaperVideo paperId={selected.id} />
 
@@ -486,6 +549,114 @@ function ArXivis({ onClose, onJumpToConcept }) {
           </>
         )}
       </aside>
+    </div>
+  );
+}
+
+function ResearchAssistantPanel({ rigor, composite }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <div style={{
+      marginTop: 18,
+      border: "1px solid var(--c-line)",
+      borderRadius: 10,
+      background: "color-mix(in oklch, var(--c-bg) 60%, transparent)",
+      overflow: "hidden",
+    }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          display: "flex", width: "100%", padding: "10px 14px",
+          justifyContent: "space-between", alignItems: "center",
+          background: "transparent", border: "none", cursor: "pointer",
+          color: "var(--c-ink)",
+        }}>
+        <span style={{
+          fontFamily: "var(--f-mono)", fontSize: 10,
+          color: "var(--c-ink-muted)", letterSpacing: "0.10em",
+          textTransform: "uppercase",
+        }}>
+          Research assistant · 10-criteria check
+        </span>
+        <span style={{
+          fontFamily: "var(--f-mono)", fontSize: 11,
+        }}>
+          <span style={{ color: "#60FFA8" }}>● {rigor.flags.green.length}</span>{" "}
+          <span style={{ color: "#F96167" }}>● {rigor.flags.red.length}</span>
+          {" · "}
+          <span style={{ opacity: 0.55 }}>rigor {rigor.total}</span>
+        </span>
+      </button>
+
+      {open && (
+        <div style={{ padding: "10px 14px", borderTop: "1px solid var(--c-line)" }}>
+          <div style={{ fontSize: 12.5, lineHeight: 1.5, marginBottom: 10 }}>
+            {rigor.summary}
+          </div>
+
+          {rigor.flags.green.length > 0 && (
+            <div style={{ marginBottom: 6 }}>
+              {rigor.flags.green.map((g, i) => (
+                <div key={i} style={{
+                  display: "flex", gap: 6, alignItems: "flex-start",
+                  fontSize: 11.5, lineHeight: 1.4, marginBottom: 3,
+                }}>
+                  <span style={{ color: "#60FFA8", flex: "0 0 auto" }}>●</span>
+                  <span>{g}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          {rigor.flags.red.length > 0 && (
+            <div>
+              {rigor.flags.red.map((r, i) => (
+                <div key={i} style={{
+                  display: "flex", gap: 6, alignItems: "flex-start",
+                  fontSize: 11.5, lineHeight: 1.4, marginBottom: 3,
+                }}>
+                  <span style={{ color: "#F96167", flex: "0 0 auto" }}>●</span>
+                  <span>{r}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* 10-criteria grid */}
+          <div style={{
+            marginTop: 12, padding: "10px 0 0",
+            borderTop: "1px solid var(--c-line)",
+            display: "grid", gridTemplateColumns: "1fr 1fr",
+            gap: "4px 12px",
+            fontFamily: "var(--f-mono)", fontSize: 10.5,
+          }}>
+            {[
+              ["evidence",       rigor.scores.evidence_label],
+              ["preliminary",    rigor.scores.preliminary ? "yes (flag)" : "no"],
+              ["causation",      rigor.scores.causation_note],
+              ["ablations",      rigor.scores.ablation ? "present" : "—"],
+              ["industry",       (rigor.scores.industry_affiliations || []).join(", ") || "—"],
+              ["venue",          rigor.scores.venue],
+              ["replication",    rigor.scores.replication?.code ? "code released" : (rigor.scores.replication?.data ? "data released" : "—")],
+              ["sample size",    rigor.scores.sample_label || "—"],
+              ["risk framing",   rigor.scores.risk_framing_ok ? "ok" : "relative-only"],
+              ["p-value",        rigor.scores.pvalue_reported ? "reported" : (rigor.scores.significance_claimed ? "claimed (no p)" : "—")],
+            ].map(([k, v], i) => (
+              <React.Fragment key={k}>
+                <span style={{ opacity: 0.55 }}>{i + 1}. {k}</span>
+                <span style={{ textAlign: "right" }}>{v}</span>
+              </React.Fragment>
+            ))}
+          </div>
+
+          {rigor.scores.replication?.url && (
+            <a href={rigor.scores.replication.url} target="_blank" rel="noreferrer"
+               style={{ display: "block", marginTop: 10, fontSize: 11,
+                        color: "#60FFA8", fontFamily: "var(--f-mono)" }}>
+              ↗ {rigor.scores.replication.url}
+            </a>
+          )}
+        </div>
+      )}
     </div>
   );
 }
