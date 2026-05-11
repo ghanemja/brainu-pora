@@ -25663,6 +25663,6788 @@ window.ARXIVIS = {
       "pitch": "Protonated water clusters are a common species of atmospheric molecular cluster-ion, produced by cosmic rays throughout the troposphere and stratosphere. Under clear-sky conditions or periods of increased atmospheric ionisation, such as solar proton events, the IR absorption by atmospheric ions may affect climate through the radiative balance.\n\n[Fourier transform]"
     }
   ],
+  "concept_universe": [
+    {
+      "id": "send_sequence",
+      "name": "send sequence",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "tensor_network",
+      "name": "tensor network",
+      "cluster": 1,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "geometric_optimization",
+      "name": "geometric optimization",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Interval_Graph",
+      "name": "Interval Graph",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "breadth-first_search",
+      "name": "breadth-first search",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Polynomial_time_algorithm",
+      "name": "Polynomial time algorithm",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "random_walk",
+      "name": "random walk",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Laplacian_matrix",
+      "name": "Laplacian matrix",
+      "cluster": 2,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "graph_coloring",
+      "name": "graph coloring",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Agnostic_learning",
+      "name": "Agnostic learning",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "bicriteria_approximation",
+      "name": "bicriteria approximation",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "necklace_cover",
+      "name": "necklace cover",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "ray_tracing",
+      "name": "ray tracing",
+      "cluster": 7,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "graph_reconstruction",
+      "name": "graph reconstruction",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "failure_probability",
+      "name": "failure probability",
+      "cluster": 8,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Pareto-optimal_matching",
+      "name": "Pareto-optimal matching",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "graph_embedding",
+      "name": "graph embedding",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "polytope",
+      "name": "polytope",
+      "cluster": 6,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "utility_functions",
+      "name": "utility functions",
+      "cluster": 9,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "communication_protocols",
+      "name": "communication protocols",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "localization_schemes",
+      "name": "localization schemes",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Topological_order",
+      "name": "Topological order",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "sample_complexity_lower_bound",
+      "name": "sample complexity lower bound",
+      "cluster": 3,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Maximum_matching",
+      "name": "Maximum matching",
+      "cluster": 4,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "lower_bounds",
+      "name": "lower bounds",
+      "cluster": 3,
+      "degree": 20,
+      "kind": "wiki"
+    },
+    {
+      "id": "Hamming_distance",
+      "name": "Hamming distance",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Condorcet_winner",
+      "name": "Condorcet winner",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Reduce",
+      "name": "Reduce",
+      "cluster": 5,
+      "degree": 20,
+      "kind": "wiki"
+    },
+    {
+      "id": "Mach_number",
+      "name": "Mach number",
+      "cluster": 2,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "Treewidth",
+      "name": "Treewidth",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "online_learning_algorithm",
+      "name": "online learning algorithm",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "LP_relaxation",
+      "name": "LP relaxation",
+      "cluster": 4,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Metric_spaces",
+      "name": "Metric spaces",
+      "cluster": 0,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "cost_analysis",
+      "name": "cost analysis",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "position_tracking",
+      "name": "position tracking",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "arborescences",
+      "name": "arborescences",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "graphical_models",
+      "name": "graphical models",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "stability_index",
+      "name": "stability index",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "chain_complex",
+      "name": "chain complex",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "pathwidth",
+      "name": "pathwidth",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Chain-of-thought",
+      "name": "Chain-of-thought",
+      "cluster": 7,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "arboricity",
+      "name": "arboricity",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "robust_mean_estimation",
+      "name": "robust mean estimation",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "PAC_learning",
+      "name": "PAC learning",
+      "cluster": 3,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Lipschitz_function",
+      "name": "Lipschitz function",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "learning-augmented_algorithms",
+      "name": "learning-augmented algorithms",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "correlation_clustering",
+      "name": "correlation clustering",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Navier_Stokes_equations",
+      "name": "Navier Stokes equations",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "connected_components",
+      "name": "connected components",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Query_complexity",
+      "name": "Query complexity",
+      "cluster": 3,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "polynomial-time_algorithms",
+      "name": "polynomial-time algorithms",
+      "cluster": 6,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "greedy_algorithm",
+      "name": "greedy algorithm",
+      "cluster": 3,
+      "degree": 10,
+      "kind": "wiki"
+    },
+    {
+      "id": "hardness_of_approximation",
+      "name": "hardness of approximation",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "spanning_trees",
+      "name": "spanning trees",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Combinatorial_optimization",
+      "name": "Combinatorial optimization",
+      "cluster": 6,
+      "degree": 18,
+      "kind": "wiki"
+    },
+    {
+      "id": "fairness_constraints",
+      "name": "fairness constraints",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "controlling_sets",
+      "name": "controlling sets",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Letter_substitution_updates",
+      "name": "Letter substitution updates",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "matroid_constraints",
+      "name": "matroid constraints",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "competitive_ratio",
+      "name": "competitive ratio",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "split_graph",
+      "name": "split graph",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "machine_unlearning",
+      "name": "machine unlearning",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Lyapunov_stability",
+      "name": "Lyapunov stability",
+      "cluster": 3,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "monotonicity_testing",
+      "name": "monotonicity testing",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Fourier_transform",
+      "name": "Fourier transform",
+      "cluster": 11,
+      "degree": 14,
+      "kind": "wiki"
+    },
+    {
+      "id": "Sequential_calibration",
+      "name": "Sequential calibration",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Minimum-cost_flow",
+      "name": "Minimum-cost flow",
+      "cluster": 5,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "approximation_ratio",
+      "name": "approximation ratio",
+      "cluster": 4,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Approximation_factor",
+      "name": "Approximation factor",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Filter",
+      "name": "Filter",
+      "cluster": 8,
+      "degree": 17,
+      "kind": "wiki"
+    },
+    {
+      "id": "binary_search",
+      "name": "binary search",
+      "cluster": 5,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "dynamic_algorithms",
+      "name": "dynamic algorithms",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "minor-free_graphs",
+      "name": "minor-free graphs",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "scheduling_algorithm",
+      "name": "scheduling algorithm",
+      "cluster": 4,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Network_design",
+      "name": "Network design",
+      "cluster": 6,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Hamiltonian_path",
+      "name": "Hamiltonian path",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Target_tracking",
+      "name": "Target tracking",
+      "cluster": 7,
+      "degree": 9,
+      "kind": "wiki"
+    },
+    {
+      "id": "Compressible_flow",
+      "name": "Compressible flow",
+      "cluster": 2,
+      "degree": 11,
+      "kind": "wiki"
+    },
+    {
+      "id": "Bellman-Ford_algorithm",
+      "name": "Bellman-Ford algorithm",
+      "cluster": 5,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Diffusion",
+      "name": "Diffusion",
+      "cluster": 2,
+      "degree": 25,
+      "kind": "wiki"
+    },
+    {
+      "id": "B-tree",
+      "name": "B-tree",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "LZ77_compression",
+      "name": "LZ77 compression",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "diffusion_models",
+      "name": "diffusion models",
+      "cluster": 2,
+      "degree": 8,
+      "kind": "wiki"
+    },
+    {
+      "id": "induced_subgraph",
+      "name": "induced subgraph",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Synaptic_plasticity",
+      "name": "Synaptic plasticity",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "k-clustering",
+      "name": "k-clustering",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Spectral_gap",
+      "name": "Spectral gap",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "PID_control",
+      "name": "PID control",
+      "cluster": 8,
+      "degree": 7,
+      "kind": "wiki"
+    },
+    {
+      "id": "matrix-vector_multiplications",
+      "name": "matrix-vector multiplications",
+      "cluster": 8,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "recursive_decomposition",
+      "name": "recursive decomposition",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "polynomial-time_approximation_scheme",
+      "name": "polynomial-time approximation scheme",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "H-subgraph-free_graphs",
+      "name": "H-subgraph-free graphs",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Halfspaces",
+      "name": "Halfspaces",
+      "cluster": 3,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "balanced_separator",
+      "name": "balanced separator",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "vertex-disjoint_paths",
+      "name": "vertex-disjoint paths",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Monte_Carlo_simulation",
+      "name": "Monte Carlo simulation",
+      "cluster": 2,
+      "degree": 14,
+      "kind": "wiki"
+    },
+    {
+      "id": "Approximation_algorithms",
+      "name": "Approximation algorithms",
+      "cluster": 0,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "Voronoi_diagram",
+      "name": "Voronoi diagram",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Kalman_filter",
+      "name": "Kalman filter",
+      "cluster": 8,
+      "degree": 8,
+      "kind": "wiki"
+    },
+    {
+      "id": "matroid",
+      "name": "matroid",
+      "cluster": 6,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "mean_estimation",
+      "name": "mean estimation",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "fixed-parameter_tractability",
+      "name": "fixed-parameter tractability",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "hypergraph_matching",
+      "name": "hypergraph matching",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "minimum_spanning_trees",
+      "name": "minimum spanning trees",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "dynamic_programming",
+      "name": "dynamic programming",
+      "cluster": 9,
+      "degree": 16,
+      "kind": "wiki"
+    },
+    {
+      "id": "Shortcutting_procedure",
+      "name": "Shortcutting procedure",
+      "cluster": 5,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Radar_signal_processing",
+      "name": "Radar signal processing",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "diffusion_sampling",
+      "name": "diffusion sampling",
+      "cluster": 1,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "NP-hardness",
+      "name": "NP-hardness",
+      "cluster": 0,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "semi-extensible_ZG_languages",
+      "name": "semi-extensible ZG languages",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Approximate_Nearest_Neighbors",
+      "name": "Approximate Nearest Neighbors",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "singular_value_decomposition",
+      "name": "singular value decomposition",
+      "cluster": 8,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "k-center_clustering",
+      "name": "k-center clustering",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "minimal_redundant_sets",
+      "name": "minimal redundant sets",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Entity_Resolution",
+      "name": "Entity Resolution",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "perfect_retraining",
+      "name": "perfect retraining",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Bayesian_linear_regression",
+      "name": "Bayesian linear regression",
+      "cluster": 1,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "competitive_analysis",
+      "name": "competitive analysis",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Observability",
+      "name": "Observability",
+      "cluster": 2,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "Condorcet_dimension",
+      "name": "Condorcet dimension",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "batch_sampling",
+      "name": "batch sampling",
+      "cluster": 1,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "shortest_path",
+      "name": "shortest path",
+      "cluster": 5,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "ordered_partition",
+      "name": "ordered partition",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Partition_analysis",
+      "name": "Partition analysis",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "bipartite_graphs",
+      "name": "bipartite graphs",
+      "cluster": 0,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "Tensor_network_algorithm",
+      "name": "Tensor network algorithm",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Gaussian_distribution",
+      "name": "Gaussian distribution",
+      "cluster": 2,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "mean-shift_contamination_model",
+      "name": "mean-shift contamination model",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Mechanism_design",
+      "name": "Mechanism design",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Score_matching",
+      "name": "Score matching",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "round_complexity",
+      "name": "round complexity",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Maximal_Matching",
+      "name": "Maximal Matching",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Branch-and-bound_algorithm",
+      "name": "Branch-and-bound algorithm",
+      "cluster": 5,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Distributed_algorithms",
+      "name": "Distributed algorithms",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "regular_languages",
+      "name": "regular languages",
+      "cluster": 1,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "inapproximability",
+      "name": "inapproximability",
+      "cluster": 0,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "Randomized_algorithm",
+      "name": "Randomized algorithm",
+      "cluster": 5,
+      "degree": 10,
+      "kind": "wiki"
+    },
+    {
+      "id": "Markov_chain",
+      "name": "Markov chain",
+      "cluster": 0,
+      "degree": 11,
+      "kind": "wiki"
+    },
+    {
+      "id": "distance_oracle",
+      "name": "distance oracle",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "State_space_model",
+      "name": "State space model",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "enumeration_algorithm",
+      "name": "enumeration algorithm",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Polynomial-time_approximation",
+      "name": "Polynomial-time approximation",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "graph_decomposition",
+      "name": "graph decomposition",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Ising_models",
+      "name": "Ising models",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "biclique",
+      "name": "biclique",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "KKT_points",
+      "name": "KKT points",
+      "cluster": 10,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Sensor_fusion",
+      "name": "Sensor fusion",
+      "cluster": 8,
+      "degree": 8,
+      "kind": "wiki"
+    },
+    {
+      "id": "Cache_utilization",
+      "name": "Cache utilization",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Streaming_algorithms",
+      "name": "Streaming algorithms",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Utility_maximization",
+      "name": "Utility maximization",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Sensitivity_analysis",
+      "name": "Sensitivity analysis",
+      "cluster": 4,
+      "degree": 11,
+      "kind": "wiki"
+    },
+    {
+      "id": "Decision_Diagrams",
+      "name": "Decision Diagrams",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "vertex_degree",
+      "name": "vertex degree",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "ε-approximation_algorithm",
+      "name": "ε-approximation algorithm",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "weight_function",
+      "name": "weight function",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "H-free_graphs",
+      "name": "H-free graphs",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "SDP_relaxation",
+      "name": "SDP relaxation",
+      "cluster": 6,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "independent_set",
+      "name": "independent set",
+      "cluster": 0,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "Reynolds_number",
+      "name": "Reynolds number",
+      "cluster": 0,
+      "degree": 10,
+      "kind": "wiki"
+    },
+    {
+      "id": "Transfer_function",
+      "name": "Transfer function",
+      "cluster": 2,
+      "degree": 9,
+      "kind": "wiki"
+    },
+    {
+      "id": "low_out-degree_orientation",
+      "name": "low out-degree orientation",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "neutral_letter",
+      "name": "neutral letter",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "LOCAL_model",
+      "name": "LOCAL model",
+      "cluster": 3,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "parameterized_complexity",
+      "name": "parameterized complexity",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "facility_location_problem",
+      "name": "facility location problem",
+      "cluster": 4,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "spectral_methods",
+      "name": "spectral methods",
+      "cluster": 10,
+      "degree": 14,
+      "kind": "wiki"
+    },
+    {
+      "id": "Pareto-optimality",
+      "name": "Pareto-optimality",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "metric_space",
+      "name": "metric space",
+      "cluster": 0,
+      "degree": 9,
+      "kind": "wiki"
+    },
+    {
+      "id": "characteristic_function",
+      "name": "characteristic function",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Support_Vector_Machines",
+      "name": "Support Vector Machines",
+      "cluster": 1,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Drag_polar",
+      "name": "Drag polar",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "bin_packing",
+      "name": "bin packing",
+      "cluster": 6,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "planar_graphs",
+      "name": "planar graphs",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Minimum_Spanning_Tree",
+      "name": "Minimum Spanning Tree",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Ising_model",
+      "name": "Ising model",
+      "cluster": 6,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "partition_function",
+      "name": "partition function",
+      "cluster": 0,
+      "degree": 11,
+      "kind": "wiki"
+    },
+    {
+      "id": "extensible_languages",
+      "name": "extensible languages",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "integrality_gap",
+      "name": "integrality gap",
+      "cluster": 4,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "leader_election",
+      "name": "leader election",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "bipartite_graph",
+      "name": "bipartite graph",
+      "cluster": 0,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "Parallel_algorithms",
+      "name": "Parallel algorithms",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Partition",
+      "name": "Partition",
+      "cluster": 0,
+      "degree": 28,
+      "kind": "wiki"
+    },
+    {
+      "id": "Differential_privacy",
+      "name": "Differential privacy",
+      "cluster": 3,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "submodularity",
+      "name": "submodularity",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "linear_programming",
+      "name": "linear programming",
+      "cluster": 4,
+      "degree": 20,
+      "kind": "wiki"
+    },
+    {
+      "id": "regular_language",
+      "name": "regular language",
+      "cluster": 1,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "submodular_maximization",
+      "name": "submodular maximization",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "false_positive_rate",
+      "name": "false positive rate",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "spanning_tree",
+      "name": "spanning tree",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "memory_fragmentation",
+      "name": "memory fragmentation",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Graph_neural_networks",
+      "name": "Graph neural networks",
+      "cluster": 5,
+      "degree": 7,
+      "kind": "wiki"
+    },
+    {
+      "id": "induced_minor",
+      "name": "induced minor",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Action_potential",
+      "name": "Action potential",
+      "cluster": 2,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Condorcet-winning_set",
+      "name": "Condorcet-winning set",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "k-means_clustering",
+      "name": "k-means clustering",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "asymptotic_analysis",
+      "name": "asymptotic analysis",
+      "cluster": 5,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "cost_bounds",
+      "name": "cost bounds",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "sample_complexity",
+      "name": "sample complexity",
+      "cluster": 1,
+      "degree": 7,
+      "kind": "wiki"
+    },
+    {
+      "id": "online_algorithm",
+      "name": "online algorithm",
+      "cluster": 0,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "Pareto_optimality",
+      "name": "Pareto optimality",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "lossless_data_compression",
+      "name": "lossless data compression",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "linear_programming_relaxation",
+      "name": "linear programming relaxation",
+      "cluster": 4,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "randomized_rounding",
+      "name": "randomized rounding",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "triangulation",
+      "name": "triangulation",
+      "cluster": 0,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "color_coding",
+      "name": "color coding",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "polynomial-time_algorithm",
+      "name": "polynomial-time algorithm",
+      "cluster": 0,
+      "degree": 8,
+      "kind": "wiki"
+    },
+    {
+      "id": "property_testing",
+      "name": "property testing",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Low-rank_matrix_approximation",
+      "name": "Low-rank matrix approximation",
+      "cluster": 5,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "bond_dimension",
+      "name": "bond dimension",
+      "cluster": 1,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Mixing_time",
+      "name": "Mixing time",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "transitive_closure",
+      "name": "transitive closure",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "calibration",
+      "name": "calibration",
+      "cluster": 1,
+      "degree": 10,
+      "kind": "wiki"
+    },
+    {
+      "id": "GPU_acceleration",
+      "name": "GPU acceleration",
+      "cluster": 0,
+      "degree": 6,
+      "kind": "wiki"
+    },
+    {
+      "id": "Ion_channel",
+      "name": "Ion channel",
+      "cluster": 2,
+      "degree": 10,
+      "kind": "wiki"
+    },
+    {
+      "id": "Quantum_communication",
+      "name": "Quantum communication",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Nash_equilibrium",
+      "name": "Nash equilibrium",
+      "cluster": 0,
+      "degree": 11,
+      "kind": "wiki"
+    },
+    {
+      "id": "graph_clustering",
+      "name": "graph clustering",
+      "cluster": 2,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "kernelization",
+      "name": "kernelization",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "KL_divergence",
+      "name": "KL divergence",
+      "cluster": 1,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "signed_tree_models",
+      "name": "signed tree models",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "twin-width",
+      "name": "twin-width",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "replicability",
+      "name": "replicability",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "query_lower_bounds",
+      "name": "query lower bounds",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "self-stabilizing_leader_election",
+      "name": "self-stabilizing leader election",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "H-minor-free_graphs",
+      "name": "H-minor-free graphs",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Score-Based_Diffusion_Models",
+      "name": "Score-Based Diffusion Models",
+      "cluster": 2,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "distributed_algorithm",
+      "name": "distributed algorithm",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "deBruijn_graph",
+      "name": "deBruijn graph",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Linear_convergence",
+      "name": "Linear convergence",
+      "cluster": 10,
+      "degree": 8,
+      "kind": "wiki"
+    },
+    {
+      "id": "NP-completeness",
+      "name": "NP-completeness",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Reducibility",
+      "name": "Reducibility",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "FPT_algorithm",
+      "name": "FPT algorithm",
+      "cluster": 6,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "sequential_decision-making",
+      "name": "sequential decision-making",
+      "cluster": 1,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "symmetric_difference",
+      "name": "symmetric difference",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "dynamic_enumeration",
+      "name": "dynamic enumeration",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "contrastive_reasons",
+      "name": "contrastive reasons",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "dynamic_membership",
+      "name": "dynamic membership",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "graph_traversal",
+      "name": "graph traversal",
+      "cluster": 5,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Steiner_forest",
+      "name": "Steiner forest",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "VC_dimension",
+      "name": "VC dimension",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "communication_complexity",
+      "name": "communication complexity",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "matching_problem",
+      "name": "matching problem",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Steiner_tree",
+      "name": "Steiner tree",
+      "cluster": 4,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "low-rank_approximation",
+      "name": "low-rank approximation",
+      "cluster": 5,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "fair_k-center_problem",
+      "name": "fair k-center problem",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "facility_location",
+      "name": "facility location",
+      "cluster": 4,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Max-3-Cut_problem",
+      "name": "Max-3-Cut problem",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "pricing_subproblem",
+      "name": "pricing subproblem",
+      "cluster": 9,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "clustering_algorithm",
+      "name": "clustering algorithm",
+      "cluster": 3,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "bicliques",
+      "name": "bicliques",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Gaussian_input_masking",
+      "name": "Gaussian input masking",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "variance_analysis",
+      "name": "variance analysis",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "directed_graphs",
+      "name": "directed graphs",
+      "cluster": 5,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "mean-shift_contamination",
+      "name": "mean-shift contamination",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "polynomial_time_algorithms",
+      "name": "polynomial time algorithms",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Lipschitz_continuity",
+      "name": "Lipschitz continuity",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Heap_data_structure",
+      "name": "Heap data structure",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Potential_function",
+      "name": "Potential function",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "robust_statistics",
+      "name": "robust statistics",
+      "cluster": 3,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "planar_graph",
+      "name": "planar graph",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "sufficient_reasons",
+      "name": "sufficient reasons",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Flow_Matching",
+      "name": "Flow Matching",
+      "cluster": 1,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Convex_optimization",
+      "name": "Convex optimization",
+      "cluster": 10,
+      "degree": 14,
+      "kind": "wiki"
+    },
+    {
+      "id": "shortest_paths",
+      "name": "shortest paths",
+      "cluster": 5,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "2-approximation_algorithm",
+      "name": "2-approximation algorithm",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Markov_chains",
+      "name": "Markov chains",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "robust_optimization",
+      "name": "robust optimization",
+      "cluster": 3,
+      "degree": 8,
+      "kind": "wiki"
+    },
+    {
+      "id": "streaming_algorithm",
+      "name": "streaming algorithm",
+      "cluster": 0,
+      "degree": 4,
+      "kind": "wiki"
+    },
+    {
+      "id": "Chinese_Remainder_Theorem",
+      "name": "Chinese Remainder Theorem",
+      "cluster": 1,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "online_algorithms",
+      "name": "online algorithms",
+      "cluster": 0,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "Euclidean_distance",
+      "name": "Euclidean distance",
+      "cluster": 0,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "Matroid_intersection",
+      "name": "Matroid intersection",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Richardson_extrapolation",
+      "name": "Richardson extrapolation",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "Gibbs_states",
+      "name": "Gibbs states",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "sampling",
+      "name": "sampling",
+      "cluster": 1,
+      "degree": 26,
+      "kind": "wiki"
+    },
+    {
+      "id": "single-source_shortest_paths",
+      "name": "single-source shortest paths",
+      "cluster": 5,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "contraction_sequence",
+      "name": "contraction sequence",
+      "cluster": 0,
+      "degree": 3,
+      "kind": "wiki"
+    },
+    {
+      "id": "Scan",
+      "name": "Scan",
+      "cluster": 1,
+      "degree": 12,
+      "kind": "wiki"
+    },
+    {
+      "id": "Boundary_layer",
+      "name": "Boundary layer",
+      "cluster": 0,
+      "degree": 8,
+      "kind": "wiki"
+    },
+    {
+      "id": "approximation_algorithm",
+      "name": "approximation algorithm",
+      "cluster": 0,
+      "degree": 11,
+      "kind": "wiki"
+    },
+    {
+      "id": "clique",
+      "name": "clique",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "decision_tree",
+      "name": "decision tree",
+      "cluster": 6,
+      "degree": 10,
+      "kind": "wiki"
+    },
+    {
+      "id": "confidence_intervals",
+      "name": "confidence intervals",
+      "cluster": 0,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "Sample_complexity_bounds",
+      "name": "Sample complexity bounds",
+      "cluster": 3,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "convex_hull",
+      "name": "convex hull",
+      "cluster": 6,
+      "degree": 5,
+      "kind": "wiki"
+    },
+    {
+      "id": "k-center_problem",
+      "name": "k-center problem",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    },
+    {
+      "id": "identifying_sets",
+      "name": "identifying sets",
+      "cluster": 6,
+      "degree": 1,
+      "kind": "wiki"
+    },
+    {
+      "id": "reinforcement_learning",
+      "name": "reinforcement learning",
+      "cluster": 7,
+      "degree": 18,
+      "kind": "wiki"
+    },
+    {
+      "id": "bipartite_matching",
+      "name": "bipartite matching",
+      "cluster": 0,
+      "degree": 2,
+      "kind": "wiki"
+    }
+  ],
+  "concept_edges": [
+    [
+      "Condorcet_dimension",
+      "Pareto_optimality",
+      1
+    ],
+    [
+      "Condorcet-winning_set",
+      "Condorcet_dimension",
+      1
+    ],
+    [
+      "Condorcet_dimension",
+      "Condorcet_winner",
+      1
+    ],
+    [
+      "Condorcet_dimension",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "Condorcet_dimension",
+      "matroid",
+      1
+    ],
+    [
+      "Condorcet_dimension",
+      "Pareto-optimal_matching",
+      1
+    ],
+    [
+      "Condorcet_dimension",
+      "bipartite_graph",
+      1
+    ],
+    [
+      "Condorcet_dimension",
+      "arborescences",
+      1
+    ],
+    [
+      "Condorcet_dimension",
+      "Pareto-optimality",
+      1
+    ],
+    [
+      "Condorcet_dimension",
+      "matching_problem",
+      1
+    ],
+    [
+      "Condorcet-winning_set",
+      "Pareto_optimality",
+      1
+    ],
+    [
+      "Condorcet_winner",
+      "Pareto_optimality",
+      1
+    ],
+    [
+      "Pareto_optimality",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "Pareto_optimality",
+      "matroid",
+      1
+    ],
+    [
+      "Pareto-optimal_matching",
+      "Pareto_optimality",
+      1
+    ],
+    [
+      "Pareto_optimality",
+      "bipartite_graph",
+      1
+    ],
+    [
+      "Pareto_optimality",
+      "arborescences",
+      1
+    ],
+    [
+      "Pareto-optimality",
+      "Pareto_optimality",
+      1
+    ],
+    [
+      "Pareto_optimality",
+      "matching_problem",
+      1
+    ],
+    [
+      "Condorcet-winning_set",
+      "Condorcet_winner",
+      1
+    ],
+    [
+      "Condorcet-winning_set",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "Condorcet-winning_set",
+      "matroid",
+      1
+    ],
+    [
+      "Condorcet-winning_set",
+      "Pareto-optimal_matching",
+      1
+    ],
+    [
+      "Condorcet-winning_set",
+      "bipartite_graph",
+      1
+    ],
+    [
+      "Condorcet-winning_set",
+      "arborescences",
+      1
+    ],
+    [
+      "Condorcet-winning_set",
+      "Pareto-optimality",
+      1
+    ],
+    [
+      "Condorcet-winning_set",
+      "matching_problem",
+      1
+    ],
+    [
+      "Condorcet_winner",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "Condorcet_winner",
+      "matroid",
+      1
+    ],
+    [
+      "Condorcet_winner",
+      "Pareto-optimal_matching",
+      1
+    ],
+    [
+      "Condorcet_winner",
+      "bipartite_graph",
+      1
+    ],
+    [
+      "Condorcet_winner",
+      "arborescences",
+      1
+    ],
+    [
+      "Condorcet_winner",
+      "Pareto-optimality",
+      1
+    ],
+    [
+      "Condorcet_winner",
+      "matching_problem",
+      1
+    ],
+    [
+      "matroid",
+      "matroid_constraints",
+      2
+    ],
+    [
+      "Pareto-optimal_matching",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "arborescences",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "Pareto-optimality",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "matching_problem",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "Pareto-optimal_matching",
+      "matroid",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "matroid",
+      1
+    ],
+    [
+      "arborescences",
+      "matroid",
+      1
+    ],
+    [
+      "Pareto-optimality",
+      "matroid",
+      1
+    ],
+    [
+      "matching_problem",
+      "matroid",
+      1
+    ],
+    [
+      "Pareto-optimal_matching",
+      "bipartite_graph",
+      1
+    ],
+    [
+      "Pareto-optimal_matching",
+      "arborescences",
+      1
+    ],
+    [
+      "Pareto-optimal_matching",
+      "Pareto-optimality",
+      1
+    ],
+    [
+      "Pareto-optimal_matching",
+      "matching_problem",
+      1
+    ],
+    [
+      "arborescences",
+      "bipartite_graph",
+      1
+    ],
+    [
+      "Pareto-optimality",
+      "bipartite_graph",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "matching_problem",
+      2
+    ],
+    [
+      "Pareto-optimality",
+      "arborescences",
+      1
+    ],
+    [
+      "arborescences",
+      "matching_problem",
+      1
+    ],
+    [
+      "Pareto-optimality",
+      "matching_problem",
+      1
+    ],
+    [
+      "mean-shift_contamination",
+      "sample_complexity",
+      1
+    ],
+    [
+      "mean-shift_contamination",
+      "mean_estimation",
+      1
+    ],
+    [
+      "Sample_complexity_bounds",
+      "mean-shift_contamination",
+      1
+    ],
+    [
+      "mean-shift_contamination",
+      "robust_mean_estimation",
+      1
+    ],
+    [
+      "mean-shift_contamination",
+      "mean-shift_contamination_model",
+      1
+    ],
+    [
+      "lower_bounds",
+      "mean-shift_contamination",
+      1
+    ],
+    [
+      "mean-shift_contamination",
+      "robust_statistics",
+      1
+    ],
+    [
+      "mean-shift_contamination",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "characteristic_function",
+      "mean-shift_contamination",
+      1
+    ],
+    [
+      "mean_estimation",
+      "sample_complexity",
+      1
+    ],
+    [
+      "Sample_complexity_bounds",
+      "sample_complexity",
+      1
+    ],
+    [
+      "robust_mean_estimation",
+      "sample_complexity",
+      1
+    ],
+    [
+      "mean-shift_contamination_model",
+      "sample_complexity",
+      1
+    ],
+    [
+      "lower_bounds",
+      "sample_complexity",
+      1
+    ],
+    [
+      "robust_statistics",
+      "sample_complexity",
+      1
+    ],
+    [
+      "sample_complexity",
+      "sample_complexity_lower_bound",
+      2
+    ],
+    [
+      "characteristic_function",
+      "sample_complexity",
+      1
+    ],
+    [
+      "Sample_complexity_bounds",
+      "mean_estimation",
+      1
+    ],
+    [
+      "mean_estimation",
+      "robust_mean_estimation",
+      1
+    ],
+    [
+      "mean-shift_contamination_model",
+      "mean_estimation",
+      1
+    ],
+    [
+      "lower_bounds",
+      "mean_estimation",
+      1
+    ],
+    [
+      "mean_estimation",
+      "robust_statistics",
+      1
+    ],
+    [
+      "mean_estimation",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "characteristic_function",
+      "mean_estimation",
+      1
+    ],
+    [
+      "Sample_complexity_bounds",
+      "robust_mean_estimation",
+      1
+    ],
+    [
+      "Sample_complexity_bounds",
+      "mean-shift_contamination_model",
+      1
+    ],
+    [
+      "Sample_complexity_bounds",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Sample_complexity_bounds",
+      "robust_statistics",
+      1
+    ],
+    [
+      "Sample_complexity_bounds",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "Sample_complexity_bounds",
+      "characteristic_function",
+      1
+    ],
+    [
+      "mean-shift_contamination_model",
+      "robust_mean_estimation",
+      1
+    ],
+    [
+      "lower_bounds",
+      "robust_mean_estimation",
+      1
+    ],
+    [
+      "robust_mean_estimation",
+      "robust_statistics",
+      1
+    ],
+    [
+      "robust_mean_estimation",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "characteristic_function",
+      "robust_mean_estimation",
+      1
+    ],
+    [
+      "lower_bounds",
+      "mean-shift_contamination_model",
+      1
+    ],
+    [
+      "mean-shift_contamination_model",
+      "robust_statistics",
+      1
+    ],
+    [
+      "mean-shift_contamination_model",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "characteristic_function",
+      "mean-shift_contamination_model",
+      1
+    ],
+    [
+      "lower_bounds",
+      "robust_statistics",
+      1
+    ],
+    [
+      "lower_bounds",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "characteristic_function",
+      "lower_bounds",
+      1
+    ],
+    [
+      "robust_statistics",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "characteristic_function",
+      "robust_statistics",
+      1
+    ],
+    [
+      "characteristic_function",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "facility_location",
+      "facility_location_problem",
+      3
+    ],
+    [
+      "approximation_algorithm",
+      "facility_location",
+      1
+    ],
+    [
+      "Maximum_matching",
+      "facility_location",
+      1
+    ],
+    [
+      "facility_location",
+      "integrality_gap",
+      1
+    ],
+    [
+      "approximation_ratio",
+      "facility_location",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "facility_location",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "facility_location",
+      1
+    ],
+    [
+      "facility_location",
+      "linear_programming",
+      1
+    ],
+    [
+      "LP_relaxation",
+      "facility_location",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "facility_location_problem",
+      1
+    ],
+    [
+      "Maximum_matching",
+      "facility_location_problem",
+      1
+    ],
+    [
+      "facility_location_problem",
+      "integrality_gap",
+      1
+    ],
+    [
+      "approximation_ratio",
+      "facility_location_problem",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "facility_location_problem",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "facility_location_problem",
+      1
+    ],
+    [
+      "facility_location_problem",
+      "linear_programming",
+      1
+    ],
+    [
+      "LP_relaxation",
+      "facility_location_problem",
+      1
+    ],
+    [
+      "Maximum_matching",
+      "approximation_algorithm",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "integrality_gap",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "approximation_ratio",
+      4
+    ],
+    [
+      "Combinatorial_optimization",
+      "approximation_algorithm",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "approximation_algorithm",
+      6
+    ],
+    [
+      "approximation_algorithm",
+      "linear_programming",
+      1
+    ],
+    [
+      "LP_relaxation",
+      "approximation_algorithm",
+      1
+    ],
+    [
+      "Maximum_matching",
+      "integrality_gap",
+      1
+    ],
+    [
+      "Maximum_matching",
+      "approximation_ratio",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "Maximum_matching",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "Maximum_matching",
+      1
+    ],
+    [
+      "Maximum_matching",
+      "linear_programming",
+      1
+    ],
+    [
+      "LP_relaxation",
+      "Maximum_matching",
+      1
+    ],
+    [
+      "approximation_ratio",
+      "integrality_gap",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "integrality_gap",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "integrality_gap",
+      1
+    ],
+    [
+      "integrality_gap",
+      "linear_programming",
+      4
+    ],
+    [
+      "LP_relaxation",
+      "integrality_gap",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "approximation_ratio",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "approximation_ratio",
+      2
+    ],
+    [
+      "approximation_ratio",
+      "linear_programming",
+      1
+    ],
+    [
+      "LP_relaxation",
+      "approximation_ratio",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "Combinatorial_optimization",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "linear_programming",
+      2
+    ],
+    [
+      "Combinatorial_optimization",
+      "LP_relaxation",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "linear_programming",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "LP_relaxation",
+      1
+    ],
+    [
+      "LP_relaxation",
+      "linear_programming",
+      1
+    ],
+    [
+      "polynomial-time_algorithm",
+      "polynomial-time_algorithms",
+      3
+    ],
+    [
+      "Streaming_algorithms",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "polynomial-time_algorithm",
+      "streaming_algorithm",
+      1
+    ],
+    [
+      "polynomial-time_algorithm",
+      "property_testing",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "distributed_algorithm",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Streaming_algorithms",
+      "polynomial-time_algorithms",
+      1
+    ],
+    [
+      "polynomial-time_algorithms",
+      "streaming_algorithm",
+      1
+    ],
+    [
+      "polynomial-time_algorithms",
+      "property_testing",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "polynomial-time_algorithms",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "polynomial-time_algorithms",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "polynomial-time_algorithms",
+      1
+    ],
+    [
+      "distributed_algorithm",
+      "polynomial-time_algorithms",
+      1
+    ],
+    [
+      "Streaming_algorithms",
+      "streaming_algorithm",
+      4
+    ],
+    [
+      "Streaming_algorithms",
+      "property_testing",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "Streaming_algorithms",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "Streaming_algorithms",
+      1
+    ],
+    [
+      "Streaming_algorithms",
+      "approximation_algorithm",
+      1
+    ],
+    [
+      "Streaming_algorithms",
+      "distributed_algorithm",
+      1
+    ],
+    [
+      "property_testing",
+      "streaming_algorithm",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "streaming_algorithm",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "streaming_algorithm",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "streaming_algorithm",
+      1
+    ],
+    [
+      "distributed_algorithm",
+      "streaming_algorithm",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "property_testing",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "property_testing",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "property_testing",
+      1
+    ],
+    [
+      "distributed_algorithm",
+      "property_testing",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "Distributed_algorithms",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "distributed_algorithm",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "approximation_algorithm",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "distributed_algorithm",
+      2
+    ],
+    [
+      "approximation_algorithm",
+      "distributed_algorithm",
+      1
+    ],
+    [
+      "dynamic_enumeration",
+      "regular_language",
+      1
+    ],
+    [
+      "regular_language",
+      "regular_languages",
+      2
+    ],
+    [
+      "neutral_letter",
+      "regular_language",
+      1
+    ],
+    [
+      "Letter_substitution_updates",
+      "regular_language",
+      1
+    ],
+    [
+      "dynamic_membership",
+      "regular_language",
+      1
+    ],
+    [
+      "regular_language",
+      "semi-extensible_ZG_languages",
+      1
+    ],
+    [
+      "lower_bounds",
+      "regular_language",
+      1
+    ],
+    [
+      "dynamic_enumeration",
+      "regular_languages",
+      1
+    ],
+    [
+      "dynamic_enumeration",
+      "neutral_letter",
+      1
+    ],
+    [
+      "Letter_substitution_updates",
+      "dynamic_enumeration",
+      1
+    ],
+    [
+      "dynamic_enumeration",
+      "dynamic_membership",
+      1
+    ],
+    [
+      "dynamic_enumeration",
+      "semi-extensible_ZG_languages",
+      1
+    ],
+    [
+      "dynamic_enumeration",
+      "lower_bounds",
+      1
+    ],
+    [
+      "neutral_letter",
+      "regular_languages",
+      1
+    ],
+    [
+      "Letter_substitution_updates",
+      "regular_languages",
+      1
+    ],
+    [
+      "dynamic_membership",
+      "regular_languages",
+      1
+    ],
+    [
+      "regular_languages",
+      "semi-extensible_ZG_languages",
+      1
+    ],
+    [
+      "lower_bounds",
+      "regular_languages",
+      1
+    ],
+    [
+      "Letter_substitution_updates",
+      "neutral_letter",
+      1
+    ],
+    [
+      "dynamic_membership",
+      "neutral_letter",
+      1
+    ],
+    [
+      "neutral_letter",
+      "semi-extensible_ZG_languages",
+      1
+    ],
+    [
+      "lower_bounds",
+      "neutral_letter",
+      1
+    ],
+    [
+      "Letter_substitution_updates",
+      "dynamic_membership",
+      1
+    ],
+    [
+      "Letter_substitution_updates",
+      "semi-extensible_ZG_languages",
+      1
+    ],
+    [
+      "Letter_substitution_updates",
+      "lower_bounds",
+      1
+    ],
+    [
+      "dynamic_membership",
+      "semi-extensible_ZG_languages",
+      1
+    ],
+    [
+      "dynamic_membership",
+      "lower_bounds",
+      1
+    ],
+    [
+      "lower_bounds",
+      "semi-extensible_ZG_languages",
+      1
+    ],
+    [
+      "fair_k-center_problem",
+      "k-center_problem",
+      1
+    ],
+    [
+      "hardness_of_approximation",
+      "k-center_problem",
+      1
+    ],
+    [
+      "k-center_problem",
+      "metric_space",
+      1
+    ],
+    [
+      "Metric_spaces",
+      "k-center_problem",
+      1
+    ],
+    [
+      "k-center_problem",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "inapproximability",
+      "k-center_problem",
+      1
+    ],
+    [
+      "Partition",
+      "k-center_problem",
+      1
+    ],
+    [
+      "fair_k-center_problem",
+      "hardness_of_approximation",
+      1
+    ],
+    [
+      "fair_k-center_problem",
+      "metric_space",
+      1
+    ],
+    [
+      "Metric_spaces",
+      "fair_k-center_problem",
+      1
+    ],
+    [
+      "fair_k-center_problem",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "fair_k-center_problem",
+      "inapproximability",
+      1
+    ],
+    [
+      "Partition",
+      "fair_k-center_problem",
+      1
+    ],
+    [
+      "hardness_of_approximation",
+      "metric_space",
+      1
+    ],
+    [
+      "Metric_spaces",
+      "hardness_of_approximation",
+      1
+    ],
+    [
+      "hardness_of_approximation",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "hardness_of_approximation",
+      "inapproximability",
+      3
+    ],
+    [
+      "Partition",
+      "hardness_of_approximation",
+      1
+    ],
+    [
+      "Metric_spaces",
+      "metric_space",
+      6
+    ],
+    [
+      "metric_space",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "inapproximability",
+      "metric_space",
+      1
+    ],
+    [
+      "Partition",
+      "metric_space",
+      2
+    ],
+    [
+      "Metric_spaces",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Metric_spaces",
+      "inapproximability",
+      1
+    ],
+    [
+      "Metric_spaces",
+      "Partition",
+      2
+    ],
+    [
+      "inapproximability",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Partition",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Partition",
+      "inapproximability",
+      2
+    ],
+    [
+      "shortest_path",
+      "shortest_paths",
+      2
+    ],
+    [
+      "shortest_path",
+      "single-source_shortest_paths",
+      2
+    ],
+    [
+      "directed_graphs",
+      "shortest_path",
+      2
+    ],
+    [
+      "Shortcutting_procedure",
+      "shortest_path",
+      1
+    ],
+    [
+      "Minimum-cost_flow",
+      "shortest_path",
+      2
+    ],
+    [
+      "Bellman-Ford_algorithm",
+      "shortest_path",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "shortest_path",
+      2
+    ],
+    [
+      "Reduce",
+      "shortest_path",
+      2
+    ],
+    [
+      "shortest_paths",
+      "single-source_shortest_paths",
+      2
+    ],
+    [
+      "directed_graphs",
+      "shortest_paths",
+      2
+    ],
+    [
+      "Shortcutting_procedure",
+      "shortest_paths",
+      1
+    ],
+    [
+      "Minimum-cost_flow",
+      "shortest_paths",
+      2
+    ],
+    [
+      "Bellman-Ford_algorithm",
+      "shortest_paths",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "shortest_paths",
+      2
+    ],
+    [
+      "Reduce",
+      "shortest_paths",
+      2
+    ],
+    [
+      "directed_graphs",
+      "single-source_shortest_paths",
+      2
+    ],
+    [
+      "Shortcutting_procedure",
+      "single-source_shortest_paths",
+      1
+    ],
+    [
+      "Minimum-cost_flow",
+      "single-source_shortest_paths",
+      2
+    ],
+    [
+      "Bellman-Ford_algorithm",
+      "single-source_shortest_paths",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "single-source_shortest_paths",
+      2
+    ],
+    [
+      "Reduce",
+      "single-source_shortest_paths",
+      2
+    ],
+    [
+      "Shortcutting_procedure",
+      "directed_graphs",
+      1
+    ],
+    [
+      "Minimum-cost_flow",
+      "directed_graphs",
+      2
+    ],
+    [
+      "Bellman-Ford_algorithm",
+      "directed_graphs",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "directed_graphs",
+      2
+    ],
+    [
+      "Reduce",
+      "directed_graphs",
+      2
+    ],
+    [
+      "Minimum-cost_flow",
+      "Shortcutting_procedure",
+      1
+    ],
+    [
+      "Bellman-Ford_algorithm",
+      "Shortcutting_procedure",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "Shortcutting_procedure",
+      1
+    ],
+    [
+      "Reduce",
+      "Shortcutting_procedure",
+      1
+    ],
+    [
+      "Bellman-Ford_algorithm",
+      "Minimum-cost_flow",
+      1
+    ],
+    [
+      "Minimum-cost_flow",
+      "Randomized_algorithm",
+      2
+    ],
+    [
+      "Minimum-cost_flow",
+      "Reduce",
+      2
+    ],
+    [
+      "Bellman-Ford_algorithm",
+      "Randomized_algorithm",
+      1
+    ],
+    [
+      "Bellman-Ford_algorithm",
+      "Reduce",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "Reduce",
+      3
+    ],
+    [
+      "shortest_path",
+      "twin-width",
+      1
+    ],
+    [
+      "shortest_path",
+      "signed_tree_models",
+      1
+    ],
+    [
+      "contraction_sequence",
+      "shortest_path",
+      1
+    ],
+    [
+      "shortest_path",
+      "symmetric_difference",
+      1
+    ],
+    [
+      "Interval_Graph",
+      "shortest_path",
+      1
+    ],
+    [
+      "bicliques",
+      "shortest_path",
+      1
+    ],
+    [
+      "signed_tree_models",
+      "twin-width",
+      1
+    ],
+    [
+      "contraction_sequence",
+      "twin-width",
+      3
+    ],
+    [
+      "symmetric_difference",
+      "twin-width",
+      1
+    ],
+    [
+      "Interval_Graph",
+      "twin-width",
+      1
+    ],
+    [
+      "bicliques",
+      "twin-width",
+      1
+    ],
+    [
+      "contraction_sequence",
+      "signed_tree_models",
+      1
+    ],
+    [
+      "signed_tree_models",
+      "symmetric_difference",
+      1
+    ],
+    [
+      "Interval_Graph",
+      "signed_tree_models",
+      1
+    ],
+    [
+      "bicliques",
+      "signed_tree_models",
+      1
+    ],
+    [
+      "contraction_sequence",
+      "symmetric_difference",
+      1
+    ],
+    [
+      "Interval_Graph",
+      "contraction_sequence",
+      1
+    ],
+    [
+      "bicliques",
+      "contraction_sequence",
+      1
+    ],
+    [
+      "Interval_Graph",
+      "symmetric_difference",
+      1
+    ],
+    [
+      "bicliques",
+      "symmetric_difference",
+      1
+    ],
+    [
+      "Interval_Graph",
+      "bicliques",
+      1
+    ],
+    [
+      "balanced_separator",
+      "planar_graph",
+      1
+    ],
+    [
+      "balanced_separator",
+      "planar_graphs",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "balanced_separator",
+      1
+    ],
+    [
+      "balanced_separator",
+      "distributed_algorithm",
+      1
+    ],
+    [
+      "balanced_separator",
+      "round_complexity",
+      1
+    ],
+    [
+      "balanced_separator",
+      "connected_components",
+      1
+    ],
+    [
+      "planar_graph",
+      "planar_graphs",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "planar_graph",
+      1
+    ],
+    [
+      "distributed_algorithm",
+      "planar_graph",
+      1
+    ],
+    [
+      "planar_graph",
+      "round_complexity",
+      1
+    ],
+    [
+      "connected_components",
+      "planar_graph",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "planar_graphs",
+      1
+    ],
+    [
+      "distributed_algorithm",
+      "planar_graphs",
+      1
+    ],
+    [
+      "planar_graphs",
+      "round_complexity",
+      1
+    ],
+    [
+      "connected_components",
+      "planar_graphs",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "round_complexity",
+      1
+    ],
+    [
+      "Distributed_algorithms",
+      "connected_components",
+      1
+    ],
+    [
+      "distributed_algorithm",
+      "round_complexity",
+      1
+    ],
+    [
+      "connected_components",
+      "distributed_algorithm",
+      1
+    ],
+    [
+      "connected_components",
+      "round_complexity",
+      1
+    ],
+    [
+      "bipartite_matching",
+      "competitive_ratio",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "bipartite_matching",
+      1
+    ],
+    [
+      "bipartite_graphs",
+      "bipartite_matching",
+      1
+    ],
+    [
+      "bipartite_matching",
+      "online_algorithms",
+      2
+    ],
+    [
+      "bipartite_matching",
+      "online_algorithm",
+      2
+    ],
+    [
+      "bipartite_matching",
+      "competitive_analysis",
+      1
+    ],
+    [
+      "bipartite_matching",
+      "matching_problem",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "competitive_ratio",
+      1
+    ],
+    [
+      "bipartite_graphs",
+      "competitive_ratio",
+      1
+    ],
+    [
+      "competitive_ratio",
+      "online_algorithms",
+      3
+    ],
+    [
+      "competitive_ratio",
+      "online_algorithm",
+      3
+    ],
+    [
+      "competitive_analysis",
+      "competitive_ratio",
+      2
+    ],
+    [
+      "competitive_ratio",
+      "matching_problem",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "bipartite_graphs",
+      5
+    ],
+    [
+      "bipartite_graph",
+      "online_algorithms",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "online_algorithm",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "competitive_analysis",
+      1
+    ],
+    [
+      "bipartite_graphs",
+      "online_algorithms",
+      1
+    ],
+    [
+      "bipartite_graphs",
+      "online_algorithm",
+      1
+    ],
+    [
+      "bipartite_graphs",
+      "competitive_analysis",
+      1
+    ],
+    [
+      "bipartite_graphs",
+      "matching_problem",
+      1
+    ],
+    [
+      "online_algorithm",
+      "online_algorithms",
+      5
+    ],
+    [
+      "competitive_analysis",
+      "online_algorithms",
+      2
+    ],
+    [
+      "matching_problem",
+      "online_algorithms",
+      1
+    ],
+    [
+      "competitive_analysis",
+      "online_algorithm",
+      2
+    ],
+    [
+      "matching_problem",
+      "online_algorithm",
+      1
+    ],
+    [
+      "competitive_analysis",
+      "matching_problem",
+      1
+    ],
+    [
+      "induced_minor",
+      "induced_subgraph",
+      1
+    ],
+    [
+      "independent_set",
+      "induced_subgraph",
+      1
+    ],
+    [
+      "Polynomial-time_approximation",
+      "induced_subgraph",
+      1
+    ],
+    [
+      "induced_subgraph",
+      "polynomial-time_approximation_scheme",
+      1
+    ],
+    [
+      "induced_subgraph",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Treewidth",
+      "induced_subgraph",
+      1
+    ],
+    [
+      "independent_set",
+      "induced_minor",
+      1
+    ],
+    [
+      "Polynomial-time_approximation",
+      "induced_minor",
+      1
+    ],
+    [
+      "induced_minor",
+      "polynomial-time_approximation_scheme",
+      1
+    ],
+    [
+      "induced_minor",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Treewidth",
+      "induced_minor",
+      1
+    ],
+    [
+      "Polynomial-time_approximation",
+      "independent_set",
+      1
+    ],
+    [
+      "independent_set",
+      "polynomial-time_approximation_scheme",
+      1
+    ],
+    [
+      "independent_set",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Treewidth",
+      "independent_set",
+      2
+    ],
+    [
+      "Polynomial-time_approximation",
+      "polynomial-time_approximation_scheme",
+      1
+    ],
+    [
+      "Polynomial-time_approximation",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Polynomial-time_approximation",
+      "Treewidth",
+      1
+    ],
+    [
+      "polynomial-time_algorithm",
+      "polynomial-time_approximation_scheme",
+      1
+    ],
+    [
+      "Treewidth",
+      "polynomial-time_approximation_scheme",
+      1
+    ],
+    [
+      "Treewidth",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Parallel_algorithms",
+      "hypergraph_matching",
+      1
+    ],
+    [
+      "Maximal_Matching",
+      "hypergraph_matching",
+      1
+    ],
+    [
+      "hypergraph_matching",
+      "vertex_degree",
+      1
+    ],
+    [
+      "greedy_algorithm",
+      "hypergraph_matching",
+      1
+    ],
+    [
+      "hypergraph_matching",
+      "independent_set",
+      1
+    ],
+    [
+      "Maximal_Matching",
+      "Parallel_algorithms",
+      1
+    ],
+    [
+      "Parallel_algorithms",
+      "vertex_degree",
+      1
+    ],
+    [
+      "Parallel_algorithms",
+      "greedy_algorithm",
+      1
+    ],
+    [
+      "Parallel_algorithms",
+      "independent_set",
+      1
+    ],
+    [
+      "Maximal_Matching",
+      "vertex_degree",
+      1
+    ],
+    [
+      "Maximal_Matching",
+      "greedy_algorithm",
+      1
+    ],
+    [
+      "Maximal_Matching",
+      "independent_set",
+      1
+    ],
+    [
+      "greedy_algorithm",
+      "vertex_degree",
+      1
+    ],
+    [
+      "independent_set",
+      "vertex_degree",
+      1
+    ],
+    [
+      "greedy_algorithm",
+      "independent_set",
+      1
+    ],
+    [
+      "greedy_algorithm",
+      "submodular_maximization",
+      1
+    ],
+    [
+      "bicriteria_approximation",
+      "submodular_maximization",
+      1
+    ],
+    [
+      "matroid_constraints",
+      "submodular_maximization",
+      1
+    ],
+    [
+      "binary_search",
+      "submodular_maximization",
+      1
+    ],
+    [
+      "matroid",
+      "submodular_maximization",
+      1
+    ],
+    [
+      "bicriteria_approximation",
+      "greedy_algorithm",
+      1
+    ],
+    [
+      "greedy_algorithm",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "binary_search",
+      "greedy_algorithm",
+      1
+    ],
+    [
+      "greedy_algorithm",
+      "matroid",
+      1
+    ],
+    [
+      "bicriteria_approximation",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "bicriteria_approximation",
+      "binary_search",
+      1
+    ],
+    [
+      "bicriteria_approximation",
+      "matroid",
+      1
+    ],
+    [
+      "binary_search",
+      "matroid_constraints",
+      1
+    ],
+    [
+      "binary_search",
+      "matroid",
+      1
+    ],
+    [
+      "directed_graphs",
+      "recursive_decomposition",
+      1
+    ],
+    [
+      "convex_hull",
+      "directed_graphs",
+      1
+    ],
+    [
+      "directed_graphs",
+      "triangulation",
+      1
+    ],
+    [
+      "directed_graphs",
+      "graph_decomposition",
+      1
+    ],
+    [
+      "clique",
+      "directed_graphs",
+      1
+    ],
+    [
+      "convex_hull",
+      "recursive_decomposition",
+      1
+    ],
+    [
+      "recursive_decomposition",
+      "triangulation",
+      1
+    ],
+    [
+      "graph_decomposition",
+      "recursive_decomposition",
+      1
+    ],
+    [
+      "clique",
+      "recursive_decomposition",
+      1
+    ],
+    [
+      "convex_hull",
+      "triangulation",
+      1
+    ],
+    [
+      "convex_hull",
+      "graph_decomposition",
+      1
+    ],
+    [
+      "clique",
+      "convex_hull",
+      1
+    ],
+    [
+      "graph_decomposition",
+      "triangulation",
+      1
+    ],
+    [
+      "clique",
+      "triangulation",
+      1
+    ],
+    [
+      "clique",
+      "graph_decomposition",
+      1
+    ],
+    [
+      "color_coding",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "Hamiltonian_path",
+      "color_coding",
+      1
+    ],
+    [
+      "color_coding",
+      "kernelization",
+      1
+    ],
+    [
+      "color_coding",
+      "pathwidth",
+      1
+    ],
+    [
+      "FPT_algorithm",
+      "color_coding",
+      1
+    ],
+    [
+      "Hamiltonian_path",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "kernelization",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "parameterized_complexity",
+      "pathwidth",
+      1
+    ],
+    [
+      "FPT_algorithm",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "Hamiltonian_path",
+      "kernelization",
+      1
+    ],
+    [
+      "Hamiltonian_path",
+      "pathwidth",
+      1
+    ],
+    [
+      "FPT_algorithm",
+      "Hamiltonian_path",
+      1
+    ],
+    [
+      "kernelization",
+      "pathwidth",
+      1
+    ],
+    [
+      "FPT_algorithm",
+      "kernelization",
+      1
+    ],
+    [
+      "FPT_algorithm",
+      "pathwidth",
+      1
+    ],
+    [
+      "H-subgraph-free_graphs",
+      "Steiner_forest",
+      1
+    ],
+    [
+      "H-free_graphs",
+      "Steiner_forest",
+      1
+    ],
+    [
+      "Steiner_forest",
+      "Treewidth",
+      1
+    ],
+    [
+      "NP-completeness",
+      "Steiner_forest",
+      1
+    ],
+    [
+      "Steiner_forest",
+      "independent_set",
+      1
+    ],
+    [
+      "H-free_graphs",
+      "H-subgraph-free_graphs",
+      1
+    ],
+    [
+      "H-subgraph-free_graphs",
+      "Treewidth",
+      1
+    ],
+    [
+      "H-subgraph-free_graphs",
+      "NP-completeness",
+      1
+    ],
+    [
+      "H-subgraph-free_graphs",
+      "independent_set",
+      1
+    ],
+    [
+      "H-free_graphs",
+      "Treewidth",
+      1
+    ],
+    [
+      "H-free_graphs",
+      "NP-completeness",
+      1
+    ],
+    [
+      "H-free_graphs",
+      "independent_set",
+      1
+    ],
+    [
+      "NP-completeness",
+      "Treewidth",
+      1
+    ],
+    [
+      "NP-completeness",
+      "independent_set",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "distance_oracle",
+      1
+    ],
+    [
+      "distance_oracle",
+      "k-center_clustering",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "distance_oracle",
+      1
+    ],
+    [
+      "distance_oracle",
+      "k-center_problem",
+      1
+    ],
+    [
+      "distance_oracle",
+      "k-clustering",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "k-center_clustering",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "k-center_problem",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "k-clustering",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "k-center_clustering",
+      1
+    ],
+    [
+      "k-center_clustering",
+      "k-center_problem",
+      1
+    ],
+    [
+      "k-center_clustering",
+      "k-clustering",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "k-center_problem",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "k-clustering",
+      1
+    ],
+    [
+      "k-center_problem",
+      "k-clustering",
+      1
+    ],
+    [
+      "FPT_algorithm",
+      "fixed-parameter_tractability",
+      1
+    ],
+    [
+      "fixed-parameter_tractability",
+      "polynomial-time_algorithms",
+      1
+    ],
+    [
+      "fixed-parameter_tractability",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "fixed-parameter_tractability",
+      1
+    ],
+    [
+      "fixed-parameter_tractability",
+      "polytope",
+      1
+    ],
+    [
+      "FPT_algorithm",
+      "polynomial-time_algorithms",
+      1
+    ],
+    [
+      "FPT_algorithm",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "FPT_algorithm",
+      1
+    ],
+    [
+      "FPT_algorithm",
+      "polytope",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "polynomial-time_algorithms",
+      1
+    ],
+    [
+      "polynomial-time_algorithms",
+      "polytope",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "polynomial-time_algorithm",
+      "polytope",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "polytope",
+      1
+    ],
+    [
+      "correlation_clustering",
+      "fairness_constraints",
+      1
+    ],
+    [
+      "correlation_clustering",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "Treewidth",
+      "correlation_clustering",
+      1
+    ],
+    [
+      "NP-hardness",
+      "correlation_clustering",
+      1
+    ],
+    [
+      "Partition",
+      "correlation_clustering",
+      1
+    ],
+    [
+      "fairness_constraints",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "Treewidth",
+      "fairness_constraints",
+      1
+    ],
+    [
+      "NP-hardness",
+      "fairness_constraints",
+      1
+    ],
+    [
+      "Partition",
+      "fairness_constraints",
+      1
+    ],
+    [
+      "Treewidth",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "NP-hardness",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "Partition",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "NP-hardness",
+      "Treewidth",
+      1
+    ],
+    [
+      "Partition",
+      "Treewidth",
+      1
+    ],
+    [
+      "NP-hardness",
+      "Partition",
+      1
+    ],
+    [
+      "Agnostic_learning",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Agnostic_learning",
+      "query_lower_bounds",
+      1
+    ],
+    [
+      "Agnostic_learning",
+      "Halfspaces",
+      1
+    ],
+    [
+      "Agnostic_learning",
+      "Gaussian_distribution",
+      1
+    ],
+    [
+      "Agnostic_learning",
+      "linear_programming",
+      1
+    ],
+    [
+      "lower_bounds",
+      "query_lower_bounds",
+      1
+    ],
+    [
+      "Halfspaces",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Gaussian_distribution",
+      "lower_bounds",
+      1
+    ],
+    [
+      "linear_programming",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Halfspaces",
+      "query_lower_bounds",
+      1
+    ],
+    [
+      "Gaussian_distribution",
+      "query_lower_bounds",
+      1
+    ],
+    [
+      "linear_programming",
+      "query_lower_bounds",
+      1
+    ],
+    [
+      "Gaussian_distribution",
+      "Halfspaces",
+      2
+    ],
+    [
+      "Halfspaces",
+      "linear_programming",
+      1
+    ],
+    [
+      "Gaussian_distribution",
+      "linear_programming",
+      1
+    ],
+    [
+      "Matroid_intersection",
+      "matroid",
+      1
+    ],
+    [
+      "Matroid_intersection",
+      "independent_set",
+      1
+    ],
+    [
+      "Matroid_intersection",
+      "communication_complexity",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "Matroid_intersection",
+      1
+    ],
+    [
+      "Matroid_intersection",
+      "approximation_algorithm",
+      1
+    ],
+    [
+      "independent_set",
+      "matroid",
+      1
+    ],
+    [
+      "communication_complexity",
+      "matroid",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "matroid",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "matroid",
+      1
+    ],
+    [
+      "communication_complexity",
+      "independent_set",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "independent_set",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "independent_set",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "communication_complexity",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "communication_complexity",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "controlling_sets",
+      1
+    ],
+    [
+      "controlling_sets",
+      "matroid",
+      1
+    ],
+    [
+      "controlling_sets",
+      "convex_hull",
+      1
+    ],
+    [
+      "controlling_sets",
+      "identifying_sets",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "controlling_sets",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "matroid",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "convex_hull",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "identifying_sets",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "Convex_optimization",
+      1
+    ],
+    [
+      "convex_hull",
+      "matroid",
+      1
+    ],
+    [
+      "identifying_sets",
+      "matroid",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "matroid",
+      1
+    ],
+    [
+      "convex_hull",
+      "identifying_sets",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "convex_hull",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "identifying_sets",
+      1
+    ],
+    [
+      "replicability",
+      "sample_complexity",
+      1
+    ],
+    [
+      "PAC_learning",
+      "sample_complexity",
+      1
+    ],
+    [
+      "random_walk",
+      "sample_complexity",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "sample_complexity",
+      1
+    ],
+    [
+      "PAC_learning",
+      "replicability",
+      1
+    ],
+    [
+      "random_walk",
+      "replicability",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "replicability",
+      1
+    ],
+    [
+      "replicability",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "PAC_learning",
+      "random_walk",
+      1
+    ],
+    [
+      "PAC_learning",
+      "Randomized_algorithm",
+      1
+    ],
+    [
+      "PAC_learning",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "random_walk",
+      1
+    ],
+    [
+      "random_walk",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "sample_complexity_lower_bound",
+      1
+    ],
+    [
+      "binary_search",
+      "dynamic_programming",
+      1
+    ],
+    [
+      "binary_search",
+      "sequential_decision-making",
+      1
+    ],
+    [
+      "binary_search",
+      "decision_tree",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "binary_search",
+      1
+    ],
+    [
+      "Reduce",
+      "binary_search",
+      1
+    ],
+    [
+      "dynamic_programming",
+      "sequential_decision-making",
+      1
+    ],
+    [
+      "decision_tree",
+      "dynamic_programming",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "dynamic_programming",
+      2
+    ],
+    [
+      "Reduce",
+      "dynamic_programming",
+      2
+    ],
+    [
+      "decision_tree",
+      "sequential_decision-making",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "sequential_decision-making",
+      1
+    ],
+    [
+      "Reduce",
+      "sequential_decision-making",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "decision_tree",
+      2
+    ],
+    [
+      "Reduce",
+      "decision_tree",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "Reduce",
+      1
+    ],
+    [
+      "greedy_algorithm",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "approximation_ratio",
+      "greedy_algorithm",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "greedy_algorithm",
+      1
+    ],
+    [
+      "dynamic_programming",
+      "greedy_algorithm",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "greedy_algorithm",
+      1
+    ],
+    [
+      "approximation_ratio",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "dynamic_programming",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "parameterized_complexity",
+      1
+    ],
+    [
+      "approximation_ratio",
+      "dynamic_programming",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "dynamic_programming",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "dynamic_programming",
+      1
+    ],
+    [
+      "Polynomial_time_algorithm",
+      "polynomial-time_algorithms",
+      1
+    ],
+    [
+      "Polynomial_time_algorithm",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "Polynomial_time_algorithm",
+      "Randomized_algorithm",
+      1
+    ],
+    [
+      "Polynomial_time_algorithm",
+      "polynomial_time_algorithms",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "polynomial-time_algorithms",
+      1
+    ],
+    [
+      "polynomial-time_algorithms",
+      "polynomial_time_algorithms",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "polynomial-time_algorithm",
+      1
+    ],
+    [
+      "polynomial-time_algorithm",
+      "polynomial_time_algorithms",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "polynomial_time_algorithms",
+      1
+    ],
+    [
+      "contrastive_reasons",
+      "submodularity",
+      1
+    ],
+    [
+      "submodularity",
+      "sufficient_reasons",
+      1
+    ],
+    [
+      "decision_tree",
+      "submodularity",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "submodularity",
+      1
+    ],
+    [
+      "contrastive_reasons",
+      "sufficient_reasons",
+      1
+    ],
+    [
+      "contrastive_reasons",
+      "decision_tree",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "contrastive_reasons",
+      1
+    ],
+    [
+      "decision_tree",
+      "sufficient_reasons",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "sufficient_reasons",
+      1
+    ],
+    [
+      "directed_graphs",
+      "vertex-disjoint_paths",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "vertex-disjoint_paths",
+      1
+    ],
+    [
+      "SDP_relaxation",
+      "vertex-disjoint_paths",
+      1
+    ],
+    [
+      "Network_design",
+      "vertex-disjoint_paths",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "directed_graphs",
+      1
+    ],
+    [
+      "SDP_relaxation",
+      "directed_graphs",
+      1
+    ],
+    [
+      "Network_design",
+      "directed_graphs",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "SDP_relaxation",
+      2
+    ],
+    [
+      "Combinatorial_optimization",
+      "Network_design",
+      1
+    ],
+    [
+      "Network_design",
+      "SDP_relaxation",
+      1
+    ],
+    [
+      "learning-augmented_algorithms",
+      "online_algorithm",
+      1
+    ],
+    [
+      "online_algorithm",
+      "online_learning_algorithm",
+      1
+    ],
+    [
+      "learning-augmented_algorithms",
+      "online_algorithms",
+      1
+    ],
+    [
+      "online_algorithms",
+      "online_learning_algorithm",
+      1
+    ],
+    [
+      "bipartite_matching",
+      "learning-augmented_algorithms",
+      1
+    ],
+    [
+      "bipartite_matching",
+      "online_learning_algorithm",
+      1
+    ],
+    [
+      "learning-augmented_algorithms",
+      "online_learning_algorithm",
+      1
+    ],
+    [
+      "bipartite_graphs",
+      "minimal_redundant_sets",
+      1
+    ],
+    [
+      "bipartite_graphs",
+      "split_graph",
+      1
+    ],
+    [
+      "bipartite_graphs",
+      "enumeration_algorithm",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "minimal_redundant_sets",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "split_graph",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "enumeration_algorithm",
+      1
+    ],
+    [
+      "minimal_redundant_sets",
+      "split_graph",
+      1
+    ],
+    [
+      "enumeration_algorithm",
+      "minimal_redundant_sets",
+      1
+    ],
+    [
+      "enumeration_algorithm",
+      "split_graph",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "decision_tree",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "decision_tree",
+      1
+    ],
+    [
+      "decision_tree",
+      "inapproximability",
+      1
+    ],
+    [
+      "Partition",
+      "decision_tree",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "inapproximability",
+      1
+    ],
+    [
+      "Partition",
+      "approximation_algorithm",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "inapproximability",
+      1
+    ],
+    [
+      "Approximation_algorithms",
+      "Partition",
+      1
+    ],
+    [
+      "Markov_chain",
+      "Markov_chains",
+      4
+    ],
+    [
+      "Markov_chain",
+      "Query_complexity",
+      1
+    ],
+    [
+      "Markov_chain",
+      "Randomized_algorithm",
+      1
+    ],
+    [
+      "Markov_chain",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Markov_chains",
+      "Query_complexity",
+      1
+    ],
+    [
+      "Markov_chains",
+      "Randomized_algorithm",
+      1
+    ],
+    [
+      "Markov_chains",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Query_complexity",
+      "Randomized_algorithm",
+      1
+    ],
+    [
+      "Query_complexity",
+      "lower_bounds",
+      2
+    ],
+    [
+      "Randomized_algorithm",
+      "lower_bounds",
+      2
+    ],
+    [
+      "LZ77_compression",
+      "lossless_data_compression",
+      1
+    ],
+    [
+      "LZ77_compression",
+      "approximation_algorithm",
+      1
+    ],
+    [
+      "LZ77_compression",
+      "ε-approximation_algorithm",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "lossless_data_compression",
+      1
+    ],
+    [
+      "lossless_data_compression",
+      "ε-approximation_algorithm",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "ε-approximation_algorithm",
+      1
+    ],
+    [
+      "Markov_chain",
+      "random_walk",
+      2
+    ],
+    [
+      "Markov_chain",
+      "Partition",
+      1
+    ],
+    [
+      "Markov_chain",
+      "Reduce",
+      1
+    ],
+    [
+      "Markov_chains",
+      "random_walk",
+      2
+    ],
+    [
+      "Markov_chains",
+      "Partition",
+      1
+    ],
+    [
+      "Markov_chains",
+      "Reduce",
+      1
+    ],
+    [
+      "Partition",
+      "random_walk",
+      1
+    ],
+    [
+      "Reduce",
+      "random_walk",
+      1
+    ],
+    [
+      "Partition",
+      "Reduce",
+      1
+    ],
+    [
+      "Gibbs_states",
+      "sampling",
+      1
+    ],
+    [
+      "Gibbs_states",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Gibbs_states",
+      "partition_function",
+      1
+    ],
+    [
+      "Gibbs_states",
+      "Partition",
+      1
+    ],
+    [
+      "lower_bounds",
+      "sampling",
+      1
+    ],
+    [
+      "partition_function",
+      "sampling",
+      1
+    ],
+    [
+      "Partition",
+      "sampling",
+      4
+    ],
+    [
+      "lower_bounds",
+      "partition_function",
+      1
+    ],
+    [
+      "Partition",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Partition",
+      "partition_function",
+      11
+    ],
+    [
+      "Low-rank_matrix_approximation",
+      "low-rank_approximation",
+      1
+    ],
+    [
+      "Low-rank_matrix_approximation",
+      "Randomized_algorithm",
+      1
+    ],
+    [
+      "Low-rank_matrix_approximation",
+      "Reduce",
+      1
+    ],
+    [
+      "Randomized_algorithm",
+      "low-rank_approximation",
+      1
+    ],
+    [
+      "Reduce",
+      "low-rank_approximation",
+      1
+    ],
+    [
+      "H-minor-free_graphs",
+      "twin-width",
+      1
+    ],
+    [
+      "minor-free_graphs",
+      "twin-width",
+      1
+    ],
+    [
+      "H-minor-free_graphs",
+      "contraction_sequence",
+      1
+    ],
+    [
+      "H-minor-free_graphs",
+      "minor-free_graphs",
+      1
+    ],
+    [
+      "contraction_sequence",
+      "minor-free_graphs",
+      1
+    ],
+    [
+      "deBruijn_graph",
+      "necklace_cover",
+      1
+    ],
+    [
+      "greedy_algorithm",
+      "necklace_cover",
+      1
+    ],
+    [
+      "NP-hardness",
+      "necklace_cover",
+      1
+    ],
+    [
+      "deBruijn_graph",
+      "greedy_algorithm",
+      1
+    ],
+    [
+      "NP-hardness",
+      "deBruijn_graph",
+      1
+    ],
+    [
+      "NP-hardness",
+      "greedy_algorithm",
+      1
+    ],
+    [
+      "bond_dimension",
+      "tensor_network",
+      1
+    ],
+    [
+      "sampling",
+      "tensor_network",
+      1
+    ],
+    [
+      "Diffusion",
+      "tensor_network",
+      1
+    ],
+    [
+      "Reduce",
+      "tensor_network",
+      1
+    ],
+    [
+      "bond_dimension",
+      "sampling",
+      1
+    ],
+    [
+      "Diffusion",
+      "bond_dimension",
+      1
+    ],
+    [
+      "Reduce",
+      "bond_dimension",
+      1
+    ],
+    [
+      "Diffusion",
+      "sampling",
+      6
+    ],
+    [
+      "Reduce",
+      "sampling",
+      1
+    ],
+    [
+      "Diffusion",
+      "Reduce",
+      1
+    ],
+    [
+      "biclique",
+      "bicliques",
+      1
+    ],
+    [
+      "biclique",
+      "bipartite_graphs",
+      1
+    ],
+    [
+      "biclique",
+      "bipartite_graph",
+      1
+    ],
+    [
+      "bicliques",
+      "bipartite_graphs",
+      1
+    ],
+    [
+      "bicliques",
+      "bipartite_graph",
+      1
+    ],
+    [
+      "spanning_tree",
+      "spanning_trees",
+      2
+    ],
+    [
+      "minimum_spanning_trees",
+      "spanning_trees",
+      1
+    ],
+    [
+      "Minimum_Spanning_Tree",
+      "spanning_trees",
+      1
+    ],
+    [
+      "minimum_spanning_trees",
+      "spanning_tree",
+      1
+    ],
+    [
+      "Minimum_Spanning_Tree",
+      "spanning_tree",
+      1
+    ],
+    [
+      "Minimum_Spanning_Tree",
+      "minimum_spanning_trees",
+      1
+    ],
+    [
+      "polytope",
+      "spanning_trees",
+      1
+    ],
+    [
+      "spanning_trees",
+      "triangulation",
+      1
+    ],
+    [
+      "polytope",
+      "spanning_tree",
+      1
+    ],
+    [
+      "spanning_tree",
+      "triangulation",
+      1
+    ],
+    [
+      "polytope",
+      "triangulation",
+      1
+    ],
+    [
+      "Query_complexity",
+      "transitive_closure",
+      1
+    ],
+    [
+      "Query_complexity",
+      "monotonicity_testing",
+      1
+    ],
+    [
+      "lower_bounds",
+      "transitive_closure",
+      1
+    ],
+    [
+      "lower_bounds",
+      "monotonicity_testing",
+      1
+    ],
+    [
+      "monotonicity_testing",
+      "transitive_closure",
+      1
+    ],
+    [
+      "Nash_equilibrium",
+      "partition_function",
+      1
+    ],
+    [
+      "Nash_equilibrium",
+      "Partition",
+      1
+    ],
+    [
+      "Nash_equilibrium",
+      "Potential_function",
+      1
+    ],
+    [
+      "Potential_function",
+      "partition_function",
+      1
+    ],
+    [
+      "Partition",
+      "Potential_function",
+      1
+    ],
+    [
+      "Kalman_filter",
+      "Scan",
+      1
+    ],
+    [
+      "Kalman_filter",
+      "diffusion_models",
+      1
+    ],
+    [
+      "Filter",
+      "Kalman_filter",
+      5
+    ],
+    [
+      "Kalman_filter",
+      "sampling",
+      2
+    ],
+    [
+      "Diffusion",
+      "Kalman_filter",
+      1
+    ],
+    [
+      "Scan",
+      "diffusion_models",
+      1
+    ],
+    [
+      "Filter",
+      "Scan",
+      1
+    ],
+    [
+      "Scan",
+      "sampling",
+      2
+    ],
+    [
+      "Diffusion",
+      "Scan",
+      2
+    ],
+    [
+      "Filter",
+      "diffusion_models",
+      1
+    ],
+    [
+      "diffusion_models",
+      "sampling",
+      4
+    ],
+    [
+      "Diffusion",
+      "diffusion_models",
+      8
+    ],
+    [
+      "Filter",
+      "sampling",
+      1
+    ],
+    [
+      "Diffusion",
+      "Filter",
+      1
+    ],
+    [
+      "induced_subgraph",
+      "vertex_degree",
+      1
+    ],
+    [
+      "NP-hardness",
+      "induced_subgraph",
+      1
+    ],
+    [
+      "NP-hardness",
+      "vertex_degree",
+      1
+    ],
+    [
+      "Diffusion",
+      "Metric_spaces",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "Metric_spaces",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "Diffusion",
+      1
+    ],
+    [
+      "Diffusion",
+      "metric_space",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "metric_space",
+      1
+    ],
+    [
+      "metric_space",
+      "ordered_partition",
+      1
+    ],
+    [
+      "metric_space",
+      "sampling",
+      2
+    ],
+    [
+      "Metric_spaces",
+      "ordered_partition",
+      1
+    ],
+    [
+      "Metric_spaces",
+      "sampling",
+      2
+    ],
+    [
+      "Partition",
+      "ordered_partition",
+      1
+    ],
+    [
+      "ordered_partition",
+      "sampling",
+      1
+    ],
+    [
+      "dynamic_algorithms",
+      "low_out-degree_orientation",
+      1
+    ],
+    [
+      "arboricity",
+      "low_out-degree_orientation",
+      1
+    ],
+    [
+      "arboricity",
+      "dynamic_algorithms",
+      1
+    ],
+    [
+      "Steiner_tree",
+      "integrality_gap",
+      1
+    ],
+    [
+      "Steiner_tree",
+      "linear_programming_relaxation",
+      1
+    ],
+    [
+      "Steiner_tree",
+      "linear_programming",
+      1
+    ],
+    [
+      "integrality_gap",
+      "linear_programming_relaxation",
+      3
+    ],
+    [
+      "linear_programming",
+      "linear_programming_relaxation",
+      3
+    ],
+    [
+      "Combinatorial_optimization",
+      "bin_packing",
+      2
+    ],
+    [
+      "bin_packing",
+      "linear_programming",
+      1
+    ],
+    [
+      "Partition",
+      "bin_packing",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "Partition",
+      2
+    ],
+    [
+      "Partition",
+      "linear_programming",
+      1
+    ],
+    [
+      "cost_analysis",
+      "cost_bounds",
+      1
+    ],
+    [
+      "binary_search",
+      "cost_bounds",
+      1
+    ],
+    [
+      "binary_search",
+      "cost_analysis",
+      1
+    ],
+    [
+      "VC_dimension",
+      "lower_bounds",
+      1
+    ],
+    [
+      "PAC_learning",
+      "lower_bounds",
+      1
+    ],
+    [
+      "PAC_learning",
+      "VC_dimension",
+      1
+    ],
+    [
+      "Approximate_Nearest_Neighbors",
+      "Approximation_factor",
+      1
+    ],
+    [
+      "bin_packing",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Diffusion",
+      "bin_packing",
+      1
+    ],
+    [
+      "Diffusion",
+      "reinforcement_learning",
+      2
+    ],
+    [
+      "Combinatorial_optimization",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "Diffusion",
+      1
+    ],
+    [
+      "Interval_Graph",
+      "Treewidth",
+      1
+    ],
+    [
+      "Treewidth",
+      "connected_components",
+      1
+    ],
+    [
+      "Interval_Graph",
+      "connected_components",
+      1
+    ],
+    [
+      "Differential_privacy",
+      "LOCAL_model",
+      1
+    ],
+    [
+      "Differential_privacy",
+      "lower_bounds",
+      2
+    ],
+    [
+      "LOCAL_model",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Laplacian_matrix",
+      "graph_clustering",
+      1
+    ],
+    [
+      "Diffusion",
+      "Laplacian_matrix",
+      1
+    ],
+    [
+      "Diffusion",
+      "graph_clustering",
+      1
+    ],
+    [
+      "machine_unlearning",
+      "perfect_retraining",
+      1
+    ],
+    [
+      "graph_coloring",
+      "streaming_algorithm",
+      1
+    ],
+    [
+      "Streaming_algorithms",
+      "graph_coloring",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "bin_packing",
+      1
+    ],
+    [
+      "2-approximation_algorithm",
+      "bin_packing",
+      1
+    ],
+    [
+      "2-approximation_algorithm",
+      "approximation_algorithm",
+      1
+    ],
+    [
+      "Cache_utilization",
+      "ray_tracing",
+      1
+    ],
+    [
+      "Pareto-optimality",
+      "ray_tracing",
+      1
+    ],
+    [
+      "Cache_utilization",
+      "Pareto-optimality",
+      1
+    ],
+    [
+      "Differential_privacy",
+      "clustering_algorithm",
+      2
+    ],
+    [
+      "clustering_algorithm",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "Lyapunov_stability",
+      1
+    ],
+    [
+      "Lyapunov_stability",
+      "Transfer_function",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "Transfer_function",
+      1
+    ],
+    [
+      "Fourier_transform",
+      "binary_search",
+      1
+    ],
+    [
+      "Fourier_transform",
+      "Ion_channel",
+      1
+    ],
+    [
+      "Ion_channel",
+      "binary_search",
+      1
+    ],
+    [
+      "Diffusion",
+      "random_walk",
+      1
+    ],
+    [
+      "Diffusion",
+      "Markov_chain",
+      1
+    ],
+    [
+      "Diffusion",
+      "Markov_chains",
+      1
+    ],
+    [
+      "Max-3-Cut_problem",
+      "Partition",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "Max-3-Cut_problem",
+      1
+    ],
+    [
+      "dynamic_programming",
+      "pricing_subproblem",
+      1
+    ],
+    [
+      "graph_embedding",
+      "graph_reconstruction",
+      1
+    ],
+    [
+      "Kalman_filter",
+      "Support_Vector_Machines",
+      1
+    ],
+    [
+      "Kalman_filter",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Support_Vector_Machines",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Support_Vector_Machines",
+      "sampling",
+      1
+    ],
+    [
+      "reinforcement_learning",
+      "sampling",
+      4
+    ],
+    [
+      "Hamming_distance",
+      "characteristic_function",
+      1
+    ],
+    [
+      "Hamming_distance",
+      "Partition",
+      1
+    ],
+    [
+      "Partition",
+      "characteristic_function",
+      1
+    ],
+    [
+      "leader_election",
+      "self-stabilizing_leader_election",
+      1
+    ],
+    [
+      "Parallel_algorithms",
+      "Streaming_algorithms",
+      1
+    ],
+    [
+      "Parallel_algorithms",
+      "streaming_algorithm",
+      1
+    ],
+    [
+      "Partition_analysis",
+      "Reynolds_number",
+      1
+    ],
+    [
+      "Partition",
+      "Partition_analysis",
+      1
+    ],
+    [
+      "Partition",
+      "Reynolds_number",
+      1
+    ],
+    [
+      "Differential_privacy",
+      "k-means_clustering",
+      1
+    ],
+    [
+      "clustering_algorithm",
+      "k-means_clustering",
+      1
+    ],
+    [
+      "Entity_Resolution",
+      "graph_traversal",
+      1
+    ],
+    [
+      "Entity_Resolution",
+      "calibration",
+      1
+    ],
+    [
+      "calibration",
+      "graph_traversal",
+      1
+    ],
+    [
+      "NP-hardness",
+      "matching_problem",
+      1
+    ],
+    [
+      "greedy_algorithm",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Ion_channel",
+      "send_sequence",
+      1
+    ],
+    [
+      "Markov_chain",
+      "sampling",
+      1
+    ],
+    [
+      "Bayesian_linear_regression",
+      "sampling",
+      1
+    ],
+    [
+      "Bayesian_linear_regression",
+      "Markov_chain",
+      1
+    ],
+    [
+      "Kalman_filter",
+      "Monte_Carlo_simulation",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "Kalman_filter",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "Monte_Carlo_simulation",
+      1
+    ],
+    [
+      "Filter",
+      "Monte_Carlo_simulation",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "Filter",
+      1
+    ],
+    [
+      "Tensor_network_algorithm",
+      "tensor_network",
+      1
+    ],
+    [
+      "Fourier_transform",
+      "Gaussian_distribution",
+      1
+    ],
+    [
+      "Diffusion",
+      "Gaussian_distribution",
+      1
+    ],
+    [
+      "Diffusion",
+      "Fourier_transform",
+      1
+    ],
+    [
+      "regular_language",
+      "sampling",
+      1
+    ],
+    [
+      "regular_languages",
+      "sampling",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "lower_bounds",
+      3
+    ],
+    [
+      "dynamic_programming",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Filter",
+      "Halfspaces",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "Decision_Diagrams",
+      1
+    ],
+    [
+      "Markov_chains",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Markov_chain",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Hamiltonian_path",
+      "NP-completeness",
+      1
+    ],
+    [
+      "Mechanism_design",
+      "Polynomial-time_approximation",
+      1
+    ],
+    [
+      "Diffusion",
+      "diffusion_sampling",
+      1
+    ],
+    [
+      "diffusion_sampling",
+      "sampling",
+      1
+    ],
+    [
+      "diffusion_models",
+      "diffusion_sampling",
+      1
+    ],
+    [
+      "Monte_Carlo_simulation",
+      "Target_tracking",
+      1
+    ],
+    [
+      "Scan",
+      "Target_tracking",
+      1
+    ],
+    [
+      "Monte_Carlo_simulation",
+      "Scan",
+      1
+    ],
+    [
+      "bipartite_graphs",
+      "inapproximability",
+      1
+    ],
+    [
+      "bipartite_graph",
+      "inapproximability",
+      1
+    ],
+    [
+      "Richardson_extrapolation",
+      "asymptotic_analysis",
+      1
+    ],
+    [
+      "Graph_neural_networks",
+      "graph_traversal",
+      1
+    ],
+    [
+      "Reduce",
+      "graph_traversal",
+      1
+    ],
+    [
+      "Graph_neural_networks",
+      "Reduce",
+      2
+    ],
+    [
+      "Ising_model",
+      "Ising_models",
+      2
+    ],
+    [
+      "Scan",
+      "convex_hull",
+      1
+    ],
+    [
+      "Gaussian_input_masking",
+      "Linear_convergence",
+      1
+    ],
+    [
+      "Low-rank_matrix_approximation",
+      "NP-hardness",
+      1
+    ],
+    [
+      "KL_divergence",
+      "Nash_equilibrium",
+      1
+    ],
+    [
+      "KL_divergence",
+      "sampling",
+      1
+    ],
+    [
+      "Diffusion",
+      "batch_sampling",
+      1
+    ],
+    [
+      "batch_sampling",
+      "sampling",
+      1
+    ],
+    [
+      "approximation_algorithm",
+      "randomized_rounding",
+      2
+    ],
+    [
+      "approximation_ratio",
+      "randomized_rounding",
+      2
+    ],
+    [
+      "Differential_privacy",
+      "Filter",
+      1
+    ],
+    [
+      "sample_complexity",
+      "sequential_decision-making",
+      1
+    ],
+    [
+      "SDP_relaxation",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Ion_channel",
+      "graph_coloring",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "KKT_points",
+      1
+    ],
+    [
+      "Sequential_calibration",
+      "calibration",
+      1
+    ],
+    [
+      "Richardson_extrapolation",
+      "triangulation",
+      1
+    ],
+    [
+      "Target_tracking",
+      "submodular_maximization",
+      1
+    ],
+    [
+      "Monte_Carlo_simulation",
+      "Transfer_function",
+      1
+    ],
+    [
+      "Diffusion",
+      "Monte_Carlo_simulation",
+      1
+    ],
+    [
+      "Diffusion",
+      "Transfer_function",
+      1
+    ],
+    [
+      "Lyapunov_stability",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Compressible_flow",
+      "Randomized_algorithm",
+      1
+    ],
+    [
+      "B-tree",
+      "Partition",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "robust_optimization",
+      1
+    ],
+    [
+      "lower_bounds",
+      "robust_optimization",
+      2
+    ],
+    [
+      "Monte_Carlo_simulation",
+      "polytope",
+      1
+    ],
+    [
+      "Markov_chain",
+      "confidence_intervals",
+      1
+    ],
+    [
+      "Diffusion",
+      "Observability",
+      1
+    ],
+    [
+      "Observability",
+      "diffusion_models",
+      1
+    ],
+    [
+      "Fourier_transform",
+      "spectral_methods",
+      1
+    ],
+    [
+      "Flow_Matching",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Flow_Matching",
+      "sampling",
+      1
+    ],
+    [
+      "Chain-of-thought",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "sample_complexity",
+      "sampling",
+      1
+    ],
+    [
+      "Linear_convergence",
+      "decision_tree",
+      1
+    ],
+    [
+      "Action_potential",
+      "Diffusion",
+      1
+    ],
+    [
+      "reinforcement_learning",
+      "sequential_decision-making",
+      1
+    ],
+    [
+      "sampling",
+      "sequential_decision-making",
+      1
+    ],
+    [
+      "Branch-and-bound_algorithm",
+      "Reduce",
+      1
+    ],
+    [
+      "Nash_equilibrium",
+      "robust_optimization",
+      1
+    ],
+    [
+      "Filter",
+      "matrix-vector_multiplications",
+      1
+    ],
+    [
+      "Graph_neural_networks",
+      "spectral_methods",
+      1
+    ],
+    [
+      "Sensitivity_analysis",
+      "linear_programming",
+      1
+    ],
+    [
+      "calibration",
+      "ray_tracing",
+      1
+    ],
+    [
+      "dynamic_programming",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Diffusion",
+      "dynamic_programming",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "Linear_convergence",
+      1
+    ],
+    [
+      "Ion_channel",
+      "characteristic_function",
+      1
+    ],
+    [
+      "Chinese_Remainder_Theorem",
+      "sampling",
+      1
+    ],
+    [
+      "Combinatorial_optimization",
+      "Ising_model",
+      1
+    ],
+    [
+      "NP-hardness",
+      "robust_optimization",
+      1
+    ],
+    [
+      "Scan",
+      "Sensor_fusion",
+      1
+    ],
+    [
+      "Partition",
+      "Scan",
+      1
+    ],
+    [
+      "Graph_neural_networks",
+      "sampling",
+      1
+    ],
+    [
+      "Graph_neural_networks",
+      "Partition",
+      1
+    ],
+    [
+      "Compressible_flow",
+      "Mach_number",
+      1
+    ],
+    [
+      "Diffusion",
+      "Mach_number",
+      1
+    ],
+    [
+      "Compressible_flow",
+      "Diffusion",
+      2
+    ],
+    [
+      "Filter",
+      "singular_value_decomposition",
+      1
+    ],
+    [
+      "Kalman_filter",
+      "PID_control",
+      1
+    ],
+    [
+      "Filter",
+      "PID_control",
+      1
+    ],
+    [
+      "calibration",
+      "robust_optimization",
+      1
+    ],
+    [
+      "Sensor_fusion",
+      "decision_tree",
+      2
+    ],
+    [
+      "Monte_Carlo_simulation",
+      "spectral_methods",
+      1
+    ],
+    [
+      "Monte_Carlo_simulation",
+      "asymptotic_analysis",
+      1
+    ],
+    [
+      "ray_tracing",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Compressible_flow",
+      "Reynolds_number",
+      3
+    ],
+    [
+      "Boundary_layer",
+      "Reynolds_number",
+      2
+    ],
+    [
+      "Boundary_layer",
+      "Compressible_flow",
+      2
+    ],
+    [
+      "linear_programming",
+      "scheduling_algorithm",
+      1
+    ],
+    [
+      "Diffusion",
+      "Score-Based_Diffusion_Models",
+      2
+    ],
+    [
+      "Score-Based_Diffusion_Models",
+      "diffusion_models",
+      2
+    ],
+    [
+      "Score-Based_Diffusion_Models",
+      "sampling",
+      1
+    ],
+    [
+      "dynamic_programming",
+      "utility_functions",
+      2
+    ],
+    [
+      "Monte_Carlo_simulation",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "calibration",
+      "linear_programming",
+      1
+    ],
+    [
+      "Filter",
+      "Sensor_fusion",
+      1
+    ],
+    [
+      "Diffusion",
+      "calibration",
+      1
+    ],
+    [
+      "calibration",
+      "diffusion_models",
+      1
+    ],
+    [
+      "calibration",
+      "sampling",
+      1
+    ],
+    [
+      "Fourier_transform",
+      "Reduce",
+      1
+    ],
+    [
+      "Filter",
+      "decision_tree",
+      1
+    ],
+    [
+      "Kalman_filter",
+      "Target_tracking",
+      2
+    ],
+    [
+      "Nash_equilibrium",
+      "sampling",
+      1
+    ],
+    [
+      "facility_location",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "PID_control",
+      "Target_tracking",
+      2
+    ],
+    [
+      "Fourier_transform",
+      "Monte_Carlo_simulation",
+      1
+    ],
+    [
+      "dynamic_programming",
+      "sampling",
+      1
+    ],
+    [
+      "Reduce",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "Reduce",
+      1
+    ],
+    [
+      "Nash_equilibrium",
+      "Reduce",
+      1
+    ],
+    [
+      "Reduce",
+      "clustering_algorithm",
+      1
+    ],
+    [
+      "Boundary_layer",
+      "Mach_number",
+      2
+    ],
+    [
+      "Filter",
+      "calibration",
+      1
+    ],
+    [
+      "Reduce",
+      "asymptotic_analysis",
+      1
+    ],
+    [
+      "Compressible_flow",
+      "Reduce",
+      1
+    ],
+    [
+      "Monte_Carlo_simulation",
+      "Observability",
+      1
+    ],
+    [
+      "Filter",
+      "Fourier_transform",
+      1
+    ],
+    [
+      "Filter",
+      "failure_probability",
+      2
+    ],
+    [
+      "Target_tracking",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Diffusion",
+      "Reynolds_number",
+      1
+    ],
+    [
+      "Convex_optimization",
+      "spectral_methods",
+      2
+    ],
+    [
+      "Diffusion",
+      "Ion_channel",
+      1
+    ],
+    [
+      "Reduce",
+      "lower_bounds",
+      1
+    ],
+    [
+      "Fourier_transform",
+      "sampling",
+      1
+    ],
+    [
+      "Reynolds_number",
+      "reinforcement_learning",
+      1
+    ],
+    [
+      "Reduce",
+      "Scan",
+      1
+    ]
+  ],
   "concept_freq": {
     "wiki:Reduce": 159,
     "wiki:Diffusion": 101,
@@ -26356,11 +33138,13 @@ window.ARXIVIS = {
     "wiki:fair_k-center_problem|wiki:inapproximability": 1,
     "wiki:Partition|wiki:fair_k-center_problem": 1
   },
-  "generated_at": "2026-05-11T07:11:12.122346+00:00",
+  "generated_at": "2026-05-11T08:38:34.761046+00:00",
   "stats": {
     "total_papers_scanned": 3581,
     "papers_with_acts": 988,
     "concepts_in_vocab": 1242,
-    "elapsed_s": 11.0
+    "concept_universe_size": 289,
+    "concept_edges_count": 951,
+    "elapsed_s": 26.6
   }
 };

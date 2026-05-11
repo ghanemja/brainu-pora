@@ -55,15 +55,43 @@ function ArXivis({ onClose, onJumpToConcept }) {
     [filtered, selectedId]
   );
 
+  // arXivis brain = concept universe assembled from ALL kept papers.
+  // Far broader than BU_DATA.NODES (which is only ~75 hub concepts).
+  const customNodes = useMemo(
+    () => window.ARXIVIS?.concept_universe || [],
+    []
+  );
+  const customLinks = useMemo(
+    () => window.ARXIVIS?.concept_edges || [],
+    []
+  );
+  const universeIdSet = useMemo(
+    () => new Set(customNodes.map(n => n.id)),
+    [customNodes]
+  );
+
   // Map paper-activated wiki ids onto graph node ids that actually exist
   const activatedGraphNodes = useMemo(() => {
     if (!selected) return [];
-    const nodeIds = new Set(BU_DATA.NODES.map(n => n.id));
-    // Concept ids in ARXIVIS look like "wiki:slug" — graph node ids are slugs
     return selected.concepts
       .map(c => c.id.replace(/^wiki:/, ""))
-      .filter(id => nodeIds.has(id));
-  }, [selected]);
+      .filter(id => universeIdSet.has(id));
+  }, [selected, universeIdSet]);
+
+  // Memoize activated set for highlightSet prop
+  const activatedSet = useMemo(
+    () => new Set(activatedGraphNodes),
+    [activatedGraphNodes]
+  );
+
+  // Zoom camera to fit just the activated nodes whenever paper changes
+  useEffect(() => {
+    if (activatedGraphNodes.length === 0 || !graphRef.current) return;
+    const t = setTimeout(() => {
+      graphRef.current?.fitToSet?.(activatedSet, 120);
+    }, 350);
+    return () => clearTimeout(t);
+  }, [selected?.id, activatedSet]);
 
   // Auto-flythrough: cycle camera through activated nodes
   useEffect(() => {
@@ -224,11 +252,14 @@ function ArXivis({ onClose, onJumpToConcept }) {
         </div>
       </aside>
 
-      {/* CENTER — 3D graph */}
+      {/* CENTER — 3D graph (arXivis concept universe, not BU_DATA hubs) */}
       <div style={{ position: "relative" }}>
         <BrainGraph3D
           ref={graphRef}
+          customNodes={customNodes}
+          customLinks={customLinks}
           tourPath={activatedGraphNodes}
+          highlightSet={activatedSet}
           currentNode={activatedGraphNodes[flyIdx] || null}
           showLabels="hubs"
           cinematic={!flythrough}
@@ -238,6 +269,25 @@ function ArXivis({ onClose, onJumpToConcept }) {
           linkColor="#0a0e22"
           background="var(--c-bg)"
         />
+
+        {/* Helper hint pinned top-left when a paper is selected */}
+        {selected && activatedGraphNodes.length > 0 && !flythrough && (
+          <div style={{
+            position: "absolute", top: 16, left: 16,
+            padding: "8px 14px",
+            background: "color-mix(in oklch, var(--c-bg-elev) 88%, transparent)",
+            backdropFilter: "blur(10px)",
+            border: "1px solid var(--c-line)",
+            borderRadius: 999,
+            fontFamily: "var(--f-mono)", fontSize: 11,
+          }}>
+            <span style={{ opacity: 0.55 }}>Highlighted in brain:</span>{" "}
+            <span style={{ fontWeight: 600, color: "#fbb036" }}>
+              {activatedGraphNodes.length} concept{activatedGraphNodes.length === 1 ? "" : "s"}
+            </span>
+            {" · "}<span style={{ opacity: 0.55 }}>{selected.pair_edges?.length || 0} edges</span>
+          </div>
+        )}
 
         {/* Bottom HUD: pitch + flythrough controls */}
         {selected && (

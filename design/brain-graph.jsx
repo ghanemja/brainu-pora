@@ -14,6 +14,7 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
   currentNode = null,
   visited = new Set(),
   tourPath = [],          // array of node ids in order
+  highlightSet = null,    // Set<id> — when set, dim everything not in set and brighten those that are
   highlightCluster = null,
   showLabels = "hubs",    // "all" | "hubs" | "none"
   cinematic = true,
@@ -22,6 +23,8 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
   linkWidth = 1.5,        // edge thickness
   linkColor = "#7DD3FC",  // edge color (sky blue by default)
   signalFlow = false,     // animate signals/weights along edges (brain mode)
+  customNodes = null,     // array of {id, name, cluster, degree, kind} — override BU_DATA.NODES
+  customLinks = null,     // array of [src, tgt, weight?] — override BU_DATA.EDGES
   onNodeClick = () => {},
   onNodeHover = () => {},
   className = "",
@@ -57,11 +60,17 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
     ro.observe(containerRef.current);
     window.addEventListener("resize", sizeFromContainer);
 
-    const nodes = BU_DATA.NODES.map(n => ({
+    const baseNodes = customNodes || BU_DATA.NODES;
+    const baseLinks = customLinks || BU_DATA.EDGES;
+    const nodes = baseNodes.map(n => ({
       ...n,
-      val: 1 + n.degree * 0.4,
+      val: 1 + (n.degree || 1) * 0.4,
     }));
-    const links = BU_DATA.EDGES.map(([s,t]) => ({ source: s, target: t }));
+    const links = baseLinks.map(e => ({
+      source: e[0],
+      target: e[1],
+      weight: e[2] || 1,
+    }));
 
     // 3d-force-graph passes the bg color through `polished`, which can't
     // parse CSS variables. Resolve to a real hex by reading the live
@@ -113,7 +122,7 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
         const b = parseInt(hex.substring(4, 6), 16);
         return `rgba(${r},${g},${b},${linkOpacity})`;
       })
-      .nodeColor(node => colorForNode(node, { currentNode, visited, tourPath, highlightCluster }))
+      .nodeColor(node => colorForNode(node, { currentNode, visited, tourPath, highlightCluster, highlightSet }))
       .nodeLabel(node => `<div style="font-family:'JetBrains Mono',monospace;font-size:11px;background:#0f1733;color:#f5f7fb;padding:4px 8px;border-radius:4px;border:1px solid rgba(125,211,252,0.4)">${node.name}<br/><span style="opacity:0.6">course: ${BU_DATA.CLUSTERS[node.cluster].name}</span></div>`)
       .onNodeClick(node => {
         focusOn(node);
@@ -202,11 +211,11 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
   // Re-color when state changes
   useEffect(() => {
     if (!fgRef.current) return;
-    fgRef.current.nodeColor(node => colorForNode(node, { currentNode, visited, tourPath, highlightCluster }));
-    fgRef.current.linkColor(link => linkColorFor(link, { tourPath, currentNode, defaultColor: linkColor, defaultOpacity: linkOpacity }));
-    fgRef.current.linkWidth(link => linkWidthFor(link, { tourPath, defaultWidth: linkWidth }));
-    fgRef.current.nodeThreeObject(node => makeLabelSprite(node, showLabels));
-  }, [currentNode, visited, tourPath, highlightCluster, showLabels, ready, linkColor, linkOpacity, linkWidth]);
+    fgRef.current.nodeColor(node => colorForNode(node, { currentNode, visited, tourPath, highlightCluster, highlightSet }));
+    fgRef.current.linkColor(link => linkColorFor(link, { tourPath, currentNode, defaultColor: linkColor, defaultOpacity: linkOpacity, highlightSet }));
+    fgRef.current.linkWidth(link => linkWidthFor(link, { tourPath, defaultWidth: linkWidth, highlightSet }));
+    fgRef.current.nodeThreeObject(node => makeLabelSprite(node, showLabels, { highlightSet }));
+  }, [currentNode, visited, tourPath, highlightCluster, showLabels, ready, linkColor, linkOpacity, linkWidth, highlightSet]);
 
   function focusOn(node, distance = 90) {
     if (!fgRef.current || !node) return;
@@ -228,6 +237,12 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
     pulseNode(nodeId) {
       // The color update will pulse via tourPath; this is a hook for future tweens.
     },
+    fitToSet(idSet, padding = 80) {
+      // Zoom camera to fit just the nodes in idSet
+      try {
+        fgRef.current?.zoomToFit(1200, padding, n => idSet.has(n.id));
+      } catch (_) {}
+    },
     refresh() { fgRef.current?.refresh(); },
   }));
 
@@ -236,7 +251,15 @@ const BrainGraph3D = forwardRef(function BrainGraph3D({
 
 // ───── helpers ─────
 
-function colorForNode(node, { currentNode, visited, tourPath, highlightCluster }) {
+function colorForNode(node, { currentNode, visited, tourPath, highlightCluster, highlightSet }) {
+  // highlightSet mode dominates: dim everything outside the set, brighten inside
+  if (highlightSet && highlightSet.size > 0) {
+    if (highlightSet.has(node.id)) {
+      if (node.id === currentNode) return "#f96167"; // coral for the focal node
+      return "#fbb036"; // amber for activated
+    }
+    return "rgba(120,140,170,0.08)"; // heavy dim for non-activated
+  }
   if (node.id === currentNode) return "#f96167"; // coral
   if (tourPath?.includes(node.id)) return "#fbb036"; // amber for tour
   if (visited?.has(node.id)) return "#fbb036"; // amber for visited
@@ -257,11 +280,18 @@ function _hexToRgba(hex, alpha) {
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
-function linkColorFor(link, { tourPath, currentNode, defaultColor = "#7DD3FC", defaultOpacity = 0.7 }) {
-  const baseColor = _hexToRgba(defaultColor, defaultOpacity);
-  if (!tourPath || tourPath.length < 2) return baseColor;
+function linkColorFor(link, { tourPath, currentNode, defaultColor = "#7DD3FC", defaultOpacity = 0.7, highlightSet }) {
   const sId = typeof link.source === "object" ? link.source.id : link.source;
   const tId = typeof link.target === "object" ? link.target.id : link.target;
+  // highlightSet mode: only edges that connect two activated nodes show — everything else fades
+  if (highlightSet && highlightSet.size > 0) {
+    if (highlightSet.has(sId) && highlightSet.has(tId)) {
+      return "rgba(251,176,54,0.95)";
+    }
+    return "rgba(120,140,170,0.04)";
+  }
+  const baseColor = _hexToRgba(defaultColor, defaultOpacity);
+  if (!tourPath || tourPath.length < 2) return baseColor;
   for (let i = 0; i < tourPath.length - 1; i++) {
     if ((tourPath[i] === sId && tourPath[i+1] === tId) ||
         (tourPath[i] === tId && tourPath[i+1] === sId)) {
@@ -271,10 +301,14 @@ function linkColorFor(link, { tourPath, currentNode, defaultColor = "#7DD3FC", d
   return baseColor;
 }
 
-function linkWidthFor(link, { tourPath, defaultWidth = 1.5 }) {
-  if (!tourPath || tourPath.length < 2) return defaultWidth;
+function linkWidthFor(link, { tourPath, defaultWidth = 1.5, highlightSet }) {
   const sId = typeof link.source === "object" ? link.source.id : link.source;
   const tId = typeof link.target === "object" ? link.target.id : link.target;
+  if (highlightSet && highlightSet.size > 0) {
+    if (highlightSet.has(sId) && highlightSet.has(tId)) return 3.5;
+    return 0.3;
+  }
+  if (!tourPath || tourPath.length < 2) return defaultWidth;
   for (let i = 0; i < tourPath.length - 1; i++) {
     if ((tourPath[i] === sId && tourPath[i+1] === tId) ||
         (tourPath[i] === tId && tourPath[i+1] === sId)) {
@@ -284,21 +318,28 @@ function linkWidthFor(link, { tourPath, defaultWidth = 1.5 }) {
   return defaultWidth;
 }
 
-function makeLabelSprite(node, mode) {
-  if (mode === "none") return null;
-  if (mode === "hubs" && node.degree < 9) return null;
-
+function makeLabelSprite(node, mode, opts = {}) {
   const SpriteText = window.SpriteText;
   if (!SpriteText) return null;
+  const highlightSet = opts.highlightSet;
+  const isHighlighted = highlightSet && highlightSet.has(node.id);
+
+  // In highlightSet mode: always label highlighted nodes, never label others
+  if (highlightSet && highlightSet.size > 0) {
+    if (!isHighlighted) return null;
+  } else {
+    if (mode === "none") return null;
+    if (mode === "hubs" && node.degree < 9) return null;
+  }
 
   const sprite = new SpriteText(node.name);
-  sprite.color = "#f5f7fb";
-  sprite.backgroundColor = "rgba(15,23,51,0.65)";
+  sprite.color = isHighlighted ? "#fbb036" : "#f5f7fb";
+  sprite.backgroundColor = isHighlighted ? "rgba(15,23,51,0.85)" : "rgba(15,23,51,0.65)";
   sprite.padding = 2;
   sprite.borderRadius = 2;
   sprite.fontFace = "JetBrains Mono, monospace";
-  sprite.fontWeight = "500";
-  sprite.textHeight = mode === "all" ? 3 : (4 + Math.min(3, (node.degree - 9) * 0.4));
+  sprite.fontWeight = isHighlighted ? "700" : "500";
+  sprite.textHeight = isHighlighted ? 6.5 : (mode === "all" ? 3 : (4 + Math.min(3, (node.degree - 9) * 0.4)));
   sprite.material.depthWrite = false;
   return sprite;
 }

@@ -410,17 +410,77 @@ def main():
     keep = enriched[: args.keep_top]
     print(f"→ kept top {len(keep)}/{len(enriched)} by novelty")
 
+    # Concept universe: every concept referenced by ANY kept paper.
+    # Each node gets a degree (count of papers activating it) and a cluster
+    # (cluster_id = id within first 12 clusters by paper count, else 11).
+    universe_ids: set[str] = set()
+    for p in keep:
+        for c in p["concepts"]:
+            universe_ids.add(c["id"])
+
+    # Cluster-by-cooccurrence: simple greedy — pick top-12 most-frequent
+    # concepts as cluster seeds; assign each remaining concept to the
+    # seed it co-occurs most with.
+    cf = Counter()
+    for p in keep:
+        for c in p["concepts"]:
+            if c["id"] in universe_ids:
+                cf[c["id"]] += 1
+    seeds = [c for c, _ in cf.most_common(12)]
+    seed_idx = {c: i for i, c in enumerate(seeds)}
+    # Build co-occurrence
+    cooc: dict[tuple[str,str], int] = defaultdict(int)
+    for p in keep:
+        ids = [c["id"] for c in p["concepts"]]
+        for a in ids:
+            for b in ids:
+                if a != b:
+                    cooc[(a, b)] += 1
+    cluster_of: dict[str, int] = dict(seed_idx)
+    for cid in universe_ids:
+        if cid in cluster_of:
+            continue
+        best, best_count = 0, -1
+        for s in seeds:
+            c = cooc.get((cid, s), 0)
+            if c > best_count:
+                best, best_count = seed_idx[s], c
+        cluster_of[cid] = best
+
+    universe_nodes = []
+    for cid in universe_ids:
+        slug = cid.replace("wiki:", "")
+        universe_nodes.append({
+            "id":      slug,
+            "name":    concepts.get(cid, {}).get("display") or slug.replace("_", " "),
+            "cluster": cluster_of.get(cid, 0),
+            "degree":  cf.get(cid, 1),
+            "kind":    "wiki",
+        })
+
+    # Concept edges: every pair_edge across kept papers, deduplicated + weighted
+    edge_weight: Counter = Counter()
+    for p in keep:
+        for a, b in p["pair_edges"]:
+            key = tuple(sorted([a.replace("wiki:", ""), b.replace("wiki:", "")]))
+            edge_weight[key] += 1
+    universe_edges = [list(k) + [v] for k, v in edge_weight.items()]
+
     # Emit JS
     out = {
-        "papers":        keep,
-        "concept_freq":  dict(concept_freq.most_common(400)),
-        "edge_freq":     dict(edge_freq.most_common(400)),
-        "generated_at":  datetime.now(timezone.utc).isoformat(),
+        "papers":          keep,
+        "concept_universe": universe_nodes,
+        "concept_edges":    universe_edges,
+        "concept_freq":    dict(concept_freq.most_common(400)),
+        "edge_freq":       dict(edge_freq.most_common(400)),
+        "generated_at":    datetime.now(timezone.utc).isoformat(),
         "stats": {
-            "total_papers_scanned": len(papers),
-            "papers_with_acts":     len(enriched),
-            "concepts_in_vocab":    len(concepts),
-            "elapsed_s":            round(time.time() - t0, 1),
+            "total_papers_scanned":   len(papers),
+            "papers_with_acts":       len(enriched),
+            "concepts_in_vocab":      len(concepts),
+            "concept_universe_size":  len(universe_nodes),
+            "concept_edges_count":    len(universe_edges),
+            "elapsed_s":              round(time.time() - t0, 1),
         },
     }
     js = "window.ARXIVIS = " + json.dumps(out, indent=2, ensure_ascii=False) + ";\n"
