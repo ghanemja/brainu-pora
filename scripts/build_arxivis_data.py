@@ -471,6 +471,8 @@ def main():
                 pair_edges.append([a, b])
         rigor = score_rigor(p)
         composite = round(score + rigor["total"], 2)
+        # foundations vs introduced — depends on universe paper-degree
+        # which isn't yet computed. We'll patch them in a second pass below.
         enriched.append({
             "id":            p["id"],
             "title":         p["title"][:240],
@@ -496,6 +498,36 @@ def main():
     enriched.sort(key=lambda x: -x["composite"])
     keep = enriched[: args.keep_top]
     print(f"→ kept top {len(keep)}/{len(enriched)} by novelty")
+
+    # ── Foundations / introduced per paper ───────────────────────────────
+    # Universe paper-degree = how many of the kept papers activate each
+    # concept. High → foundational; ≤ 2 → introduced.
+    paper_degree_of_concept = Counter()
+    for p in keep:
+        for c in p["concepts"]:
+            paper_degree_of_concept[c["id"]] += 1
+    for p in keep:
+        title_lc = p["title"].lower()
+        def echoes_title(name):
+            return any(t for t in name.lower().split()
+                       if len(t) > 3 and t in title_lc)
+        scored = []
+        for c in p["concepts"]:
+            deg = paper_degree_of_concept[c["id"]]
+            scored.append({
+                "id":     c["id"],
+                "name":   c["name"],
+                "weight": c["weight"],
+                "degree": deg,
+                "echoes_title": echoes_title(c["name"]),
+            })
+        foundations = [c for c in scored
+                       if not c["echoes_title"] and c["degree"] >= 3]
+        foundations.sort(key=lambda c: -c["degree"])
+        introduced  = [c for c in scored if c["degree"] <= 2]
+        introduced.sort(key=lambda c: c["degree"])
+        p["foundations"] = foundations[:4]
+        p["introduced"]  = introduced[:4]
 
     # Concept universe: every concept referenced by ANY kept paper.
     # Each node gets a degree (count of papers activating it) and a cluster

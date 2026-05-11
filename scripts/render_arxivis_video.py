@@ -53,8 +53,16 @@ MANIFEST_JS = VIDEOS_DIR / "manifest.js"
 # ── Style — mirrors the protein-viz reference ────────────────────────────
 W, H        = 720, 1280
 FPS         = 24
-DURATION_S  = 12
+DURATION_S  = 14
 TOTAL_FRAMES = FPS * DURATION_S
+
+# Scene boundaries (seconds)
+T_TITLE_END        = 2.0
+T_STRUCT_END       = 4.5
+T_FOUNDATION_END   = 6.0   # Scene C1 — light up foundations
+T_INTRODUCED_END   = 9.0   # Scene C2 — materialize introduced nodes
+T_NEW_EDGES_END    = 11.5  # Scene C3 — draw new edges
+T_NOVELTY_END      = 14.0  # Scene D — novelty stats
 
 BG_COLOR    = (0, 0, 0)
 INK_BRIGHT  = (245, 247, 251)
@@ -274,41 +282,206 @@ def render_scene_structure(t_in_scene: float, paper: dict, positions: dict) -> I
     return img
 
 
-def render_scene_innovations(t_in_scene: float, paper: dict) -> Image.Image:
+def _classify_nodes(paper: dict) -> tuple[set, set, list, list]:
+    """Return (foundation_ids, introduced_ids, foundations, introduceds)."""
+    foundations  = paper.get("foundations", []) or []
+    introduceds  = paper.get("introduced",  []) or []
+    f_ids = {c["id"] for c in foundations}
+    i_ids = {c["id"] for c in introduceds}
+    return f_ids, i_ids, foundations, introduceds
+
+
+def _draw_node_glow(draw, sx, sy, r, color, glow_alpha=80):
+    """Multi-pass glow halo + solid core. r is the core radius."""
+    if r < 2:
+        return
+    for k in range(4, 0, -1):
+        rr = r + k * 3
+        f = max(0, 255 - 40 * k)
+        draw.ellipse([sx-rr, sy-rr, sx+rr, sy+rr],
+                     fill=tuple(int(c * 0.15 + f * 0.05) for c in color))
+    draw.ellipse([sx-r, sy-r, sx+r, sy+r], fill=color)
+    if r > 3:
+        inner = tuple(min(255, c + 60) for c in color)
+        draw.ellipse([sx-r+2, sy-r+2, sx+r-2, sy+r-2], fill=inner)
+
+
+def render_scene_construction(t_global: float, paper: dict, positions: dict) -> Image.Image:
+    """
+    Constructive build of the paper's subgraph:
+      Phase 1 (T_STRUCT_END   → T_FOUNDATION_END):  foundations light up
+      Phase 2 (T_FOUNDATION_END → T_INTRODUCED_END): introduced nodes materialize
+      Phase 3 (T_INTRODUCED_END → T_NEW_EDGES_END):  new edges grow between them
+
+    The reader literally watches the paper "get added to the brain".
+    """
     img = Image.new("RGB", (W, H), BG_COLOR)
-    innovs = paper.get("innovations", [])[:3]
-    if not innovs:
-        # fall back to top concepts
-        innovs = [{"phrase": c["name"], "kind": "connects",
-                   "pattern": "concept", "connects_to": [c["id"]]}
-                  for c in paper["concepts"][:3]]
+    draw = ImageDraw.Draw(img)
+    fm_meta   = load_font(20, mono=True)
+    fm_chip   = load_font(15, mono=True)
+    fm_name   = load_font(17, mono=True)
+    fm_label  = load_font(13, mono=True)
 
-    # Title
-    fm_meta  = load_font(20, mono=True)
-    fm_card  = load_font(30)
-    fm_chip  = load_font(15, mono=True)
+    f_ids, i_ids, foundations, introduceds = _classify_nodes(paper)
 
-    draw_text_center(img, "WHAT'S NEW", fm_meta, 110, GREEN_DIM)
+    # ── Fixed 2-column layout: foundations LEFT, introduced RIGHT ────────
+    # This makes the "before → after" structure immediately readable
+    # without the spring layout collapsing everything to the centre.
+    #
+    # Column geometry (fits 9:16 720×1280 frame):
+    LEFT_X      = int(W * 0.26)
+    RIGHT_X     = int(W * 0.74)
+    COL_TOP     = int(H * 0.32)
+    COL_BOTTOM  = int(H * 0.78)
+    proj: dict[str, tuple[float, float, float]] = {}
 
-    # Reveal innovations one at a time (~1 second each)
-    n_visible = min(len(innovs), int(t_in_scene / 0.9) + 1)
-    y = 200
-    for i, innov in enumerate(innovs[:n_visible]):
-        phrase = innov["phrase"]
-        if len(phrase) > 90: phrase = phrase[:88] + "…"
-        kind = innov["kind"]
-        kind_color = GREEN if kind == "proposes" else CYAN
-        # Pill
-        draw_pill(img, kind.upper(), fm_chip, 100, y + 30, kind_color, BG_COLOR)
-        # Card body
-        draw_text_center(img, phrase, fm_card, y + 70, INK_BRIGHT, max_w=W-80)
-        # If connects, show targets
-        if innov.get("connects_to"):
-            connects_txt = "→ " + " · ".join(c.replace("wiki:", "")[:24]
-                                              for c in innov["connects_to"][:2])
-            draw_text_center(img, connects_txt.replace("_", " "),
-                             fm_chip, y + 170, INK_DIM)
-        y += 260
+    def _column_y(i: int, n: int) -> float:
+        if n == 1:
+            return (COL_TOP + COL_BOTTOM) / 2
+        gap = (COL_BOTTOM - COL_TOP) / (n - 1)
+        return COL_TOP + i * gap
+
+    for i, f in enumerate(foundations):
+        proj[f["id"]] = (LEFT_X,  _column_y(i, len(foundations)), 1.0)
+    for i, c in enumerate(introduceds):
+        proj[c["id"]] = (RIGHT_X, _column_y(i, len(introduceds)), 1.0)
+    # Drop any concept not in foundations/introduced — keeps the frame clean
+
+    # Determine phase + reveal counts
+    if t_global < T_FOUNDATION_END:
+        phase = 1
+        head_label = "FOUNDATIONS"
+        head_color = CYAN
+        foundation_alpha = (t_global - T_STRUCT_END) / max(0.01, T_FOUNDATION_END - T_STRUCT_END)
+        introduced_visible = 0
+        new_edge_progress = 0
+    elif t_global < T_INTRODUCED_END:
+        phase = 2
+        head_label = "INTRODUCES"
+        head_color = GREEN
+        foundation_alpha = 1.0
+        per_node = (T_INTRODUCED_END - T_FOUNDATION_END) / max(1, len(introduceds))
+        introduced_visible = int((t_global - T_FOUNDATION_END) / per_node) + 1
+        new_edge_progress = 0
+    else:
+        phase = 3
+        head_label = "NEW LINKS"
+        head_color = AMBER
+        foundation_alpha = 1.0
+        introduced_visible = len(introduceds)
+        new_edge_progress = (t_global - T_INTRODUCED_END) / max(0.01, T_NEW_EDGES_END - T_INTRODUCED_END)
+
+    foundation_alpha = max(0.0, min(1.0, foundation_alpha))
+    new_edge_progress = max(0.0, min(1.0, new_edge_progress))
+
+    # ── Column headers ───────────────────────────────────────────────────
+    fm_col_header = load_font(13, mono=True)
+    if foundation_alpha > 0.2:
+        s = "FOUNDATIONS"
+        tw = draw.textlength(s, font=fm_col_header)
+        draw.text((LEFT_X - tw / 2, COL_TOP - 36), s,
+                  font=fm_col_header, fill=CYAN)
+    if phase >= 2:
+        s = "INTRODUCED"
+        tw = draw.textlength(s, font=fm_col_header)
+        draw.text((RIGHT_X - tw / 2, COL_TOP - 36), s,
+                  font=fm_col_header, fill=AMBER)
+
+    # ── Foundation nodes (cyan, left column) ─────────────────────────────
+    NODE_R = 22
+    if foundation_alpha > 0:
+        for f in foundations:
+            sx, sy, _ = proj[f["id"]]
+            tint = tuple(int(c * foundation_alpha) for c in CYAN)
+            _draw_node_glow(draw, int(sx), int(sy), NODE_R, tint)
+            if foundation_alpha > 0.5:
+                name = f["name"]
+                if len(name) > 24: name = name[:22] + "…"
+                tw = draw.textlength(name, font=fm_name)
+                draw.text((sx - tw / 2, sy + NODE_R + 10), name,
+                          font=fm_name,
+                          fill=tuple(int(c * foundation_alpha) for c in CYAN_GLOW))
+                # Optional: paper-count chip below name
+                deg_label = f"in {f.get('degree', 1)} papers"
+                tw2 = draw.textlength(deg_label, font=fm_label)
+                draw.text((sx - tw2 / 2, sy + NODE_R + 32), deg_label,
+                          font=fm_label, fill=INK_DIM)
+
+    # ── Introduced nodes (amber, right column, pop-in animation) ────────
+    for i, c in enumerate(introduceds):
+        if i >= introduced_visible: break
+        sx, sy, _ = proj[c["id"]]
+        per_node = (T_INTRODUCED_END - T_FOUNDATION_END) / max(1, len(introduceds))
+        age = max(0.0, t_global - (T_FOUNDATION_END + i * per_node))
+        scale = min(1.0, age * 3.0)
+        r = int(NODE_R * scale)
+        if r < 2: continue
+        _draw_node_glow(draw, int(sx), int(sy), r, AMBER)
+        name = c["name"]
+        if len(name) > 24: name = name[:22] + "…"
+        tw = draw.textlength(name, font=fm_name)
+        draw.text((sx - tw / 2, sy + r + 10), name, font=fm_name, fill=AMBER)
+
+    # ── New edges (foundation ↔ introduced) — animated growth ────────────
+    new_edges = []
+    if new_edge_progress > 0:
+        for a, b in paper["pair_edges"]:
+            if a in proj and b in proj:
+                a_is_intro = a in i_ids; b_is_intro = b in i_ids
+                if (a_is_intro and not b_is_intro) or (b_is_intro and not a_is_intro):
+                    # canonical: foundation→introduced
+                    if a_is_intro: a, b = b, a
+                    new_edges.append((a, b))
+        # Add introduced-introduced edges too (the paper's own internal connections)
+        for a, b in paper["pair_edges"]:
+            if a in proj and b in proj and a in i_ids and b in i_ids:
+                new_edges.append((a, b))
+        # progressive growth
+        n_edges_visible = min(len(new_edges), int(new_edge_progress * len(new_edges)) + 1)
+        for k, (a, b) in enumerate(new_edges[:n_edges_visible]):
+            x1, y1, _ = proj[a]; x2, y2, _ = proj[b]
+            edge_age = new_edge_progress * len(new_edges) - k
+            ratio = max(0.0, min(1.0, edge_age))
+            xe = x1 + (x2 - x1) * ratio
+            ye = y1 + (y2 - y1) * ratio
+            draw.line([(x1, y1), (xe, ye)], fill=AMBER, width=3)
+
+    # ── Headers / footers ────────────────────────────────────────────────
+    draw_pill(img, head_label, fm_meta, W / 2, 80, head_color, BG_COLOR)
+
+    # Step counter / phase narration
+    if phase == 1 and foundations:
+        names = ", ".join(f["name"] for f in foundations[:3])
+        narration = f"this paper rests on: {names}"
+    elif phase == 2 and introduceds:
+        if introduced_visible <= len(introduceds):
+            curr = introduceds[introduced_visible - 1] if introduced_visible >= 1 else None
+            if curr:
+                narration = f"adds:  {curr['name']}"
+            else:
+                narration = ""
+        else:
+            narration = ""
+    elif phase == 3:
+        n_new_edges = sum(1 for a, b in paper['pair_edges'] if (a in i_ids or b in i_ids))
+        narration = f"linking new to existing  --  {len(introduceds)} nodes, {n_new_edges} new edges"
+    else:
+        narration = ""
+
+    if narration:
+        fm_sub = load_font(18)
+        draw_text_center(img, narration, fm_sub, 145, INK_BRIGHT, max_w=W - 60)
+
+    # Footer: count chip
+    if phase >= 2:
+        chip = f"{len(foundations)} foundations · {introduced_visible}/{len(introduceds)} new"
+        draw_pill(img, chip, fm_chip, W / 2, H - 90, (10, 24, 36), CYAN_GLOW)
+
+    # Bottom strip: paper title (truncated)
+    fm_title = load_font(15)
+    title = paper["title"]
+    if len(title) > 70: title = title[:68] + "…"
+    draw_text_center(img, title, fm_title, H - 55, INK_DIM, max_w=W - 80)
 
     return img
 
@@ -356,13 +529,13 @@ def render_scene_novelty(t_in_scene: float, paper: dict) -> Image.Image:
 
 def render_frame(frame_idx: int, paper: dict, positions: dict) -> Image.Image:
     t = frame_idx / FPS
-    if t < 2.5:
+    if t < T_TITLE_END:
         return render_scene_title(t, paper)
-    if t < 7.0:
-        return render_scene_structure(t - 2.5, paper, positions)
-    if t < 10.0:
-        return render_scene_innovations(t - 7.0, paper)
-    return render_scene_novelty(t - 10.0, paper)
+    if t < T_STRUCT_END:
+        return render_scene_structure(t - T_TITLE_END, paper, positions)
+    if t < T_NEW_EDGES_END:
+        return render_scene_construction(t, paper, positions)
+    return render_scene_novelty(t - T_NEW_EDGES_END, paper)
 
 
 # ── Pipeline ─────────────────────────────────────────────────────────────
