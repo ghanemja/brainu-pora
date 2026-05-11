@@ -1,4 +1,4 @@
-/* global React, BU_DATA, ARXIVIS, BrainGraph3D */
+/* global React, BU_DATA, ARXIVIS, ARXIVIS_VIDEOS, BrainGraph3D */
 
 const { useState, useEffect, useRef, useMemo } = React;
 
@@ -346,9 +346,9 @@ function ArXivis({ onClose, onJumpToConcept }) {
                 <span>Novelty</span>
                 <span>◆ {selected.novelty_bits.toFixed(1)} bits</span>
               </div>
-              <NoveltyBar label="concept rarity"  v={selected.novelty_breakdown?.concept_bits}   max={15} />
-              <NoveltyBar label="new edges"       v={selected.novelty_breakdown?.edge_bits}      max={90} />
-              <NoveltyBar label="new term bonus"  v={selected.novelty_breakdown?.new_term_bonus} max={5}  />
+              <NoveltyBar label="concept rarity"  v={selected.novelty_breakdown?.concept_bits}     max={15} />
+              <NoveltyBar label="new edges"       v={selected.novelty_breakdown?.edge_bits}        max={90} />
+              <NoveltyBar label="innovations"     v={selected.novelty_breakdown?.innovation_bonus} max={8}  />
             </div>
 
             {/* Activated concepts */}
@@ -377,27 +377,56 @@ function ArXivis({ onClose, onJumpToConcept }) {
               </div>
             </div>
 
-            {/* New terms (vocab candidates) */}
-            {selected.new_terms?.length > 0 && (
+            {/* Innovations — actual named contributions from the paper */}
+            {selected.innovations?.length > 0 && (
               <div style={{ marginTop: 18 }}>
                 <div style={{
                   fontFamily: "var(--f-mono)", fontSize: 10, opacity: 0.6,
                   letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: 8,
                 }}>
-                  New terms (not yet in graph)
+                  Innovations · what the paper claims
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {selected.new_terms.map(t => (
-                    <span key={t} style={{
-                      padding: "3px 9px", fontSize: 11, fontFamily: "var(--f-mono)",
-                      color: "var(--c-bridge, #1e6fa8)",
-                      border: "1px dashed var(--c-bridge, #1e6fa8)",
-                      borderRadius: 999,
-                    }}>{t}</span>
-                  ))}
-                </div>
+                {selected.innovations.slice(0, 5).map((innov, i) => {
+                  const isProposes = innov.kind === "proposes";
+                  const accent = isProposes ? "#60FFA8" : "#7DD3FC";
+                  return (
+                    <div key={i} style={{
+                      marginBottom: 10, padding: "8px 10px",
+                      border: `1px solid ${accent}`,
+                      borderLeft: `3px solid ${accent}`,
+                      borderRadius: 6,
+                      background: "color-mix(in oklch, var(--c-bg) 70%, transparent)",
+                    }}>
+                      <div style={{
+                        display: "flex", justifyContent: "space-between",
+                        marginBottom: 4,
+                      }}>
+                        <span style={{
+                          fontFamily: "var(--f-mono)", fontSize: 9,
+                          color: accent, letterSpacing: "0.10em",
+                          textTransform: "uppercase",
+                        }}>
+                          {innov.kind} · {innov.pattern}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: 12.5, lineHeight: 1.4 }}>
+                        {innov.phrase}
+                      </div>
+                      {innov.connects_to?.length > 0 && (
+                        <div style={{ marginTop: 4, fontSize: 10.5,
+                          fontFamily: "var(--f-mono)", opacity: 0.55,
+                        }}>
+                          → {innov.connects_to.map(c => c.replace(/^wiki:/, "").replace(/_/g, " ")).slice(0,2).join(" · ")}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
+
+            {/* Video player — 9:16 explainer (protein-viz aesthetic) */}
+            <PaperVideo paperId={selected.id} />
 
             {/* Activation edges count */}
             <div style={{ marginTop: 22, fontSize: 12, opacity: 0.55 }}>
@@ -407,6 +436,47 @@ function ArXivis({ onClose, onJumpToConcept }) {
           </>
         )}
       </aside>
+    </div>
+  );
+}
+
+function PaperVideo({ paperId }) {
+  const src = window.ARXIVIS_VIDEOS?.[paperId];
+  if (!src) {
+    return (
+      <div style={{
+        marginTop: 18, padding: 14,
+        border: "1px dashed var(--c-line)",
+        borderRadius: 10,
+        fontSize: 12, opacity: 0.55, textAlign: "center",
+      }}>
+        No 30-second explainer rendered yet.
+        <br/>
+        <code style={{ fontSize: 10, opacity: 0.7 }}>
+          python3 scripts/render_arxivis_video.py --paper-id {paperId}
+        </code>
+      </div>
+    );
+  }
+  return (
+    <div style={{
+      marginTop: 18,
+      borderRadius: 12, overflow: "hidden",
+      background: "#000",
+      border: "1px solid var(--c-line)",
+    }}>
+      <div style={{
+        padding: "6px 10px",
+        fontFamily: "var(--f-mono)", fontSize: 10,
+        color: "#60FFA8", letterSpacing: "0.10em",
+        textTransform: "uppercase",
+        background: "rgba(96,255,168,0.06)",
+        borderBottom: "1px solid var(--c-line)",
+      }}>
+        30-SECOND EXPLAINER · 9:16
+      </div>
+      <video src={src} controls autoPlay loop muted playsInline
+             style={{ display: "block", width: "100%", maxHeight: 520 }} />
     </div>
   );
 }

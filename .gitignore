@@ -25,6 +25,7 @@ rag/indices/
 site/
 *.webm
 *.mp4
+!design/videos/*.mp4
 eval/results/
 
 # Backups

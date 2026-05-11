@@ -46,6 +46,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from agents.arxivis_innovations import extract_innovations, classify_against_vocab
+
 WIKI_DIR        = PROJECT_ROOT / "wiki" / "concepts"
 ARXIV_DIR       = PROJECT_ROOT / "data" / "raw" / "arxiv"
 DEFENSE_MANI    = PROJECT_ROOT / "data" / "defense_corpus" / "MANIFEST.jsonl"
@@ -211,9 +213,9 @@ def activations_for_paper(
     name_index: dict[str, str],
     idf: dict[str, float],
     top_k: int,
-) -> tuple[list[tuple[str, float]], list[str]]:
+) -> tuple[list[tuple[str, float]], list[dict]]:
     """
-    Return (top concepts with weight, candidate-new-terms).
+    Return (top concepts with weight, innovations).
     """
     text = paper["text"]
     text_lc = text.lower()
@@ -251,28 +253,11 @@ def activations_for_paper(
     scored.sort(key=lambda t: -t[1])
     top = scored[:top_k]
 
-    # 3. candidate new terms = high-tfidf tokens NOT in vocab
-    paper_tokens = Counter(
-        t.lower() for t in TOKEN_RE.findall(text)
-        if t.lower() not in STOP and len(t) > 4
-    )
-    name_token_set = set()
-    for wid in (w for w, _ in top):
-        name_token_set.update(concepts[wid]["name_lc"].split())
-    new_terms = []
-    for t, tf in paper_tokens.most_common(40):
-        if t in name_token_set:
-            continue
-        if t in name_index:
-            continue
-        if t.isdigit():
-            continue
-        score = tf * idf.get(t, 1.0)
-        new_terms.append((t, score))
-    new_terms.sort(key=lambda x: -x[1])
-    new_terms_top = [t for t, _ in new_terms[:5]]
+    # 3. Innovation extraction (named, claim-pattern, hyphen, k-prefix)
+    raw_innov = extract_innovations(text, max_n=8)
+    innovations = classify_against_vocab(raw_innov, name_index)
 
-    return top, new_terms_top
+    return top, innovations
 
 
 # ── Novelty metric ───────────────────────────────────────────────────────
@@ -296,13 +281,13 @@ def compute_novelty(
 
 def novelty_bits(
     acts: list[tuple[str, float]],
-    new_terms: list[str],
+    innovations: list[dict],
     concept_freq: Counter,
     edge_freq: Counter,
     total_papers: int,
 ) -> tuple[float, dict]:
     if not acts:
-        return 0.0, {"concept_bits": 0.0, "edge_bits": 0.0, "new_term_bonus": 0.0}
+        return 0.0, {"concept_bits": 0.0, "edge_bits": 0.0, "innovation_bonus": 0.0}
     ids = [a[0] for a in acts]
     # Concept rarity bits: -log p(c) summed, normalised
     concept_bits = 0.0
@@ -322,20 +307,22 @@ def novelty_bits(
             elif f <= 3:
                 rare_edges += 1
     edge_bits = new_edges * 1.5 + rare_edges * 0.5
-    # New-term bonus
-    new_term_bonus = len(new_terms) * 0.3
-    total = concept_bits + edge_bits + new_term_bonus
+    # Innovation bonus: weight "proposes" higher than "connects"
+    innov_bonus = 0.0
+    for i in innovations:
+        innov_bonus += 0.8 if i["kind"] == "proposes" else 0.3
+    total = concept_bits + edge_bits + innov_bonus
     return total, {
-        "concept_bits":   round(concept_bits, 2),
-        "edge_bits":      round(edge_bits, 2),
-        "new_term_bonus": round(new_term_bonus, 2),
+        "concept_bits":     round(concept_bits, 2),
+        "edge_bits":        round(edge_bits, 2),
+        "innovation_bonus": round(innov_bonus, 2),
     }
 
 
 # ── Elevator pitch ───────────────────────────────────────────────────────
 
 def make_pitch(paper: dict, acts: list[tuple[str, float]],
-               concepts: dict[str, dict], new_terms: list[str]) -> str:
+               concepts: dict[str, dict], innovations: list[dict]) -> str:
     # First 2 sentences of abstract/intro
     body = paper["text"]
     # skip the title line
@@ -377,11 +364,11 @@ def main():
     print("→ build idf", flush=True)
     idf = build_term_idf(papers)
 
-    print("→ extract activations", flush=True)
-    acts_per_paper: list[tuple[dict, list[tuple[str, float]], list[str]]] = []
+    print("→ extract activations + innovations", flush=True)
+    acts_per_paper: list[tuple[dict, list[tuple[str, float]], list[dict]]] = []
     for i, p in enumerate(papers):
-        acts, new_terms = activations_for_paper(p, concepts, name_index, idf, args.top_k)
-        acts_per_paper.append((p, acts, new_terms))
+        acts, innovations = activations_for_paper(p, concepts, name_index, idf, args.top_k)
+        acts_per_paper.append((p, acts, innovations))
         if (i + 1) % 500 == 0:
             print(f"  {i+1}/{len(papers)}")
 
@@ -390,10 +377,10 @@ def main():
 
     print("→ score novelty per paper", flush=True)
     enriched = []
-    for p, acts, new_terms in acts_per_paper:
+    for p, acts, innovations in acts_per_paper:
         if not acts:
             continue
-        score, breakdown = novelty_bits(acts, new_terms, concept_freq, edge_freq, len(papers))
+        score, breakdown = novelty_bits(acts, innovations, concept_freq, edge_freq, len(papers))
         pair_edges = []
         ids = [a[0] for a in acts]
         for i in range(len(ids)):
@@ -412,11 +399,11 @@ def main():
                  "name": concepts[a]["display"]}
                 for a, w in acts
             ],
-            "new_terms":     new_terms,
+            "innovations":   innovations,
             "pair_edges":    pair_edges,
             "novelty_bits":  round(score, 2),
             "novelty_breakdown": breakdown,
-            "pitch":         make_pitch(p, acts, concepts, new_terms),
+            "pitch":         make_pitch(p, acts, concepts, innovations),
         })
 
     enriched.sort(key=lambda x: -x["novelty_bits"])

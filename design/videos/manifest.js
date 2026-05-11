@@ -1,0 +1,22 @@
+window.ARXIVIS_VIDEOS = {
+  "arx:2602.16289v1": "videos/arx_2602_16289v1.mp4",
+  "arx:2602.22130v1": "videos/arx_2602_22130v1.mp4",
+  "arx:2602.19680v1": "videos/arx_2602_19680v1.mp4",
+  "arx:2602.15015v1": "videos/arx_2602_15015v1.mp4",
+  "arx:2602.14748v1": "videos/arx_2602_14748v1.mp4",
+  "arx:2602.16688v2": "videos/arx_2602_16688v2.mp4",
+  "arx:2602.16153v1": "videos/arx_2602_16153v1.mp4",
+  "arx:2602.16605v1": "videos/arx_2602_16605v1.mp4",
+  "arx:2602.22916v1": "videos/arx_2602_22916v1.mp4",
+  "arx:2602.18049v1": "videos/arx_2602_18049v1.mp4",
+  "arx:2602.18317v1": "videos/arx_2602_18317v1.mp4",
+  "arx:2602.22976v2": "videos/arx_2602_22976v2.mp4",
+  "arx:2602.16240v1": "videos/arx_2602_16240v1.mp4",
+  "arx:2602.19189v1": "videos/arx_2602_19189v1.mp4",
+  "arx:2602.14768v1": "videos/arx_2602_14768v1.mp4",
+  "arx:2602.21859v1": "videos/arx_2602_21859v1.mp4",
+  "arx:2602.18389v1": "videos/arx_2602_18389v1.mp4",
+  "arx:2604.04851v1": "videos/arx_2604_04851v1.mp4",
+  "arx:2602.15683v1": "videos/arx_2602_15683v1.mp4",
+  "arx:2602.21191v1": "videos/arx_2602_21191v1.mp4"
+};
