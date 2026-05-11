@@ -12,11 +12,14 @@ __pycache__/
 
 # Generated runtime state
 data/sessions/
-data/raw/
-data/cleaned/
-data/defense_corpus/
+data/raw
+data/cleaned
+data/defense_corpus
 rag/index.pkl
 rag/indices/
+
+# Claude worktree state
+.claude/
 
 # Build artifacts
 site/

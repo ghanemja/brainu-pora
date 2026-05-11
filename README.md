@@ -137,6 +137,29 @@ The 💡 Propose tab takes any free-text idea, finds matching concepts in
 the graph, traces shortest paths between them to surface bridge concepts,
 and writes a grounded paragraph the learner can use as a starting answer.
 
+### 6. arXivis — see the paper in 30 seconds (`feature/arxivis`)
+Projects each paper (arXiv slice + DTIC + NTRS + OpenAlex) onto the
+brain-university concept manifold. A paper is an **activation pattern**
+over the existing graph, not a new island; the 3D viz animates the
+exact concepts and edges it lights up, plus a 30-second elevator pitch.
+
+- **Info-theoretic novelty** = concept rarity bits + new-edge bits + new-term bonus.
+  Pivotal paper = high edge novelty + many later papers activate same set.
+- **Daily brief**: `scripts/arxivis_daily_brief.py` filters to recent
+  papers and re-ranks by novelty for the "what should I read today" slot.
+- Build pipeline:
+  ```bash
+  python3 scripts/build_arxivis_data.py --max-per-cat 100 --keep-top 500
+  python3 scripts/arxivis_daily_brief.py --top 10
+  ```
+  Output → `design/arxivis_data.js` + `design/arxivis_daily.js` consumed
+  by the new **arXivis** tab in `design/Brain University.html`.
+
+Corpus paths (symlinked from the gemma-engineering-ft fine-tune repo —
+both gitignored):
+  - `data/raw/arxiv/<cat>/*.txt` — 8,325 arXiv papers across 18 categories
+  - `data/defense_corpus/MANIFEST.jsonl` — 2,081 DTIC/NTRS/OpenAlex/arXiv-defense records
+
 ---
 
 ## For UI / design hand-off
