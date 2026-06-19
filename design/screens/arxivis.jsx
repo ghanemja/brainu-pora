@@ -225,7 +225,7 @@ function ArXivis({ onClose, onJumpToConcept }) {
       position: "fixed", inset: 0, zIndex: 100,
       background: "var(--c-bg)",
       display: "grid",
-      gridTemplateColumns: narrow ? "1fr" : "minmax(220px, 18%) minmax(0, 1fr) minmax(560px, 46%)",
+      gridTemplateColumns: narrow ? "1fr" : "minmax(200px, 16%) minmax(0, 1fr) minmax(640px, 52%)",
       gridTemplateRows: narrow ? "auto 1fr auto auto" : "auto 1fr",
     }}>
       {/* TOP BAR (spans all columns) */}
@@ -553,20 +553,24 @@ function ArXivis({ onClose, onJumpToConcept }) {
         {selected && (
           <div style={{
             display: "grid",
-            gridTemplateColumns: narrow ? "1fr" : "minmax(280px, 44%) minmax(0, 1fr)",
+            gridTemplateColumns: narrow ? "1fr" : "minmax(320px, 50%) minmax(0, 1fr)",
             alignItems: "start",
           }}>
 
-          {/* LEFT COLUMN — video, sticky so it stays visible while text scrolls */}
+          {/* LEFT COLUMN — video, sticky so it stays visible while text scrolls.
+              Sized to fill the viewport height under the topbar so the 9:16
+              video has room to breathe. */}
           <div style={{
             position: narrow ? "static" : "sticky",
             top: 0,
+            height: narrow ? "auto" : "calc(100vh - 56px)",
             borderRight: narrow ? "none" : "1px solid var(--c-line)",
             borderBottom: narrow ? "1px solid var(--c-line)" : "none",
-            background: "var(--c-bg-elev)",
+            background: "var(--c-bg-elev-2, var(--c-bg-elev))",
             alignSelf: "start",
+            display: "flex", flexDirection: "column",
           }}>
-            <PaperVideo paperId={selected.id} hero />
+            <PaperVideo paperId={selected.id} hero fillHeight={!narrow} />
           </div>
 
           {/* RIGHT COLUMN — all word details */}
@@ -867,8 +871,11 @@ function ResearchAssistantPanel({ rigor, composite }) {
   );
 }
 
-function PaperVideo({ paperId, hero = false }) {
+function PaperVideo({ paperId, hero = false, fillHeight = false }) {
   const src = window.ARXIVIS_VIDEOS?.[paperId];
+  // Theme-matched soft surface — no more hard black.
+  const SURFACE = "var(--c-bg-elev-2, var(--c-bg-elev))";
+
   if (!src) {
     return (
       <div style={{
@@ -876,10 +883,11 @@ function PaperVideo({ paperId, hero = false }) {
         padding: hero ? "60px 20px" : 14,
         border: hero ? "none" : "1px dashed var(--c-line)",
         borderBottom: hero ? "1px solid var(--c-line)" : undefined,
-        background: hero ? "#000" : "transparent",
-        color: hero ? "#fff" : undefined,
+        background: SURFACE,
+        color: "var(--c-ink-muted)",
         borderRadius: hero ? 0 : 10,
-        fontSize: 12, opacity: 0.7, textAlign: "center",
+        fontSize: 12, opacity: 0.85, textAlign: "center",
+        flex: fillHeight ? 1 : "0 0 auto",
       }}>
         No 30-second explainer rendered yet.
         <br/>
@@ -890,32 +898,39 @@ function PaperVideo({ paperId, hero = false }) {
     );
   }
   return (
-    <div style={hero ? {
-      background: "#000",
-      borderBottom: "1px solid var(--c-line)",
-    } : {
-      marginTop: 18,
-      borderRadius: 12, overflow: "hidden",
-      background: "#000",
-      border: "1px solid var(--c-line)",
+    <div style={{
+      background: SURFACE,
+      borderBottom: hero ? "1px solid var(--c-line)" : "none",
+      borderRadius: hero ? 0 : 12,
+      border: hero ? "none" : "1px solid var(--c-line)",
+      overflow: "hidden",
+      display: "flex", flexDirection: "column",
+      flex: fillHeight ? 1 : "0 0 auto",
+      minHeight: 0,
     }}>
       <div style={{
         padding: "8px 14px",
         fontFamily: "var(--f-mono)", fontSize: 10,
-        color: "#60FFA8", letterSpacing: "0.10em",
+        color: "#5BD3A1", letterSpacing: "0.10em",
         textTransform: "uppercase",
-        background: "rgba(96,255,168,0.06)",
-        borderBottom: "1px solid rgba(96,255,168,0.15)",
+        background: "color-mix(in oklch, var(--c-cs, #60FFA8) 10%, transparent)",
+        borderBottom: "1px solid color-mix(in oklch, var(--c-cs, #60FFA8) 24%, transparent)",
         display: "flex", justifyContent: "space-between", alignItems: "center",
+        flex: "0 0 auto",
       }}>
         <span>30-sec explainer · 9:16</span>
         <span style={{ opacity: 0.5 }}>tap to learn</span>
       </div>
       <video src={src} controls autoPlay loop muted playsInline
              style={{
-               display: "block", width: "100%",
-               maxHeight: hero ? 640 : 520,
-               background: "#000",
+               display: "block",
+               width: "100%",
+               height: fillHeight ? "100%" : "auto",
+               maxHeight: fillHeight ? "none" : (hero ? 640 : 520),
+               objectFit: "contain",
+               background: SURFACE,
+               flex: fillHeight ? 1 : "0 0 auto",
+               minHeight: 0,
              }} />
     </div>
   );
