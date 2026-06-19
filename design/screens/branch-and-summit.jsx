@@ -194,30 +194,34 @@ function Summit({ tour, onAnotherTrail, onDashboard }) {
                 Auto-generated from your walk: title slide → key idea per stop →
                 capstone synthesis. Voice-narrated. Save it, share it.
               </p>
-              <div style={{ display: "flex", gap: 8 }}>
-                <button className="btn primary">⬇ Download mp4</button>
-                <button className="btn">Watch in browser</button>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <button
+                  className="btn primary"
+                  disabled
+                  title="Walk-summary video generation lands in the next release"
+                  style={{ opacity: 0.5, cursor: "not-allowed" }}>
+                  ⬇ Download mp4
+                </button>
+                <button
+                  className="btn"
+                  disabled
+                  title="Walk-summary video generation lands in the next release"
+                  style={{ opacity: 0.5, cursor: "not-allowed" }}>
+                  Watch in browser
+                </button>
+                <span style={{
+                  fontSize: 10, fontFamily: "var(--f-mono)",
+                  color: "var(--c-ink-dim)", letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}>preview only</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Reflection */}
-        <div style={{ marginTop: 24 }}>
-          <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 8 }}>
-            REFLECT — OPTIONAL
-          </div>
-          <textarea placeholder="What clicked? What's still hazy? (one line is enough — feeds the RL loop.)"
-            style={{
-              width: "100%", minHeight: 70,
-              background: "var(--c-bg-elev)",
-              border: "1px solid var(--c-line)",
-              borderRadius: "var(--r-md)",
-              padding: 12, color: "var(--c-ink)",
-              fontFamily: "var(--f-sans)", fontSize: 13.5,
-              outline: "none", resize: "vertical",
-            }} />
-        </div>
+        {/* Reflection — local state for the demo; would normally POST to
+            /walks/{id}/event w/ reflection text to feed the RL loop. */}
+        <SummitReflection />
 
         {/* Two next-step buttons */}
         <div style={{ marginTop: 28,
@@ -287,4 +291,53 @@ function Stat({ label, value }) {
 }
 
 window.BranchPanel = BranchPanel;
+function SummitReflection() {
+  const [text, setText] = React.useState("");
+  const [saved, setSaved] = React.useState(false);
+  const save = () => {
+    if (!text.trim()) return;
+    try {
+      const log = JSON.parse(localStorage.getItem("bu_reflections") || "[]");
+      log.push({ at: new Date().toISOString(), text: text.trim() });
+      localStorage.setItem("bu_reflections", JSON.stringify(log));
+    } catch {}
+    // Best-effort backend event — fire-and-forget; no need to block on it.
+    try { window.BU_API?.walkEvent?.("summit-reflection", { reflection: text.trim() }); } catch {}
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2200);
+  };
+  return (
+    <div style={{ marginTop: 24 }}>
+      <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 8 }}>
+        REFLECT — OPTIONAL
+      </div>
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="What clicked? What's still hazy? (one line is enough — feeds the RL loop.)"
+        style={{
+          width: "100%", minHeight: 70,
+          background: "var(--c-bg-elev)",
+          border: "1px solid var(--c-line)",
+          borderRadius: "var(--r-md)",
+          padding: 12, color: "var(--c-ink)",
+          fontFamily: "var(--f-sans)", fontSize: 13.5,
+          outline: "none", resize: "vertical",
+        }} />
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
+        <span style={{ fontSize: 11, color: saved ? "var(--c-cs)" : "var(--c-ink-dim)", fontFamily: "var(--f-mono)" }}>
+          {saved ? "✓ saved locally + queued for RL" : "stored on your device"}
+        </span>
+        <button
+          className="btn"
+          onClick={save}
+          disabled={!text.trim()}
+          style={{ opacity: text.trim() ? 1 : 0.5, cursor: text.trim() ? "pointer" : "not-allowed" }}>
+          Save reflection
+        </button>
+      </div>
+    </div>
+  );
+}
+
 window.Summit = Summit;

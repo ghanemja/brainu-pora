@@ -12,30 +12,46 @@ const { useState: useTutState, useEffect: useTutEffect } = React;
 
 const TUT_FLAG = "bu.tutorial.seen.v1";
 
+// Live paper count off the bundled corpus (filled at module-load).
+function _paperCount() {
+  try { return (window.ARXIVIS?.papers || []).length || 0; } catch { return 0; }
+}
+
 const SLIDES = [
   {
     icon: "🧠",
     tag: "00 · WELCOME",
     title: "Brain University in 60 seconds.",
     body:
-      "Pick a concept. Walk a 6-stop tour through the knowledge graph. Watch auto-generated 30-second video explainers. Build intuition by traversal, not lecture order. The graph re-weights itself based on what you click — your next visit is sharper.",
-    cta: "Show me how",
+      "A self-paced learning system built on top of an LLM-curated knowledge graph. Pick a concept, walk a planned tour, watch 30-second video explainers, and let the system re-weight the graph based on what you actually click. Every tab in the top nav is a different way into the same brain.",
+    cta: "Show me everything",
   },
   {
     icon: "▲",
     tag: "01 · TRAILHEAD",
     title: "Start at the trailhead.",
     body:
-      "Type any concept you're curious about — or accept the system's foundation recommendations ranked by graph centrality and your PARA bucket. Hit ▲ Begin to plan your tour.",
+      "Type any concept you're curious about — or accept the foundation picks the system ranks by graph centrality. The 3D 'brain' on the right is the knowledge graph itself; foundation concepts are the high-betweenness nodes. ▲ Begin plans a 6-stop tour for you.",
     highlight: "trailhead",
-    cta: "Next",
+    tryIt: "trailhead",
+    cta: "Try the trailhead",
   },
   {
     icon: "↘",
     tag: "02 · THE WALK",
     title: "Follow the planned tour.",
     body:
-      "Six stops: start → deepen × 2 → bridge → deepen × 2 → capstone. Each card carries a paragraph explaining why we're going here next. Auto-generated video, interactive exercises, and a Socratic check-in at every stop.",
+      "Six stops: start → deepen ×2 → bridge → deepen ×1-2 → capstone. Each card carries a short rationale paragraph (\"why we go here next\") plus an interactive exercise that lets you play with the idea. Prev / Next moves you through; the 3D minimap shows progress.",
+    highlight: "walk",
+    tryIt: "walk",
+    cta: "Open the walk",
+  },
+  {
+    icon: "▣",
+    tag: "02b · INTERACTIVE EXERCISES",
+    title: "Each lesson has a playground.",
+    body:
+      "Spanning-tree builder, BFS step-through, approximation-ratio explorer — embedded canvas sims in 3blue1brown style: yellow vertices, color-coded selection, narrator captions. Click an edge to commit, watch the system tell you if it's valid. Click-to-play, not click-to-read.",
     highlight: "walk",
     cta: "Next",
   },
@@ -44,35 +60,85 @@ const SLIDES = [
     tag: "03 · BRIDGE",
     title: "Cross-course bridges are the magic.",
     body:
-      "Mid-tour, the system surfaces a 'bridge' to a related course — diff geo → information theory, graph theory → biology. Click ≈ Fork to splice it into your trail. This is how surprise connections become intuition.",
+      "Mid-tour, the system surfaces a 'bridge' to a related course — diff geo → information theory, graph theory → biology. Click ≈ Fork to splice it into your current trail. This is how surprise connections become intuition.",
     highlight: "branch",
     cta: "Next",
   },
   {
     icon: "★",
-    tag: "04 · SUMMIT + 05 · DASHBOARD",
-    title: "Summit, then track your manifold.",
+    tag: "04 · SUMMIT",
+    title: "Reach the capstone.",
     body:
-      "Finish a trail → Summit. The Dashboard shows where you've walked on the 3D brain, every trail journaled, and a transparent RL feedback panel (interest re-weighting, memory decay, lesson quality vs baseline — all in plain English).",
-    highlight: "dashboard",
+      "Finish a trail → Summit. Shows the path you walked across the brain, the concepts you touched, and offers options to start a new trail or open the dashboard.",
+    highlight: "summit",
     cta: "Next",
+  },
+  {
+    icon: "▦",
+    tag: "05 · DASHBOARD",
+    title: "Track your manifold + see the RL.",
+    body:
+      "Every trail journaled. 3D brain w/ amber-highlighted visited concepts. Plain-English RL panel — \"interest in Manifold concepts +34%\", \"memory of older sessions 92% kept / week\". Hover any number to see the math behind it.",
+    highlight: "dashboard",
+    tryIt: "dashboard",
+    cta: "Open dashboard",
+  },
+  {
+    icon: "💡",
+    tag: "06 · PROPOSE",
+    title: "Idea → graph response.",
+    body:
+      "Type any free-text idea or research question. The system finds matching concepts in the graph, traces shortest paths to surface bridge concepts you might not have considered, and writes a grounded paragraph you can use as a starting answer.",
+    highlight: "propose",
+    tryIt: "propose",
+    cta: "Open Propose",
+  },
+  {
+    icon: "◉",
+    tag: "07 · 3D MODE",
+    title: "Fly through the whole brain.",
+    body:
+      "Fullscreen WebGL force-directed graph w/ kind-aware coloring (wiki / defense / arXiv), always-on labels sized by degree, cinematic auto-orbit, signal-flow animation that mimics neural firing along edges. The map you've been walking lives here in full.",
+    highlight: "explorer",
+    tryIt: "explorer",
+    cta: "Enter 3D mode",
   },
   {
     icon: "📄",
     tag: "08 · ARXIVIS",
-    title: "arXivis: see a paper in 30 seconds.",
+    title: () =>
+      `arXivis · ${_paperCount() || "260+"} papers, 30 seconds each.`,
     body:
-      "410+ academic papers projected onto the concept manifold. Each gets a video explainer showing the foundations the paper rests on, the new concepts it introduces, and the innovation it claims. + Ingest paper lets you drop any arXiv URL and watch the cascade live.",
+      "Academic papers projected onto the concept manifold. Each paper gets a 30-second 9:16 video explainer: foundations it rests on, new concepts it introduces, then a 'what the paper teaches' diagram showing the innovation as linked concept nodes. Sort by composite, novelty, rigor, year. Filter by source: arXiv, NTRS, DTIC, OpenAlex.",
+    highlight: "arxivis",
+    tryIt: "arxivis",
+    cta: "Open arXivis",
+  },
+  {
+    icon: "▸",
+    tag: "08b · INGEST + ON-DEMAND VIDEO",
+    title: "Drop any arXiv URL, watch the cascade.",
+    body:
+      "+ Ingest paper opens a modal w/ a live SSE cascade: resolve → fetch metadata → Semantic Scholar enrichment (SPECTER2 embedding + TLDR + citations) → classify into nearest cluster → corpus add → 30s video. Papers without a cached video get a 'Generate 30s explainer (~10s)' button — multiprocess render, no pre-bake required.",
     highlight: "arxivis",
     cta: "Next",
   },
   {
     icon: "◇",
     tag: "09 · OPEN PROBLEMS",
-    title: "And finally — research gaps.",
+    title: "Research gaps the brain surfaces.",
     body:
-      "Stale clusters (no recent papers), missing bridges (concepts that should connect but don't), and underexplored hubs. The system surfaces what hasn't been written yet. Use it to find your thesis topic.",
+      "Three lenses: STALE CLUSTERS (corners w/ no recent papers), MISSING BRIDGES (high-degree concepts that should connect but don't co-activate), UNDEREXPLORED HUBS (foundations used by many papers but active in few). This is where a thesis topic hides.",
     highlight: "openprob",
+    tryIt: "openprob",
+    cta: "See open problems",
+  },
+  {
+    icon: "⚙",
+    tag: "10 · TWEAKS",
+    title: "Themes, fonts, lesson layout.",
+    body:
+      "The gear icon in the bottom-right opens a Tweaks panel: palette (Night / Paper / Ocean), display font (Grotesk / Serif / Mono), lesson layout (Postcard / Split / Spread), cinematic auto-orbit on/off. Useful for matching the room you're presenting in.",
     cta: "Got it",
   },
 ];
@@ -154,14 +220,32 @@ function Tutorial({ open, onClose, onJumpTo }) {
             fontSize: 24, lineHeight: 1.25, letterSpacing: "-0.01em",
             color: "var(--c-ink)",
           }}>
-            {slide.title}
+            {typeof slide.title === "function" ? slide.title() : slide.title}
           </h2>
           <p style={{
-            margin: "0 0 22px",
+            margin: "0 0 18px",
             fontSize: 14.5, lineHeight: 1.6, color: "var(--c-ink-muted)",
           }}>
             {slide.body}
           </p>
+          {slide.tryIt && (
+            <button
+              onClick={() => {
+                try { localStorage.setItem(TUT_FLAG, "1"); } catch {}
+                onClose();
+                if (onJumpTo) onJumpTo(slide.tryIt);
+              }}
+              style={{
+                marginBottom: 10,
+                padding: "8px 14px", fontSize: 12.5, fontWeight: 600,
+                background: "color-mix(in oklch, var(--c-bridge) 18%, transparent)",
+                color: "var(--c-bridge)",
+                border: "1px solid var(--c-bridge)",
+                borderRadius: 999, cursor: "pointer",
+              }}>
+              ▸ Try it now
+            </button>
+          )}
         </div>
 
         <div style={{

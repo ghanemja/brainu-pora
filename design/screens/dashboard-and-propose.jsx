@@ -7,21 +7,40 @@ const { useState, useEffect, useMemo } = React;
 // "What trails you've walked, what's open, where you stopped."
 // ─────────────────────────────────────────────────────────────────
 
+// Pick ~14 real, high-degree node IDs from BU_DATA.NODES so the dashboard
+// 3D brain highlights nodes that actually exist (the old hardcoded list
+// silently dropped 10 of 14 because the IDs didn't match the corpus).
+function _demoVisitedSet() {
+  try {
+    const nodes = (window.BU_DATA?.NODES) || [];
+    if (!nodes.length) return new Set();
+    const sorted = [...nodes].sort((a, b) => (b.weight || b.degree || 0) - (a.weight || a.degree || 0));
+    return new Set(sorted.slice(0, 14).map(n => n.id));
+  } catch {
+    return new Set();
+  }
+}
+
+// Demo trails — each carries a real start_node so Resume actually plans a
+// tour from that concept (not a hardcoded fallback).
 const MOCK_TRAILS = [
   {
     id: "t1", title: "Reynolds → Manifolds → Markov chains",
+    start_node: "Reynolds_number",
     started: "yesterday", progress: 1.0, stops: 6, courses: 3,
     summary: "Aero → Diff geo → Info theory. Capstone reached.",
     color: "#7641eb",
   },
   {
     id: "t2", title: "Graph theory → Louvain → PageRank",
+    start_node: "Graph_theory",
     started: "3 days ago", progress: 0.5, stops: 6, courses: 2,
     summary: "Stopped at PageRank — bridge to information theory pending.",
     color: "#2ec4b6",
   },
   {
     id: "t3", title: "State space → Kalman → Hodgkin-Huxley",
+    start_node: "State_space",
     started: "last week", progress: 0.83, stops: 6, courses: 3,
     summary: "Almost summit — one stop left in cellular biology.",
     color: "#1e6fa8",
@@ -81,7 +100,9 @@ function Dashboard({ learner, onResume, onNewTrail }) {
       <div style={{ position: "relative", maxWidth: 1120, margin: "0 auto", padding: "48px 28px 80px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 32 }}>
           <div>
-            <div className="t-tag" style={{ color: "var(--c-ink-muted)" }}>WELCOME BACK</div>
+            <div className="t-tag" style={{ color: "var(--c-ink-muted)" }}>
+              {learner?.interest ? "WELCOME BACK" : "DEMO DASHBOARD"}
+            </div>
             <h1 className="t-display" style={{ margin: "6px 0 0" }}>
               {learner?.name || "Learner"}
             </h1>
@@ -112,8 +133,7 @@ function Dashboard({ learner, onResume, onNewTrail }) {
           </div>
           <div style={{ height: 360, background: "var(--c-bg-elev-2)" }}>
             <BrainGraph3D
-              visited={new Set(["Reynolds_number","Boundary_layer","Navier_Stokes","Manifold","Tensor","Markov_chain",
-                                "Graph_theory","Louvain_clustering","PageRank","BFS","Dijkstra","State_space","Kalman_filter","Lyapunov_stability"])}
+              visited={_demoVisitedSet()}
               showLabels="hubs"
               cinematic={true}
               background="var(--c-bg-elev-2)"
@@ -130,7 +150,7 @@ function Dashboard({ learner, onResume, onNewTrail }) {
           gap: 12,
         }}>
           {MOCK_TRAILS.map(t => (
-            <TrailCard key={t.id} trail={t} onResume={() => onResume(t.id)} />
+            <TrailCard key={t.id} trail={t} onResume={() => onResume(t.start_node)} />
           ))}
           {/* Surprise me card */}
           <div className="card" style={{
@@ -150,7 +170,15 @@ function Dashboard({ learner, onResume, onNewTrail }) {
         {/* Streaks / RL feedback (subtle, no gamification slop) */}
         <div style={{ marginTop: 32,
                       display: "grid", gridTemplateColumns: "2fr 1fr", gap: 12 }}>
-          <div className="card">
+          <div className="card" style={{ position: "relative" }}>
+            <span style={{
+              position: "absolute", top: 12, right: 14,
+              fontSize: 10, letterSpacing: "0.10em",
+              padding: "3px 8px", borderRadius: 999,
+              background: "color-mix(in oklch, var(--c-here, #f96167) 14%, transparent)",
+              color: "var(--c-here, #f96167)",
+              fontFamily: "var(--f-mono)",
+            }}>DEMO DATA</span>
             <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 12 }}>
               SYSTEM IS LEARNING FROM YOU
             </div>
@@ -233,6 +261,21 @@ function TrailCard({ trail, onResume }) {
 
 // ─────────────────────────────────────────────────────────────────
 // SCREEN 6 — PROPOSE
+// Strip the "?" placeholder course name that the upstream synthesis
+// generator leaks when a cluster has no name. e.g.
+//   "spans 5 courses (?, cycle participation, graph coloring, ...)"
+// becomes
+//   "spans 5 courses (cycle participation, graph coloring, ...)"
+function _cleanSynthesis(text) {
+  if (!text) return text;
+  return text
+    .replace(/\(\?\s*,\s*/g, "(")
+    .replace(/,\s*\?\s*\)/g, ")")
+    .replace(/,\s*\?\s*,/g, ",")
+    .replace(/\(\s*\?\s*\)/g, "")
+    .replace(/\s{2,}/g, " ");
+}
+
 // Free-text idea → matched concepts + grounded synthesis
 // ─────────────────────────────────────────────────────────────────
 
@@ -372,7 +415,7 @@ function Propose({ onJumpToNode }) {
             <div className="card" style={{ padding: 24,
               borderLeft: "3px solid var(--c-bridge)",
             }}>
-              <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65 }}>{result.synthesis}</p>
+              <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65 }}>{_cleanSynthesis(result.synthesis)}</p>
               <div className="t-cap" style={{
                 marginTop: 14, color: "var(--c-ink-dim)",
                 display: "flex", gap: 12,

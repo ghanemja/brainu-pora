@@ -155,7 +155,7 @@ function App() {
   const [explorerNode, setExplorerNode] = useState(null);
   const [arxivisOpen, setArxivisOpen] = useState(false);
   const [openprobOpen, setOpenprobOpen] = useState(false);
-  const [learner, setLearner] = useState({ name: "J. Ghanem", interest: "rocket aerodynamics" });
+  const [learner, setLearner] = useState({ name: "Learner", interest: "" });
   const [tutorialOpen, setTutorialOpen] = useState(false);
 
   // Auto-open the welcome tutorial on first visit.
@@ -293,7 +293,7 @@ function App() {
         )}
         {screen === "dashboard" && (
           <Dashboard learner={learner}
-                     onResume={() => { startTour("Reynolds_number"); }}
+                     onResume={(startNode) => { startTour(startNode || "Reynolds_number"); }}
                      onNewTrail={() => setScreen("trailhead")} />
         )}
         {screen === "propose" && (
