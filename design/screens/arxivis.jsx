@@ -225,7 +225,7 @@ function ArXivis({ onClose, onJumpToConcept }) {
       position: "fixed", inset: 0, zIndex: 100,
       background: "var(--c-bg)",
       display: "grid",
-      gridTemplateColumns: narrow ? "1fr" : "minmax(260px, 22%) minmax(0, 1fr) minmax(300px, 26%)",
+      gridTemplateColumns: narrow ? "1fr" : "minmax(260px, 20%) minmax(0, 1fr) minmax(440px, 36%)",
       gridTemplateRows: narrow ? "auto 1fr auto auto" : "auto 1fr",
     }}>
       {/* TOP BAR (spans all columns) */}
