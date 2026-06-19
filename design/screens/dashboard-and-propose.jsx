@@ -28,6 +28,46 @@ const MOCK_TRAILS = [
   },
 ];
 
+// Plain-English RL metric cell with hover-tooltip explaining the math.
+function MetricCell({ label, value, valueColor, tooltip, jargon }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      style={{ position: "relative", cursor: "help" }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <div style={{ fontSize: 11.5, color: "var(--c-ink-muted)", letterSpacing: 0.2, marginBottom: 4 }}>
+        {label}
+      </div>
+      <div style={{ fontSize: 20, fontWeight: 600, color: valueColor, fontFamily: "var(--f-mono)" }}>
+        {value}
+      </div>
+      <div style={{ fontSize: 10.5, color: "var(--c-ink-dim)", marginTop: 3, fontFamily: "var(--f-mono)" }}>
+        {jargon}
+      </div>
+      {hover && (
+        <div style={{
+          position: "absolute",
+          top: "calc(100% + 6px)", left: 0,
+          zIndex: 50,
+          width: 260,
+          padding: 10,
+          background: "var(--c-bg-elev-2)",
+          border: "1px solid var(--c-line-strong)",
+          borderRadius: 6,
+          fontSize: 12,
+          lineHeight: 1.5,
+          color: "var(--c-ink)",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
+        }}>
+          {tooltip}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Dashboard({ learner, onResume, onNewTrail }) {
   const totalNodesVisited = 14;
   const totalCourses = 4;
@@ -111,32 +151,34 @@ function Dashboard({ learner, onResume, onNewTrail }) {
         <div style={{ marginTop: 32,
                       display: "grid", gridTemplateColumns: "2fr 1fr", gap: 12 }}>
           <div className="card">
-            <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 8 }}>
+            <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 12 }}>
               SYSTEM IS LEARNING FROM YOU
             </div>
-            <div style={{ display: "flex", gap: 24, fontFamily: "var(--f-mono)", fontSize: 12 }}>
-              <div>
-                <div style={{ color: "var(--c-ink-muted)" }}>Hebbian boost</div>
-                <div style={{ fontSize: 18, color: "var(--c-ink)", marginTop: 2 }}>
-                  Manifold +0.34
-                </div>
-              </div>
-              <div>
-                <div style={{ color: "var(--c-ink-muted)" }}>Eligibility decay</div>
-                <div style={{ fontSize: 18, color: "var(--c-ink)", marginTop: 2 }}>
-                  λ = 0.92 / session
-                </div>
-              </div>
-              <div>
-                <div style={{ color: "var(--c-ink-muted)" }}>Auto-judge score</div>
-                <div style={{ fontSize: 18, color: "var(--c-cs)", marginTop: 2 }}>
-                  +12 vs baseline
-                </div>
-              </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 18 }}>
+              <MetricCell
+                label="Interest in Manifold concepts"
+                value="+34%"
+                valueColor="var(--c-ink)"
+                tooltip="Hebbian boost — clicks and dwell time on Manifold-related nodes increased the graph weight into that cluster by 0.34. Future recommendations lean here."
+                jargon="Hebbian +0.34"
+              />
+              <MetricCell
+                label="Memory of older sessions"
+                value="92% kept / week"
+                valueColor="var(--c-ink)"
+                tooltip="Eligibility decay (λ=0.92) — each session retains 92% of prior interest signal. Old clicks fade so the system tracks current you, not last-year you."
+                jargon="λ = 0.92 / session"
+              />
+              <MetricCell
+                label="Lesson quality vs. no-RL"
+                value="+12% better"
+                valueColor="var(--c-cs)"
+                tooltip="Auto-judge — a rubric grader scored your last 6 lessons 12 points higher than the same lessons would've scored without RL re-weighting. The personalization is helping."
+                jargon="+12 vs baseline"
+              />
             </div>
-            <div className="t-cap" style={{ marginTop: 10 }}>
-              Your last 6 walks have re-weighted the graph for the next learner. That's how the
-              brain grows.
+            <div className="t-cap" style={{ marginTop: 14 }}>
+              Your last 6 walks re-weighted the graph for the next learner. Hover any metric to see the math.
             </div>
           </div>
           <div className="card recessed" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>

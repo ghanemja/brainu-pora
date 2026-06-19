@@ -22,6 +22,7 @@ function ArXivis({ onClose, onJumpToConcept }) {
   const [selectedId, setSelectedId] = useState(null);
   const [flythrough, setFlythrough] = useState(false);
   const [flyIdx, setFlyIdx] = useState(0);
+  const [ingestOpen, setIngestOpen] = useState(false);
 
   // Track viewport so we can switch layout on narrow screens
   const [vw, setVw] = useState(window.innerWidth);
@@ -240,10 +241,21 @@ function ArXivis({ onClose, onJumpToConcept }) {
           color: "var(--c-ink-muted)", letterSpacing: "0.10em", textTransform: "uppercase",
         }}>arXivis · see the paper in 30 seconds</div>
         <div style={{ flex: 1 }} />
+        <button
+          className="btn"
+          onClick={() => setIngestOpen(true)}
+          style={{
+            padding: "6px 14px", fontSize: 12,
+            background: "var(--c-bridge)", color: "var(--c-bg)",
+            borderRadius: 999, fontWeight: 600,
+          }}>
+          + Ingest paper
+        </button>
         <span style={{ fontFamily: "var(--f-mono)", fontSize: 11, opacity: 0.6 }}>
           {filtered.length} papers · {stats.concepts_in_vocab} concept manifold · {stats.papers_with_acts} activated of {stats.total_papers_scanned} scanned
         </span>
       </div>
+      {ingestOpen && <IngestModal onClose={() => setIngestOpen(false)} />}
 
       {/* LEFT — paper list */}
       <aside style={{
@@ -912,6 +924,173 @@ function badgeColor(source) {
   if (s.includes("DTIC"))     return "#F96167";
   if (s.includes("OPENALEX")) return "#84cc16";
   return "var(--c-ink-muted)";
+}
+
+// ─────────────────────────────────────────────────────────────────
+// INGEST MODAL — drop an arXiv URL, watch the cascade.
+// Streams /paper/drop SSE if backend up at :8090, else animates demo.
+// ─────────────────────────────────────────────────────────────────
+
+const INGEST_STAGES = [
+  { id: "resolve",  label: "Resolve arXiv ID",       detail: "Extract canonical paper ID from URL." },
+  { id: "fetch",    label: "Fetch metadata",         detail: "Pull title, abstract, authors via arXiv API." },
+  { id: "classify", label: "Classify into cluster",  detail: "Map abstract → nearest existing concept cluster." },
+  { id: "ingest",   label: "Add to corpus",           detail: "Append to defense_corpus_samples.json." },
+  { id: "podcast",  label: "Generate 30s video",      detail: "Render activation pattern over the brain manifold." },
+];
+
+function IngestModal({ onClose }) {
+  const [url, setUrl] = useState("");
+  const [running, setRunning] = useState(false);
+  const [stage, setStage] = useState(-1);
+  const [log, setLog] = useState([]);
+
+  const run = async () => {
+    if (!url.trim()) return;
+    setRunning(true); setStage(0); setLog([{ stage: "resolve", msg: `Resolving "${url.trim()}"…` }]);
+    let usedBackend = false;
+    try {
+      const resp = await fetch("http://localhost:8090/paper/drop", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: url.trim() }),
+      });
+      if (resp.ok && resp.body) {
+        usedBackend = true;
+        const reader = resp.body.getReader();
+        const decoder = new TextDecoder();
+        let buf = "";
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buf += decoder.decode(value, { stream: true });
+          const events = buf.split("\n\n");
+          buf = events.pop();
+          for (const evt of events) {
+            const m = evt.match(/data:\s*(.+)/);
+            if (!m) continue;
+            try {
+              const j = JSON.parse(m[1]);
+              const idx = INGEST_STAGES.findIndex(s => s.id === j.stage);
+              if (idx >= 0) setStage(idx);
+              setLog(prev => [...prev, { stage: j.stage, msg: j.msg || JSON.stringify(j) }]);
+            } catch {}
+          }
+        }
+      }
+    } catch {}
+    if (!usedBackend) {
+      for (let i = 0; i < INGEST_STAGES.length; i++) {
+        await new Promise(r => setTimeout(r, 700));
+        setStage(i);
+        setLog(prev => [...prev, { stage: INGEST_STAGES[i].id, msg: INGEST_STAGES[i].detail }]);
+      }
+      setLog(prev => [...prev, { stage: "done", msg: "Demo finished — start uvicorn api.server:app --port 8090 to ingest for real." }]);
+    }
+    setRunning(false);
+  };
+
+  return (
+    <div
+      onClick={(e) => { if (e.target === e.currentTarget && !running) onClose(); }}
+      style={{
+        position: "fixed", inset: 0, zIndex: 200,
+        background: "rgba(8, 12, 24, 0.7)",
+        backdropFilter: "blur(8px)",
+        display: "grid", placeItems: "center", padding: 24,
+      }}>
+      <div style={{
+        width: "min(640px, 100%)",
+        background: "var(--c-bg-elev)",
+        border: "1px solid var(--c-line-strong)",
+        borderRadius: 12,
+        padding: 24,
+        boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+      }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+          <div>
+            <div className="t-tag" style={{ color: "var(--c-bridge)" }}>INGEST NEW PAPER</div>
+            <h2 className="t-h1" style={{ margin: "6px 0 4px", fontSize: 22 }}>Drop a paper. Watch it land.</h2>
+          </div>
+          <button className="btn ghost" onClick={onClose} disabled={running} style={{ padding: "4px 10px" }}>✕</button>
+        </div>
+        <p className="t-cap" style={{ margin: "0 0 16px" }}>
+          Paste any arXiv URL. The system resolves it, classifies it into the closest cluster on the manifold,
+          adds it to the corpus, and renders a 30-second activation video.
+        </p>
+
+        <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+          <input
+            type="text"
+            placeholder="https://arxiv.org/abs/2310.06825"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            disabled={running}
+            style={{
+              flex: 1, padding: "10px 14px",
+              background: "var(--c-bg)",
+              border: "1px solid var(--c-line)",
+              borderRadius: 6, color: "var(--c-ink)",
+              fontFamily: "var(--f-mono)", fontSize: 13,
+              outline: "none",
+            }}
+          />
+          <button
+            onClick={run}
+            disabled={running || !url.trim()}
+            style={{
+              padding: "10px 18px", fontSize: 13, fontWeight: 600,
+              background: running ? "var(--c-line)" : "var(--c-bridge)",
+              color: running ? "var(--c-ink-muted)" : "var(--c-bg)",
+              border: "none", borderRadius: 6,
+              cursor: running ? "not-allowed" : "pointer",
+            }}>
+            {running ? "Running…" : "▸ Drop"}
+          </button>
+        </div>
+
+        {(running || stage >= 0) && (
+          <>
+            <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
+              {INGEST_STAGES.map((s, i) => {
+                const done = (i < stage) || (!running && i <= stage);
+                const active = i === stage && running;
+                return (
+                  <div key={s.id} style={{ flex: 1 }}>
+                    <div style={{
+                      height: 5, borderRadius: 3,
+                      background: done ? "var(--c-cs)" : active ? "var(--c-bridge)" : "var(--c-line)",
+                      transition: "background 200ms",
+                    }} />
+                    <div style={{
+                      fontSize: 10, marginTop: 6, lineHeight: 1.3,
+                      color: done || active ? "var(--c-ink)" : "var(--c-ink-muted)",
+                      fontFamily: "var(--f-mono)",
+                    }}>
+                      {String(i + 1).padStart(2, "0")} {s.label}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{
+              background: "var(--c-bg)", padding: 12, borderRadius: 6,
+              border: "1px solid var(--c-line)",
+              fontFamily: "var(--f-mono)", fontSize: 11.5, lineHeight: 1.6,
+              maxHeight: 180, overflowY: "auto",
+            }}>
+              {log.map((l, i) => (
+                <div key={i}>
+                  <span style={{ color: "var(--c-ink-muted)" }}>[{l.stage}]</span>{" "}
+                  <span style={{ color: "var(--c-ink)" }}>{l.msg}</span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
 }
 
 window.ArXivis = ArXivis;

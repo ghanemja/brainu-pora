@@ -16,6 +16,36 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
 </style>
 </head>
 <body>
+  <div id="bu-gate" style="position:fixed;inset:0;z-index:9999;background:#0b0b0c;display:flex;align-items:center;justify-content:center;font-family:'Geist',system-ui,sans-serif;color:#f5f5f7;padding:24px">
+    <form id="bu-gate-form" autocomplete="off" style="width:100%;max-width:360px;background:#161618;border:1px solid #2a2a2d;border-radius:14px;padding:30px">
+      <div style="font-size:18px;font-weight:600;margin-bottom:4px">Brain University</div>
+      <div style="font-size:13px;color:#9a9aa1;margin-bottom:22px">Sign in to continue</div>
+      <label style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9aa1;display:block;margin-bottom:6px">Username</label>
+      <input id="bu-gate-u" autofocus required style="width:100%;box-sizing:border-box;padding:11px 13px;border:1px solid #2a2a2d;border-radius:9px;background:#0b0b0c;color:#f5f5f7;font-size:14px;margin-bottom:14px"/>
+      <label style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9aa1;display:block;margin-bottom:6px">Password</label>
+      <input id="bu-gate-p" type="password" required style="width:100%;box-sizing:border-box;padding:11px 13px;border:1px solid #2a2a2d;border-radius:9px;background:#0b0b0c;color:#f5f5f7;font-size:14px;margin-bottom:18px"/>
+      <button type="submit" style="width:100%;padding:12px;border:0;border-radius:9px;background:#f5f5f7;color:#0b0b0c;font-weight:600;font-size:14px;cursor:pointer">Continue</button>
+      <div id="bu-gate-err" style="color:#e5484d;font-size:12px;margin-top:12px;min-height:14px"></div>
+    </form>
+  </div>
+  <script>
+    (function(){
+      var AUTH={u:'admin',p:'password'};
+      var gate=document.getElementById('bu-gate');
+      try{ if(sessionStorage.getItem('bu_auth')==='1'){ gate.style.display='none'; return; } }catch(_){}
+      document.getElementById('bu-gate-form').addEventListener('submit',function(e){
+        e.preventDefault();
+        var u=document.getElementById('bu-gate-u').value.trim();
+        var p=document.getElementById('bu-gate-p').value;
+        if(u===AUTH.u && p===AUTH.p){
+          try{ sessionStorage.setItem('bu_auth','1'); }catch(_){}
+          gate.style.display='none';
+        } else {
+          document.getElementById('bu-gate-err').textContent='Incorrect username or password.';
+        }
+      });
+    })();
+  </script>
   <div id="root"></div>
 
   <!-- React + Babel pinned -->
