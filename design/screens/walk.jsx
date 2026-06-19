@@ -1,22 +1,40 @@
 /* global React, BU_DATA, BrainGraph3D, CourseChip, KindGlyph,
           MiniMap, Altitude, Evidence, Compass,
-          SpanningTreeSimulator, BFSVisualizer, ApproximationRatioTuner */
+          SpanningTreeSimulator, BFSVisualizer, ApproximationRatioTuner,
+          ConceptInteractive */
 
 const { useState, useMemo, useEffect, useRef } = React;
 
 // ─────────────────────────────────────────────────────────────────
 // EXERCISE MAPPING — which interactive exercise per concept
+//
+// A handful of nodes get a bespoke, richly-crafted interactive. Every
+// other node falls back to the universal ConceptInteractive (an Active
+// Recall drill built from the lesson's own data), so EVERY lesson shows
+// an interactive example — never a dead end.
 // ─────────────────────────────────────────────────────────────────
 function getExerciseForNode(nodeId) {
-  // Map specific nodes to their interactive exercises
+  // Map specific nodes to their bespoke interactive exercises.
   const exercises = {
     "spanning_tree": SpanningTreeSimulator,
     "Minimum_Spanning_Tree_MST": SpanningTreeSimulator,
     "breadth-first_search_BFS": BFSVisualizer,
     "distributed_graph_algorithms": BFSVisualizer,
     "2-approximation_algorithm": ApproximationRatioTuner,
+    "Approximation_algorithms": ApproximationRatioTuner,
   };
-  return exercises[nodeId] || null;
+  // Return the rich exercise if mapped; otherwise the "generic" sentinel.
+  return exercises[nodeId] || "generic";
+}
+
+// Render the right interactive for a stop: bespoke component when one is
+// mapped, otherwise the universal ConceptInteractive driven by `lesson`.
+function renderExercise(nodeId, lesson) {
+  const Comp = getExerciseForNode(nodeId);
+  if (Comp === "generic") {
+    return React.createElement(ConceptInteractive, { lesson });
+  }
+  return React.createElement(Comp);
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -237,7 +255,7 @@ function PostcardLayout({ lesson, stop, quizPicked, quizChecked, setQuizPicked, 
           picked={quizPicked} checked={quizChecked}
           setPicked={setQuizPicked} setChecked={setQuizChecked} />}
 
-        {getExerciseForNode(stop.node) && React.createElement(getExerciseForNode(stop.node))}
+        {renderExercise(stop.node, lesson)}
       </div>
     </div>
   );
@@ -290,7 +308,7 @@ function SplitLayout({ lesson, stop, tour, idx, quizPicked, quizChecked, setQuiz
         {lesson.quiz?.[0] && <Quiz q={lesson.quiz[0]}
           picked={quizPicked} checked={quizChecked}
           setPicked={setQuizPicked} setChecked={setQuizChecked} />}
-        {getExerciseForNode(stop.node) && React.createElement(getExerciseForNode(stop.node))}
+        {renderExercise(stop.node, lesson)}
       </div>
     </div>
   );
@@ -360,7 +378,7 @@ function FullBleedLayout({ lesson, stop, tour, idx, quizPicked, quizChecked, set
         {lesson.quiz?.[0] && <Quiz q={lesson.quiz[0]}
           picked={quizPicked} checked={quizChecked}
           setPicked={setQuizPicked} setChecked={setQuizChecked} />}
-        {getExerciseForNode(stop.node) && React.createElement(getExerciseForNode(stop.node))}
+        {renderExercise(stop.node, lesson)}
       </div>
     </div>
   );

@@ -1,0 +1,33 @@
+# Netlify — frontend (static design/ folder). Backend lives on Render.
+#
+# Deploy (CLI, fastest):
+#   npm i -g netlify-cli
+#   netlify deploy --dir=design --prod
+#
+# Or: Netlify dashboard → Import from Git → it reads this file.
+# Set the backend URL in design/Brain University.html (window.BU_API_BASE)
+# to your Render URL before deploying.
+
+[build]
+  publish = "design"
+  # Generates design/config.js from the BU_API_BASE env var so the deployed
+  # frontend points at your Render backend without hardcoding it in the HTML.
+  # Set BU_API_BASE in Netlify → Site settings → Environment variables.
+  command = "node scripts/gen-config.mjs"
+
+[[redirects]]
+  from = "/*"
+  to   = "/Brain University.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
+
+# In-browser Babel needs JSX served as text/babel, not application/javascript.
+[[headers]]
+  for = "/*.jsx"
+  [headers.values]
+    Content-Type = "text/babel; charset=utf-8"

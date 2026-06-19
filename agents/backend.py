@@ -145,6 +145,64 @@ class HFEndpointBackend(Backend):
         raise RuntimeError("HFEndpoint call failed after retries")
 
 
+# ── Local OpenAI-compatible server (Ollama / llama-cpp / llama-server) ───────
+
+class LocalOpenAIBackend(Backend):
+    """Calls a local OpenAI-compatible chat endpoint.
+
+    Works with any server exposing POST <base>/chat/completions:
+      - Ollama                 (base http://localhost:11434/v1)
+      - llama-cpp-python server (base http://localhost:8000/v1)
+      - llama.cpp llama-server (its own port)
+
+    No GPU/cloud needed — serves a local GGUF (e.g. the fine-tuned Gemma coder
+    model) right on the machine. Auth is optional: a bearer token is sent only
+    when LOCAL_LLM_KEY is set (local servers usually need none).
+
+    Resolver string format:
+      "local:<base_url>"   e.g. "local:http://localhost:11434/v1"
+    The served model name comes from env LOCAL_LLM_MODEL (default "gemma").
+    """
+    def __init__(self, base_url: str, model: str | None = None,
+                 api_key: str | None = None):
+        self.name = base_url
+        self.base_url = base_url.rstrip("/")
+        self.model = model or os.environ.get("LOCAL_LLM_MODEL", "gemma")
+        self.api_key = api_key or os.environ.get("LOCAL_LLM_KEY")
+
+    def complete(self, system: str, user: str, max_tokens: int = 1500,
+                 retries: int = 3) -> str:
+        import requests
+        url = f"{self.base_url}/chat/completions"
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+        body = {
+            "model": self.model,
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+            "max_tokens": max_tokens,
+            "temperature": 0.3,
+        }
+        last_err = None
+        for attempt in range(retries):
+            try:
+                r = requests.post(url, headers=headers, json=body, timeout=300)
+                r.raise_for_status()
+                payload = r.json()
+                return payload["choices"][0]["message"]["content"]
+            except (requests.ConnectionError, requests.Timeout) as e:
+                last_err = e
+                time.sleep(3 * (attempt + 1))
+                continue
+        raise RuntimeError(
+            f"LocalOpenAIBackend call to {url} failed after {retries} retries: "
+            f"{last_err}"
+        )
+
+
 # ── Local HuggingFace transformers ──────────────────────────────────────────
 
 class HuggingFaceBackend(Backend):
@@ -225,14 +283,25 @@ def get_backend(spec_str: str) -> Backend:
     """Resolve a Specialist.base_model string to a Backend.
 
     Conventions:
-      "claude-haiku-4-5"           → AnthropicBackend
-      "claude-sonnet-4-5"          → AnthropicBackend
-      "hf:google/gemma-2-9b-it"    → HuggingFaceBackend (local, needs CUDA)
-      "hf:base+adapter"            → HuggingFaceBackend with LoRA adapter (CUDA)
-      "hf-endpoint:https://..."    → HFEndpointBackend (managed, no local GPU)
+      "claude-haiku-4-5"            → AnthropicBackend
+      "claude-sonnet-4-5"           → AnthropicBackend
+      "local:http://host:11434/v1"  → LocalOpenAIBackend (Ollama/llama.cpp, local GGUF)
+      "hf:google/gemma-2-9b-it"     → HuggingFaceBackend (local, needs CUDA)
+      "hf:base+adapter"             → HuggingFaceBackend with LoRA adapter (CUDA)
+      "hf-endpoint:https://..."     → HFEndpointBackend (managed, no local GPU)
     """
+    # Global local-LLM override: when LLM_BACKEND=local (or LOCAL_LLM_BASE is
+    # set), route claude/* specialists to the local Gemma server too. The
+    # multi-agent debate calls get_backend(spec.base_model).complete() (NOT
+    # _call_claude), so without this override the debate would still hit
+    # Anthropic even with the local env vars set.
     if spec_str.startswith("claude"):
+        local_base = os.environ.get("LOCAL_LLM_BASE")
+        if os.environ.get("LLM_BACKEND") == "local" or local_base:
+            return LocalOpenAIBackend(base_url=local_base or "http://localhost:11434/v1")
         return AnthropicBackend(spec_str)
+    if spec_str.startswith("local:"):
+        return LocalOpenAIBackend(base_url=spec_str[len("local:"):])
     if spec_str.startswith("hf-endpoint:"):
         return HFEndpointBackend(endpoint_url=spec_str[len("hf-endpoint:"):])
     if spec_str.startswith("hf:"):

@@ -68,8 +68,11 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script src="videos/manifest.js"></script>
 
   <!-- API client (talks to api/server.py; mock-falls-back when offline) -->
+  <!-- config.js is generated at deploy time from $BU_API_BASE; if it sets    -->
+  <!-- window.BU_API_BASE it wins, else fall back to localhost for local dev.  -->
+  <script src="config.js"></script>
   <script>
-    window.BU_API_BASE = "http://localhost:8080";
+    window.BU_API_BASE = window.BU_API_BASE || "http://localhost:8080";
     window.BU_USER_ID  = localStorage.getItem("bu_user_id")
                        || (() => { const id = "anon-" + Math.random().toString(36).slice(2,10);
                                    localStorage.setItem("bu_user_id", id); return id; })();

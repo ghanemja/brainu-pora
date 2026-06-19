@@ -204,23 +204,136 @@ def fast_lesson(node: str, cluster, all_clusters: list = None,
     }
 
 
+def _validate_quiz(quiz, node: str, text: str = "") -> list[dict]:
+    """Repair/validate an LLM-produced quiz so the frontend never receives a
+    malformed item. Drops items that can't be repaired; falls back to the
+    deterministic _trivial_quiz if nothing valid remains.
+
+    Guarantees each returned item: q:str, a_choices:list[>=2 str],
+    correct_idx:int in [0, len(a_choices)), why:str.
+    """
+    out: list[dict] = []
+    for item in (quiz or []):
+        if not isinstance(item, dict):
+            continue
+        q = str(item.get("q") or "").strip()
+        choices = item.get("a_choices") or item.get("choices") or []
+        if not isinstance(choices, list):
+            continue
+        choices = [str(c).strip() for c in choices if str(c).strip()]
+        # de-dup while preserving order
+        seen, deduped = set(), []
+        for c in choices:
+            if c.lower() not in seen:
+                seen.add(c.lower())
+                deduped.append(c)
+        choices = deduped
+        if not q or len(choices) < 2:
+            continue
+        idx = item.get("correct_idx", item.get("correct", 0))
+        try:
+            idx = int(idx)
+        except (TypeError, ValueError):
+            idx = 0
+        if not (0 <= idx < len(choices)):
+            idx = 0  # clamp rather than mark nothing correct
+        out.append({
+            "q": q,
+            "a_choices": choices[:4],
+            "correct_idx": min(idx, len(choices[:4]) - 1),
+            "why": str(item.get("why") or "").strip()
+                   or "Grounded in the lesson's key ideas.",
+        })
+    if not out:
+        return _trivial_quiz(text, node)
+    return out[:3]
+
+
 def _trivial_quiz(text: str, node: str) -> list[dict]:
-    """Generate one fill-in-the-blank style question + two distractors."""
-    # Take a sentence containing the node name
-    sentences = re.split(r"(?<=[.!?])\s+", text)
-    target = next((s for s in sentences if node.lower() in s.lower()), None) \
-             or (sentences[0] if sentences else "")
-    if not target:
+    """Build a content-grounded multiple-choice question from wiki text.
+
+    Deterministic, no LLM (this is the offline fallback). Picks a salient
+    sentence about ``node``, turns it into a real "what is true about X"
+    question, and synthesises three plausible distractors by mechanically
+    altering the claim (negation, scope/cause-effect inversion, sibling swap).
+
+    Returns the same shape as the rich quiz:
+        [{"q", "a_choices": [4 strings], "correct_idx": int, "why": str}]
+    correct_idx is chosen deterministically from the node name so it varies
+    across nodes rather than always being 0.
+    """
+    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", text) if s.strip()]
+    if not sentences:
         return []
+
+    # Prefer a descriptive sentence that mentions the node and reads like a
+    # claim about it ("X is/are/refers to/describes..."), else any sentence
+    # mentioning the node, else the first sentence (usually the definition).
+    nl = node.lower()
+    def _score(s: str) -> int:
+        sl = s.lower()
+        sc = 0
+        if nl in sl:
+            sc += 2
+        if re.search(r"\b(is|are|refers to|describes|means|consists of|"
+                     r"enables|allows|provides|uses|defines)\b", sl):
+            sc += 1
+        if 40 <= len(s) <= 220:  # avoid stubs and runaway sentences
+            sc += 1
+        return sc
+
+    target = max(sentences, key=_score)
+    claim = target.rstrip(".!?").strip()
+    claim = claim[:200]
+    if not claim:
+        return []
+
+    # ── Distractor 1: negate the core verb of the claim ────────────────────
+    negations = [
+        (r"\bis not\b", "is"),
+        (r"\bare not\b", "are"),
+        (r"\bcannot\b", "can"),
+        (r"\bis\b", "is not"),
+        (r"\bare\b", "are not"),
+        (r"\bcan\b", "cannot"),
+        (r"\benables\b", "prevents"),
+        (r"\ballows\b", "prevents"),
+        (r"\bincreases\b", "decreases"),
+        (r"\bdecreases\b", "increases"),
+        (r"\brequires\b", "does not require"),
+    ]
+    negated = None
+    for pat, repl in negations:
+        new, n = re.subn(pat, repl, claim, count=1, flags=re.IGNORECASE)
+        if n:
+            negated = new
+            break
+    if negated is None:
+        negated = f"{node} has no measurable effect on the systems it appears in"
+
+    # ── Distractor 2: cause/effect or scope inversion ──────────────────────
+    swapped = f"{node} is a downstream consequence of the concepts it actually drives"
+
+    # ── Distractor 3: right-idea-wrong-scope (a sibling-style property) ─────
+    wrong_scope = (f"{node} only applies in a single special case and does not "
+                   f"generalize to the broader cluster")
+
+    choices = [claim, negated.strip()[:200], swapped, wrong_scope]
+
+    # Deterministically rotate which slot holds the correct answer so the
+    # answer isn't always index 0 (varies per node, no randomness).
+    correct_idx = (sum(ord(c) for c in node) % 4) if node else 0
+    if correct_idx != 0:
+        choices[0], choices[correct_idx] = choices[correct_idx], choices[0]
+
     return [{
-        "q": f"True/false: this statement matches the wiki definition of {node!r}",
-        "a_choices": [
-            target.strip()[:200],
-            f"{node} has no formal definition.",
-            f"{node} is unrelated to the rest of this cluster.",
-        ],
-        "correct_idx": 0,
-        "why": "Source statement is pulled directly from the wiki page intro.",
+        "q": f"Based on the source material, which statement about {node} is correct?",
+        "a_choices": choices,
+        "correct_idx": correct_idx,
+        "why": (f"The correct choice is taken directly from the wiki description "
+                f"of {node}. The most tempting distractor simply negates or "
+                f"inverts that claim (e.g. flipping cause and effect or denying "
+                f"the stated relationship), which is a common misreading."),
     }]
 
 
@@ -268,10 +381,32 @@ Output ONLY valid JSON with this shape (no preface, no markdown fence):
 }
 
 Rules:
-  - 3 quiz questions, 4 choices each, varied correct_idx
-  - quiz must be answerable from key_ideas alone
   - tie summary explicitly to the learner's interest if non-empty
-  - worked_example must contain a number with units"""
+  - worked_example must contain a number with units
+
+Quiz rules (these are strict — weak quizzes are the #1 failure mode):
+  - Exactly 3 questions. Each has exactly 4 choices. Vary correct_idx across
+    the three questions (do NOT make them all the same index; use a mix).
+  - Every question must probe a MECHANISM, a CONSEQUENCE, or a DISTINCTION —
+    i.e. test whether the learner understands *why/how* something works or
+    *how two things differ*. Good stems: "Why does X cause Y?", "What happens
+    to Z if W increases?", "What distinguishes X from the related concept Y?",
+    "Which step is responsible for <observed effect>?".
+  - NEVER write meta/trivia questions. Forbidden: anything about whether a
+    topic is on the exam, newest, oldest, easiest, hardest, most popular,
+    most cited, or otherwise testing recall of labels rather than understanding.
+  - All 4 choices must be domain-specific, on-topic, and individually plausible
+    to someone who only half-understands the material. NO throwaway, joke, or
+    obviously-wrong options ("none of the above", "it does nothing", etc.).
+  - The 3 distractors must each encode a REALISTIC misconception a learner
+    could actually hold — e.g. a subtly wrong mechanism, a swapped cause and
+    effect, or a right-idea-applied-at-the-wrong-scope. Make them tempting.
+  - Every question (and its correct answer + all distractors) must be
+    answerable and judgeable from key_ideas alone. Do not require outside facts.
+  - "why" must (a) explain why the correct choice is right, AND (b) explicitly
+    name the misconception that the most tempting distractor encodes, so the
+    learner sees the trap. Example shape: "<correct> because <mechanism>. The
+    tempting wrong answer assumes <misconception>, which conflates <X> with <Y>."""
 
 
 def rich_lesson(node: str, cluster, all_clusters: list = None,
@@ -318,6 +453,9 @@ RELATED TOPICS IN CLUSTER: {related}
         parsed = _parse_lesson_json(raw)
         if not parsed:
             return fast_lesson(node, cluster, all_clusters, interest)
+        # Validate/repair the quiz so a malformed LLM response can't reach the
+        # frontend (out-of-range correct_idx breaks answer-marking + remediation).
+        parsed["quiz"] = _validate_quiz(parsed.get("quiz"), node, text=wiki_body)
         # Merge dynamic cluster info
         parsed["next_in_cluster"] = _next_in_cluster(node, cluster)
         parsed["bridge_options"]  = _bridge_options(cluster, all_clusters)

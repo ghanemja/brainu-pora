@@ -1,0 +1,37 @@
+# Render Blueprint — one-click backend deploy.
+# Render → New → Blueprint → pick this repo. It reads this file.
+#
+# After deploy: copy the service URL (e.g. https://brain-u.onrender.com) and
+# set it as BU_API_BASE on Netlify (the frontend).
+
+services:
+  - type: web
+    name: brain-university-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: standard          # podcast/video render needs RAM; 'starter' may OOM
+    healthCheckPath: /health
+    autoDeploy: true
+    disk:
+      name: brain-data
+      mountPath: /data       # SQLite + rendered media persist here
+      sizeGB: 5
+    envVars:
+      # ── LLM: pick ONE path ──────────────────────────────────────────────
+      # Path A (ship now): set ANTHROPIC_API_KEY, leave LLM_BACKEND unset.
+      - key: ANTHROPIC_API_KEY
+        sync: false          # set the secret in the Render dashboard
+      # Path B (hosted Gemma): uncomment + fill these, then it ignores Claude.
+      # - key: LLM_BACKEND
+      #   value: local
+      # - key: LOCAL_LLM_BASE
+      #   value: https://<your-hf-endpoint>.endpoints.huggingface.cloud/v1
+      # - key: LOCAL_LLM_MODEL
+      #   value: tgi
+      # - key: LOCAL_LLM_KEY
+      #   sync: false
+      # ── App ─────────────────────────────────────────────────────────────
+      - key: BRAIN_DB
+        value: /data/brain_university.db
+      - key: CORS_ORIGINS
+        sync: false          # e.g. https://brain-u.netlify.app

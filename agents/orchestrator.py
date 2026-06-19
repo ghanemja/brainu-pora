@@ -74,9 +74,86 @@ def _get_client():
     return _client
 
 
+def _call_local_llm(system: str, user: str, max_tokens: int = 1500,
+                    retries: int = 3) -> str:
+    """Call a local OpenAI-compatible chat endpoint.
+
+    Works with any server exposing POST ${LOCAL_LLM_BASE}/chat/completions:
+      - Ollama          (LOCAL_LLM_BASE=http://localhost:11434/v1)
+      - llama-cpp-python (LOCAL_LLM_BASE=http://localhost:8000/v1)
+      - llama.cpp llama-server (its own --port)
+
+    Env vars:
+      LOCAL_LLM_BASE   base URL incl. /v1 (no trailing /chat/completions)
+      LOCAL_LLM_MODEL  model name the server knows (default "gemma")
+      LOCAL_LLM_KEY    optional bearer token (local servers usually need none)
+    """
+    import requests
+
+    base = os.environ.get("LOCAL_LLM_BASE", "").rstrip("/")
+    if not base:
+        raise RuntimeError("LOCAL_LLM_BASE not set")
+    model = os.environ.get("LOCAL_LLM_MODEL", "gemma")
+    url = f"{base}/chat/completions"
+
+    headers = {"Content-Type": "application/json"}
+    key = os.environ.get("LOCAL_LLM_KEY")
+    if key:
+        headers["Authorization"] = f"Bearer {key}"
+
+    body = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+        "max_tokens": max_tokens,
+        "temperature": 0.3,
+    }
+
+    last_err: Exception | None = None
+    for attempt in range(retries):
+        try:
+            r = requests.post(url, headers=headers, json=body, timeout=300)
+            r.raise_for_status()
+            payload = r.json()
+            return payload["choices"][0]["message"]["content"]
+        except (requests.ConnectionError, requests.Timeout) as e:
+            last_err = e
+            time.sleep(3 * (attempt + 1))
+            continue
+    raise RuntimeError(
+        f"Local LLM call to {url} failed after {retries} retries: {last_err}"
+    )
+
+
 def _call_claude(model: str, system: str, user: str, max_tokens: int = 1500,
                  retries: int = 5) -> str:
-    """Robust Claude call with retries on rate limits."""
+    """Robust generation call with retries on rate limits.
+
+    Global LLM switch: if LLM_BACKEND=local or LOCAL_LLM_BASE is set, route
+    every generation through the local OpenAI-compatible endpoint first. On
+    local failure, fall back to Anthropic if ANTHROPIC_API_KEY is present;
+    otherwise raise a clear error. When local is not configured, the original
+    Anthropic path runs unchanged.
+    """
+    use_local = (
+        os.environ.get("LLM_BACKEND") == "local"
+        or bool(os.environ.get("LOCAL_LLM_BASE"))
+    )
+    if use_local:
+        try:
+            return _call_local_llm(system, user, max_tokens=max_tokens)
+        except Exception as local_err:
+            if not os.environ.get("ANTHROPIC_API_KEY"):
+                raise RuntimeError(
+                    "Local LLM failed and no Anthropic fallback available. "
+                    "Set LOCAL_LLM_BASE (e.g. http://localhost:11434/v1) and "
+                    "LOCAL_LLM_MODEL for local serving, or set "
+                    f"ANTHROPIC_API_KEY to fall back to Claude. Cause: {local_err}"
+                ) from local_err
+            # fall through to the Anthropic path below
+
     client = _get_client()
     for attempt in range(retries):
         try:

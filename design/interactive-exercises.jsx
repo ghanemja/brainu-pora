@@ -535,7 +535,256 @@ function ApproximationRatioTuner() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────
+
+/**
+ * ConceptInteractive — a universal "Active Recall" exercise that any
+ * lesson can render, driven purely by that lesson's own content.
+ *
+ * Flow per card (predict → reveal → grade):
+ *   1. Show a key idea's HEADING (the prompt) and ask the learner to
+ *      predict what it means before seeing the answer.
+ *   2. They self-predict — free recall in a textarea, OR if the lesson
+ *      carries a quiz, multiple-choice from those real choices.
+ *   3. Reveal the answer (the key idea's body / quiz rationale), then
+ *      grade their recall with SM-2-flavored buttons (Again / Hard /
+ *      Good / Easy). Grading only updates local UI state — no backend.
+ *
+ * Degrades gracefully: with zero key_ideas it falls back to the summary
+ * as a single card; with a quiz it threads the MCQ in as its own card.
+ */
+function ConceptInteractive({ lesson }) {
+  // Build the deck from the lesson's own data — each card is one recall beat.
+  const cards = useMemo(() => {
+    const out = [];
+    const ideas = (lesson && Array.isArray(lesson.key_ideas)) ? lesson.key_ideas : [];
+
+    ideas.forEach((k, i) => {
+      out.push({
+        kind: "recall",
+        prompt: k.h || `Key idea ${i + 1}`,
+        answer: k.b || "",
+      });
+    });
+
+    // If there are no key ideas, fall back to the summary so the card
+    // deck is never empty — every lesson still gets something to recall.
+    if (out.length === 0 && lesson && lesson.summary) {
+      out.push({
+        kind: "recall",
+        prompt: lesson.title || "Recall this concept",
+        answer: lesson.summary,
+      });
+    }
+
+    // Thread the lesson's real quiz in as a final multiple-choice card.
+    const q = lesson && Array.isArray(lesson.quiz) ? lesson.quiz[0] : null;
+    if (q && Array.isArray(q.choices) && q.choices.length) {
+      out.push({
+        kind: "mcq",
+        prompt: q.q,
+        choices: q.choices,
+        correct: q.correct,
+        answer: q.why || "",
+      });
+    }
+
+    return out;
+  }, [lesson]);
+
+  const total = cards.length;
+  const [idx, setIdx] = useState(0);
+  const [revealed, setRevealed] = useState(false);
+  const [prediction, setPrediction] = useState("");
+  const [picked, setPicked] = useState(null);       // mcq selection index
+  const [grades, setGrades] = useState({});          // { cardIndex: "again"|"hard"|"good"|"easy" }
+  const [done, setDone] = useState(false);
+
+  // Reset everything if the lesson (and thus the deck) changes.
+  useEffect(() => {
+    setIdx(0); setRevealed(false); setPrediction(""); setPicked(null);
+    setGrades({}); setDone(false);
+  }, [cards]);
+
+  if (total === 0) return null; // truly nothing to recall — render nothing.
+
+  const card = cards[Math.min(idx, total - 1)];
+
+  // SM-2-flavored grades. "good"/"easy" count as a successful recall.
+  const GRADES = [
+    { id: "again", label: "Again", hint: "blanked",       color: "var(--c-here)" },
+    { id: "hard",  label: "Hard",  hint: "barely",        color: "#ffb454" },
+    { id: "good",  label: "Good",  hint: "recalled",      color: "var(--c-bridge)" },
+    { id: "easy",  label: "Easy",  hint: "instant",       color: "var(--c-cs)" },
+  ];
+
+  const recalledCount = Object.values(grades)
+    .filter(g => g === "good" || g === "easy").length;
+
+  const grade = (gid) => {
+    const nextGrades = { ...grades, [idx]: gid };
+    setGrades(nextGrades);
+    if (idx + 1 >= total) {
+      setDone(true);
+    } else {
+      setIdx(idx + 1);
+      setRevealed(false);
+      setPrediction("");
+      setPicked(null);
+    }
+  };
+
+  const restart = () => {
+    setIdx(0); setRevealed(false); setPrediction(""); setPicked(null);
+    setGrades({}); setDone(false);
+  };
+
+  // ── Summary screen ───────────────────────────────────────────────
+  if (done) {
+    const graded = Object.keys(grades).length;
+    return (
+      <div style={{ marginTop: 28 }}>
+        <div className="topo-rule" style={{ margin: "0 0 16px" }} />
+        <div className="t-tag" style={{ color: "var(--c-cs)", marginBottom: 12 }}>ACTIVE RECALL</div>
+        <div className="card" style={{ padding: 20, textAlign: "center" }}>
+          <div style={{ fontSize: 22, fontWeight: 600, letterSpacing: "-0.01em", marginBottom: 6 }}>
+            You recalled {recalledCount}/{graded}
+          </div>
+          <div style={{ color: "var(--c-ink-muted)", fontSize: 13.5, lineHeight: 1.5, marginBottom: 16 }}>
+            {recalledCount === graded
+              ? "Clean sweep — every idea came back without a peek. That's the signal it's sticking."
+              : "The ones you graded Again or Hard are exactly the ones worth a second pass. Retrieval, not rereading, is what builds memory."}
+          </div>
+          <button className="btn" onClick={restart}>↻ Run it again</button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Recall / MCQ card ────────────────────────────────────────────
+  const isMcq = card.kind === "mcq";
+
+  return (
+    <div style={{ marginTop: 28 }}>
+      <div className="topo-rule" style={{ margin: "0 0 16px" }} />
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
+        <div className="t-tag" style={{ color: "var(--c-cs)" }}>ACTIVE RECALL</div>
+        <div className="t-tag" style={{ color: "var(--c-ink-muted)" }}>
+          {idx + 1} / {total}
+        </div>
+      </div>
+
+      <p style={{ fontSize: 13.5, color: "var(--c-ink-muted)", marginBottom: 14, lineHeight: 1.55 }}>
+        {isMcq
+          ? "Commit to an answer before checking. Predicting first — even when you're unsure — is what makes the correction stick."
+          : "Read the prompt, then say it back in your own words before you reveal. The act of pulling it from memory is the lesson."}
+      </p>
+
+      {/* Prompt card */}
+      <div className="card" style={{ padding: 18, marginBottom: 14 }}>
+        <div style={{ fontWeight: 600, fontSize: 15.5, lineHeight: 1.45, letterSpacing: "-0.01em" }}>
+          {card.prompt}
+        </div>
+
+        {/* PREDICT — free recall (textarea) for recall cards */}
+        {!isMcq && (
+          <textarea
+            value={prediction}
+            onChange={(e) => setPrediction(e.target.value)}
+            placeholder="Predict: what does this mean? (optional — typing it out helps)"
+            rows={3}
+            disabled={revealed}
+            style={{
+              width: "100%", marginTop: 14, padding: "10px 12px",
+              borderRadius: "var(--r-md)", resize: "vertical",
+              background: "var(--c-bg-elev)", color: "var(--c-ink)",
+              border: "1px solid var(--c-line)", fontFamily: "var(--f-sans)",
+              fontSize: 13.5, lineHeight: 1.5, boxSizing: "border-box",
+              opacity: revealed ? 0.6 : 1,
+            }}
+          />
+        )}
+
+        {/* PREDICT — multiple choice for the quiz card */}
+        {isMcq && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 14 }}>
+            {card.choices.map((c, i) => {
+              const isPicked = picked === i;
+              const isRight = revealed && i === card.correct;
+              const isWrong = revealed && isPicked && i !== card.correct;
+              const cls = "quiz-opt" + (isPicked && !revealed ? " picked" : "")
+                          + (isRight ? " right" : "") + (isWrong ? " wrong" : "");
+              return (
+                <button key={i} className={cls}
+                  disabled={revealed}
+                  onClick={() => setPicked(i)}>
+                  <span className="marker">{String.fromCharCode(65 + i)}</span>
+                  <span>{c}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* REVEAL button */}
+      {!revealed && (
+        <button className="btn"
+          disabled={isMcq && picked === null}
+          onClick={() => setRevealed(true)}>
+          Reveal answer
+        </button>
+      )}
+
+      {/* REVEAL — the answer + SM-2-flavored grading */}
+      {revealed && (
+        <div>
+          <div style={{
+            padding: 14, borderRadius: 6, marginBottom: 14,
+            background: "color-mix(in oklch, var(--c-bridge) 12%, transparent)",
+            border: "1px solid var(--c-bridge)55",
+            fontSize: 13.5, lineHeight: 1.55,
+          }}>
+            {isMcq && (
+              <div style={{
+                fontWeight: 600, marginBottom: 6,
+                color: picked === card.correct ? "var(--c-cs)" : "var(--c-here)",
+              }}>
+                {picked === card.correct ? "✓ Correct." : "✗ Not quite."}
+              </div>
+            )}
+            {card.answer || "—"}
+          </div>
+
+          <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 8 }}>
+            HOW WELL DID YOU RECALL IT?
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {GRADES.map(g => (
+              <button key={g.id}
+                onClick={() => grade(g.id)}
+                style={{
+                  flex: "1 1 0", minWidth: 78,
+                  padding: "9px 8px", borderRadius: "var(--r-md)",
+                  background: "transparent",
+                  border: `1px solid ${g.color}`,
+                  color: g.color, cursor: "pointer",
+                  fontFamily: "var(--f-sans)", fontSize: 13, fontWeight: 600,
+                  display: "flex", flexDirection: "column", gap: 2, alignItems: "center",
+                }}>
+                <span>{g.label}</span>
+                <span style={{ fontSize: 10.5, opacity: 0.8, fontWeight: 400 }}>{g.hint}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Export for use in lessons
 window.SpanningTreeSimulator = SpanningTreeSimulator;
 window.BFSVisualizer = BFSVisualizer;
 window.ApproximationRatioTuner = ApproximationRatioTuner;
+window.ConceptInteractive = ConceptInteractive;

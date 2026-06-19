@@ -15,6 +15,9 @@ data/sessions/
 data/raw
 data/cleaned
 data/defense_corpus
+data/*.db
+data/*.db-journal
+data/*.db-wal
 rag/index.pkl
 rag/indices/
 

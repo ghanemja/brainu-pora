@@ -50,10 +50,16 @@ import threading
 
 PROJECT_ROOT = Path(__file__).parent.parent
 
+import os
+# CORS_ORIGINS = comma-separated allowlist in prod (e.g. your Netlify URL);
+# defaults to "*" for local dev when unset.
+_cors = os.environ.get("CORS_ORIGINS", "*")
+_origins = ["*"] if _cors.strip() == "*" else [o.strip() for o in _cors.split(",") if o.strip()]
+
 app = FastAPI(title="Brain University", version="0.1.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -237,6 +243,47 @@ def podcast_local_interject(body: LocalInterjectBody):
     audio = render_interjection_audio(turns, voice_backend=body.voice_backend)
     return {"turns": turns,
             "audio_path": str(audio.relative_to(PROJECT_ROOT)) if audio else None}
+
+# ── Background jobs (async podcast render) ────────────────────────────────
+
+@app.post("/podcast/render/async")
+def podcast_render_async(body: PodcastRenderBody):
+    """Enqueue a cloud podcast render; returns a job_id to poll at /jobs/{id}."""
+    from agents import jobs, podcast_video
+
+    def task():
+        r = podcast_video.render(body.script, voice_backend=body.voice_backend)
+        if not r:
+            raise RuntimeError("render failed (check moviepy/gTTS install)")
+        return {k: str(v.relative_to(PROJECT_ROOT)) for k, v in r.items()}
+
+    return {"job_id": jobs.submit("podcast_render", task)}
+
+
+@app.post("/podcast/local/async")
+def podcast_local_async(body: LocalPodcastBody):
+    """Enqueue a fully-local podcast render; poll at /jobs/{id}."""
+    from agents import jobs
+    from agents.local_podcast import generate_local
+
+    def task():
+        p = generate_local(body.source, mode=body.mode,
+                            length=body.length, tts=body.tts)
+        if not p:
+            raise RuntimeError("local podcast generation failed")
+        return {"mp3": str(p.relative_to(PROJECT_ROOT))}
+
+    return {"job_id": jobs.submit("podcast_local", task)}
+
+
+@app.get("/jobs/{job_id}")
+def job_status(job_id: str):
+    from agents import jobs
+    j = jobs.get(job_id)
+    if not j:
+        raise HTTPException(404, f"no such job {job_id}")
+    return j
+
 
 @app.get("/health")
 def health():
