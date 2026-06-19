@@ -67,11 +67,22 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script src="open_problems.js"></script>
   <script src="videos/manifest.js"></script>
 
+  <!-- API client (talks to api/server.py; mock-falls-back when offline) -->
+  <script>
+    window.BU_API_BASE = "http://localhost:8080";
+    window.BU_USER_ID  = localStorage.getItem("bu_user_id")
+                       || (() => { const id = "anon-" + Math.random().toString(36).slice(2,10);
+                                   localStorage.setItem("bu_user_id", id); return id; })();
+  </script>
+  <script>document.write('<script src="api.js?v=' + Date.now() + '"><\/script>');</script>
+
   <!-- Component libraries (each Babel-compiled, exports to window) -->
   <script type="text/babel" src="atoms.jsx"></script>
   <script type="text/babel" src="brain-graph.jsx?v=4"></script>
   <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="tutorial.jsx"></script>
   <script type="text/babel" src="interactive-exercises.jsx"></script>
+  <script type="text/babel" src="podcast-player.jsx"></script>
 
   <!-- Screens -->
   <script type="text/babel" src="screens/trailhead.jsx"></script>
@@ -81,6 +92,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script type="text/babel" src="screens/threed-flex.jsx"></script>
   <script type="text/babel" src="screens/arxivis.jsx?v=8"></script>
   <script type="text/babel" src="screens/open-problems.jsx?v=1"></script>
+  <script type="text/babel" src="screens/podcast.jsx"></script>
 
   <!-- Main app shell -->
   <script type="text/babel">
@@ -104,6 +116,7 @@ const SCREENS = [
   { id: "explorer",  label: "3D mode",    hint: "07" },
   { id: "arxivis",   label: "arXivis",    hint: "08" },
   { id: "openprob",  label: "open problems", hint: "09" },
+  { id: "podcast",   label: "Podcast",    hint: "10" },
 ];
 
 function App() {
@@ -117,6 +130,14 @@ function App() {
   const [arxivisOpen, setArxivisOpen] = useState(false);
   const [openprobOpen, setOpenprobOpen] = useState(false);
   const [learner, setLearner] = useState({ name: "J. Ghanem", interest: "rocket aerodynamics" });
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+
+  // Auto-open the welcome tutorial on first visit.
+  useEffect(() => {
+    if (window.BUTutorial?.shouldAutoOpenTutorial?.()) {
+      setTutorialOpen(true);
+    }
+  }, []);
 
   // Apply tweaks to <html>
   useEffect(() => {
@@ -199,6 +220,21 @@ function App() {
           ))}
         </nav>
         <div className="right">
+          <button
+            onClick={() => setTutorialOpen(true)}
+            title="How to use Brain University"
+            style={{
+              width: 24, height: 24, borderRadius: "50%",
+              background: "transparent",
+              border: "1px solid var(--c-line-strong)",
+              color: "var(--c-ink-muted)",
+              fontSize: 12, fontWeight: 600, cursor: "pointer",
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              marginRight: 8,
+              fontFamily: "var(--f-mono)",
+            }}>
+            ?
+          </button>
           <span>{learner.name}</span>
           <span style={{ opacity: 0.4 }}>·</span>
           <span style={{ color: "var(--c-bridge)" }}>online graph</span>
@@ -237,6 +273,9 @@ function App() {
         {screen === "propose" && (
           <Propose onJumpToNode={(id) => startTour(id)} />
         )}
+        {screen === "podcast" && (
+          <PodcastStudio />
+        )}
 
         {/* Branch panel — overlays the walk */}
         <BranchPanel
@@ -266,6 +305,15 @@ function App() {
             onClose={() => setOpenprobOpen(false)}
             onJumpToConcept={(nodeId) => { setOpenprobOpen(false); startTour(nodeId); }} />
         )}
+
+        {/* Welcome tutorial overlay (auto on first visit, ? to reopen) */}
+        <Tutorial
+          open={tutorialOpen}
+          onClose={() => setTutorialOpen(false)}
+          onJumpTo={(screenId) => {
+            setTutorialOpen(false);
+            if (screenId) goto(screenId);
+          }} />
       </main>
 
       {/* TWEAKS PANEL */}
