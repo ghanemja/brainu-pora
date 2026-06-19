@@ -5,8 +5,12 @@
 // keeps working in design / static demo mode.
 //
 // Configure once at boot:
-//   window.BU_API_BASE = "http://localhost:8080";
+//   window.BU_API_BASE = "http://localhost:8090";
 //   window.BU_USER_ID  = "anon-" + crypto.randomUUID();
+//
+// Auth: every request attaches Authorization: Bearer <token> read from
+// sessionStorage.bu_auth_token (set by the login gate). If a request returns
+// 401 the gate is re-shown.
 //
 // All methods are async + return plain JS objects.
 
@@ -16,13 +20,32 @@
   const user = () => window.BU_USER_ID || "anon";
   const live = () => Boolean(base());
 
+  function authHeader() {
+    try {
+      const tok = sessionStorage.getItem("bu_auth_token");
+      return tok ? { "Authorization": `Bearer ${tok}` } : {};
+    } catch (_) { return {}; }
+  }
+
+  function handle401(r) {
+    if (r.status !== 401) return r;
+    try { sessionStorage.removeItem("bu_auth_token"); } catch (_) {}
+    // Re-show the gate by reloading; sessionStorage flag clears the auth too.
+    if (typeof window !== "undefined") {
+      try { sessionStorage.removeItem("bu_auth"); } catch (_) {}
+      window.location.reload();
+    }
+    throw new Error("401 — session expired, re-authenticate");
+  }
+
   async function jget(path, params) {
     if (!live()) throw new Error("BU_API_BASE not set");
     const url = new URL(base() + path);
     if (params) Object.entries(params).forEach(([k, v]) => {
       if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, v);
     });
-    const r = await fetch(url.toString());
+    const r = await fetch(url.toString(), { headers: authHeader() });
+    handle401(r);
     if (!r.ok) throw new Error(`GET ${path} → ${r.status}`);
     return r.json();
   }
@@ -31,16 +54,20 @@
     if (!live()) throw new Error("BU_API_BASE not set");
     const r = await fetch(base() + path, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify(body || {}),
     });
+    handle401(r);
     if (!r.ok) throw new Error(`POST ${path} → ${r.status}`);
     return r.json();
   }
 
   async function jpostMultipart(path, formData) {
     if (!live()) throw new Error("BU_API_BASE not set");
-    const r = await fetch(base() + path, { method: "POST", body: formData });
+    const r = await fetch(base() + path, {
+      method: "POST", headers: authHeader(), body: formData,
+    });
+    handle401(r);
     if (!r.ok) throw new Error(`POST ${path} → ${r.status}`);
     return r.json();
   }

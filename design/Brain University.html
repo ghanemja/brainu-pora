@@ -29,19 +29,42 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
     </form>
   </div>
   <script>
+    // Login gate — calls backend /login, stores the returned bearer token in
+    // sessionStorage. Token attaches to every API request via design/api.js.
+    // Token TTL is server-controlled (BU_AUTH_TTL_HOURS, default 24h).
     (function(){
-      var AUTH={u:'admin',p:'password'};
       var gate=document.getElementById('bu-gate');
-      try{ if(sessionStorage.getItem('bu_auth')==='1'){ gate.style.display='none'; return; } }catch(_){}
-      document.getElementById('bu-gate-form').addEventListener('submit',function(e){
+      var apiBase = (window.BU_API_BASE || "http://localhost:8090").replace(/\/+$/,"");
+      function setUnlocked(){ try{ sessionStorage.setItem('bu_auth','1'); }catch(_){ } gate.style.display='none'; }
+      try{ if(sessionStorage.getItem('bu_auth')==='1' && sessionStorage.getItem('bu_auth_token')){ gate.style.display='none'; return; } }catch(_){}
+      var form=document.getElementById('bu-gate-form');
+      var btn=form.querySelector('button[type=submit]');
+      form.addEventListener('submit',async function(e){
         e.preventDefault();
         var u=document.getElementById('bu-gate-u').value.trim();
         var p=document.getElementById('bu-gate-p').value;
-        if(u===AUTH.u && p===AUTH.p){
-          try{ sessionStorage.setItem('bu_auth','1'); }catch(_){}
-          gate.style.display='none';
-        } else {
-          document.getElementById('bu-gate-err').textContent='Incorrect username or password.';
+        var err=document.getElementById('bu-gate-err');
+        err.textContent='';
+        btn.disabled=true; btn.textContent='Signing in…';
+        try {
+          var r = await fetch(apiBase + '/login', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({username: u, password: p}),
+          });
+          if (!r.ok) {
+            var msg = 'Incorrect username or password.';
+            try { var j = await r.json(); if (j && j.detail) msg = j.detail; } catch(_){}
+            err.textContent = msg;
+            return;
+          }
+          var data = await r.json();
+          try { sessionStorage.setItem('bu_auth_token', data.token); } catch(_){}
+          setUnlocked();
+        } catch (ex) {
+          err.textContent = 'Backend unreachable. Start uvicorn api.server:app --port 8090, or set window.BU_API_BASE.';
+        } finally {
+          btn.disabled=false; btn.textContent='Continue';
         }
       });
     })();
@@ -72,7 +95,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <!-- window.BU_API_BASE it wins, else fall back to localhost for local dev.  -->
   <script src="config.js"></script>
   <script>
-    window.BU_API_BASE = window.BU_API_BASE || "http://localhost:8080";
+    window.BU_API_BASE = window.BU_API_BASE || "http://localhost:8090";
     window.BU_USER_ID  = localStorage.getItem("bu_user_id")
                        || (() => { const id = "anon-" + Math.random().toString(36).slice(2,10);
                                    localStorage.setItem("bu_user_id", id); return id; })();

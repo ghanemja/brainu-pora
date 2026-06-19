@@ -871,7 +871,19 @@ function ResearchAssistantPanel({ rigor, composite }) {
   );
 }
 
-const API_BASE = "http://localhost:8090";
+// API base resolves from window.BU_API_BASE (set in Brain University.html or
+// by config.js at deploy time). Falls back to localhost:8090 for local dev.
+const API_BASE = (typeof window !== "undefined" && window.BU_API_BASE) || "http://localhost:8090";
+
+// All API fetches send the bearer token saved by the login gate.
+function authHeaders() {
+  let h = { "Content-Type": "application/json" };
+  try {
+    const tok = sessionStorage.getItem("bu_auth_token");
+    if (tok) h["Authorization"] = `Bearer ${tok}`;
+  } catch (_) {}
+  return h;
+}
 
 function PaperVideo({ paperId, hero = false, fillHeight = false }) {
   // Manifest provides cached video URL; once on-demand render completes,
@@ -900,7 +912,7 @@ function PaperVideo({ paperId, hero = false, fillHeight = false }) {
     try {
       const resp = await fetch(`${API_BASE}/paper/video/render`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders(),
         body: JSON.stringify({ paper_id: paperId }),
       });
       if (!resp.ok || !resp.body) throw new Error(`render endpoint returned ${resp.status}`);
@@ -1122,10 +1134,10 @@ function IngestModal({ onClose }) {
     setRunning(true); setStage(0); setLog([{ stage: "resolve", msg: `Resolving "${url.trim()}"…` }]);
     let usedBackend = false;
     try {
-      const resp = await fetch("http://localhost:8090/paper/drop", {
+      const resp = await fetch(`${API_BASE}/paper/drop`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: url.trim() }),
+        headers: authHeaders(),
+        body: JSON.stringify({ url_or_id: url.trim() }),
       });
       if (resp.ok && resp.body) {
         usedBackend = true;

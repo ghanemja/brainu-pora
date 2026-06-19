@@ -64,6 +64,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Bearer-token auth on every route except an allowlist (/health, /login,
+# /docs, /videos, /media, OPTIONS preflight). Configure via env vars
+# BU_AUTH_USER / BU_AUTH_PASSWORD / BU_AUTH_SECRET. See api/auth.py.
+from api.auth import auth_middleware, mint_token, check_password
+app.middleware("http")(auth_middleware)
+
+
+class LoginBody(BaseModel):
+    username: str
+    password: str
+
+
+@app.post("/login")
+def login(body: LoginBody):
+    """Validate credentials and return a bearer token."""
+    if not check_password(body.username, body.password):
+        import time as _t
+        _t.sleep(0.25)  # constant-time-ish delay to slow credential stuffing
+        raise HTTPException(401, "invalid credentials")
+    return {"token": mint_token(body.username), "username": body.username}
+
 
 # ── Helpers — lazy graph build (cached) ────────────────────────────────────
 
