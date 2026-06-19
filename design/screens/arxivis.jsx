@@ -225,7 +225,7 @@ function ArXivis({ onClose, onJumpToConcept }) {
       position: "fixed", inset: 0, zIndex: 100,
       background: "var(--c-bg)",
       display: "grid",
-      gridTemplateColumns: narrow ? "1fr" : "minmax(260px, 20%) minmax(0, 1fr) minmax(440px, 36%)",
+      gridTemplateColumns: narrow ? "1fr" : "minmax(220px, 18%) minmax(0, 1fr) minmax(560px, 46%)",
       gridTemplateRows: narrow ? "auto 1fr auto auto" : "auto 1fr",
     }}>
       {/* TOP BAR (spans all columns) */}
@@ -551,11 +551,28 @@ function ArXivis({ onClose, onJumpToConcept }) {
         maxHeight: narrow ? 320 : "none",
       }}>
         {selected && (
-          <>
-            {/* Video FIRST — the primary way to learn this paper */}
-            <PaperVideo paperId={selected.id} hero />
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: narrow ? "1fr" : "minmax(280px, 44%) minmax(0, 1fr)",
+            alignItems: "start",
+          }}>
 
-            {/* Title + key finding strip below video */}
+          {/* LEFT COLUMN — video, sticky so it stays visible while text scrolls */}
+          <div style={{
+            position: narrow ? "static" : "sticky",
+            top: 0,
+            borderRight: narrow ? "none" : "1px solid var(--c-line)",
+            borderBottom: narrow ? "1px solid var(--c-line)" : "none",
+            background: "var(--c-bg-elev)",
+            alignSelf: "start",
+          }}>
+            <PaperVideo paperId={selected.id} hero />
+          </div>
+
+          {/* RIGHT COLUMN — all word details */}
+          <div>
+
+            {/* Title + key finding strip */}
             <div style={{ padding: "16px 20px 6px" }}>
               <div style={{
                 fontFamily: "var(--f-mono)", fontSize: 10,
@@ -602,17 +619,11 @@ function ArXivis({ onClose, onJumpToConcept }) {
               </a>
             )}
 
-            {/* Two-column body so the user sees there's more info than the
-                hero card. Falls back to single-column under 520px (truly tiny). */}
-            <div style={{
-              marginTop: 16,
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: 16,
-              alignItems: "start",
-            }}>
+            {/* Body — single column inside the text panel now that
+                video lives in its own outer column. */}
+            <div style={{ marginTop: 16 }}>
 
-            {/* LEFT — Novelty + concepts */}
+            {/* Novelty + concepts */}
             <div>
 
             {/* Novelty breakdown */}
@@ -662,14 +673,11 @@ function ArXivis({ onClose, onJumpToConcept }) {
               </div>
             </div>
 
-            </div>{/* /LEFT */}
-
-            {/* RIGHT — Innovations + rigor + pitch */}
-            <div>
+            </div>{/* /Novelty + concepts */}
 
             {/* Innovations — actual named contributions from the paper */}
             {selected.innovations?.length > 0 && (
-              <div>
+              <div style={{ marginTop: 18 }}>
                 <div style={{
                   fontFamily: "var(--f-mono)", fontSize: 10, opacity: 0.6,
                   letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: 8,
@@ -735,17 +743,16 @@ function ArXivis({ onClose, onJumpToConcept }) {
               </details>
             )}
 
-            </div>{/* /RIGHT */}
+            </div>{/* /Body single-col */}
 
-            </div>{/* /2-col grid */}
-
-            {/* Activation edges count (spans full width below the columns) */}
+            {/* Activation edges count */}
             <div style={{ marginTop: 18, fontSize: 11.5, opacity: 0.55 }}>
               <strong>{selected.pair_edges?.length || 0}</strong> concept-pair edges activated
               · highlighted amber in brain
             </div>
-            </div>
-          </>
+            </div>{/* /padding wrapper */}
+          </div>{/* /RIGHT TEXT col */}
+          </div>{/* /outer 2-col aside grid */}
         )}
       </aside>
     </div>
