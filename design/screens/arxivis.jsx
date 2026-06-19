@@ -932,11 +932,12 @@ function badgeColor(source) {
 // ─────────────────────────────────────────────────────────────────
 
 const INGEST_STAGES = [
-  { id: "resolve",  label: "Resolve arXiv ID",       detail: "Extract canonical paper ID from URL." },
-  { id: "fetch",    label: "Fetch metadata",         detail: "Pull title, abstract, authors via arXiv API." },
-  { id: "classify", label: "Classify into cluster",  detail: "Map abstract → nearest existing concept cluster." },
-  { id: "ingest",   label: "Add to corpus",           detail: "Append to defense_corpus_samples.json." },
-  { id: "podcast",  label: "Generate 30s video",      detail: "Render activation pattern over the brain manifold." },
+  { id: "resolved",   label: "Resolve arXiv ID",        detail: "Extract canonical paper ID from URL." },
+  { id: "fetched",    label: "Fetch metadata",          detail: "Pull title, abstract, authors via arXiv API." },
+  { id: "enriched",   label: "Semantic Scholar lookup", detail: "SPECTER2 embedding + TLDR + citation graph." },
+  { id: "classified", label: "Classify into cluster",   detail: "Embedding cosine vs cluster centroids; keyword fallback." },
+  { id: "ingested",   label: "Add to corpus",            detail: "Append to defense_corpus_samples.json." },
+  { id: "podcast_ready", label: "Generate 30s video",    detail: "Render activation pattern over the brain manifold." },
 ];
 
 function IngestModal({ onClose }) {
@@ -971,9 +972,12 @@ function IngestModal({ onClose }) {
             if (!m) continue;
             try {
               const j = JSON.parse(m[1]);
-              const idx = INGEST_STAGES.findIndex(s => s.id === j.stage);
+              const kind = j.kind || j.stage;
+              const data = j.data || {};
+              const idx = INGEST_STAGES.findIndex(s => s.id === kind);
               if (idx >= 0) setStage(idx);
-              setLog(prev => [...prev, { stage: j.stage, msg: j.msg || JSON.stringify(j) }]);
+              const msg = summarizeIngestEvent(kind, data);
+              setLog(prev => [...prev, { stage: kind, msg }]);
             } catch {}
           }
         }
@@ -1091,6 +1095,34 @@ function IngestModal({ onClose }) {
       </div>
     </div>
   );
+}
+
+// Pull a human one-liner out of each cascade SSE event.
+function summarizeIngestEvent(kind, data) {
+  if (!data) return kind;
+  switch (kind) {
+    case "resolved":  return `paper id: ${data.paper_id}`;
+    case "fetched":   return `${data.title || "(no title)"} — ${data.authors || ""}`;
+    case "enriched": {
+      const bits = [];
+      if (data.tldr_excerpt) bits.push(`TLDR: ${data.tldr_excerpt.slice(0, 140)}`);
+      if (data.citations != null) bits.push(`${data.citations} citations (${data.influential || 0} influential)`);
+      if (data.venue) bits.push(`venue: ${data.venue}`);
+      if (data.n_refs) bits.push(`${data.n_refs} refs`);
+      if (data.has_embedding) bits.push("SPECTER2 ✓");
+      return bits.join(" · ") || "no SemSch data";
+    }
+    case "classified":
+      return `${data.cluster_name || "unclassified"} · score=${data.match_score} · method=${data.method}`;
+    case "ingested":   return data.new_entry ? `added: ${data.paper_id}` : `already in corpus: ${data.paper_id}`;
+    case "podcast_starting": return `generating ${data.length || "short"} podcast…`;
+    case "podcast_ready":    return `podcast script: ${data.turns || 0} turns`;
+    case "warn":      return `⚠ ${data.step}: ${data.error}`;
+    case "error":     return `✗ ${data.reason || JSON.stringify(data)}`;
+    case "done":      return `done — ${data.paper_id} → ${data.cluster_id || "unclassified"}`;
+    case "final":     return data.ok ? `complete: ${data.paper?.title || ""}` : `failed: ${data.error}`;
+    default:          return JSON.stringify(data).slice(0, 200);
+  }
 }
 
 window.ArXivis = ArXivis;
