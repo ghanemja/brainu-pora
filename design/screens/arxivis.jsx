@@ -871,29 +871,156 @@ function ResearchAssistantPanel({ rigor, composite }) {
   );
 }
 
+const API_BASE = "http://localhost:8090";
+
 function PaperVideo({ paperId, hero = false, fillHeight = false }) {
-  const src = window.ARXIVIS_VIDEOS?.[paperId];
-  // Theme-matched soft surface — no more hard black.
+  // Manifest provides cached video URL; once on-demand render completes,
+  // we drop our own URL into local state so the <video> shows up.
+  const manifestSrc = window.ARXIVIS_VIDEOS?.[paperId];
+  const [localSrc, setLocalSrc] = useState(null);
+  const [rendering, setRendering] = useState(false);
+  const [progress, setProgress] = useState({ stage: null, done: 0, total: 0 });
+  const [error, setError] = useState(null);
+
+  // Reset when paper changes
+  useEffect(() => {
+    setLocalSrc(null);
+    setRendering(false);
+    setProgress({ stage: null, done: 0, total: 0 });
+    setError(null);
+  }, [paperId]);
+
+  const src = localSrc || manifestSrc;
   const SURFACE = "var(--c-bg-elev-2, var(--c-bg-elev))";
+
+  const startRender = async () => {
+    setRendering(true);
+    setError(null);
+    setProgress({ stage: "starting", done: 0, total: 432 });
+    try {
+      const resp = await fetch(`${API_BASE}/paper/video/render`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paper_id: paperId }),
+      });
+      if (!resp.ok || !resp.body) throw new Error(`render endpoint returned ${resp.status}`);
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const events = buf.split("\n\n");
+        buf = events.pop();
+        for (const evt of events) {
+          const m = evt.match(/data:\s*(.+)/);
+          if (!m) continue;
+          const j = JSON.parse(m[1]);
+          if (j.kind === "frame") {
+            setProgress({ stage: "frame", done: j.data.done, total: j.data.total });
+          } else if (j.kind === "frames_start") {
+            setProgress({ stage: "frames_start", done: 0, total: j.data.total });
+          } else if (j.kind === "encode") {
+            setProgress({ stage: "encode", done: j.data.total_frames, total: j.data.total_frames });
+          } else if (j.kind === "cache_hit" || j.kind === "done") {
+            const url = j.data.url;
+            if (url) {
+              // Hit backend directly so the static-served frontend can stream the mp4
+              setLocalSrc(`${API_BASE}/${url}`);
+              if (!window.ARXIVIS_VIDEOS) window.ARXIVIS_VIDEOS = {};
+              window.ARXIVIS_VIDEOS[paperId] = `${API_BASE}/${url}`;
+            }
+          } else if (j.kind === "error") {
+            setError(j.data.reason || "render failed");
+          }
+        }
+      }
+    } catch (e) {
+      setError(e.message || String(e));
+    } finally {
+      setRendering(false);
+    }
+  };
 
   if (!src) {
     return (
       <div style={{
         margin: hero ? "0" : "18px 0 0",
-        padding: hero ? "60px 20px" : 14,
+        padding: hero ? "40px 24px" : 18,
         border: hero ? "none" : "1px dashed var(--c-line)",
         borderBottom: hero ? "1px solid var(--c-line)" : undefined,
         background: SURFACE,
-        color: "var(--c-ink-muted)",
+        color: "var(--c-ink)",
         borderRadius: hero ? 0 : 10,
-        fontSize: 12, opacity: 0.85, textAlign: "center",
+        textAlign: "center",
         flex: fillHeight ? 1 : "0 0 auto",
+        display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 14,
       }}>
-        No 30-second explainer rendered yet.
-        <br/>
-        <code style={{ fontSize: 10, opacity: 0.7 }}>
-          python3 scripts/render_arxivis_video.py --paper-id {paperId}
-        </code>
+        {!rendering && !error && (
+          <>
+            <div style={{ fontSize: 13, color: "var(--c-ink-muted)", maxWidth: 320 }}>
+              No 30-second explainer rendered yet. Build one now — takes about <strong>10 seconds</strong>.
+            </div>
+            <button
+              onClick={startRender}
+              style={{
+                padding: "10px 18px", fontSize: 13, fontWeight: 600,
+                background: "var(--c-bridge)", color: "var(--c-bg)",
+                border: "none", borderRadius: 999, cursor: "pointer",
+              }}>
+              ▸ Generate 30s explainer
+            </button>
+            <div style={{ fontSize: 11, opacity: 0.55, fontFamily: "var(--f-mono)" }}>
+              backend: {API_BASE.replace("http://", "")}
+            </div>
+          </>
+        )}
+        {rendering && (
+          <>
+            <div style={{ fontSize: 12, fontFamily: "var(--f-mono)", color: "var(--c-bridge)", letterSpacing: "0.08em" }}>
+              {progress.stage === "encode" ? "ENCODING…" :
+               progress.stage === "frames_start" ? "WARMING WORKERS…" :
+               progress.stage === "frame" ? `RENDERING FRAMES ${progress.done} / ${progress.total}` :
+               "STARTING…"}
+            </div>
+            <div style={{
+              width: 280, height: 8, borderRadius: 4,
+              background: "color-mix(in oklch, var(--c-ink) 10%, transparent)",
+              overflow: "hidden",
+            }}>
+              <div style={{
+                height: "100%",
+                width: progress.total ? `${Math.round(100 * progress.done / progress.total)}%` : "10%",
+                background: "var(--c-bridge)",
+                transition: "width 150ms",
+              }} />
+            </div>
+            <div style={{ fontSize: 11, color: "var(--c-ink-muted)" }}>
+              {progress.stage === "encode" ? "Stitching frames into mp4…" :
+               progress.stage === "frame" ? "Drawing concept layouts…" :
+               "Calling backend…"}
+            </div>
+          </>
+        )}
+        {error && (
+          <>
+            <div style={{ fontSize: 13, color: "var(--c-here, #ff6b8a)" }}>
+              ✗ {error}
+            </div>
+            <button onClick={() => { setError(null); startRender(); }}
+              style={{
+                padding: "6px 14px", fontSize: 12,
+                background: "transparent", border: "1px solid var(--c-line-strong)",
+                color: "var(--c-ink)", borderRadius: 999, cursor: "pointer",
+              }}>
+              Retry
+            </button>
+            <div style={{ fontSize: 11, opacity: 0.55, fontFamily: "var(--f-mono)", maxWidth: 280 }}>
+              Need backend running: <code>uvicorn api.server:app --port 8090 --reload</code>
+            </div>
+          </>
+        )}
       </div>
     );
   }

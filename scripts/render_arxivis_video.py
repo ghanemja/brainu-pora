@@ -791,18 +791,66 @@ def safe_id(pid: str) -> str:
     return re.sub(r"[^a-zA-Z0-9_-]+", "_", pid)
 
 
-def render_video(paper: dict, out_path: Path, cleanup: bool = True):
+def _render_one_frame(args):
+    """Pool worker — render single frame and save PNG. Module-level so it pickles."""
+    frame_idx, paper, positions, tmp_path_str = args
+    img = render_frame(frame_idx, paper, positions)
+    img.save(Path(tmp_path_str) / f"f_{frame_idx:04d}.png", optimize=False)
+    return frame_idx
+
+
+def render_video(paper: dict, out_path: Path, cleanup: bool = True,
+                 workers: int | None = None,
+                 progress: "Callable[[str, dict], None] | None" = None):
+    """Render a paper video.
+
+    workers: number of multiprocessing workers. None → cpu_count() - 1, 1 = serial.
+    progress: optional callback emit("stage", {...}) for SSE / CLI updates.
+    """
+    def emit(stage, data=None):
+        if progress:
+            try:
+                progress(stage, data or {})
+            except Exception:
+                pass
+
+    emit("layout", {"paper_id": paper.get("id")})
     positions = layout_3d(paper)
     if not positions:
+        emit("error", {"reason": "no positions"})
         return False
+
+    import multiprocessing as mp
+    # macOS defaults to "spawn" which re-imports + re-loads fonts per worker.
+    # "fork" preserves the parent's font cache → 2-3x faster startup.
+    try:
+        mp.set_start_method("fork", force=False)
+    except (RuntimeError, ValueError):
+        pass  # already set, or not supported (Windows)
+    if workers is None:
+        workers = max(1, (mp.cpu_count() or 2) - 1)
 
     tmp = tempfile.mkdtemp(prefix="arxivis_")
     tmp_path = Path(tmp)
     try:
-        for i in range(TOTAL_FRAMES):
-            img = render_frame(i, paper, positions)
-            img.save(tmp_path / f"f_{i:04d}.png", optimize=False)
+        tasks = [(i, paper, positions, str(tmp_path)) for i in range(TOTAL_FRAMES)]
+        emit("frames_start", {"total": TOTAL_FRAMES, "workers": workers})
 
+        done = 0
+        if workers <= 1:
+            for t in tasks:
+                _render_one_frame(t)
+                done += 1
+                if done % 24 == 0 or done == TOTAL_FRAMES:
+                    emit("frame", {"done": done, "total": TOTAL_FRAMES})
+        else:
+            with mp.Pool(workers) as pool:
+                for _ in pool.imap_unordered(_render_one_frame, tasks, chunksize=8):
+                    done += 1
+                    if done % 24 == 0 or done == TOTAL_FRAMES:
+                        emit("frame", {"done": done, "total": TOTAL_FRAMES})
+
+        emit("encode", {"total_frames": TOTAL_FRAMES})
         out_path.parent.mkdir(parents=True, exist_ok=True)
         cmd = [
             "ffmpeg", "-y", "-loglevel", "error",
@@ -814,6 +862,7 @@ def render_video(paper: dict, out_path: Path, cleanup: bool = True):
             str(out_path),
         ]
         subprocess.run(cmd, check=True)
+        emit("encoded", {"size_kb": out_path.stat().st_size // 1024})
     finally:
         if cleanup:
             shutil.rmtree(tmp, ignore_errors=True)
@@ -828,6 +877,8 @@ def main():
                     help="render only this paper id (e.g. arx:2602.14625v1)")
     ap.add_argument("--no-cleanup", action="store_true",
                     help="keep PNG frame tmpdir for inspection")
+    ap.add_argument("--workers", type=int, default=None,
+                    help="multiprocess pool size for frame render (default: cpu_count-1, 1 = serial)")
     args = ap.parse_args()
 
     papers = load_papers()
@@ -855,7 +906,7 @@ def main():
     for i, p in enumerate(papers, 1):
         out = VIDEOS_DIR / f"{safe_id(p['id'])}.mp4"
         print(f"[{i}/{len(papers)}] {p['id']} — {p['title'][:60]}")
-        ok = render_video(p, out, cleanup=not args.no_cleanup)
+        ok = render_video(p, out, cleanup=not args.no_cleanup, workers=args.workers)
         if ok:
             manifest[p["id"]] = f"videos/{out.name}"
             print(f"  → {out} ({out.stat().st_size//1024} KB)")
