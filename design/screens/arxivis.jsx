@@ -602,9 +602,22 @@ function ArXivis({ onClose, onJumpToConcept }) {
               </a>
             )}
 
+            {/* Two-column body so the user sees there's more info than the
+                hero card. Falls back to single-column under 520px (truly tiny). */}
+            <div style={{
+              marginTop: 16,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: 16,
+              alignItems: "start",
+            }}>
+
+            {/* LEFT — Novelty + concepts */}
+            <div>
+
             {/* Novelty breakdown */}
             <div style={{
-              marginTop: 18, padding: 14,
+              padding: 14,
               border: "1px solid var(--c-line)",
               borderRadius: 10,
               background: "color-mix(in oklch, var(--c-bg) 60%, transparent)",
@@ -624,7 +637,7 @@ function ArXivis({ onClose, onJumpToConcept }) {
             </div>
 
             {/* Activated concepts */}
-            <div style={{ marginTop: 18 }}>
+            <div style={{ marginTop: 16 }}>
               <div style={{
                 fontFamily: "var(--f-mono)", fontSize: 10, opacity: 0.6,
                 letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: 8,
@@ -649,9 +662,14 @@ function ArXivis({ onClose, onJumpToConcept }) {
               </div>
             </div>
 
+            </div>{/* /LEFT */}
+
+            {/* RIGHT — Innovations + rigor + pitch */}
+            <div>
+
             {/* Innovations — actual named contributions from the paper */}
             {selected.innovations?.length > 0 && (
-              <div style={{ marginTop: 18 }}>
+              <div>
                 <div style={{
                   fontFamily: "var(--f-mono)", fontSize: 10, opacity: 0.6,
                   letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: 8,
@@ -717,7 +735,11 @@ function ArXivis({ onClose, onJumpToConcept }) {
               </details>
             )}
 
-            {/* Activation edges count */}
+            </div>{/* /RIGHT */}
+
+            </div>{/* /2-col grid */}
+
+            {/* Activation edges count (spans full width below the columns) */}
             <div style={{ marginTop: 18, fontSize: 11.5, opacity: 0.55 }}>
               <strong>{selected.pair_edges?.length || 0}</strong> concept-pair edges activated
               · highlighted amber in brain
