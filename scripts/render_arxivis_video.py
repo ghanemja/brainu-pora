@@ -53,7 +53,7 @@ MANIFEST_JS = VIDEOS_DIR / "manifest.js"
 # ── Style — mirrors the protein-viz reference ────────────────────────────
 W, H        = 720, 1280
 FPS         = 24
-DURATION_S  = 14
+DURATION_S  = 16
 TOTAL_FRAMES = FPS * DURATION_S
 
 # Scene boundaries (seconds)
@@ -62,7 +62,11 @@ T_STRUCT_END       = 4.5
 T_FOUNDATION_END   = 6.0   # Scene C1 — light up foundations
 T_INTRODUCED_END   = 9.0   # Scene C2 — materialize introduced nodes
 T_NEW_EDGES_END    = 11.5  # Scene C3 — draw new edges
-T_NOVELTY_END      = 14.0  # Scene D — novelty stats
+# Scene D — explain what the paper actually says (was: abstract novelty stats)
+T_HEADLINE_END     = 12.5  # D1 — one-line big-idea headline
+T_CONCEPTS_END     = 14.5  # D2 — stagger introduced concepts w/ glosses
+T_INNOVATION_END   = 15.5  # D3 — top innovation phrase + pattern badge
+T_NOVELTY_END      = 16.0  # D4 — compact novelty bits chip footer
 
 BG_COLOR    = (0, 0, 0)
 INK_BRIGHT  = (245, 247, 251)
@@ -486,43 +490,195 @@ def render_scene_construction(t_global: float, paper: dict, positions: dict) -> 
     return img
 
 
-def render_scene_novelty(t_in_scene: float, paper: dict) -> Image.Image:
+def _ease_in_out(t: float) -> float:
+    t = max(0.0, min(1.0, t))
+    return t * t * (3 - 2 * t)
+
+
+def _clean_sentence(s: str, max_len: int = 180) -> str:
+    s = (s or "").strip().rstrip(".") + "."
+    if len(s) > max_len:
+        s = s[: max_len - 1].rsplit(" ", 1)[0] + "…"
+    return s
+
+
+def _pick_headline(paper: dict) -> str:
+    """One sentence summarizing what the paper says.
+
+    Priority: key_finding (paper's own thesis) → first pitch sentence →
+    top innovation phrase → title.
+    """
+    kf = (paper.get("key_finding") or "").strip()
+    if kf and len(kf.split()) >= 5:
+        return _clean_sentence(kf, 220)
+    pitch = (paper.get("pitch") or "").strip()
+    if pitch:
+        first = re.split(r"(?<=[.!?])\s+", pitch)[0]
+        if len(first.split()) >= 5:
+            return _clean_sentence(first, 220)
+    inns = paper.get("innovations") or []
+    if inns:
+        inns_sorted = sorted(inns, key=lambda x: -(x.get("priority", 0) or 0))
+        phrase = (inns_sorted[0].get("phrase") or "").strip()
+        if phrase:
+            return _clean_sentence(phrase, 220)
+    return _clean_sentence(paper.get("title", ""), 220)
+
+
+def _pick_innovation(paper: dict, headline: str) -> dict | None:
+    """Top innovation that doesn't duplicate the headline."""
+    inns = paper.get("innovations") or []
+    if not inns:
+        return None
+    inns_sorted = sorted(inns, key=lambda x: -(x.get("priority", 0) or 0))
+    head_norm = re.sub(r"\W+", "", (headline or "").lower())[:40]
+    for inn in inns_sorted:
+        phr = re.sub(r"\W+", "", (inn.get("phrase") or "").lower())[:40]
+        if phr and phr != head_norm:
+            return inn
+    return inns_sorted[0]
+
+
+def _pattern_label(pattern: str, kind: str) -> str:
+    """Map innovation pattern → human label."""
+    k = (kind or "").lower()
+    p = (pattern or "").lower()
+    if k == "connects" or "connect" in p: return "CONNECTS"
+    if k == "introduces" or "propose" in p or "introduce" in p: return "PROPOSES"
+    if k == "claim" or "claim" in p: return "CLAIMS"
+    if k == "method" or "method" in p: return "METHOD"
+    if k == "result" or "result" in p: return "RESULT"
+    return (kind or pattern or "FINDS").upper()
+
+
+def render_scene_explanation(t_global: float, paper: dict) -> Image.Image:
+    """Plain-English concept explanation. Replaces the abstract novelty card.
+
+    Internal phases (all driven by t_global, the absolute video time):
+      D1  T_NEW_EDGES_END  → T_HEADLINE_END   : headline fades up
+      D2  T_HEADLINE_END   → T_CONCEPTS_END   : introduced concepts stagger
+      D3  T_CONCEPTS_END   → T_INNOVATION_END : top innovation w/ pattern badge
+      D4  T_INNOVATION_END → T_NOVELTY_END    : novelty bits footer chip
+    """
     img = Image.new("RGB", (W, H), BG_COLOR)
-    fm_giant  = load_font(160)
-    fm_meta   = load_font(20, mono=True)
-    fm_body   = load_font(22)
+    draw = ImageDraw.Draw(img)
 
-    # Big bits number, animated count-up
-    bits_final = paper["novelty_bits"]
-    progress = min(1.0, t_in_scene / 1.0)
-    bits_now = bits_final * progress
-    draw_text_center(img, f"{bits_now:.1f}", fm_giant, 200, GREEN)
-    draw_text_center(img, "NOVELTY · BITS", fm_meta, 405, GREEN_DIM)
+    fm_tag    = load_font(16, mono=True)
+    fm_head   = load_font(30, weight="Medium")
+    fm_concept = load_font(24, weight="Medium")
+    fm_gloss  = load_font(17)
+    fm_inn    = load_font(22, weight="Medium")
+    fm_chip   = load_font(13, mono=True)
 
-    # Breakdown chips
-    bd = paper["novelty_breakdown"]
-    fm_chip = load_font(15, mono=True)
-    chips = [
-        (f"concept rarity {bd.get('concept_bits',0):.1f}",   CYAN),
-        (f"new edges {bd.get('edge_bits',0):.1f}",            GREEN),
-        (f"innovations {bd.get('innovation_bonus',0):.1f}",   AMBER),
-    ]
-    y = 510
-    for text, color in chips:
-        draw_pill(img, text, fm_chip, W/2, y, (8, 22, 30), color)
-        y += 56
+    # ── D1 headline (always visible, just fades up at the start) ──────
+    headline_local = max(0.0, min(1.0, (t_global - T_NEW_EDGES_END) / (T_HEADLINE_END - T_NEW_EDGES_END)))
+    head_alpha = _ease_in_out(headline_local)
+    head_color = tuple(int(c * head_alpha + INK_DIM[i] * (1 - head_alpha)) for i, c in enumerate(INK_BRIGHT))
 
-    # Pitch
-    fm_pitch = load_font(20)
-    pitch = paper["pitch"].split("\n")[0]
-    if len(pitch) > 320: pitch = pitch[:318] + "…"
-    draw_text_center(img, pitch, fm_pitch, 770, INK_DIM, max_w=W-100)
+    draw_pill(img, "WHAT THIS PAPER SAYS", fm_tag, W / 2, 110, (12, 28, 40), CYAN_GLOW)
+    headline = _pick_headline(paper)
+    draw_text_center(img, headline, fm_head, 180, head_color, max_w=W - 80)
 
-    # Concept count, edge count
-    fm_stat = load_font(16, mono=True)
-    line = f"{len(paper['concepts'])} concepts  ·  {len(paper['pair_edges'])} edges  ·  {paper['source']}"
-    draw_text_center(img, line, fm_stat, H - 120, INK_DIM)
+    # ── D2 introduced concepts stagger ──────────────────────────────
+    # Each introduced concept: name + one-line role gloss
+    introduceds = paper.get("introduced") or []
+    show_concepts = [c for c in introduceds if c.get("name")][:3]
+
+    if t_global >= T_HEADLINE_END and show_concepts:
+        # tag
+        if t_global < T_CONCEPTS_END:
+            draw_pill(img, "KEY CONCEPTS INTRODUCED", fm_tag, W / 2, 440, (12, 28, 40), AMBER)
+
+        # Per-concept stagger inside D2 window
+        d2_span = max(0.001, T_CONCEPTS_END - T_HEADLINE_END)
+        per_concept = d2_span / max(1, len(show_concepts))
+        base_y = 490
+        slot_h = 130
+
+        for i, c in enumerate(show_concepts):
+            local_start = T_HEADLINE_END + i * per_concept * 0.7  # overlap reveals
+            reveal = _ease_in_out((t_global - local_start) / max(0.001, per_concept * 0.9))
+            if reveal <= 0:
+                continue
+            y_top = base_y + i * slot_h
+            # slide-in from below
+            slide = int((1 - reveal) * 18)
+            alpha = reveal
+
+            # Name pill
+            name = c["name"]
+            col = (int(GREEN[0] * alpha + BG_COLOR[0] * (1 - alpha)),
+                   int(GREEN[1] * alpha + BG_COLOR[1] * (1 - alpha)),
+                   int(GREEN[2] * alpha + BG_COLOR[2] * (1 - alpha)))
+            draw_text_center(img, name, fm_concept, y_top + slide, col, max_w=W - 80)
+
+            # One-line gloss — synthesize from what we know about the concept
+            role = _concept_role(c, paper)
+            gloss_col = (int(INK_DIM[0] * alpha + BG_COLOR[0] * (1 - alpha)),
+                         int(INK_DIM[1] * alpha + BG_COLOR[1] * (1 - alpha)),
+                         int(INK_DIM[2] * alpha + BG_COLOR[2] * (1 - alpha)))
+            draw_text_center(img, role, fm_gloss, y_top + 38 + slide, gloss_col, max_w=W - 100)
+
+    # ── D3 top innovation phrase ─────────────────────────────────
+    if t_global >= T_CONCEPTS_END:
+        inn_local = _ease_in_out((t_global - T_CONCEPTS_END) / max(0.001, T_INNOVATION_END - T_CONCEPTS_END))
+        inn = _pick_innovation(paper, headline)
+        if inn:
+            label = _pattern_label(inn.get("pattern"), inn.get("kind"))
+            phrase = _clean_sentence(inn.get("phrase", ""), 200)
+
+            # Clear lower half visually w/ a faint divider
+            draw.line([(60, 870), (W - 60, 870)], fill=(18, 38, 56), width=2)
+
+            alpha = inn_local
+            badge_color = {
+                "CONNECTS": CYAN_GLOW, "PROPOSES": GREEN, "CLAIMS": AMBER,
+                "METHOD": CYAN, "RESULT": GREEN_DIM,
+            }.get(label, CYAN_GLOW)
+            draw_pill(img, label, fm_tag, W / 2, 920, (12, 28, 40), badge_color)
+            txt_col = (int(INK_BRIGHT[0] * alpha + INK_DIM[0] * (1 - alpha)),
+                       int(INK_BRIGHT[1] * alpha + INK_DIM[1] * (1 - alpha)),
+                       int(INK_BRIGHT[2] * alpha + INK_DIM[2] * (1 - alpha)))
+            draw_text_center(img, phrase, fm_inn, 970, txt_col, max_w=W - 80)
+
+    # ── D4 novelty bits + source — footer chip (compact, always last) ─
+    if t_global >= T_INNOVATION_END:
+        bits = paper.get("novelty_bits", 0.0)
+        footer = f"{bits:.1f} bits  ·  {len(paper.get('concepts', []))} concepts  ·  {paper.get('source','')}"
+        draw_text_center(img, footer, fm_chip, H - 70, GREEN_DIM)
+    else:
+        # mini-source watermark while the explanation is animating
+        draw_text_center(img, paper.get("source", ""), fm_chip, H - 70, INK_DIM)
+
     return img
+
+
+def _concept_role(c: dict, paper: dict) -> str:
+    """One-line plain-English gloss for a concept in this paper's context.
+
+    Uses signals: echoes_title, weight, degree, and whether any innovation
+    phrase mentions this concept by id.
+    """
+    name = c.get("name", "this concept")
+    deg = c.get("degree", 0) or 0
+    echoes = bool(c.get("echoes_title"))
+
+    # Find innovation phrase that names this concept id
+    cid = c.get("id")
+    for inn in (paper.get("innovations") or []):
+        if cid and cid in (inn.get("connects_to") or []):
+            phrase = (inn.get("phrase") or "").strip()
+            if phrase and len(phrase) < 130:
+                return _clean_sentence(phrase, 130)
+            break
+
+    if echoes and deg <= 1:
+        return f"the central new idea — defined by this paper."
+    if deg == 0:
+        return f"a new term, introduced here for the first time."
+    if deg <= 2:
+        return f"a fresh framing, lightly connected to prior work."
+    return f"a familiar concept reframed in a new context."
 
 
 # ── Frame dispatcher ─────────────────────────────────────────────────────
@@ -535,7 +691,7 @@ def render_frame(frame_idx: int, paper: dict, positions: dict) -> Image.Image:
         return render_scene_structure(t - T_TITLE_END, paper, positions)
     if t < T_NEW_EDGES_END:
         return render_scene_construction(t, paper, positions)
-    return render_scene_novelty(t - T_NEW_EDGES_END, paper)
+    return render_scene_explanation(t, paper)
 
 
 # ── Pipeline ─────────────────────────────────────────────────────────────
@@ -593,7 +749,18 @@ def main():
         sys.exit("no papers matched")
 
     VIDEOS_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Load existing manifest and merge — never clobber prior renders.
     manifest = {}
+    if MANIFEST_JS.exists():
+        try:
+            txt = MANIFEST_JS.read_text()
+            m = re.search(r"window\.ARXIVIS_VIDEOS\s*=\s*(.*?);\s*$", txt, re.DOTALL)
+            if m:
+                manifest = json.loads(m.group(1))
+        except Exception:
+            manifest = {}
+
     for i, p in enumerate(papers, 1):
         out = VIDEOS_DIR / f"{safe_id(p['id'])}.mp4"
         print(f"[{i}/{len(papers)}] {p['id']} — {p['title'][:60]}")
@@ -604,7 +771,7 @@ def main():
         else:
             print("  ✗ skipped (no positions)")
 
-    # Write manifest
+    # Write manifest (merged)
     js = "window.ARXIVIS_VIDEOS = " + json.dumps(manifest, indent=2) + ";\n"
     MANIFEST_JS.write_text(js)
     print(f"\nmanifest → {MANIFEST_JS} ({len(manifest)} videos)")
