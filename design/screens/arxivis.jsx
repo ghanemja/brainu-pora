@@ -743,16 +743,16 @@ function ArXivis({ onClose, onJumpToConcept }) {
               </details>
             )}
 
-            </div>{/* /Body single-col */}
+            </div>
 
             {/* Activation edges count */}
             <div style={{ marginTop: 18, fontSize: 11.5, opacity: 0.55 }}>
               <strong>{selected.pair_edges?.length || 0}</strong> concept-pair edges activated
               · highlighted amber in brain
             </div>
-            </div>{/* /padding wrapper */}
-          </div>{/* /RIGHT TEXT col */}
-          </div>{/* /outer 2-col aside grid */}
+            </div>
+          </div>
+          </div>
         )}
       </aside>
     </div>
