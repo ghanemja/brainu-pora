@@ -53,7 +53,7 @@ MANIFEST_JS = VIDEOS_DIR / "manifest.js"
 # ── Style — mirrors the protein-viz reference ────────────────────────────
 W, H        = 720, 1280
 FPS         = 24
-DURATION_S  = 16
+DURATION_S  = 18
 TOTAL_FRAMES = FPS * DURATION_S
 
 # Scene boundaries (seconds)
@@ -62,11 +62,11 @@ T_STRUCT_END       = 4.5
 T_FOUNDATION_END   = 6.0   # Scene C1 — light up foundations
 T_INTRODUCED_END   = 9.0   # Scene C2 — materialize introduced nodes
 T_NEW_EDGES_END    = 11.5  # Scene C3 — draw new edges
-# Scene D — explain what the paper actually says (was: abstract novelty stats)
-T_HEADLINE_END     = 12.5  # D1 — one-line big-idea headline
-T_CONCEPTS_END     = 14.5  # D2 — stagger introduced concepts w/ glosses
-T_INNOVATION_END   = 15.5  # D3 — top innovation phrase + pattern badge
-T_NOVELTY_END      = 16.0  # D4 — compact novelty bits chip footer
+# Scene D — explain what the paper actually says, with visuals
+T_HEADLINE_END     = 12.3  # D1 — one-line big-idea headline
+T_CONCEPTS_END     = 15.1  # D2 — concept cards (visual diagrams of introduced concepts)
+T_INNOVATION_END   = 17.5  # D3 — innovation diagram (linked concept nodes + phrase)
+T_NOVELTY_END      = 18.0  # D4 — compact novelty bits chip footer
 
 BG_COLOR    = (0, 0, 0)
 INK_BRIGHT  = (245, 247, 251)
@@ -552,103 +552,194 @@ def _pattern_label(pattern: str, kind: str) -> str:
 
 
 def render_scene_explanation(t_global: float, paper: dict) -> Image.Image:
-    """Plain-English concept explanation. Replaces the abstract novelty card.
+    """Visual concept explanation. Replaces abstract novelty card.
 
-    Internal phases (all driven by t_global, the absolute video time):
-      D1  T_NEW_EDGES_END  → T_HEADLINE_END   : headline fades up
-      D2  T_HEADLINE_END   → T_CONCEPTS_END   : introduced concepts stagger
-      D3  T_CONCEPTS_END   → T_INNOVATION_END : top innovation w/ pattern badge
-      D4  T_INNOVATION_END → T_NOVELTY_END    : novelty bits footer chip
+    D1  T_NEW_EDGES_END  → T_HEADLINE_END   : headline pill + big idea
+    D2  T_HEADLINE_END   → T_CONCEPTS_END   : CONCEPT-CARD visuals — each
+                                              introduced concept rendered as
+                                              a glowing labeled node w/ caption
+                                              and "built on N foundations" chip.
+                                              Cards stagger in left→right.
+    D3  T_CONCEPTS_END   → T_INNOVATION_END : INNOVATION DIAGRAM — animated
+                                              link between two concept nodes
+                                              w/ pattern badge on the edge
+                                              and phrase below as caption.
+    D4  T_INNOVATION_END → T_NOVELTY_END    : compact bits + source footer.
     """
     img = Image.new("RGB", (W, H), BG_COLOR)
     draw = ImageDraw.Draw(img)
 
     fm_tag    = load_font(16, mono=True)
-    fm_head   = load_font(30, weight="Medium")
-    fm_concept = load_font(24, weight="Medium")
-    fm_gloss  = load_font(17)
-    fm_inn    = load_font(22, weight="Medium")
+    fm_head   = load_font(28, weight="Medium")
+    fm_card   = load_font(18, weight="Medium")
+    fm_cap    = load_font(14)
+    fm_chipsm = load_font(11, mono=True)
+    fm_inn    = load_font(20)
     fm_chip   = load_font(13, mono=True)
 
-    # ── D1 headline (always visible, just fades up at the start) ──────
-    headline_local = max(0.0, min(1.0, (t_global - T_NEW_EDGES_END) / (T_HEADLINE_END - T_NEW_EDGES_END)))
+    headline = _pick_headline(paper)
+
+    # ── D1 headline (persists through all D-scenes) ────────────────
+    headline_local = max(0.0, min(1.0, (t_global - T_NEW_EDGES_END) / max(0.001, T_HEADLINE_END - T_NEW_EDGES_END)))
     head_alpha = _ease_in_out(headline_local)
     head_color = tuple(int(c * head_alpha + INK_DIM[i] * (1 - head_alpha)) for i, c in enumerate(INK_BRIGHT))
+    draw_pill(img, "WHAT THIS PAPER TEACHES", fm_tag, W / 2, 100, (12, 28, 40), CYAN_GLOW)
+    draw_text_center(img, headline, fm_head, 160, head_color, max_w=W - 80)
 
-    draw_pill(img, "WHAT THIS PAPER SAYS", fm_tag, W / 2, 110, (12, 28, 40), CYAN_GLOW)
-    headline = _pick_headline(paper)
-    draw_text_center(img, headline, fm_head, 180, head_color, max_w=W - 80)
+    # Common: list of introduced concepts
+    introduceds = [c for c in (paper.get("introduced") or []) if c.get("name")]
+    foundations = [c for c in (paper.get("foundations") or []) if c.get("name")]
 
-    # ── D2 introduced concepts stagger ──────────────────────────────
-    # Each introduced concept: name + one-line role gloss
-    introduceds = paper.get("introduced") or []
-    show_concepts = [c for c in introduceds if c.get("name")][:3]
+    # ── D2 CONCEPT CARDS — visual nodes (left→right stagger) ───────
+    show = introduceds[:3]
+    if T_HEADLINE_END <= t_global < T_CONCEPTS_END and show:
+        draw_pill(img, "KEY CONCEPTS INTRODUCED", fm_tag, W / 2, 360, (12, 28, 40), AMBER)
 
-    if t_global >= T_HEADLINE_END and show_concepts:
-        # tag
-        if t_global < T_CONCEPTS_END:
-            draw_pill(img, "KEY CONCEPTS INTRODUCED", fm_tag, W / 2, 440, (12, 28, 40), AMBER)
-
-        # Per-concept stagger inside D2 window
+        # Layout: stacked cards vertically, each w/ a circle on left + text on right.
         d2_span = max(0.001, T_CONCEPTS_END - T_HEADLINE_END)
-        per_concept = d2_span / max(1, len(show_concepts))
-        base_y = 490
-        slot_h = 130
+        per = d2_span / max(1, len(show))
 
-        for i, c in enumerate(show_concepts):
-            local_start = T_HEADLINE_END + i * per_concept * 0.7  # overlap reveals
-            reveal = _ease_in_out((t_global - local_start) / max(0.001, per_concept * 0.9))
+        card_top   = 420
+        card_h     = 160
+        radius     = 48
+        center_x_circle = 130
+        text_left  = 200
+
+        # Pre-compute foundation count for each introduced concept by walking
+        # pair_edges — a foundation is anyone connected to this id in pair_edges.
+        cid_to_links = {}
+        for a, b in (paper.get("pair_edges") or []):
+            cid_to_links.setdefault(a, set()).add(b)
+            cid_to_links.setdefault(b, set()).add(a)
+        foundation_ids = {f.get("id") for f in foundations}
+
+        for i, c in enumerate(show):
+            local_start = T_HEADLINE_END + i * per * 0.6  # overlap reveals
+            reveal = _ease_in_out((t_global - local_start) / max(0.001, per * 0.9))
             if reveal <= 0:
                 continue
-            y_top = base_y + i * slot_h
-            # slide-in from below
-            slide = int((1 - reveal) * 18)
+            slide = int((1 - reveal) * 24)
+            y0 = card_top + i * card_h + slide
+
+            # Glowing circle node — yellow if echoes title (centrality), green otherwise
+            node_color = AMBER if c.get("echoes_title") else GREEN
+            _draw_node_glow(draw, center_x_circle, y0 + 38, radius, node_color, glow_alpha=int(120 * reveal))
+
+            # Tiny number badge inside circle
+            num_font = load_font(28, weight="Medium")
+            num_text = str(i + 1)
+            tw = draw.textlength(num_text, font=num_font)
+            draw.text((center_x_circle - tw / 2, y0 + 22), num_text, font=num_font, fill=(10, 10, 20))
+
+            # Name + caption on the right of the circle
             alpha = reveal
-
-            # Name pill
+            mix = lambda base: tuple(int(base[k] * alpha + BG_COLOR[k] * (1 - alpha)) for k in range(3))
             name = c["name"]
-            col = (int(GREEN[0] * alpha + BG_COLOR[0] * (1 - alpha)),
-                   int(GREEN[1] * alpha + BG_COLOR[1] * (1 - alpha)),
-                   int(GREEN[2] * alpha + BG_COLOR[2] * (1 - alpha)))
-            draw_text_center(img, name, fm_concept, y_top + slide, col, max_w=W - 80)
+            # truncate name if too long
+            if draw.textlength(name, font=fm_card) > W - text_left - 40:
+                while name and draw.textlength(name + "…", font=fm_card) > W - text_left - 40:
+                    name = name[:-1]
+                name += "…"
+            draw.text((text_left, y0 + 14), name, font=fm_card, fill=mix(INK_BRIGHT))
 
-            # One-line gloss — synthesize from what we know about the concept
+            # Caption (gloss) — wrap to 2 lines
             role = _concept_role(c, paper)
-            gloss_col = (int(INK_DIM[0] * alpha + BG_COLOR[0] * (1 - alpha)),
-                         int(INK_DIM[1] * alpha + BG_COLOR[1] * (1 - alpha)),
-                         int(INK_DIM[2] * alpha + BG_COLOR[2] * (1 - alpha)))
-            draw_text_center(img, role, fm_gloss, y_top + 38 + slide, gloss_col, max_w=W - 100)
+            cap_y = y0 + 42
+            for line in fit_text(draw, role, fm_cap, W - text_left - 40)[:2]:
+                draw.text((text_left, cap_y), line, font=fm_cap, fill=mix(INK_DIM))
+                cap_y += fm_cap.size + 4
 
-    # ── D3 top innovation phrase ─────────────────────────────────
+            # "Built on N foundations" chip
+            n_links = len((cid_to_links.get(c.get("id"), set())) & foundation_ids)
+            if n_links > 0:
+                chip = f"BUILDS ON {n_links} FOUNDATION{'S' if n_links != 1 else ''}"
+                draw_pill(img, chip, fm_chipsm, text_left + 90, y0 + card_h - 30,
+                          (12, 28, 40), CYAN_GLOW, pad_x=10, pad_y=4)
+
+    # ── D3 INNOVATION DIAGRAM — linked concept nodes ───────────────
     if t_global >= T_CONCEPTS_END:
         inn_local = _ease_in_out((t_global - T_CONCEPTS_END) / max(0.001, T_INNOVATION_END - T_CONCEPTS_END))
         inn = _pick_innovation(paper, headline)
         if inn:
             label = _pattern_label(inn.get("pattern"), inn.get("kind"))
             phrase = _clean_sentence(inn.get("phrase", ""), 200)
-
-            # Clear lower half visually w/ a faint divider
-            draw.line([(60, 870), (W - 60, 870)], fill=(18, 38, 56), width=2)
-
-            alpha = inn_local
             badge_color = {
                 "CONNECTS": CYAN_GLOW, "PROPOSES": GREEN, "CLAIMS": AMBER,
                 "METHOD": CYAN, "RESULT": GREEN_DIM,
             }.get(label, CYAN_GLOW)
-            draw_pill(img, label, fm_tag, W / 2, 920, (12, 28, 40), badge_color)
-            txt_col = (int(INK_BRIGHT[0] * alpha + INK_DIM[0] * (1 - alpha)),
-                       int(INK_BRIGHT[1] * alpha + INK_DIM[1] * (1 - alpha)),
-                       int(INK_BRIGHT[2] * alpha + INK_DIM[2] * (1 - alpha)))
-            draw_text_center(img, phrase, fm_inn, 970, txt_col, max_w=W - 80)
 
-    # ── D4 novelty bits + source — footer chip (compact, always last) ─
+            # Section tag for context
+            draw_pill(img, "THE BIG IDEA", fm_tag, W / 2, 360, (12, 28, 40), badge_color)
+
+            # Diagram area — middle of screen since D2 cards no longer render here
+            diag_top = 500
+            diag_h   = 280
+
+            # Pick the two endpoints from connects_to or fall back to first 2 introduced names.
+            connects_ids = inn.get("connects_to") or []
+            id_to_name = {(c.get("id") or ""): c.get("name", "") for c in (paper.get("concepts") or [])}
+            endpoints = []
+            for cid in connects_ids[:2]:
+                if id_to_name.get(cid):
+                    endpoints.append(id_to_name[cid])
+            while len(endpoints) < 2 and len(endpoints) < len(introduceds):
+                cand = introduceds[len(endpoints)].get("name", "")
+                if cand and cand not in endpoints:
+                    endpoints.append(cand)
+            if len(endpoints) < 2:
+                endpoints = (endpoints + ["?", "?"])[:2]
+
+            # Node positions
+            left_x, right_x = 170, W - 170
+            mid_y = diag_top + diag_h // 2
+            node_r = 56
+
+            # Animated link — line draws from left to right as inn_local grows
+            link_progress = max(0.0, min(1.0, (inn_local - 0.2) / 0.6))
+            line_color = badge_color
+            if link_progress > 0:
+                lx = int(left_x + (right_x - left_x) * link_progress)
+                draw.line([(left_x, mid_y), (lx, mid_y)],
+                          fill=line_color, width=int(4 + 4 * link_progress))
+
+            # Two nodes
+            for k, (x, name) in enumerate([(left_x, endpoints[0]), (right_x, endpoints[1])]):
+                appear = _ease_in_out((inn_local - k * 0.15) / 0.4)
+                if appear <= 0:
+                    continue
+                _draw_node_glow(draw, x, mid_y, int(node_r * appear),
+                                CYAN_GLOW if k == 0 else (badge_color if label == "PROPOSES" else GREEN),
+                                glow_alpha=int(120 * appear))
+                # name below
+                txt = name
+                if draw.textlength(txt, font=fm_card) > 250:
+                    while txt and draw.textlength(txt + "…", font=fm_card) > 250:
+                        txt = txt[:-1]
+                    txt += "…"
+                tw = draw.textlength(txt, font=fm_card)
+                draw.text((x - tw / 2, mid_y + node_r + 14), txt,
+                          font=fm_card, fill=INK_BRIGHT)
+
+            # Pattern badge on the link midpoint
+            if link_progress >= 0.5:
+                draw_pill(img, label, fm_tag, W / 2, mid_y, (12, 28, 40), badge_color)
+
+            # Caption phrase under the diagram
+            cap_y = diag_top + diag_h + 30
+            phrase_alpha = max(0.0, min(1.0, (inn_local - 0.5) / 0.5))
+            phr_color = tuple(int(INK_BRIGHT[k] * phrase_alpha + INK_DIM[k] * (1 - phrase_alpha)) for k in range(3))
+            for line in fit_text(draw, phrase, fm_inn, W - 80)[:3]:
+                tw = draw.textlength(line, font=fm_inn)
+                draw.text(((W - tw) / 2, cap_y), line, font=fm_inn, fill=phr_color)
+                cap_y += fm_inn.size + 6
+
+    # ── D4 footer — bits + source ────────────────────────────────
     if t_global >= T_INNOVATION_END:
         bits = paper.get("novelty_bits", 0.0)
         footer = f"{bits:.1f} bits  ·  {len(paper.get('concepts', []))} concepts  ·  {paper.get('source','')}"
-        draw_text_center(img, footer, fm_chip, H - 70, GREEN_DIM)
+        draw_text_center(img, footer, fm_chip, H - 60, GREEN_DIM)
     else:
-        # mini-source watermark while the explanation is animating
-        draw_text_center(img, paper.get("source", ""), fm_chip, H - 70, INK_DIM)
+        draw_text_center(img, paper.get("source", ""), fm_chip, H - 60, INK_DIM)
 
     return img
 
