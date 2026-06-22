@@ -1,21 +1,33 @@
 # Brain University — deploy (leadership demo)
 
-Frontend → **Netlify**, backend → **Render**. Both configured via committed
-files (`netlify.toml`, `render.yaml`). You set env vars in the dashboards and
-click Deploy — no source edits required.
+Two backend options. **HF Spaces is the default — free, sleeps when idle.**
+Render is the paid alternative for always-on traffic.
+
+| Path | Backend | Cost when idle | Cold start |
+|------|---------|----------------|------------|
+| **A (default)** | HF Spaces Docker | **$0** | ~30–90 s after 48 h sleep |
+| B | Render standard | ~$25/mo | none |
+
+→ **Path A** full guide: [HF_SPACES_DEPLOY.md](HF_SPACES_DEPLOY.md)
+→ **Path B** (Render) below.
 
 ```
 ┌──────────────┐  HTTPS   ┌─────────────────────┐  HTTPS   ┌──────────────────┐
-│ Netlify      │ ───────► │ Render              │ ───────► │ LLM              │
+│ Netlify      │ ───────► │ HF Space  ─OR─ Render│ ───────► │ LLM              │
 │ design/ (UI) │  CORS    │ api/ (FastAPI+ffmpeg)│         │ Claude API  OR   │
-│ free         │          │ standard plan       │          │ HF Gemma endpoint│
+│ free         │          │ free  /  $25/mo     │          │ HF Gemma endpoint│
 └──────────────┘          └─────────────────────┘          └──────────────────┘
        BU_API_BASE ─────────────┘        ANTHROPIC_API_KEY ──┘
 ```
 
 ---
 
-## 1 · Backend → Render
+## Path B · Backend → Render (paid, always-on)
+
+> Use Path A (HF Spaces) for the leadership demo. Path B below is for
+> production or sustained traffic where you don't want cold starts.
+
+### 1 · Backend → Render
 
 1. **https://dashboard.render.com → New → Blueprint** → connect this repo
    (`ghanemja/brain-university`). Render reads `render.yaml`.

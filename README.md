@@ -1,3 +1,14 @@
+---
+title: Brain University
+emoji: 🎓
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+short_description: Self-paced learning architecture over an LLM-curated graph.
+---
+
 # 🎓 Brain University
 
 A self-paced learning architecture built on top of an LLM-curated knowledge
