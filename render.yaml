@@ -35,3 +35,13 @@ services:
         value: /data/brain_university.db
       - key: CORS_ORIGINS
         sync: false          # e.g. https://brain-u.netlify.app
+      # ── Auth — bearer-token gate over every mutating endpoint ───────────
+      # See api/auth.py. BU_AUTH_DISABLED must remain unset in prod.
+      - key: BU_AUTH_USER
+        sync: false          # e.g. admin
+      - key: BU_AUTH_PASSWORD
+        sync: false          # 16+ char random recommended
+      - key: BU_AUTH_SECRET
+        sync: false          # 48+ char random; rotate to revoke all sessions
+      - key: BU_AUTH_TTL_HOURS
+        value: "24"
