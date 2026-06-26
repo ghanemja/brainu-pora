@@ -27,14 +27,16 @@ COPY wiki/   ./wiki/
 COPY data/   ./data/
 COPY scripts/ ./scripts/
 
-# SQLite lives on a mounted disk in production so it survives redeploys
-ENV BRAIN_DB=/data/brain_university.db
-VOLUME /data
+# Writable runtime dirs. HF Spaces runs the container as a non-root user, so
+# the COPY'd (root-owned) /app/data must be world-writable for SQLite + the
+# podcast/media cache. Harmless on Render/Fly (root there anyway).
+RUN mkdir -p /app/data/sessions/media && chmod -R 777 /app/data
+ENV BRAIN_DB=/app/data/brain_university.db
 
-EXPOSE 8080
+# Port: HF Spaces routes to app_port (7860); Render/Railway inject $PORT.
+EXPOSE 7860
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s \
-  CMD curl -fsS http://localhost:${PORT:-8080}/health || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=25s \
+  CMD curl -fsS http://localhost:${PORT:-7860}/health || exit 1
 
-# $PORT is provided by the host (Render/Railway). Default 8080 locally.
-CMD uvicorn api.server:app --host 0.0.0.0 --port ${PORT:-8080} --workers 1
+CMD uvicorn api.server:app --host 0.0.0.0 --port ${PORT:-7860} --workers 1

@@ -38,3 +38,6 @@ eval/results/
 # Logs
 logs/
 university.zip
+
+# Local Netlify folder
+.netlify
