@@ -101,13 +101,21 @@ def _call_local_llm(system: str, user: str, max_tokens: int = 1500,
     if key:
         headers["Authorization"] = f"Bearer {key}"
 
+    # Reasoning models (e.g. the gemma-4 coder) spend tokens "thinking" before
+    # emitting the answer, and llama.cpp puts that thinking in a separate
+    # `reasoning_content` field. With a tight max_tokens the budget is consumed
+    # by reasoning and `content` comes back empty/truncated. Give generous
+    # headroom — the cap is harmless for short answers (the model stops at
+    # finish_reason=stop) and prevents truncation on big JSON generations.
+    # Capped to stay within the endpoint context window (8192).
+    eff_max = min(5000, max(max_tokens, 4000))
     body = {
         "model": model,
         "messages": [
             {"role": "system", "content": system},
             {"role": "user", "content": user},
         ],
-        "max_tokens": max_tokens,
+        "max_tokens": eff_max,
         "temperature": 0.3,
     }
 
@@ -117,7 +125,13 @@ def _call_local_llm(system: str, user: str, max_tokens: int = 1500,
             r = requests.post(url, headers=headers, json=body, timeout=300)
             r.raise_for_status()
             payload = r.json()
-            return payload["choices"][0]["message"]["content"]
+            msg = payload["choices"][0]["message"]
+            content = (msg.get("content") or "").strip()
+            # Fallback: if the model emitted only reasoning (ran out of budget
+            # mid-answer), use that so callers get something parseable.
+            if not content:
+                content = (msg.get("reasoning_content") or "").strip()
+            return content
         except (requests.ConnectionError, requests.Timeout) as e:
             last_err = e
             time.sleep(3 * (attempt + 1))
