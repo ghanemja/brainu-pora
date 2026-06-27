@@ -27,7 +27,10 @@
     Referrer-Policy        = "strict-origin-when-cross-origin"
 
 # In-browser Babel needs JSX served as text/babel, not application/javascript.
+# no-cache forces the browser to revalidate every load so frontend fixes ship
+# without users having to hard-refresh or bump a ?v= query.
 [[headers]]
   for = "/*.jsx"
   [headers.values]
     Content-Type = "text/babel; charset=utf-8"
+    Cache-Control = "no-cache, max-age=0, must-revalidate"
