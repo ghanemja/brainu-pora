@@ -337,6 +337,7 @@ function App() {
         <Tutorial
           open={tutorialOpen}
           onClose={() => setTutorialOpen(false)}
+          onPreview={(screenId) => { if (screenId) goto(screenId); }}
           onJumpTo={(screenId) => {
             setTutorialOpen(false);
             if (screenId) goto(screenId);

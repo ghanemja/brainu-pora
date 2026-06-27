@@ -44,8 +44,8 @@ function ThreeDFlex({ initialNode, visited, onClose, onPickNode }) {
       background: "var(--c-bg)",
       display: "grid", gridTemplateColumns: "1fr 320px",
     }}>
-      {/* Graph */}
-      <div style={{ position: "relative" }}>
+      {/* Graph — clip so the WebGL canvas can't spill over the side panel */}
+      <div style={{ position: "relative", overflow: "hidden", minWidth: 0 }}>
         <BrainGraph3D
           ref={graphRef}
           currentNode={initialNode}
@@ -167,8 +167,10 @@ function ThreeDFlex({ initialNode, visited, onClose, onPickNode }) {
         )}
       </div>
 
-      {/* Right control rail */}
+      {/* Right control rail — relative + zIndex so it always paints above the
+          WebGL canvas even if the graph cell briefly oversizes on first paint */}
       <div style={{
+        position: "relative", zIndex: 10,
         background: "var(--c-bg-elev)",
         borderLeft: "1px solid var(--c-line)",
         padding: 18, display: "flex", flexDirection: "column", gap: 18,
@@ -193,7 +195,9 @@ function ThreeDFlex({ initialNode, visited, onClose, onPickNode }) {
         </div>
 
         <div>
-          <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 8 }}>HIGHLIGHT COURSE</div>
+          <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 8 }}>
+            COURSES · {BU_DATA.CLUSTERS.length} · CLICK TO HIGHLIGHT
+          </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             <button onClick={() => setHighlightCluster(null)}
               className="btn ghost" style={{

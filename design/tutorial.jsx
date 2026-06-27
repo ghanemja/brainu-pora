@@ -143,12 +143,21 @@ const SLIDES = [
   },
 ];
 
-function Tutorial({ open, onClose, onJumpTo }) {
+function Tutorial({ open, onClose, onJumpTo, onPreview }) {
   const [idx, setIdx] = useTutState(0);
 
   useTutEffect(() => {
     if (open) setIdx(0);
   }, [open]);
+
+  // Guided tour: as the user advances, navigate the app to the part each slide
+  // describes (Trailhead → Walk → Bridge → …) so they SEE it behind the card,
+  // instead of just reading cards. onPreview navigates WITHOUT closing.
+  useTutEffect(() => {
+    if (!open || !onPreview) return;
+    const s = SLIDES[idx];
+    if (s && s.highlight) onPreview(s.highlight);
+  }, [open, idx]);
 
   useTutEffect(() => {
     if (!open) return;
@@ -181,17 +190,22 @@ function Tutorial({ open, onClose, onJumpTo }) {
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       style={{
         position: "fixed", inset: 0, zIndex: 500,
-        background: "rgba(8, 12, 24, 0.78)",
-        backdropFilter: "blur(10px)",
-        display: "grid", placeItems: "center", padding: 24,
+        // Light dim only — the live screen the tour is pointing at must stay
+        // visible behind the card. A faint top→bottom gradient keeps the card
+        // readable without blacking out the UI.
+        background: "linear-gradient(180deg, rgba(8,12,24,0.10) 40%, rgba(8,12,24,0.55) 100%)",
+        display: "flex", alignItems: "flex-end", justifyContent: "center",
+        padding: "24px 24px 40px",
         fontFamily: "var(--f-sans, system-ui)",
+        pointerEvents: "none",   // let the live UI stay interactive; card re-enables below
       }}>
       <div style={{
+        pointerEvents: "auto",
         width: "min(620px, 100%)",
         background: "var(--c-bg-elev)",
         border: "1px solid var(--c-line-strong)",
         borderRadius: 16,
-        boxShadow: "0 24px 80px rgba(0,0,0,0.45)",
+        boxShadow: "0 24px 80px rgba(0,0,0,0.55)",
         overflow: "hidden",
       }}>
         {/* Progress strip */}
