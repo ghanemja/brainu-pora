@@ -28,6 +28,15 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
       <div id="bu-gate-err" style="color:#e5484d;font-size:12px;margin-top:12px;min-height:14px"></div>
     </form>
   </div>
+  <!-- Backend URL MUST be set before the login gate runs (the gate reads -->
+  <!-- BU_API_BASE). config.js is generated at deploy time from $BU_API_BASE. -->
+  <script src="config.js"></script>
+  <script>
+    window.BU_API_BASE = window.BU_API_BASE || "http://localhost:8090";
+    window.BU_USER_ID  = localStorage.getItem("bu_user_id")
+                       || (() => { const id = "anon-" + Math.random().toString(36).slice(2,10);
+                                   localStorage.setItem("bu_user_id", id); return id; })();
+  </script>
   <script>
     // Login gate — calls backend /login, stores the returned bearer token in
     // sessionStorage. Token attaches to every API request via design/api.js.
@@ -90,16 +99,8 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script src="open_problems.js"></script>
   <script src="videos/manifest.js"></script>
 
-  <!-- API client (talks to api/server.py; mock-falls-back when offline) -->
-  <!-- config.js is generated at deploy time from $BU_API_BASE; if it sets    -->
-  <!-- window.BU_API_BASE it wins, else fall back to localhost for local dev.  -->
-  <script src="config.js"></script>
-  <script>
-    window.BU_API_BASE = window.BU_API_BASE || "http://localhost:8090";
-    window.BU_USER_ID  = localStorage.getItem("bu_user_id")
-                       || (() => { const id = "anon-" + Math.random().toString(36).slice(2,10);
-                                   localStorage.setItem("bu_user_id", id); return id; })();
-  </script>
+  <!-- API client. BU_API_BASE + config.js already loaded above (before the -->
+  <!-- gate), so api.js just needs the cache-busted include here.            -->
   <script>document.write('<script src="api.js?v=' + Date.now() + '"><\/script>');</script>
 
   <!-- Component libraries (each Babel-compiled, exports to window) -->
