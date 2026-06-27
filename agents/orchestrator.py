@@ -119,10 +119,18 @@ def _call_local_llm(system: str, user: str, max_tokens: int = 1500,
         "temperature": 0.3,
     }
 
+    # A scale-to-zero endpoint (HF Inference Endpoint) returns 502/503/504
+    # while it cold-starts (reloads the model, ~30-60s). Retry those patiently
+    # so the first request after idle succeeds instead of surfacing a 503.
+    retries = max(retries, 6)
     last_err: Exception | None = None
     for attempt in range(retries):
         try:
             r = requests.post(url, headers=headers, json=body, timeout=300)
+            if r.status_code in (502, 503, 504):
+                last_err = RuntimeError(f"endpoint warming up ({r.status_code})")
+                time.sleep(min(30, 10 * (attempt + 1)))   # 10,20,30,30,… s
+                continue
             r.raise_for_status()
             payload = r.json()
             msg = payload["choices"][0]["message"]
@@ -134,7 +142,7 @@ def _call_local_llm(system: str, user: str, max_tokens: int = 1500,
             return content
         except (requests.ConnectionError, requests.Timeout) as e:
             last_err = e
-            time.sleep(3 * (attempt + 1))
+            time.sleep(5 * (attempt + 1))
             continue
     raise RuntimeError(
         f"Local LLM call to {url} failed after {retries} retries: {last_err}"
