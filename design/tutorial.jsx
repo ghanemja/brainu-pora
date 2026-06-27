@@ -159,6 +159,22 @@ function Tutorial({ open, onClose, onJumpTo, onPreview }) {
     if (s && s.highlight) onPreview(s.highlight);
   }, [open, idx]);
 
+  // Spotlight: ring the nav tab for the current slide so the user SEES which
+  // part is being described. Measured after navigation settles.
+  const [navRect, setNavRect] = useTutState(null);
+  useTutEffect(() => {
+    if (!open) { setNavRect(null); return; }
+    const s = SLIDES[idx];
+    if (!s || !s.highlight) { setNavRect(null); return; }
+    const measure = () => {
+      const el = document.querySelector('[data-nav="' + s.highlight + '"]');
+      setNavRect(el ? el.getBoundingClientRect() : null);
+    };
+    const id = setTimeout(measure, 140);
+    window.addEventListener("resize", measure);
+    return () => { clearTimeout(id); window.removeEventListener("resize", measure); };
+  }, [open, idx]);
+
   useTutEffect(() => {
     if (!open) return;
     const onKey = (e) => {
@@ -177,7 +193,8 @@ function Tutorial({ open, onClose, onJumpTo, onPreview }) {
   const finish = () => {
     try { localStorage.setItem(TUT_FLAG, "1"); } catch {}
     onClose();
-    if (last && slide.highlight && onJumpTo) onJumpTo(slide.highlight);
+    // Land back at the start of the app, not on the last slide's screen.
+    if (onJumpTo) onJumpTo("trailhead");
   };
 
   const next = () => {
@@ -199,6 +216,19 @@ function Tutorial({ open, onClose, onJumpTo, onPreview }) {
         fontFamily: "var(--f-sans, system-ui)",
         pointerEvents: "none",   // let the live UI stay interactive; card re-enables below
       }}>
+      {/* Spotlight ring around the nav tab this slide describes */}
+      {navRect && (
+        <div style={{
+          position: "fixed",
+          left: navRect.left - 6, top: navRect.top - 5,
+          width: navRect.width + 12, height: navRect.height + 10,
+          border: "2px solid var(--c-bridge)", borderRadius: 10,
+          boxShadow: "0 0 0 4px color-mix(in oklch, var(--c-bridge) 28%, transparent), 0 0 22px var(--c-bridge)",
+          pointerEvents: "none", zIndex: 501,
+          transition: "left 220ms, top 220ms, width 220ms",
+          animation: "pulseRing 1.4s infinite",
+        }} />
+      )}
       <div style={{
         pointerEvents: "auto",
         width: "min(620px, 100%)",

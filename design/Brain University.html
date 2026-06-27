@@ -107,12 +107,12 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script type="text/babel" src="atoms.jsx"></script>
   <script type="text/babel" src="brain-graph.jsx?v=4"></script>
   <script type="text/babel" src="tweaks-panel.jsx"></script>
-  <script type="text/babel" src="tutorial.jsx?v=2"></script>
+  <script type="text/babel" src="tutorial.jsx?v=3"></script>
   <script type="text/babel" src="interactive-exercises.jsx"></script>
   <script type="text/babel" src="podcast-player.jsx"></script>
 
   <!-- Screens -->
-  <script type="text/babel" src="screens/trailhead.jsx"></script>
+  <script type="text/babel" src="screens/trailhead.jsx?v=2"></script>
   <script type="text/babel" src="screens/walk.jsx"></script>
   <script type="text/babel" src="screens/branch-and-summit.jsx"></script>
   <script type="text/babel" src="screens/dashboard-and-propose.jsx?v=2"></script>
@@ -236,6 +236,7 @@ function App() {
         <nav className="nav">
           {SCREENS.map(s => (
             <button key={s.id}
+              data-nav={s.id}
               className={screen === s.id || (s.id === "explorer" && explorerOpen) || (s.id === "arxivis" && arxivisOpen) || (s.id === "openprob" && openprobOpen) ? "active" : ""}
               onClick={() => goto(s.id)}
               title={`Screen ${s.hint} · ${s.label}`}>

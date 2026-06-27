@@ -11,6 +11,10 @@ function Trailhead({ onPickStart, learner }) {
   const graphRef = useRef(null);
   const [hoverNode, setHoverNode] = useState(null);
   const [interest, setInterest] = useState(learner?.interest || "");
+  // Before the learner commits an interest, the input sits big + centered.
+  // Once they enter one, it slides to the corner and the start-here rail opens.
+  const [entered, setEntered] = useState(!!(learner?.interest || "").trim());
+  const enterInterest = () => { if (interest.trim()) setEntered(true); };
 
   // Auto-rotate hint copy
   const phase = hoverNode ? "explore" : "land";
@@ -66,42 +70,88 @@ function Trailhead({ onPickStart, learner }) {
         </div>
       </div>
 
-      {/* Bottom-left interest field */}
-      <div className="slide-up" style={{
-        position: "absolute", bottom: 24, left: 24,
-        zIndex: 5, maxWidth: 380,
-      }}>
+      {/* Interest field — big + centered until the learner commits an
+          interest, then it docks bottom-left and the start-here rail opens. */}
+      {!entered ? (
         <div style={{
-          background: "color-mix(in oklch, var(--c-bg-elev) 75%, transparent)",
-          backdropFilter: "blur(12px)",
-          border: "1px solid var(--c-line)",
-          borderRadius: "var(--r-lg)",
-          padding: 12,
+          position: "absolute", inset: 0, display: "grid", placeItems: "center",
+          zIndex: 6, pointerEvents: "none",
         }}>
-          <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 6 }}>
-            WHAT INTERESTS YOU?
-          </div>
-          <input
-            value={interest}
-            onChange={e => setInterest(e.target.value)}
-            placeholder="rocket aerodynamics · graph algorithms for path planning"
-            style={{
-              width: "100%", padding: "8px 10px",
-              background: "var(--c-bg-elev-2)",
-              border: "1px solid var(--c-line)",
-              borderRadius: "var(--r-md)",
-              color: "var(--c-ink)",
-              fontFamily: "var(--f-sans)", fontSize: 13,
-              outline: "none",
-            }}
-          />
-          <div className="t-cap" style={{ marginTop: 6, color: "var(--c-ink-dim)" }}>
-            Drives lesson framing + reorders the start-here list.
+          <div className="slide-up" style={{
+            pointerEvents: "auto", width: "min(580px, 92%)",
+            background: "color-mix(in oklch, var(--c-bg-elev) 90%, transparent)",
+            backdropFilter: "blur(16px)",
+            border: "1px solid var(--c-line-strong)",
+            borderRadius: "var(--r-xl)",
+            padding: 28, textAlign: "center",
+            boxShadow: "0 24px 80px -20px rgba(0,0,0,0.4)",
+          }}>
+            <div className="t-tag" style={{ color: "var(--c-bridge)", marginBottom: 10 }}>
+              WHAT DO YOU WANT TO LEARN?
+            </div>
+            <input
+              autoFocus value={interest}
+              onChange={e => setInterest(e.target.value)}
+              onKeyDown={e => { if (e.key === "Enter") enterInterest(); }}
+              placeholder="rocket aerodynamics · graph algorithms for path planning"
+              style={{
+                width: "100%", padding: "14px 16px",
+                background: "var(--c-bg-elev-2)",
+                border: "1px solid var(--c-line-strong)",
+                borderRadius: "var(--r-md)",
+                color: "var(--c-ink)", fontFamily: "var(--f-sans)",
+                fontSize: 18, textAlign: "center", outline: "none",
+              }}
+            />
+            <button className="btn primary" onClick={enterInterest}
+              style={{ marginTop: 14, width: "100%", padding: "11px 0", fontSize: 15 }}>
+              Show my start map →
+            </button>
+            <div className="t-cap" style={{ marginTop: 10, color: "var(--c-ink-dim)" }}>
+              Surfaces your start-here concepts + the most relevant papers.
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="slide-up" style={{
+          position: "absolute", bottom: 24, left: 24, zIndex: 5, maxWidth: 380,
+        }}>
+          <div style={{
+            background: "color-mix(in oklch, var(--c-bg-elev) 75%, transparent)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid var(--c-line)",
+            borderRadius: "var(--r-lg)", padding: 12,
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between",
+              alignItems: "center", marginBottom: 6 }}>
+              <div className="t-tag" style={{ color: "var(--c-ink-muted)" }}>
+                WHAT INTERESTS YOU?
+              </div>
+              <button className="btn ghost" onClick={() => setEntered(false)}
+                style={{ fontSize: 11, padding: "2px 8px" }}>edit</button>
+            </div>
+            <input
+              value={interest}
+              onChange={e => setInterest(e.target.value)}
+              placeholder="rocket aerodynamics · graph algorithms"
+              style={{
+                width: "100%", padding: "8px 10px",
+                background: "var(--c-bg-elev-2)",
+                border: "1px solid var(--c-line)",
+                borderRadius: "var(--r-md)",
+                color: "var(--c-ink)",
+                fontFamily: "var(--f-sans)", fontSize: 13, outline: "none",
+              }}
+            />
+            <div className="t-cap" style={{ marginTop: 6, color: "var(--c-ink-dim)" }}>
+              Reorders your start-here concepts + papers live.
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* Right rail — start-here cards */}
+      {/* Right rail — start-here cards (opens once an interest is entered) */}
+      {entered && (
       <div className="slide-up" style={{
         position: "absolute", top: 92, right: 24, bottom: 24,
         width: 360, display: "flex", flexDirection: "column", gap: 10,
@@ -131,14 +181,19 @@ function Trailhead({ onPickStart, learner }) {
 
             const scored = BU_DATA.FOUNDATION_PICKS.map(p => {
               const cluster = BU_DATA.CLUSTERS[p.cluster];
+              // Include every concept name in the pick's course so an interest
+              // matches the cluster's content, not just the pick's own label.
+              const clusterNodes = BU_DATA.NODES
+                .filter(n => n.cluster === p.cluster)
+                .map(n => (n.name || n.id || "").replace(/_/g, " "))
+                .join(" ");
               const haystack = [
-                p.name,
-                p.rationale || "",
-                cluster?.name || "",
-                cluster?.blurb || "",
+                p.name, p.rationale || "",
+                cluster?.name || "", cluster?.blurb || "",
+                clusterNodes,
               ].join(" ").toLowerCase();
-              const matchCount = tokens.reduce((acc, t) => acc + (haystack.includes(t) ? 1 : 0), 0);
-              return { ...p, _matchCount: matchCount, _matchTokens: tokens.filter(t => haystack.includes(t)) };
+              const matchTokens = tokens.filter(t => haystack.includes(t));
+              return { ...p, _matchCount: matchTokens.length, _matchTokens: matchTokens };
             });
 
             // Sort: matched picks first (by score), then originals
@@ -157,6 +212,7 @@ function Trailhead({ onPickStart, learner }) {
           })()}
         </div>
       </div>
+      )}
 
       {/* Bottom hint */}
       <div style={{
