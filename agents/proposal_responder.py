@@ -27,6 +27,7 @@ Public:
 
 from __future__ import annotations
 
+import json
 import os
 import re
 from typing import Iterable
@@ -234,14 +235,25 @@ def respond(text: str, k: int = 12, vault_path: str | None = None,
     bridges = _bridge_paths(matched, vault_path=vault_path)
 
     if mode == "auto":
-        mode_eff = "llm" if os.environ.get("ANTHROPIC_API_KEY") else "heuristic"
+        # Use the LLM when ANY backend is configured — Claude OR a local/HF
+        # Gemma endpoint (LLM_BACKEND=local / LOCAL_LLM_BASE). Previously this
+        # only checked ANTHROPIC_API_KEY, so a Gemma-only deploy silently fell
+        # back to the generic heuristic.
+        has_llm = (
+            os.environ.get("ANTHROPIC_API_KEY")
+            or os.environ.get("LLM_BACKEND") == "local"
+            or os.environ.get("LOCAL_LLM_BASE")
+        )
+        mode_eff = "llm" if has_llm else "heuristic"
     else:
         mode_eff = mode
 
     if mode_eff == "llm":
         synthesis = _llm_synthesis(text, matched, bridges)
+        recommendations = _llm_recommendations(text, matched, bridges)
     else:
         synthesis = _heuristic_synthesis(text, matched, bridges)
+        recommendations = _heuristic_recommendations(text, matched, bridges)
 
     # Also pull related corpus content via the unified finder
     related: dict = {"rag": [], "defense": [], "wiki": None, "wikipedia": None}
@@ -261,6 +273,130 @@ def respond(text: str, k: int = 12, vault_path: str | None = None,
         "matched_concepts": matched,
         "bridge_paths":     bridges,
         "synthesis":        synthesis,
+        "recommendations":  recommendations,
         "related_corpus":   related,
         "mode":             mode_eff,
+    }
+
+
+# ── Recommendations ("how to get started") ──────────────────────────────────
+
+PROPOSAL_RECS_SYSTEM = """You are a learning guide. Given a learner's half-formed
+idea plus the concepts the knowledge graph matched, produce a concrete
+get-started plan: 3-5 ordered steps that move them from zero to real progress.
+
+Each step has:
+  - title:   a short imperative ("Ground yourself in X", "Trace the bridge to Y")
+  - concept: the specific concept to engage — use one from the MATCHED list
+             verbatim when possible, else "".
+  - why:     one sentence on why this matters FOR THIS IDEA specifically.
+  - action:  one concrete thing to do (read / derive / build / compare / test).
+
+Order foundational → applied. Be specific to the idea, not generic.
+
+OUTPUT valid JSON only — no prose, no markdown fence:
+{
+  "steps": [
+    {"title": "...", "concept": "...", "why": "...", "action": "..."}
+  ],
+  "open_question": "<one sharp question worth exploring next>"
+}"""
+
+
+def _llm_recommendations(text: str, matched: list[dict],
+                          bridges: list[dict]) -> dict:
+    """LLM-generated get-started plan. Falls back to heuristic on any error."""
+    try:
+        from agents.specialists import SYNTHESIZER_MODEL
+        from agents.orchestrator import _call_claude
+        ctx = [f"IDEA: {text}", "", "MATCHED CONCEPTS (most relevant first):"]
+        for m in matched[:8]:
+            ctx.append(f"  - {m['label']} (course: {m['cluster_name']}, "
+                        f"degree {m['degree']})")
+        if bridges:
+            ctx.append("\nBRIDGE PATHS:")
+            for b in bridges[:4]:
+                p = " -> ".join(x.replace('_', ' ') for x in b.get('path', []))
+                if p:
+                    ctx.append(f"  - {p}")
+        raw = _call_claude(
+            model=SYNTHESIZER_MODEL,
+            system=PROPOSAL_RECS_SYSTEM,
+            user="\n".join(ctx),
+            max_tokens=900,
+            retries=1,
+        )
+        parsed = _parse_recs_json(raw)
+        if parsed and parsed.get("steps"):
+            return parsed
+    except Exception:
+        pass
+    return _heuristic_recommendations(text, matched, bridges)
+
+
+def _parse_recs_json(raw: str) -> dict | None:
+    raw = (raw or "").strip()
+    if raw.startswith("```"):
+        raw = re.sub(r"^```(?:json)?\s*", "", raw)
+        raw = re.sub(r"\s*```$", "", raw)
+    m = re.search(r"\{.*\}", raw, re.DOTALL)
+    if not m:
+        return None
+    try:
+        return json.loads(m.group(0))
+    except json.JSONDecodeError:
+        return None
+
+
+def _heuristic_recommendations(text: str, matched: list[dict],
+                                bridges: list[dict]) -> dict:
+    """Deterministic get-started plan from the matched concepts + bridges."""
+    steps: list[dict] = []
+    if matched:
+        top = matched[0]
+        steps.append({
+            "title":   f"Start with {top['label']}",
+            "concept": top["label"],
+            "why":     f"It's the strongest match for your idea and anchors the "
+                       f"'{top['cluster_name']}' course.",
+            "action":  "Open its lesson and work the one worked example end to end.",
+        })
+    # A second, more foundational pick: lowest-degree among the top few (likely
+    # a prerequisite rather than a hub).
+    if len(matched) > 1:
+        found = min(matched[:5], key=lambda m: m["degree"])
+        if found["label"] != (matched[0]["label"] if matched else None):
+            steps.append({
+                "title":   f"Shore up {found['label']}",
+                "concept": found["label"],
+                "why":     "Lower-connectivity concept — usually a prerequisite "
+                           "the rest leans on.",
+                "action":  "Skim its definition and note where it connects to "
+                           "your top concept.",
+            })
+    if bridges:
+        b = bridges[0]
+        path = " → ".join(x.replace('_', ' ') for x in b.get('path', []))
+        if path:
+            steps.append({
+                "title":   "Walk the bridge",
+                "concept": "",
+                "why":     "This path links the courses your idea spans — it's "
+                           "where the cross-over insight lives.",
+                "action":  f"Trace the route: {path}.",
+            })
+    if len(matched) >= 2:
+        steps.append({
+            "title":   "Synthesize across courses",
+            "concept": "",
+            "why":     "Your idea sits between fields; the value is in combining "
+                       "their views.",
+            "action":  f"Write one paragraph connecting {matched[0]['label']} and "
+                       f"{matched[1]['label']} for your idea.",
+        })
+    a = matched[0]["label"] if matched else "the core concept"
+    b = matched[1]["label"] if len(matched) > 1 else "an adjacent field"
+    return {
+        "steps": steps,
+        "open_question": f"What breaks if you apply {a} to {b} at scale?",
     }

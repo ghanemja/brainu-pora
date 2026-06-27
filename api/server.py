@@ -536,8 +536,8 @@ def feedback_endpoint(body: FeedbackBody):
 
 @app.post("/propose")
 def propose_endpoint(body: ProposeBody):
-    from agents.proposal_responder import respond_to_proposal
-    result = respond_to_proposal(body.text)
+    from agents.proposal_responder import respond
+    result = respond(body.text)
     return result if isinstance(result, dict) else {"response": str(result)}
 
 

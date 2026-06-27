@@ -279,21 +279,52 @@ function _cleanSynthesis(text) {
 // Free-text idea → matched concepts + grounded synthesis
 // ─────────────────────────────────────────────────────────────────
 
+// Normalize the live /propose backend response to the render shape the
+// Propose screen expects (and which the mock examples already use).
+function _normalizePropose(r) {
+  if (!r) return null;
+  const matched = (r.matched_concepts || [])
+    .map(m => m.name || m.id).filter(Boolean);
+  const bridges = (r.bridge_paths || []).map(b => {
+    const path = b.path || [];
+    return {
+      from: path[0] || b.from || "",
+      to:   path[path.length - 1] || b.to || "",
+      via:  b.via || (path.length
+              ? path.map(x => String(x).replace(/_/g, " ")).join(" → ")
+              : ""),
+    };
+  });
+  return {
+    matched,
+    bridges,
+    synthesis: r.synthesis || "",
+    recommendations: r.recommendations || null,
+  };
+}
+
 function Propose({ onJumpToNode }) {
   const examples = Object.keys(BU_DATA.PROPOSE_EXAMPLES);
   const [query, setQuery] = useState(examples[0]);
-  const [submitted, setSubmitted] = useState(examples[0]);
+  const [result, setResult] = useState(BU_DATA.PROPOSE_EXAMPLES[examples[0]]);
   const [thinking, setThinking] = useState(false);
-  const result = BU_DATA.PROPOSE_EXAMPLES[submitted];
 
-  const handleSubmit = (q) => {
-    setSubmitted(null);
+  const handleSubmit = async (q) => {
     setThinking(true);
+    setResult(null);
+    // Live backend (Gemma) when reachable; otherwise the mock example.
+    try {
+      if (window.BU_API && BU_API.live && BU_API.live()) {
+        const r = await BU_API.propose(q);
+        setResult(_normalizePropose(r));
+        setThinking(false);
+        return;
+      }
+    } catch (e) { /* fall through to mock */ }
     setTimeout(() => {
-      const found = BU_DATA.PROPOSE_EXAMPLES[q] || BU_DATA.PROPOSE_EXAMPLES[examples[0]];
-      setSubmitted(q in BU_DATA.PROPOSE_EXAMPLES ? q : examples[0]);
+      setResult(BU_DATA.PROPOSE_EXAMPLES[q] || BU_DATA.PROPOSE_EXAMPLES[examples[0]]);
       setThinking(false);
-    }, 1200);
+    }, 800);
   };
 
   return (
@@ -358,7 +389,7 @@ function Propose({ onJumpToNode }) {
           </div>
         )}
 
-        {!thinking && submitted && result && (
+        {!thinking && result && (
           <div className="slide-up" style={{ marginTop: 32 }}>
             {/* Matched concepts */}
             <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 8 }}>
@@ -425,6 +456,82 @@ function Propose({ onJumpToNode }) {
                 <span>grounded in {result.matched.length} graph concepts + {result.bridges.length} traced bridges</span>
               </div>
             </div>
+
+            {/* Where to start — actionable breakdown */}
+            {result.recommendations && (result.recommendations.steps || []).length > 0 && (
+              <div style={{ marginTop: 28 }}>
+                <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 12 }}>
+                  WHERE TO START
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {result.recommendations.steps.map((s, i) => {
+                    const node = s.concept
+                      ? BU_DATA.NODES.find(n =>
+                          (n.name || "").toLowerCase() === s.concept.toLowerCase() ||
+                          n.id === s.concept ||
+                          n.id === s.concept.replace(/ /g, "_"))
+                      : null;
+                    const c = node ? BU_DATA.CLUSTERS[node.cluster] : null;
+                    return (
+                      <div key={i} className="card" style={{
+                        padding: 16, display: "grid",
+                        gridTemplateColumns: "32px 1fr", gap: 14, alignItems: "start",
+                      }}>
+                        <div style={{
+                          width: 32, height: 32, borderRadius: "50%",
+                          background: (c ? c.color : "var(--c-bridge)") + "1a",
+                          border: `1.5px solid ${c ? c.color : "var(--c-bridge)"}`,
+                          color: c ? c.color : "var(--c-bridge)",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          fontFamily: "var(--f-mono)", fontSize: 14, fontWeight: 600,
+                        }}>{i + 1}</div>
+                        <div>
+                          <div style={{ fontWeight: 600, fontSize: 15.5, marginBottom: 4 }}>
+                            {s.title}
+                          </div>
+                          {s.why && (
+                            <div className="t-cap" style={{ fontSize: 13.5,
+                              color: "var(--c-ink-muted)", lineHeight: 1.5, marginBottom: 8 }}>
+                              {s.why}
+                            </div>
+                          )}
+                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap",
+                            alignItems: "center" }}>
+                            {s.action && (
+                              <span style={{ fontSize: 13.5, color: "var(--c-ink)" }}>
+                                <span style={{ color: "var(--c-bridge)", fontWeight: 600 }}>→ </span>
+                                {s.action}
+                              </span>
+                            )}
+                            {node && (
+                              <button className="btn ghost"
+                                onClick={() => onJumpToNode?.(node.id, node.cluster)}
+                                style={{ fontSize: 12, padding: "3px 10px",
+                                  borderColor: (c ? c.color : "var(--c-bridge)") + "55" }}>
+                                Open {node.name} →
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {result.recommendations.open_question && (
+                  <div className="card recessed" style={{
+                    marginTop: 12, padding: 16,
+                    borderLeft: "3px solid var(--c-here)",
+                  }}>
+                    <div className="t-tag" style={{ color: "var(--c-here)", marginBottom: 6 }}>
+                      OPEN QUESTION
+                    </div>
+                    <div style={{ fontSize: 15, lineHeight: 1.55 }}>
+                      {result.recommendations.open_question}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>
