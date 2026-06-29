@@ -59,7 +59,7 @@ def main() -> int:
         accelerator="gpu",
         vendor="aws", region="us-east-1",
         instance_type="nvidia-l4", instance_size="x1",
-        min_replica=0, max_replica=1, scale_to_zero_timeout=900,
+        min_replica=0, max_replica=1, scale_to_zero_timeout=300,
         type="protected",                  # callers send your HF token as bearer
         custom_image={
             "url": "ghcr.io/ggml-org/llama.cpp:server-cuda",
