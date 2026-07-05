@@ -20,6 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Backend code + data the engine needs at runtime
 COPY agents/ ./agents/
 COPY api/    ./api/
+COPY atp/    ./atp/
 COPY graph/  ./graph/
 COPY rag/    ./rag/
 COPY eval/   ./eval/

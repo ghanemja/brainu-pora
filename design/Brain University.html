@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=2">
 <style>
 /* Tweak-driven font-family overrides applied to root */
 html[data-display-font="serif"]   { --f-display: "Fraunces", "Iowan Old Style", Georgia, serif; }
@@ -95,6 +95,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
 
   <!-- Data layer (no JSX, plain JS) -->
   <script src="data.js"></script>
+  <script src="atp_data.js?v=1"></script>
   <script src="arxivis_data.js?v=4"></script>
   <script src="open_problems.js"></script>
   <script src="videos/manifest.js"></script>
@@ -105,6 +106,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
 
   <!-- Component libraries (each Babel-compiled, exports to window) -->
   <script type="text/babel" src="atoms.jsx"></script>
+  <script type="text/babel" src="atp-atoms.jsx?v=1"></script>
   <script type="text/babel" src="brain-graph.jsx?v=4"></script>
   <script type="text/babel" src="tweaks-panel.jsx"></script>
   <script type="text/babel" src="tutorial.jsx?v=3"></script>
@@ -121,6 +123,14 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script type="text/babel" src="screens/open-problems.jsx?v=1"></script>
   <script type="text/babel" src="screens/podcast.jsx?v=2"></script>
 
+  <!-- ATP agent-view screens -->
+  <script type="text/babel" src="screens/atp-university.jsx?v=1"></script>
+  <script type="text/babel" src="screens/atp-agents.jsx?v=1"></script>
+  <script type="text/babel" src="screens/atp-certs.jsx?v=1"></script>
+  <script type="text/babel" src="screens/atp-marketplace.jsx?v=1"></script>
+  <script type="text/babel" src="screens/atp-governance.jsx?v=1"></script>
+  <script type="text/babel" src="screens/atp-vault.jsx?v=1"></script>
+
   <!-- Main app shell -->
   <script type="text/babel">
 const { useState, useEffect, useMemo, useCallback } = React;
@@ -133,7 +143,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "cinematicCamera": true
 }/*EDITMODE-END*/;
 
-const SCREENS = [
+const SCREENS_HUMAN = [
   { id: "trailhead", label: "Trailhead",  hint: "01" },
   { id: "walk",      label: "The walk",   hint: "02" },
   { id: "branch",    label: "Bridge",     hint: "03" },
@@ -146,9 +156,27 @@ const SCREENS = [
   { id: "podcast",   label: "Podcast",    hint: "10" },
 ];
 
+const SCREENS_AGENT = [
+  { id: "university",  label: "University",     hint: "01" },
+  { id: "agents",      label: "Agents",         hint: "02" },
+  { id: "certs",       label: "Certifications", hint: "03" },
+  { id: "marketplace", label: "Marketplace",    hint: "04" },
+  { id: "governance",  label: "Governance",     hint: "05" },
+  { id: "vault",       label: "Vault-LD",       hint: "06" },
+];
+
+const AGENT_SCREEN_IDS = new Set(SCREENS_AGENT.map(s => s.id));
+
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [screen, setScreen]     = useState("trailhead");
+  const [view, setView] = useState(() => {
+    try {
+      const saved = localStorage.getItem("bu_view");
+      return saved === "human" || saved === "agent" ? saved : "agent";
+    } catch (_) { return "agent"; }
+  });
+  const [screen, setScreen]     = useState(view === "agent" ? "university" : "trailhead");
+  const [atpAgentId, setAtpAgentId] = useState(null);
   const [tour, setTour]         = useState(null);
   const [stopIdx, setStopIdx]   = useState(0);
   const [branchOpen, setBranch] = useState(false);
@@ -159,12 +187,18 @@ function App() {
   const [learner, setLearner] = useState({ name: "Learner", interest: "" });
   const [tutorialOpen, setTutorialOpen] = useState(false);
 
-  // Auto-open the welcome tutorial on first visit.
+  // Persist the Human/Agent view + expose it to CSS ([data-view] overrides).
   useEffect(() => {
-    if (window.BUTutorial?.shouldAutoOpenTutorial?.()) {
+    document.documentElement.dataset.view = view;
+    try { localStorage.setItem("bu_view", view); } catch (_) {}
+  }, [view]);
+
+  // Auto-open the welcome tutorial on first visit (human view only).
+  useEffect(() => {
+    if (view === "human" && window.BUTutorial?.shouldAutoOpenTutorial?.()) {
       setTutorialOpen(true);
     }
-  }, []);
+  }, [view]);
 
   // Apply tweaks to <html>
   useEffect(() => {
@@ -206,9 +240,20 @@ function App() {
     return new Set(tour.slice(0, stopIdx + 1).map(s => s.node));
   }, [tour, stopIdx]);
 
+  // Switch Human ◦ Agent view: close every overlay, land on the view's home.
+  const switchView = useCallback((v) => {
+    if (v === view) return;
+    setView(v);
+    setExplorer(false); setArxivisOpen(false); setOpenprobOpen(false);
+    setScreen(v === "agent" ? "university" : "trailhead");
+  }, [view]);
+
   // Fast nav across top
   const goto = (id) => {
-    if (id === "explorer") {
+    if (AGENT_SCREEN_IDS.has(id)) {
+      // Agent-view ids are plain screens — no overlays involved.
+      setScreen(id);
+    } else if (id === "explorer") {
       setArxivisOpen(false); setOpenprobOpen(false);
       setExplorer(true);
       setExplorerNode(tour?.[stopIdx]?.node || "Reynolds_number");
@@ -231,10 +276,12 @@ function App() {
       <header className="topbar">
         <div className="brand">
           <span className="glyph">B<span style={{opacity: 0.7}}>U</span></span>
-          <span>Brain University<span style={{ opacity: 0.5, marginLeft: 6 }}>· learning prototype</span></span>
+          <span>Brain University<span style={{ opacity: 0.5, marginLeft: 6 }}>
+            {view === "agent" ? "Agent University · est. 2026" : "· learning prototype"}
+          </span></span>
         </div>
         <nav className="nav">
-          {SCREENS.map(s => (
+          {(view === "agent" ? SCREENS_AGENT : SCREENS_HUMAN).map(s => (
             <button key={s.id}
               data-nav={s.id}
               className={screen === s.id || (s.id === "explorer" && explorerOpen) || (s.id === "arxivis" && arxivisOpen) || (s.id === "openprob" && openprobOpen) ? "active" : ""}
@@ -248,6 +295,21 @@ function App() {
           ))}
         </nav>
         <div className="right">
+          <div className="view-toggle" role="group" aria-label="View"
+               style={{ marginRight: 10 }}>
+            <button
+              className={view === "human" ? "active" : ""}
+              onClick={() => switchView("human")}
+              title="Human learning view">
+              Human
+            </button>
+            <button
+              className={view === "agent" ? "active" : ""}
+              onClick={() => switchView("agent")}
+              title="Agent University view">
+              Agent
+            </button>
+          </div>
           <button
             onClick={() => setTutorialOpen(true)}
             title="How to use Brain University"
@@ -303,6 +365,40 @@ function App() {
         )}
         {screen === "podcast" && (
           <PodcastStudio />
+        )}
+
+        {/* ATP agent-view screens. Referenced ONLY when view === "agent" so */}
+        {/* a missing screens/atp-*.jsx global can never crash the human view. */}
+        {view === "agent" && screen === "university" && (
+          typeof ATPUniversity !== "undefined"
+            ? <ATPUniversity goto={goto}
+                onViewAgent={(id) => { setAtpAgentId(id); goto("agents"); }} />
+            : <AgentScreenFallback />
+        )}
+        {view === "agent" && screen === "agents" && (
+          typeof ATPAgents !== "undefined"
+            ? <ATPAgents selectedId={atpAgentId} onSelect={setAtpAgentId} goto={goto} />
+            : <AgentScreenFallback />
+        )}
+        {view === "agent" && screen === "certs" && (
+          typeof ATPCerts !== "undefined"
+            ? <ATPCerts onViewAgent={(id) => { setAtpAgentId(id); goto("agents"); }} />
+            : <AgentScreenFallback />
+        )}
+        {view === "agent" && screen === "marketplace" && (
+          typeof ATPMarketplace !== "undefined"
+            ? <ATPMarketplace onViewAgent={(id) => { setAtpAgentId(id); goto("agents"); }} />
+            : <AgentScreenFallback />
+        )}
+        {view === "agent" && screen === "governance" && (
+          typeof ATPGovernance !== "undefined"
+            ? <ATPGovernance />
+            : <AgentScreenFallback />
+        )}
+        {view === "agent" && screen === "vault" && (
+          typeof ATPVault !== "undefined"
+            ? <ATPVault goto={goto} />
+            : <AgentScreenFallback />
         )}
 
         {/* Branch panel — overlays the walk */}
@@ -387,6 +483,18 @@ function App() {
 }
 
 // Helper screens for direct nav
+
+function AgentScreenFallback() {
+  // Shown if an atp-*.jsx screen file hasn't loaded (e.g. fetch failure).
+  return (
+    <div style={{ minHeight: "calc(100vh - 56px)", display: "grid", placeItems: "center", padding: 40 }}>
+      <div className="card" style={{ textAlign: "center", padding: 40, maxWidth: 460 }}>
+        <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 6 }}>AGENT VIEW</div>
+        <p className="t-cap" style={{ margin: 0 }}>Agent view loading…</p>
+      </div>
+    </div>
+  );
+}
 
 function EmptyTour({ onPick }) {
   return (

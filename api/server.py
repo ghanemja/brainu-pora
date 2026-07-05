@@ -70,6 +70,10 @@ app.add_middleware(
 from api.auth import auth_middleware, mint_token, check_password
 app.middleware("http")(auth_middleware)
 
+# ATP (Agent University) routes — /atp/* (see api/atp.py + docs/ATP.md §5).
+from api.atp import router as atp_router
+app.include_router(atp_router)
+
 
 class LoginBody(BaseModel):
     username: str

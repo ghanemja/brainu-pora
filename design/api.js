@@ -202,6 +202,143 @@
       }
       throw new Error("job timed out");
     },
+
+    // ─── ATP (Agent University) ──────────────────────────────────────
+    // Read methods fall back to the window.ATP_DATA seed blob when the
+    // backend is unreachable (same pattern as trailhead()).
+    async atpData() {
+      try { return await jget("/atp/data"); }
+      catch (e) {
+        log("atpData fallback", e.message);
+        if (!window.ATP_DATA) throw e;
+        return window.ATP_DATA;
+      }
+    },
+
+    async atpAgents() {
+      try { return await jget("/atp/agents"); }
+      catch (e) {
+        log("atpAgents fallback", e.message);
+        if (!window.ATP_DATA) throw e;
+        return { agents: window.ATP_DATA.AGENTS || [] };
+      }
+    },
+
+    async atpAgent(id) {
+      try { return await jget("/atp/agents/" + encodeURIComponent(id)); }
+      catch (e) {
+        log("atpAgent fallback", e.message);
+        if (!window.ATP_DATA) throw e;
+        const a = window.ATP_DATA.agentById
+          ? window.ATP_DATA.agentById(id)
+          : (window.ATP_DATA.AGENTS || []).find(x => x.id === id);
+        if (!a) throw e;
+        return a;
+      }
+    },
+
+    async atpCerts() {
+      try { return await jget("/atp/certs"); }
+      catch (e) {
+        log("atpCerts fallback", e.message);
+        if (!window.ATP_DATA) throw e;
+        return { certs: window.ATP_DATA.CERTS || [] };
+      }
+    },
+
+    async atpStandard() {
+      try { return await jget("/atp/standard"); }
+      catch (e) {
+        log("atpStandard fallback", e.message);
+        if (!window.ATP_DATA) throw e;
+        return window.ATP_DATA.STANDARD || {};
+      }
+    },
+
+    async atpMarketplace() {
+      try { return await jget("/atp/marketplace"); }
+      catch (e) {
+        log("atpMarketplace fallback", e.message);
+        if (!window.ATP_DATA) throw e;
+        return window.ATP_DATA.MARKETPLACE || { listings: [] };
+      }
+    },
+
+    // POST — no local fallback; signal offline so the UI degrades gracefully.
+    async atpHitl(payload) {
+      try { return await jpost("/atp/hitl", payload); }
+      catch (e) {
+        log("atpHitl offline", e.message);
+        return { ok: false, offline: true };
+      }
+    },
+
+    async atpHitlLog(limit = 100) {
+      try { return await jget("/atp/hitl", { limit }); }
+      catch (e) {
+        log("atpHitlLog fallback", e.message);
+        if (!window.ATP_DATA) throw e;
+        const rows = ((window.ATP_DATA.RL || {}).hitlLog || []);
+        // Log is stored oldest → newest; serve latest first.
+        return { events: rows.slice(-limit).reverse() };
+      }
+    },
+
+    // ─── Expert composition / train-to-order (docs/ATP.md §7) ────────
+    async atpRequests(limit = 100) {
+      try { return await jget("/atp/requests", { limit }); }
+      catch (e) {
+        log("atpRequests fallback", e.message);
+        if (!window.ATP_DATA) throw e;
+        return { requests: (window.ATP_DATA.EXPERT_REQUESTS || []).slice(0, limit) };
+      }
+    },
+
+    // Commission an expert: payload {major, specialty, badgeIds, packId}.
+    // Offline fallback runs the client-side matcher (ATP_DATA.matchExperts)
+    // and returns a local, non-persisted request object marked {offline:true}
+    // so the wizard still renders a result panel in static demo mode.
+    async atpCompose(payload) {
+      const p = payload || {};
+      try { return await jpost("/atp/requests", p); }
+      catch (e) {
+        log("atpCompose offline", e.message);
+        if (!window.ATP_DATA || !window.ATP_DATA.matchExperts) throw e;
+        const match = window.ATP_DATA.matchExperts({
+          course:          p.major ?? p.course,
+          concentrationId: p.specialty ?? p.concentrationId,
+          badgeIds:        p.badgeIds || [],
+          packId:          p.packId ?? null,
+        });
+        const exact   = (match.exact || [])[0] || null;
+        const partial = match.partial || [];
+        const now     = new Date().toISOString().slice(0, 10);
+        const stages  = ["requested", "corpus-mapped", "fine-tuning",
+                         "certifying", "listed"];
+        return {
+          id: "req-local-" + Date.now().toString(36),
+          ts: now,
+          major:     p.major ?? p.course ?? "",
+          specialty: p.specialty ?? p.concentrationId ?? "",
+          badgeIds:  p.badgeIds || [],
+          packId:    p.packId ?? null,
+          layers:  [],
+          corpora: [],
+          status: exact ? "matched" : (partial.length ? "gap" : "training"),
+          matchedAgentId: exact,
+          gap: (!exact && partial.length) ? {
+            covered: partial[0].covered || [],
+            missing: partial[0].missing || [],
+            coveringAgentIds: partial.map(x => x.agentId),
+          } : null,
+          pipeline: stages.map((stage, i) =>
+            ({ stage, ts: i === 0 ? now : null, done: i === 0 })),
+          resultAgentId: null,
+          match,
+          offline: true,
+        };
+      }
+    },
   };
 
   window.BU_API = API;

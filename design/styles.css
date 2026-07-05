@@ -380,3 +380,285 @@ body::before {
 
 /* Topo SVG ridge — used in dashboard */
 .ridge-svg path { stroke: var(--c-line-strong); stroke-width: 1; fill: none; }
+
+/* ===== ATP (Agent view) ===== */
+/* University + standards-body tone: night palette + gold, mono labels. */
+
+:root {
+  --c-cert: #e8c268;        /* certification gold */
+  --c-atp-l1: #7dd3fc;
+  --c-atp-l2: #6ee7b7;
+  --c-atp-l3: #fbb036;
+  --c-atp-l4: #f97316;
+  --c-atp-l5: #f96167;
+  --c-atp-l6: #c5a3ff;
+  --c-atp-l7: #e8c268;      /* gold apex */
+  --c-atp-infra: #3d4668;   /* infrastructure slab */
+}
+[data-palette="paper"] {
+  --c-cert: #a3801f;        /* darker gold for legibility on paper */
+}
+
+/* Layer color utilities */
+.atp-c-l1 { color: var(--c-atp-l1); }
+.atp-c-l2 { color: var(--c-atp-l2); }
+.atp-c-l3 { color: var(--c-atp-l3); }
+.atp-c-l4 { color: var(--c-atp-l4); }
+.atp-c-l5 { color: var(--c-atp-l5); }
+.atp-c-l6 { color: var(--c-atp-l6); }
+.atp-c-l7 { color: var(--c-atp-l7); }
+.atp-tint-l1 { background: color-mix(in oklch, var(--c-atp-l1) 12%, var(--c-bg-elev)); }
+.atp-tint-l2 { background: color-mix(in oklch, var(--c-atp-l2) 12%, var(--c-bg-elev)); }
+.atp-tint-l3 { background: color-mix(in oklch, var(--c-atp-l3) 12%, var(--c-bg-elev)); }
+.atp-tint-l4 { background: color-mix(in oklch, var(--c-atp-l4) 12%, var(--c-bg-elev)); }
+.atp-tint-l5 { background: color-mix(in oklch, var(--c-atp-l5) 12%, var(--c-bg-elev)); }
+.atp-tint-l6 { background: color-mix(in oklch, var(--c-atp-l6) 12%, var(--c-bg-elev)); }
+.atp-tint-l7 { background: color-mix(in oklch, var(--c-atp-l7) 12%, var(--c-bg-elev)); }
+
+/* ── Pyramid: 7 trapezoids (clip-path) + infra slab ── */
+.atp-pyramid {
+  display: flex; flex-direction: column; align-items: stretch;
+  width: 100%; max-width: 640px; margin: 0 auto;
+}
+.atp-layer {
+  position: relative;
+  height: 52px;
+  margin-top: 2px;
+  display: grid; place-items: center;
+  transition: transform 140ms ease;
+  outline: none;
+}
+.atp-layer::before {
+  content: "";
+  position: absolute; inset: 0;
+  clip-path: polygon(
+    calc(50% - var(--tw, 100%) / 2) 0%,
+    calc(50% + var(--tw, 100%) / 2) 0%,
+    calc(50% + var(--bw, 100%) / 2) 100%,
+    calc(50% - var(--bw, 100%) / 2) 100%
+  );
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--lc, var(--c-cert)) 34%, var(--c-bg-elev)),
+    color-mix(in oklch, var(--lc, var(--c-cert)) 16%, var(--c-bg-elev))
+  );
+  transition: filter 140ms ease;
+}
+.atp-layer:hover { transform: translateY(-2px); }
+.atp-layer:hover::before {
+  filter: brightness(1.16) drop-shadow(0 3px 10px color-mix(in oklch, var(--lc, var(--c-cert)) 35%, transparent));
+}
+.atp-layer.active { transform: translateY(-1px); }
+.atp-layer.active::before {
+  filter: brightness(1.22) drop-shadow(0 0 12px color-mix(in oklch, var(--lc, var(--c-cert)) 55%, transparent));
+}
+.atp-layer:focus-visible::before {
+  filter: brightness(1.22) drop-shadow(0 0 8px color-mix(in oklch, var(--lc, var(--c-cert)) 60%, transparent));
+}
+.atp-layer .atp-layer-label {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 8px;
+  pointer-events: none;
+  max-width: 92%;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.atp-infra {
+  margin-top: 6px;
+  height: 40px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: var(--r-sm);
+  border: 1px solid color-mix(in oklch, var(--c-atp-infra) 60%, var(--c-line-strong));
+  border-top-style: dashed;
+  background: color-mix(in oklch, var(--c-atp-infra) 45%, var(--c-bg-elev));
+  color: var(--c-ink-muted);
+  font-family: var(--f-mono); font-size: 10.5px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.atp-pyramid.compact .atp-layer { height: 16px; margin-top: 1px; }
+.atp-pyramid.compact .atp-layer:hover { transform: none; }
+.atp-pyramid.compact .atp-infra { height: 15px; margin-top: 3px; font-size: 7.5px; letter-spacing: 0.06em; }
+
+/* ── Level glyph (Roman-numeral seal chip) ── */
+.lvl-glyph {
+  display: inline-grid; place-items: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklch, currentColor 60%, transparent);
+  box-shadow:
+    inset 0 0 0 2.5px var(--c-bg-elev),
+    inset 0 0 0 3.5px color-mix(in oklch, currentColor 35%, transparent);
+  background: color-mix(in oklch, currentColor 10%, var(--c-bg-elev));
+  font-family: var(--f-mono); font-weight: 600; line-height: 1;
+}
+
+/* ── Certification seal (double ring, gold accent) ── */
+.badge-seal {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 7px;
+  background: transparent; border: 0; padding: 6px;
+  cursor: pointer;
+  color: var(--c-ink);
+  transition: transform 120ms ease;
+}
+.badge-seal:hover { transform: translateY(-2px); }
+.badge-seal:focus-visible { outline: 2px solid var(--c-cert); outline-offset: 2px; border-radius: var(--r-md); }
+.badge-seal .seal-ring {
+  border-radius: 50%;
+  display: grid; place-items: center;
+  border: 1.5px solid var(--seal-c, var(--c-cert));
+  outline: 1px solid color-mix(in oklch, var(--seal-c, var(--c-cert)) 45%, transparent);
+  outline-offset: 3px;
+  background: radial-gradient(
+    circle at 50% 30%,
+    color-mix(in oklch, var(--seal-c, var(--c-cert)) 22%, var(--c-bg-elev)),
+    color-mix(in oklch, var(--seal-c, var(--c-cert)) 8%, var(--c-bg-elev))
+  );
+  color: var(--seal-c, var(--c-cert));
+  font-family: var(--f-mono); line-height: 1;
+  transition: box-shadow 140ms ease;
+}
+.badge-seal:hover .seal-ring {
+  box-shadow: 0 0 14px color-mix(in oklch, var(--seal-c, var(--c-cert)) 40%, transparent);
+}
+.badge-seal .seal-label {
+  font-family: var(--f-mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--c-ink-muted);
+}
+.badge-seal:hover .seal-label { color: var(--c-cert); }
+.badge-seal.revoked .seal-ring { border-style: dashed; opacity: 0.55; filter: grayscale(0.5); }
+.badge-seal.revoked .seal-label { text-decoration: line-through; }
+
+/* ── Mastery meter (+ hatched untested state) ── */
+.meter {
+  position: relative;
+  display: inline-block;
+  height: 6px; border-radius: 3px;
+  background: var(--c-line);
+  overflow: hidden;
+  min-width: 60px;
+  flex: 1 1 auto;
+}
+.meter .meter-conf,
+.meter .meter-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  border-radius: 3px;
+}
+.meter .meter-conf { opacity: 0.55; }
+.meter-untested {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--c-line-strong) 0 3px,
+    transparent 3px 7px
+  );
+  opacity: 0.55;
+}
+
+/* ── Tier pill (rank dots) ── */
+.tier-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 3px 10px 3px 8px; border-radius: 999px;
+  border: 1px solid var(--c-line-strong);
+  background: color-mix(in oklch, var(--c-bg-elev-2) 70%, transparent);
+  font-family: var(--f-mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--c-ink-muted);
+}
+.tier-pill .tier-dots { display: inline-flex; gap: 3px; }
+.tier-pill .tier-dots .dot-r {
+  width: 5px; height: 5px; border-radius: 999px;
+  background: var(--c-line-strong);
+}
+.tier-pill .tier-dots .dot-r.on {
+  background: var(--c-cert);
+  box-shadow: 0 0 4px color-mix(in oklch, var(--c-cert) 60%, transparent);
+}
+.tier-pill[data-tier="executor"] {
+  color: var(--c-cert);
+  border-color: color-mix(in oklch, var(--c-cert) 45%, transparent);
+}
+
+/* ── Evidence rows (expandable) ── */
+.evidence-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; text-align: left;
+  padding: 8px 10px;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--c-ink);
+  font-family: var(--f-sans); font-size: 12.5px;
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms;
+}
+.evidence-item:hover { background: var(--c-bg-elev-2); border-color: var(--c-line-strong); }
+.evidence-item.open {
+  border-color: color-mix(in oklch, var(--c-cert) 40%, transparent);
+  background: color-mix(in oklch, var(--c-cert) 6%, var(--c-bg-elev));
+}
+.evidence-item .ev-icon {
+  flex: 0 0 auto;
+  width: 22px; height: 22px; border-radius: 5px;
+  display: grid; place-items: center;
+  font-size: 12px;
+  border: 1px solid var(--c-line-strong);
+  color: var(--c-cert);
+  background: color-mix(in oklch, var(--c-cert) 8%, transparent);
+}
+.evidence-detail {
+  margin: 4px 0 8px 32px;
+  padding: 8px 12px;
+  border-left: 2px solid color-mix(in oklch, var(--c-cert) 45%, transparent);
+  color: var(--c-ink-muted);
+  font-size: 12.5px; line-height: 1.5;
+}
+
+/* ── Human ◦ Agent view toggle (segmented) ── */
+.view-toggle {
+  display: inline-flex; gap: 2px;
+  background: var(--c-bg-elev);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  padding: 2px;
+}
+.view-toggle button {
+  border: 0; background: transparent;
+  padding: 4px 12px; border-radius: 999px;
+  font-family: var(--f-mono); font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--c-ink-dim);
+  cursor: pointer;
+  transition: background 120ms, color 120ms;
+}
+.view-toggle button:hover { color: var(--c-ink); }
+.view-toggle button.active {
+  background: var(--c-bg-elev-2);
+  color: var(--c-ink);
+  box-shadow: var(--shadow-card);
+}
+
+/* ── Agent-view gold accent overrides ── */
+[data-view="agent"] .topbar .nav button.active {
+  color: var(--c-cert);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklch, var(--c-cert) 35%, transparent),
+    var(--shadow-card);
+}
+[data-view="agent"] .topbar .brand .glyph {
+  background: linear-gradient(135deg, var(--c-cert) 0%, var(--c-atp-infra) 100%);
+}
+[data-view="agent"] .view-toggle button.active {
+  color: var(--c-cert);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--c-cert) 40%, transparent);
+}
+[data-view="agent"] .btn.primary {
+  background: color-mix(in oklch, var(--c-cert) 85%, var(--c-bg));
+  border-color: color-mix(in oklch, var(--c-cert) 85%, var(--c-bg));
+  color: var(--c-bg);
+}
+[data-view="agent"] .btn.primary:hover {
+  background: var(--c-cert);
+  border-color: var(--c-cert);
+}
+[data-view="agent"] ::selection {
+  background: color-mix(in oklch, var(--c-cert) 30%, transparent);
+}

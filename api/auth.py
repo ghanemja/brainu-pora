@@ -48,9 +48,10 @@ if not AUTH_SECRET:
         RuntimeWarning,
     )
 
-if not AUTH_PASSWORD and not AUTH_DISABLED:
+if not AUTH_PASSWORD:
     # Soft-fail: keep dev usable but loudly warn. Production deploy scripts
-    # MUST set BU_AUTH_PASSWORD.
+    # MUST set BU_AUTH_PASSWORD. Applies even when AUTH_DISABLED so the
+    # login gate (which always POSTs /login) works in demo mode.
     AUTH_PASSWORD = "password"
     warnings.warn(
         "BU_AUTH_PASSWORD not set; defaulting to 'admin/password'. "
