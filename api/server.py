@@ -35,7 +35,7 @@ from pathlib import Path
 from typing import Any
 
 try:
-    from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+    from fastapi import FastAPI, HTTPException, Request, UploadFile, File, Form
     from fastapi.middleware.cors import CORSMiddleware
     from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
     from pydantic import BaseModel
@@ -64,6 +64,52 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ── Tenant access audit (Phase 2 — docs/TENANCY.md §4 layer 4) ────────────
+# Starlette runs the LAST-registered http middleware FIRST, so registering
+# this BEFORE auth_middleware (below) makes it the inner layer: on the
+# request path it runs AFTER auth — request.state.{user,org_id,role} are
+# already populated and 401-rejected requests never reach it. Rows are
+# written fire-and-forget on a single-worker pool so the response is never
+# blocked, and every failure (including atp/tenant_db.py not being deployed
+# yet) is swallowed — the audit trail must never take the API down.
+from concurrent.futures import ThreadPoolExecutor as _AccessLogPool
+
+_ACCESS_LOG_POOL = _AccessLogPool(max_workers=1, thread_name_prefix="bu-accesslog")
+
+
+@app.middleware("http")
+async def access_log_middleware(request: Request, call_next):
+    response = await call_next(request)
+    try:
+        import api.auth as _auth
+        if _auth.AUTH_DISABLED:          # dev mode: no audit rows
+            return response
+        if _auth.is_public(request.url.path, request.method):
+            return response              # public surface: not tenant data
+        user = getattr(request.state, "user", None)
+        if user is None:                 # unauthenticated (shouldn't happen
+            return response              # behind the auth middleware)
+        org_id = getattr(request.state, "org_id", None) or "org-demo"
+        role = getattr(request.state, "role", None) or "admin"
+        method, path = request.method, request.url.path
+        status = response.status_code
+
+        def _write() -> None:
+            try:
+                from atp import tenant_db
+                tenant_db.log_access(
+                    org_id=org_id, user=user, role=role,
+                    method=method, path=path, status=status,
+                )
+            except Exception:  # noqa: BLE001 — fire-and-forget by contract
+                pass
+
+        _ACCESS_LOG_POOL.submit(_write)
+    except Exception:  # noqa: BLE001 — auditing must never block a response
+        pass
+    return response
+
+
 # Bearer-token auth on every route except an allowlist (/health, /login,
 # /docs, /videos, /media, OPTIONS preflight). Configure via env vars
 # BU_AUTH_USER / BU_AUTH_PASSWORD / BU_AUTH_SECRET. See api/auth.py.
@@ -73,6 +119,27 @@ app.middleware("http")(auth_middleware)
 # ATP (Agent University) routes — /atp/* (see api/atp.py + docs/ATP.md §5).
 from api.atp import router as atp_router
 app.include_router(atp_router)
+
+# Identity routes (Phase 2 — OIDC code flow, local org accounts, org-scoped
+# JWT sessions; see api/identity.py + docs/TENANCY.md). Guarded import so the
+# legacy single-admin demo keeps booting if this file ships first.
+try:
+    from api.identity import router as identity_router
+except ImportError:  # pragma: no cover — api/identity.py not deployed yet
+    identity_router = None
+    import sys as _sys
+    print("WARNING: api/identity.py not present — identity routes not "
+          "mounted; legacy /login only.", file=_sys.stderr)
+if identity_router is not None:
+    app.include_router(identity_router)
+
+
+def _request_org(request: Request) -> str:
+    """Tenant for this request — ONLY ever from verified auth state
+    (request.state.org_id, set by the auth middleware from the JWT; TENANCY.md
+    §4 layer 1), never from client-supplied values. The 'org-demo' fallback
+    covers BU_AUTH_DISABLED dev mode and legacy single-admin tokens."""
+    return getattr(request.state, "org_id", None) or "org-demo"
 
 
 class LoginBody(BaseModel):
@@ -271,7 +338,7 @@ def podcast_local_interject(body: LocalInterjectBody):
 # ── Background jobs (async podcast render) ────────────────────────────────
 
 @app.post("/podcast/render/async")
-def podcast_render_async(body: PodcastRenderBody):
+def podcast_render_async(body: PodcastRenderBody, request: Request):
     """Enqueue a cloud podcast render; returns a job_id to poll at /jobs/{id}."""
     from agents import jobs, podcast_video
 
@@ -281,11 +348,12 @@ def podcast_render_async(body: PodcastRenderBody):
             raise RuntimeError("render failed (check moviepy/gTTS install)")
         return {k: str(v.relative_to(PROJECT_ROOT)) for k, v in r.items()}
 
-    return {"job_id": jobs.submit("podcast_render", task)}
+    return {"job_id": jobs.submit("podcast_render", task,
+                                  org_id=_request_org(request))}
 
 
 @app.post("/podcast/local/async")
-def podcast_local_async(body: LocalPodcastBody):
+def podcast_local_async(body: LocalPodcastBody, request: Request):
     """Enqueue a fully-local podcast render; poll at /jobs/{id}."""
     from agents import jobs
     from agents.local_podcast import generate_local
@@ -297,13 +365,17 @@ def podcast_local_async(body: LocalPodcastBody):
             raise RuntimeError("local podcast generation failed")
         return {"mp3": str(p.relative_to(PROJECT_ROOT))}
 
-    return {"job_id": jobs.submit("podcast_local", task)}
+    return {"job_id": jobs.submit("podcast_local", task,
+                                  org_id=_request_org(request))}
 
 
 @app.get("/jobs/{job_id}")
-def job_status(job_id: str):
+def job_status(job_id: str, request: Request):
+    """Job status, scoped to the caller's org (jobs.get only sees the org's
+    own rows — RLS-backed on Postgres). A cross-tenant id 404s with the SAME
+    message as an unknown id — no existence oracle (TENANCY.md #6)."""
     from agents import jobs
-    j = jobs.get(job_id)
+    j = jobs.get(job_id, org_id=_request_org(request))
     if not j:
         raise HTTPException(404, f"no such job {job_id}")
     return j

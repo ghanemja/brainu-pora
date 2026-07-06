@@ -18,6 +18,16 @@ still return latest-first lists. Legacy data/sessions/atp_hitl.jsonl /
 atp_requests.jsonl are imported once into their empty table on first access,
 then renamed to *.jsonl.imported (idempotent; the rename doubles as the
 cross-process claim so rows land exactly once).
+
+Phase 2 (docs/TENANCY.md): the four log functions take an OPTIONAL
+`org_id` keyword (default `'org-demo'`, the bootstrap org every pre-tenancy
+row belongs to — migration 005's column default). All table access is routed
+through atp/tenant_db.py: writes stamp org_id, reads add `WHERE org_id =
+:org`, and on Postgres every statement runs under `SET LOCAL app.org_id`
+(RLS). Existing callers that don't pass org_id keep the exact pre-tenancy
+behaviour against the demo org — signatures and returned shapes unchanged
+(returned dicts do NOT grow an org key). Legacy JSONL imports land in
+'org-demo'.
 """
 
 from __future__ import annotations
@@ -29,9 +39,10 @@ import uuid
 from pathlib import Path
 
 from sqlalchemy import inspect as sa_inspect
-from sqlalchemy import text
 
+from . import tenant_db
 from .seed import build_seed
+from .tenant_db import DEFAULT_ORG
 
 PROJECT_ROOT = Path(__file__).parent.parent
 SESSIONS_DIR = PROJECT_ROOT / "data" / "sessions"
@@ -53,12 +64,14 @@ def get_data() -> dict:
 
 # ── HITL reward log (§1 formula) ────────────────────────────────────────────
 
-def append_hitl(event: dict) -> dict:
+def append_hitl(event: dict, org_id: str = DEFAULT_ORG) -> dict:
     """Enrich a HITL reward signal and append it to the audit table.
 
     Input:  {agentId, layer, signal (+1|-1), reason, rater}
     Adds:   ts, weightedDelta, auditId
     Formula (§1): weightedDelta = signal × 0.2 × (weight[layer] / 0.26)
+    The row is stamped with `org_id` (docs/TENANCY.md); the returned dict
+    keeps its pre-tenancy shape.
     """
     data = get_data()
     weights = data["RL"]["rewardWeights"]
@@ -78,28 +91,26 @@ def append_hitl(event: dict) -> dict:
         "reason": event.get("reason", ""),
         "auditId": f"audit-{uuid.uuid4().hex[:10]}",
     }
-    with _begin() as conn:
-        _import_legacy_once(conn, "atp_hitl", LEGACY_HITL_LOG, _HITL_COLS)
-        _insert(conn, "atp_hitl", _to_row(enriched, _HITL_COLS))
+    _ensure_ready("atp_hitl", LEGACY_HITL_LOG, _HITL_COLS)
+    tenant_db.insert_scoped("atp_hitl", _to_row(enriched, _HITL_COLS), org_id)
     return enriched
 
 
-def read_hitl(limit: int = 100) -> list[dict]:
-    """Return the HITL reward log, latest first (capped at `limit`)."""
-    with _begin() as conn:
-        _import_legacy_once(conn, "atp_hitl", LEGACY_HITL_LOG, _HITL_COLS)
-        return _read_latest(conn, "atp_hitl", _HITL_COLS, limit)
+def read_hitl(limit: int = 100, org_id: str = DEFAULT_ORG) -> list[dict]:
+    """Return `org_id`'s HITL log, latest first (capped at `limit`)."""
+    _ensure_ready("atp_hitl", LEGACY_HITL_LOG, _HITL_COLS)
+    return _read_latest("atp_hitl", _HITL_COLS, limit, org_id)
 
 
 # ── Compose / train-to-order requests (§7.2) ────────────────────────────────
 
-def append_request(payload: dict) -> dict:
+def append_request(payload: dict, org_id: str = DEFAULT_ORG) -> dict:
     """Create an expert-composition request from a wizard submission.
 
     Input:  {major, specialty, badgeIds, packId}
     Computes status against the seed agents with the same matching rule as
     the client-side `matchExperts`, builds the pipeline stages, appends to
-    the request table, and returns the request.
+    the request table (stamped with `org_id`), and returns the request.
     """
     data = get_data()
     badge_ids = list(payload.get("badgeIds") or [])
@@ -128,17 +139,15 @@ def append_request(payload: dict) -> dict:
         "pipeline": pipeline,
         "resultAgentId": None,
     }
-    with _begin() as conn:
-        _import_legacy_once(conn, "atp_requests", LEGACY_REQUESTS_LOG, _REQUEST_COLS)
-        _insert(conn, "atp_requests", _to_row(req, _REQUEST_COLS))
+    _ensure_ready("atp_requests", LEGACY_REQUESTS_LOG, _REQUEST_COLS)
+    tenant_db.insert_scoped("atp_requests", _to_row(req, _REQUEST_COLS), org_id)
     return req
 
 
-def read_requests(limit: int = 100) -> list[dict]:
-    """Return the request log, latest first (capped at `limit`)."""
-    with _begin() as conn:
-        _import_legacy_once(conn, "atp_requests", LEGACY_REQUESTS_LOG, _REQUEST_COLS)
-        return _read_latest(conn, "atp_requests", _REQUEST_COLS, limit)
+def read_requests(limit: int = 100, org_id: str = DEFAULT_ORG) -> list[dict]:
+    """Return `org_id`'s request log, latest first (capped at `limit`)."""
+    _ensure_ready("atp_requests", LEGACY_REQUESTS_LOG, _REQUEST_COLS)
+    return _read_latest("atp_requests", _REQUEST_COLS, limit, org_id)
 
 
 # ── Matching rule (mirrors atp_data.js matchExperts) ────────────────────────
@@ -231,7 +240,7 @@ def _pipeline_for(status: str) -> list[dict]:
             for s in stages]
 
 
-# ── DAL access (atp/db.py, migration 002) ────────────────────────────────────
+# ── DAL access (atp/tenant_db.py — migrations 002 + 005) ────────────────────
 
 # dict key ↔ table column; declaration order = INSERT/SELECT column order.
 _HITL_COLS = {
@@ -290,38 +299,36 @@ def _engine():
     return db.get_engine()
 
 
-def _begin():
-    """Transaction-scoped connection: commit on exit, rollback on error."""
-    return _engine().begin()
+def _ensure_ready(table: str, legacy: Path, cols: dict) -> None:
+    """Engine + migrations up, then the one-time legacy JSONL import."""
+    _engine()
+    _import_legacy_once(table, legacy, cols)
 
 
-def _insert(conn, table: str, row: dict) -> None:
-    cols = ", ".join(row)
-    marks = ", ".join(f":{c}" for c in row)
-    conn.execute(text(f"INSERT INTO {table} ({cols}) VALUES ({marks})"), row)
-
-
-def _read_latest(conn, table: str, cols: dict, limit: int) -> list[dict]:
+def _read_latest(table: str, cols: dict, limit: int, org_id: str) -> list[dict]:
     sel = ", ".join(cols.values())
-    rows = conn.execute(
-        text(f"SELECT {sel} FROM {table} ORDER BY {_order_by(conn, table)} LIMIT :n"),
-        {"n": int(limit)})
+    rows = tenant_db.scoped_query(
+        org_id,
+        f"SELECT {sel} FROM {table} WHERE org_id = :org"
+        f" ORDER BY {_order_by(table)} LIMIT :n",
+        {"org": org_id, "n": int(limit)})
     return [_to_dict(r, cols) for r in rows]
 
 
-def _order_by(conn, table: str) -> str:
+def _order_by(table: str) -> str:
     """Newest-first ordering. Prefer the monotonic surrogate key from
     migration 002 (`seq`), tolerate an integer `id` pk, then fall back to
     sqlite's implicit rowid / the ts column so reads survive DDL drift."""
     cached = _ORDER.get(table)
     if cached:
         return cached
-    info = {c["name"]: str(c["type"]).upper() for c in sa_inspect(conn).get_columns(table)}
+    engine = _engine()
+    info = {c["name"]: str(c["type"]).upper() for c in sa_inspect(engine).get_columns(table)}
     if "seq" in info:
         order = "seq DESC"
     elif "INT" in info.get("id", ""):
         order = "id DESC"
-    elif conn.engine.dialect.name == "sqlite":
+    elif engine.dialect.name == "sqlite":
         order = "rowid DESC"
     else:
         order = "ts DESC"
@@ -340,25 +347,28 @@ def _to_row(rec: dict, cols: dict) -> dict:
     return row
 
 
-def _to_dict(row, cols: dict) -> dict:
-    """DB row → the exact dict shape the JSONL logs used (camelCase keys)."""
+def _to_dict(row: dict, cols: dict) -> dict:
+    """DB row (scoped_query dict) → the exact dict shape the JSONL logs used
+    (camelCase keys — org_id is intentionally NOT part of the shape)."""
     rec = {}
     for key, col in cols.items():
-        v = row._mapping[col]
+        v = row[col]
         if col in _JSON_COLS and v is not None:
             v = json.loads(v)
         rec[key] = v
     return rec
 
 
-def _import_legacy_once(conn, table: str, legacy: Path, cols: dict) -> None:
+def _import_legacy_once(table: str, legacy: Path, cols: dict) -> None:
     """One-time lazy migration of the pre-Phase-1 JSONL log.
 
-    If the legacy file exists and the table is empty, rename the file to
-    *.jsonl.imported (the atomic rename is the cross-process claim — a racing
-    worker gets FileNotFoundError and skips) and import its rows oldest-first
-    so surrogate-key order matches insertion order. Idempotent: reruns see
-    either no file or a non-empty table and do nothing.
+    If the legacy file exists and the table holds no 'org-demo' rows, rename
+    the file to *.jsonl.imported (the atomic rename is the cross-process
+    claim — a racing worker gets FileNotFoundError and skips) and import its
+    rows oldest-first so surrogate-key order matches insertion order.
+    Pre-tenancy rows belong to the bootstrap org, so imports are stamped
+    'org-demo' (docs/TENANCY.md leak surface #1). Idempotent: reruns see
+    either no file or existing rows and do nothing.
     """
     if table in _LEGACY_DONE:
         return
@@ -366,7 +376,10 @@ def _import_legacy_once(conn, table: str, legacy: Path, cols: dict) -> None:
         if table in _LEGACY_DONE:
             return
         if legacy.exists():
-            count = conn.execute(text(f"SELECT COUNT(*) FROM {table}")).scalar()
+            count = tenant_db.scoped_query(
+                DEFAULT_ORG,
+                f"SELECT COUNT(*) AS n FROM {table} WHERE org_id = :org",
+                {"org": DEFAULT_ORG})[0]["n"]
             if not count:
                 claimed = legacy.with_name(legacy.name + ".imported")
                 try:
@@ -382,7 +395,8 @@ def _import_legacy_once(conn, table: str, legacy: Path, cols: dict) -> None:
                             rec = json.loads(line)
                         except json.JSONDecodeError:
                             continue  # same tolerance the JSONL reader had
-                        _insert(conn, table, _to_row(rec, cols))
+                        tenant_db.insert_scoped(
+                            table, _to_row(rec, cols), DEFAULT_ORG)
         _LEGACY_DONE.add(table)
 
 

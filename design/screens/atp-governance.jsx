@@ -266,7 +266,7 @@ function HitlForm({ agents, weights, onSubmit }) {
   const [reason, setReason] = useState("");
   const [rater, setRater] = useState("human-reviewer");
   const [busy, setBusy] = useState(false);
-  const [note, setNote] = useState(null); // {offline:bool}
+  const [note, setNote] = useState(null); // {offline:bool, forbidden:bool}
 
   const w = Number(weights["L" + layer]) || 0;
   const preview = signal * 0.2 * (w / 0.26);
@@ -287,7 +287,9 @@ function HitlForm({ agents, weights, onSubmit }) {
     });
     setBusy(false);
     setNote(res);
-    setReason("");
+    // Keep the typed reason when the submit was refused for role — the
+    // rater may re-submit after switching to an SME/admin session.
+    if (!(res && res.forbidden)) setReason("");
   };
 
   return (
@@ -368,10 +370,15 @@ function HitlForm({ agents, weights, onSubmit }) {
       {note && (
         <div className="t-cap" style={{
           padding: "7px 10px", borderRadius: "var(--r-md)",
-          border: `1px solid color-mix(in oklch, ${note.offline ? "var(--c-visited)" : "var(--c-cs)"} 45%, transparent)`,
-          color: note.offline ? "var(--c-visited)" : "var(--c-cs)",
+          border: `1px solid color-mix(in oklch, ${
+            note.forbidden ? "var(--c-here)"
+            : note.offline ? "var(--c-visited)" : "var(--c-cs)"} 45%, transparent)`,
+          color: note.forbidden ? "var(--c-here)"
+               : note.offline ? "var(--c-visited)" : "var(--c-cs)",
         }}>
-          {note.offline
+          {note.forbidden
+            ? "Not logged — this action requires SME or admin role."
+            : note.offline
             ? "Backend unreachable — reward held locally and marked unsynced (demo)."
             : "Logged. The record is now part of the append-only audit trail."}
         </div>
@@ -496,8 +503,12 @@ function ATPGovernance() {
         ? await BU_API.atpHitl(payload)
         : { ok: false, offline: true };
     } catch (e) {
-      res = { ok: false, offline: true };
+      res = e && e.forbidden
+        ? { ok: false, forbidden: true }
+        : { ok: false, offline: true };
     }
+    // Role too low (403): tell the rater — do NOT fake an unsynced demo row.
+    if (res && res.forbidden) return { forbidden: true };
     if (!res || res.offline || res.ok === false) {
       const w = Number(weights["L" + payload.layer]) || 0;
       const evt = {

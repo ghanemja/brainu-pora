@@ -10,7 +10,9 @@
 //
 // Auth: every request attaches Authorization: Bearer <token> read from
 // sessionStorage.bu_auth_token (set by the login gate). If a request returns
-// 401 the gate is re-shown.
+// 401 the gate is re-shown. A 403 (authenticated, insufficient role) NEVER
+// clears the session — helpers throw an error tagged {forbidden:true} and
+// write methods surface {ok:false, forbidden:true} to the caller.
 //
 // All methods are async + return plain JS objects.
 
@@ -38,6 +40,17 @@
     throw new Error("401 — session expired, re-authenticate");
   }
 
+  // 403 = authenticated but lacking role (e.g. viewer submitting HITL).
+  // Unlike 401 this must NOT nuke the session: throw a tagged error so
+  // callers can render a role message instead of the offline fallback.
+  function handleForbidden(r) {
+    if (r.status !== 403) return r;
+    const e = new Error("403 — forbidden (requires a higher role)");
+    e.forbidden = true;
+    e.status = 403;
+    throw e;
+  }
+
   async function jget(path, params) {
     if (!live()) throw new Error("BU_API_BASE not set");
     const url = new URL(base() + path);
@@ -46,6 +59,7 @@
     });
     const r = await fetch(url.toString(), { headers: authHeader() });
     handle401(r);
+    handleForbidden(r);
     if (!r.ok) throw new Error(`GET ${path} → ${r.status}`);
     return r.json();
   }
@@ -58,6 +72,7 @@
       body: JSON.stringify(body || {}),
     });
     handle401(r);
+    handleForbidden(r);
     if (!r.ok) throw new Error(`POST ${path} → ${r.status}`);
     return r.json();
   }
@@ -68,6 +83,7 @@
       method: "POST", headers: authHeader(), body: formData,
     });
     handle401(r);
+    handleForbidden(r);
     if (!r.ok) throw new Error(`POST ${path} → ${r.status}`);
     return r.json();
   }
@@ -265,9 +281,14 @@
     },
 
     // POST — no local fallback; signal offline so the UI degrades gracefully.
+    // A 403 (role too low) is surfaced as {forbidden:true}, NOT offline.
     async atpHitl(payload) {
       try { return await jpost("/atp/hitl", payload); }
       catch (e) {
+        if (e && e.forbidden) {
+          log("atpHitl forbidden", e.message);
+          return { ok: false, forbidden: true };
+        }
         log("atpHitl offline", e.message);
         return { ok: false, offline: true };
       }

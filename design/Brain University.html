@@ -20,7 +20,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
     <form id="bu-gate-form" autocomplete="off" style="width:100%;max-width:360px;background:#161618;border:1px solid #2a2a2d;border-radius:14px;padding:30px">
       <div style="font-size:18px;font-weight:600;margin-bottom:4px">Brain University</div>
       <div style="font-size:13px;color:#9a9aa1;margin-bottom:22px">Sign in to continue</div>
-      <label style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9aa1;display:block;margin-bottom:6px">Username</label>
+      <label style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9aa1;display:block;margin-bottom:6px">Email or username</label>
       <input id="bu-gate-u" autofocus required style="width:100%;box-sizing:border-box;padding:11px 13px;border:1px solid #2a2a2d;border-radius:9px;background:#0b0b0c;color:#f5f5f7;font-size:14px;margin-bottom:14px"/>
       <label style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9a9aa1;display:block;margin-bottom:6px">Password</label>
       <input id="bu-gate-p" type="password" required style="width:100%;box-sizing:border-box;padding:11px 13px;border:1px solid #2a2a2d;border-radius:9px;background:#0b0b0c;color:#f5f5f7;font-size:14px;margin-bottom:18px"/>
@@ -38,9 +38,13 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
                                    localStorage.setItem("bu_user_id", id); return id; })();
   </script>
   <script>
-    // Login gate — calls backend /login, stores the returned bearer token in
-    // sessionStorage. Token attaches to every API request via design/api.js.
-    // Token TTL is server-controlled (BU_AUTH_TTL_HOURS, default 24h).
+    // Login gate — calls backend /login (legacy single-admin) and stores the
+    // returned bearer token in sessionStorage. If /login rejects with 401/404
+    // and the Phase-2 org endpoint POST /auth/login exists (docs/TENANCY.md),
+    // falls back to it with {email, password}. Both token kinds land in the
+    // same sessionStorage key and verify server-side. Token attaches to every
+    // API request via design/api.js. Token TTL is server-controlled
+    // (BU_AUTH_TTL_HOURS, default 24h).
     (function(){
       var gate=document.getElementById('bu-gate');
       var apiBase = (window.BU_API_BASE || "http://localhost:8090").replace(/\/+$/,"");
@@ -61,13 +65,30 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({username: u, password: p}),
           });
-          if (!r.ok) {
-            var msg = 'Incorrect username or password.';
+          var data = null;
+          if (r.ok) {
+            data = await r.json();
+          } else if (r.status === 401 || r.status === 404) {
+            // Legacy login rejected — try the org login (POST /auth/login).
+            var r2 = null;
+            try {
+              r2 = await fetch(apiBase + '/auth/login', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({email: u, password: p}),
+              });
+            } catch(_) { r2 = null; }
+            if (r2 && r2.ok) data = await r2.json();
+            // Surface the org-login error unless the endpoint doesn't exist
+            // (404/405 = no Phase-2 auth deployed — keep the legacy error).
+            else if (r2 && r2.status !== 404 && r2.status !== 405) r = r2;
+          }
+          if (!data) {
+            var msg = 'Incorrect email/username or password.';
             try { var j = await r.json(); if (j && j.detail) msg = j.detail; } catch(_){}
             err.textContent = msg;
             return;
           }
-          var data = await r.json();
           try { sessionStorage.setItem('bu_auth_token', data.token); } catch(_){}
           setUnlocked();
         } catch (ex) {
@@ -128,7 +149,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script type="text/babel" src="screens/atp-agents.jsx?v=1"></script>
   <script type="text/babel" src="screens/atp-certs.jsx?v=1"></script>
   <script type="text/babel" src="screens/atp-marketplace.jsx?v=1"></script>
-  <script type="text/babel" src="screens/atp-governance.jsx?v=1"></script>
+  <script type="text/babel" src="screens/atp-governance.jsx?v=2"></script>
   <script type="text/babel" src="screens/atp-vault.jsx?v=1"></script>
 
   <!-- Main app shell -->

@@ -43,5 +43,11 @@ pydantic>=2
 python-multipart   # voice file upload
 matplotlib         # equation rendering in animated explainers
 
+# Identity & multi-tenancy (api/identity.py — Phase 2, docs/TENANCY.md)
+argon2-cffi        # argon2id password hashes for local accounts
+PyJWT              # session JWTs + OIDC id_token verification
+cryptography       # RS256/ES256 JWKS keys for PyJWT + Fernet at-rest encryption
+httpx              # OIDC discovery / token-endpoint calls
+
 # Utility
 python-louvain   # only used if networkx 3.x community detection unavailable
