@@ -6159,7 +6159,7 @@ window.ATP_DATA = (() => {
       "L6": 0.24,
       "L7": 0.26
     },
-    "note": "Reward is weighted heaviest at the company and domain layers (L5–L7), where a mistake is most costly and human judgment matters most. Weights are normalised so L7 = 0.26. HITL delta = signal × 0.2 × (weight[layer] / 0.26), logged append-only to data/sessions/atp_hitl.jsonl for audit.",
+    "note": "Reward is weighted heaviest at the company and domain layers (L5–L7), where a mistake is most costly and human judgment matters most. Weights are normalised so L7 = 0.26. HITL delta = signal × 0.2 × (weight[layer] / 0.26), logged append-only to the atp_hitl table for audit.",
     "hitlLog": [
       {
         "ts": "2026-05-20T11:12:00Z",

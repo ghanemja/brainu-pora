@@ -200,9 +200,9 @@ def cascade(url_or_id: str, emit: Callable[[str, dict], None] | None = None,
         step("warn", {"step": "semsch", "error": "no_data"})
 
     try:
-        from graph.corpus_graph import build_corpus_graph
+        from graph.corpus_graph import build_mixed_graph
         from graph.clusters import cluster_graph
-        G = build_corpus_graph()
+        G = build_mixed_graph()
         clusters = cluster_graph(G)
     except Exception as e:
         clusters = []

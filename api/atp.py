@@ -135,7 +135,7 @@ class ComposeBody(BaseModel):
 def atp_request_submit(body: ComposeBody):
     """Commission an expert. store.append_request runs the matching rule
     against seed agents, builds the pipeline stages, and appends the request
-    append-only to data/sessions/atp_requests.jsonl."""
+    to the atp_requests table."""
     return store.append_request({
         "major":     body.major,
         "specialty": body.specialty,

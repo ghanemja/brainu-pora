@@ -33,6 +33,14 @@ services:
       # ── App ─────────────────────────────────────────────────────────────
       - key: BRAIN_DB
         value: /data/brain_university.db
+      # ── Persistence — Postgres (recommended for prod) ────────────────────
+      # Create a Render Postgres (New → PostgreSQL), then paste its
+      # Internal Database URL into the dashboard as DATABASE_URL. Unset →
+      # SQLite at BRAIN_DB on the disk above (single instance/worker only;
+      # data survives restarts but not disk loss). postgres:// URLs are
+      # normalized automatically (atp/db.py).
+      - key: DATABASE_URL
+        sync: false
       - key: CORS_ORIGINS
         sync: false          # e.g. https://brain-u.netlify.app
       # ── Auth — bearer-token gate over every mutating endpoint ───────────

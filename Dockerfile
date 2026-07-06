@@ -27,6 +27,7 @@ COPY eval/   ./eval/
 COPY wiki/   ./wiki/
 COPY data/   ./data/
 COPY scripts/ ./scripts/
+COPY migrations/ ./migrations/
 
 # Writable runtime dirs. HF Spaces runs the container as a non-root user, so
 # the COPY'd (root-owned) /app/data must be world-writable for SQLite + the
@@ -40,4 +41,6 @@ EXPOSE 7860
 HEALTHCHECK --interval=30s --timeout=5s --start-period=25s \
   CMD curl -fsS http://localhost:${PORT:-7860}/health || exit 1
 
-CMD uvicorn api.server:app --host 0.0.0.0 --port ${PORT:-7860} --workers 1
+# WORKERS>1 needs a shared DB (set DATABASE_URL to Postgres) — SQLite default
+# is single-worker/single-instance only.
+CMD uvicorn api.server:app --host 0.0.0.0 --port ${PORT:-7860} --workers ${WORKERS:-1}

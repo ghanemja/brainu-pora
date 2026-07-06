@@ -23,10 +23,8 @@ from typing import Iterable
 
 def mastery_per_cluster(user_id: str, clusters: Iterable) -> dict:
     """Compute per-cluster mastery for a user."""
-    from .persistence import open_db
-    db = open_db()
-    visited = _visited_nodes(db, user_id)
-    sr_state = _sr_state(db, user_id)
+    visited = _visited_nodes(user_id)
+    sr_state = _sr_state(user_id)
 
     out = {}
     for cluster in clusters:
@@ -70,21 +68,24 @@ def weakest(user_id: str, clusters: Iterable, n: int = 5) -> list[int]:
     return [cid for cid, _ in ordered[:n]]
 
 
-def _visited_nodes(db, user_id: str) -> dict:
-    """Map node → {best_quality, n_visits}. Reads sessions table."""
-    rows = db.execute(
-        """SELECT node, MAX(quiz_quality), COUNT(*)
+def _visited_nodes(user_id: str) -> dict:
+    """Map node → {best_quality, n_visits}. Reads walk_events."""
+    from atp import db
+    from .persistence import ensure_schema
+    ensure_schema()
+    rows = db.query(
+        """SELECT node, MAX(quiz_quality) AS best_quality,
+                  COUNT(*) AS n_visits
              FROM walk_events
-            WHERE user_id = ? AND node IS NOT NULL
+            WHERE user_id = :user_id AND node IS NOT NULL
          GROUP BY node""",
-        (user_id,),
-    ).fetchall()
-    return {r[0]: {"best_quality": r[1], "n_visits": r[2]} for r in rows}
+        {"user_id": user_id},
+    )
+    return {r["node"]: {"best_quality": r["best_quality"],
+                        "n_visits": r["n_visits"]} for r in rows}
 
 
-def _sr_state(db, user_id: str) -> dict:
-    rows = db.execute(
-        "SELECT node, repetitions FROM sr_cards WHERE user_id = ?",
-        (user_id,),
-    ).fetchall()
-    return {r[0]: {"repetitions": r[1]} for r in rows}
+def _sr_state(user_id: str) -> dict:
+    from . import persistence
+    return {card["node"]: {"repetitions": card["repetitions"]}
+            for card in persistence.all_sr_cards(user_id)}

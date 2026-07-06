@@ -88,3 +88,26 @@ Company-knowledge ingestion: upload endpoint (md/pdf/txt) → Vault-LD pages
 off UI (role=sme) → cert eligible. Agent-view onboarding tour (tutorial.jsx
 pattern). Report-card PDF export endpoint (server-side, reportlab) +
 download button on agent profile.
+
+## Phase 1 — delivered: atp/store.py DAL port ✅ (2026-07-06)
+HITL + compose-request logs moved from `data/sessions/*.jsonl` to the
+`atp_hitl` / `atp_requests` tables (migration 002) via `atp/db.py`
+(`get_engine()` + `run_migrations()`, invoked lazily on first log access —
+idempotent, so the startup run stays authoritative). Public surface
+unchanged: same function signatures, same camelCase dict keys (snake_case
+columns mapped back, JSON-text columns `json.loads`'d), `read_*` still
+latest-first — `api/atp.py` untouched. Latest-first ordering uses the
+monotonic surrogate: `atp_hitl.id` (autoincrement/BIGSERIAL); `atp_requests`
+has a TEXT pk, so sqlite orders by implicit `rowid`, Postgres falls back to
+`ts DESC` (second-resolution ties among same-second requests are unordered —
+cosmetic; add a BIGSERIAL `seq` in a later migration if it ever matters).
+One-time lazy legacy import: if `atp_hitl.jsonl` / `atp_requests.jsonl`
+exists and its table is empty, the file is renamed to `*.jsonl.imported`
+(the atomic rename doubles as the cross-process claim) and its rows inserted
+oldest-first; reruns are no-ops. Verified on a fresh tmp sqlite DB against
+the real migrations: §1 formula (`weightedDelta = signal × 0.2 ×
+(w/0.26)`), latest-first reads, the 3 canonical compose payloads
+(18/18-C/atp-l6-math → matched theorem-math; junk specialty → gap;
+6/6-3/atp-l6-bio → gap), legacy import + idempotency, UPDATE/DELETE on
+`atp_hitl` aborting via trigger, plus a TestClient smoke over the untouched
+`/atp/*` routes and the `BU_AUTH_DISABLED=1` boot check.

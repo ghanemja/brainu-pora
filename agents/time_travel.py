@@ -20,38 +20,38 @@ from __future__ import annotations
 import time as _time
 from typing import Iterable
 
-from .persistence import open_db
+from atp import db
+from .persistence import ensure_schema  # import also applies migrations
 
 
 def timeline(user_id: str) -> list[dict]:
     """Distinct timestamps where the user's state changed. Used as
     slider tick positions on the frontend."""
-    db = open_db()
-    rows = db.execute(
+    ensure_schema()
+    rows = db.query(
         """SELECT ts, node, quiz_quality FROM walk_events
-             WHERE user_id = ? AND ts IS NOT NULL
+             WHERE user_id = :user_id AND ts IS NOT NULL
              ORDER BY ts ASC""",
-        (user_id,),
-    ).fetchall()
-    out = []
-    for r in rows:
-        out.append({"ts": r[0], "node": r[1], "quiz_quality": r[2]})
-    return out
+        {"user_id": user_id},
+    )
+    return [{"ts": r["ts"], "node": r["node"],
+             "quiz_quality": r["quiz_quality"]} for r in rows]
 
 
 def snapshot_at(user_id: str, ts: float | None = None) -> dict:
     """Map node → mastery score in [0, 1] as of `ts` (defaults to now)."""
     if ts is None:
         ts = _time.time()
-    db = open_db()
-    rows = db.execute(
-        """SELECT node, MAX(quiz_quality) FROM walk_events
-             WHERE user_id = ? AND node IS NOT NULL AND ts <= ?
+    ensure_schema()
+    rows = db.query(
+        """SELECT node, MAX(quiz_quality) AS max_q FROM walk_events
+             WHERE user_id = :user_id AND node IS NOT NULL AND ts <= :ts
              GROUP BY node""",
-        (user_id, ts),
-    ).fetchall()
+        {"user_id": user_id, "ts": ts},
+    )
     out: dict[str, float] = {}
-    for node, max_q in rows:
+    for row in rows:
+        node, max_q = row["node"], row["max_q"]
         if node is None:
             continue
         if max_q is None:

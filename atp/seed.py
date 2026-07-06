@@ -1503,7 +1503,7 @@ def build_seed() -> dict:
         "note": "Reward is weighted heaviest at the company and domain layers (L5–L7), where a mistake is "
                 "most costly and human judgment matters most. Weights are normalised so L7 = 0.26. "
                 "HITL delta = signal × 0.2 × (weight[layer] / 0.26), logged append-only to "
-                "data/sessions/atp_hitl.jsonl for audit.",
+                "the atp_hitl table for audit.",
         "hitlLog": [
             {"ts": "2026-06-14T15:22:00Z", "rater": "priya.raman@acme", "agentId": "atlas-ops", "layer": 7,
              "signal": 1, "weightedDelta": _wdelta(7, 1),

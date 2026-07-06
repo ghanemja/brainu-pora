@@ -99,12 +99,11 @@ def _graph():
     """Build the merged corpus graph + cluster list once and cache."""
     if "G" in _GRAPH_CACHE:
         return _GRAPH_CACHE
-    from graph.corpus_graph import build_corpus_graph
-    from graph.clusters import cluster_graph
-    from graph.foundations import rank_foundations
-    G = build_corpus_graph()
-    clusters = cluster_graph(G)
-    foundations = rank_foundations(G, clusters)
+    from graph.clusters import build_clusters, load_graph
+    from graph.foundations import recommend
+    clusters = build_clusters()          # cached to data/sessions/clusters.json
+    G = load_graph()
+    foundations = recommend(limit=8)
     _GRAPH_CACHE.update(G=G, clusters=clusters, foundations=foundations)
     return _GRAPH_CACHE
 
@@ -334,7 +333,7 @@ def trailhead(user_id: str = "anon", interest: str = "", n: int = 5):
 
 def _foundation_card(f) -> dict:
     return {
-        "node": getattr(f, "node", str(f)),
+        "node": getattr(f, "raw_name", None) or getattr(f, "name", str(f)),
         "score": getattr(f, "score", None),
         "rationale": getattr(f, "rationale", []),
         "cluster_id": getattr(f, "cluster_id", None),
@@ -469,40 +468,24 @@ def briefing_endpoint(node: str, interest: str = ""):
 @app.post("/socratic/start")
 def socratic_start(body: SocraticStartBody):
     from agents.socratic import start_session
-    from agents.persistence import open_db
+    from agents.persistence import save_socratic_session
     import uuid
     state = start_session(body.node)
     sid = f"soc_{uuid.uuid4().hex[:12]}"
-    db = open_db()
-    db.execute(
-        """INSERT INTO socratic_sessions
-             (session_id, user_id, node, state_json, updated_at)
-           VALUES (?, ?, ?, ?, ?)""",
-        (sid, body.user_id, body.node, json.dumps(state),
-         _now()),
-    )
-    db.commit()
+    save_socratic_session(sid, body.user_id, body.node, state)
     return {"session_id": sid, "state": state}
 
 
 @app.post("/socratic/step")
 def socratic_step(body: SocraticStepBody):
     from agents.socratic import step
-    from agents.persistence import open_db
-    db = open_db()
-    row = db.execute(
-        "SELECT state_json FROM socratic_sessions WHERE session_id = ?",
-        (body.session_id,),
-    ).fetchone()
-    if not row:
+    from agents.persistence import (load_socratic_session,
+                                    update_socratic_session)
+    session = load_socratic_session(body.session_id)
+    if not session:
         raise HTTPException(404, "session not found")
-    state = json.loads(row[0])
-    new_state = step(state, body.answer)
-    db.execute(
-        "UPDATE socratic_sessions SET state_json = ?, updated_at = ? WHERE session_id = ?",
-        (json.dumps(new_state), _now(), body.session_id),
-    )
-    db.commit()
+    new_state = step(session["state"], body.answer)
+    update_socratic_session(body.session_id, new_state)
     return new_state
 
 

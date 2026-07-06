@@ -32,6 +32,10 @@ graphiti-core
 falkordb
 nest_asyncio
 
+# Persistence (atp/db.py DAL — SQLite by default, Postgres via DATABASE_URL)
+sqlalchemy>=2.0
+psycopg2-binary
+
 # API server (FastAPI bridge for the React UI / hosted backend)
 fastapi
 uvicorn[standard]

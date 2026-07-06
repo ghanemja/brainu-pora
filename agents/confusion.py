@@ -44,53 +44,39 @@ def paragraph_hash(text: str) -> str:
     return hashlib.sha1((text or "").strip().encode()).hexdigest()[:12]
 
 
-# ── Persistence (lightweight table; lazy-creates) ─────────────────────────
-
-def _ensure_table(db):
-    db.execute("""
-        CREATE TABLE IF NOT EXISTS confusion_signals (
-          user_id        TEXT NOT NULL,
-          paragraph_hash TEXT NOT NULL,
-          signal_kind    TEXT NOT NULL,
-          value          REAL NOT NULL,
-          ts             REAL NOT NULL
-        )
-    """)
-    db.execute("""
-        CREATE INDEX IF NOT EXISTS idx_confusion_user_para
-        ON confusion_signals(user_id, paragraph_hash)
-    """)
-
+# ── Persistence (confusion_signals — provisioned by migrations/003) ───────
 
 def log_signal(user_id: str, paragraph_hash_str: str,
                signal_kind: str, value: float = 1.0) -> None:
     if signal_kind not in SIGNAL_WEIGHTS:
         return
     import time
-    from .persistence import open_db
-    db = open_db()
-    _ensure_table(db)
+    from atp import db
+    from .persistence import ensure_schema
+    ensure_schema()
     db.execute(
         """INSERT INTO confusion_signals
              (user_id, paragraph_hash, signal_kind, value, ts)
-           VALUES (?, ?, ?, ?, ?)""",
-        (user_id, paragraph_hash_str, signal_kind, float(value), time.time()),
+           VALUES (:user_id, :paragraph_hash, :signal_kind, :value, :ts)""",
+        {"user_id": user_id, "paragraph_hash": paragraph_hash_str,
+         "signal_kind": signal_kind, "value": float(value),
+         "ts": time.time()},
     )
-    db.commit()
 
 
 def score(user_id: str, paragraph_hash_str: str) -> float:
     """Aggregate signals for one paragraph → score in [0, 1]."""
-    from .persistence import open_db
-    db = open_db()
-    _ensure_table(db)
-    rows = db.execute(
+    from atp import db
+    from .persistence import ensure_schema
+    ensure_schema()
+    rows = db.query(
         """SELECT signal_kind, value FROM confusion_signals
-             WHERE user_id = ? AND paragraph_hash = ?""",
-        (user_id, paragraph_hash_str),
-    ).fetchall()
+             WHERE user_id = :user_id AND paragraph_hash = :paragraph_hash""",
+        {"user_id": user_id, "paragraph_hash": paragraph_hash_str},
+    )
     agg = 0.0
-    for kind, value in rows:
+    for row in rows:
+        kind, value = row["signal_kind"], row["value"]
         weight = SIGNAL_WEIGHTS.get(kind, 0.0)
         if kind == "dwell_s":
             extra = max(0.0, value - 30.0)
@@ -102,18 +88,19 @@ def score(user_id: str, paragraph_hash_str: str) -> float:
 
 def hotspots(user_id: str, top_k: int = 5) -> list[dict]:
     """List the user's most-confusing paragraphs across the corpus."""
-    from .persistence import open_db
-    db = open_db()
-    _ensure_table(db)
-    rows = db.execute(
+    from atp import db
+    from .persistence import ensure_schema
+    ensure_schema()
+    rows = db.query(
         """SELECT paragraph_hash
              FROM confusion_signals
-             WHERE user_id = ?
+             WHERE user_id = :user_id
              GROUP BY paragraph_hash""",
-        (user_id,),
-    ).fetchall()
+        {"user_id": user_id},
+    )
     out = []
-    for (ph,) in rows:
+    for row in rows:
+        ph = row["paragraph_hash"]
         out.append({"paragraph_hash": ph, "score": score(user_id, ph)})
     out.sort(key=lambda d: -d["score"])
     return out[:top_k]

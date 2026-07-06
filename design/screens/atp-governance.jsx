@@ -392,7 +392,7 @@ function HitlTable({ rows }) {
       }}>
         <div className="t-h3">HITL audit log</div>
         <span className="t-mono" style={{ fontSize: 10.5, color: "var(--c-ink-dim)" }}>
-          append-only · data/sessions/atp_hitl.jsonl · newest first
+          append-only · atp_hitl table · newest first
         </span>
       </div>
       <div style={{ overflowX: "auto" }}>
