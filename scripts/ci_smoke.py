@@ -111,6 +111,25 @@ def wait_for(url: str, timeout_s: float = 60.0, label: str = "") -> None:
 
 # ── API smoke ────────────────────────────────────────────────────────────────
 
+def poll_job(api: str, job_id: str, auth: dict,
+             timeout_s: float = 180.0) -> dict:
+    """Poll /jobs/{id} until done/error; die on timeout. Returns job result."""
+    if not job_id:
+        die("poll_job called without a job id")
+    deadline = time.monotonic() + timeout_s
+    job: dict = {}
+    while time.monotonic() < deadline:
+        status, job = request("GET", f"{api}/jobs/{job_id}", headers=auth)
+        if status != 200:
+            die(f"GET /jobs/{job_id} → {status} {job}")
+        if job.get("status") in ("done", "error"):
+            break
+        time.sleep(0.5)
+    if job.get("status") != "done":
+        die(f"job {job_id} did not finish: {job}")
+    return job.get("result") or {}
+
+
 def api_smoke(api: str) -> None:
     print("API smoke:")
     status, body = request("POST", f"{api}/login",
@@ -185,6 +204,69 @@ def api_smoke(api: str) -> None:
     if status != 403:
         die(f"revoked key must 403 on the very next call, got {status} {body}")
     ok("revoked license → 403 on the next chat call (forged key → 401)")
+
+    # ── Phase 6: report-card PDF + knowledge ingestion → SME sign-off → exam ──
+    pdf_req = urllib.request.Request(f"{api}/atp/agents/atlas-ops/report.pdf",
+                                     headers=auth)
+    with urllib.request.urlopen(pdf_req, timeout=60) as resp:
+        pdf_bytes = resp.read()
+        if resp.status != 200 or not pdf_bytes.startswith(b"%PDF"):
+            die(f"report.pdf → {resp.status}, magic {pdf_bytes[:8]!r}")
+    ok(f"report-card PDF renders ({len(pdf_bytes)} bytes)")
+
+    # generate_l5_draft needs >= 2 docs (blueprint sections = doc titles)
+    boundary = "ciSmokeBoundary"
+    docs_md = {
+        # >= 2 headings per doc: the generator yields ~2 items per heading
+        # and requires >= 8 items overall.
+        "runbook.md": (
+            "# Incident Runbook\n\n"
+            "## Acknowledge\n\nAcknowledge the page within five minutes "
+            "and open an incident channel named for the alert.\n\n"
+            "## Escalate\n\nEscalate to the on-call lead when customer "
+            "impact lasts longer than fifteen minutes.\n"),
+        "rollback.md": (
+            "# Rollback Policy\n\n"
+            "## Snapshot first\n\nAlways snapshot the database before any "
+            "rollback and record the snapshot id in the channel.\n\n"
+            "## Notify\n\nNotify the on-call lead and the release owner "
+            "before starting the rollback.\n"),
+    }
+    doc_ids = []
+    for fname, doc_md in docs_md.items():
+        mp = (f"--{boundary}\r\nContent-Disposition: form-data; "
+              f"name=\"file\"; filename=\"{fname}\"\r\n"
+              f"Content-Type: text/markdown\r\n\r\n"
+              f"{doc_md}\r\n--{boundary}--\r\n").encode()
+        up_req = urllib.request.Request(f"{api}/knowledge/docs", data=mp,
+                                        method="POST", headers=auth)
+        up_req.add_header("Content-Type",
+                          f"multipart/form-data; boundary={boundary}")
+        with urllib.request.urlopen(up_req, timeout=30) as resp:
+            doc = json.loads(resp.read())
+        doc_ids.append(doc.get("id") or die(f"knowledge upload returned {doc}"))
+    status, draft = request("POST", f"{api}/knowledge/drafts",
+                            {"docIds": doc_ids, "title": "CI L5 draft"},
+                            headers=auth)
+    if status != 200 or len(draft.get("items", [])) < 8:
+        die(f"draft → {status}, items {len(draft.get('items', []))}")
+    status, appr = request("POST",
+                           f"{api}/knowledge/drafts/{draft['id']}/approve",
+                           {"note": "ci smoke sign-off"}, headers=auth)
+    if status != 200 or not appr.get("evidenceId"):
+        die(f"approve → {status} {appr}")
+    status, job = request("POST",
+                          f"{api}/knowledge/drafts/{draft['id']}/exam",
+                          {"dryRun": True}, headers=auth)
+    if status != 200:
+        die(f"draft exam → {status} {job}")
+    award = poll_job(api, job.get("jobId") or job.get("job_id"), auth)
+    if not award.get("verdict"):
+        die(f"draft-exam award missing verdict: {award}")
+    status, chain = request("GET", f"{api}/atp/chain/verify", headers=auth)
+    if status != 200 or not chain.get("ok"):
+        die(f"chain broken after knowledge flow: {chain}")
+    ok("knowledge e2e: upload → draft → SME sign-off → dry-run exam → chain ok")
 
 
 # ── Browser smoke ────────────────────────────────────────────────────────────
@@ -298,6 +380,10 @@ def main() -> int:
             # can exceed api/ops.py's default 120/60s. Explicitly off, per
             # its own env-tuning contract (BU_RATE_LIMIT=0 disables).
             "BU_RATE_LIMIT": "0",
+            # Phase 6 surfaces: T2 encryption + evidence signing need keys
+            # even in demo mode (knowledge routes 503 without them).
+            "DATA_ENCRYPTION_KEY": "ci-smoke-data-key-0123456789abcdef",
+            "EVIDENCE_SIGNING_KEY": "ci-smoke-evidence-key-0123456789ab",
         })
         try:
             procs.append(subprocess.Popen(

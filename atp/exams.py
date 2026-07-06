@@ -89,7 +89,39 @@ def _ensure_db() -> None:
 
 # ── Cert + item bank loading ─────────────────────────────────────────────────
 
-def _load_cert(cert_id: str) -> dict:
+#: Phase 6 extension point (docs/HARDENING.md — first-customer UX).
+#: Cert refs of the form f"{ORG_CERT_PREFIX}<draft_id>" resolve through
+#: atp/knowledge.py: SME-approved company-knowledge drafts whose item banks
+#: are T2 (encrypted at rest, docs/TENANCY.md) and are therefore materialized
+#: IN MEMORY — never written under atp/items/ or any shared directory.
+#: Plain cert ids keep the pre-Phase-6 seed + items-file behavior unchanged;
+#: callers that don't pass org_id (or deployments without atp/knowledge.py)
+#: are byte-for-byte the old path. Must equal knowledge.EXAM_CERT_PREFIX.
+ORG_CERT_PREFIX = "org-l5-draft:"
+
+
+def _org_bank(cert_id: str, org_id: str | None) -> dict | None:
+    """Resolve an org-scoped draft bank, or None for the classic path."""
+    if not org_id or not cert_id.startswith(ORG_CERT_PREFIX):
+        return None
+    try:
+        from atp import knowledge  # lazy — optional Phase 6 module
+    except ImportError:  # pragma: no cover — knowledge not deployed
+        return None
+    return knowledge.load_org_item_bank(org_id, cert_id)
+
+
+def _load_cert(cert_id: str, org_id: str | None = None) -> dict:
+    org_bank = _org_bank(cert_id, org_id)
+    if org_bank is not None:
+        return org_bank["cert"]
+    if cert_id.startswith(ORG_CERT_PREFIX):
+        # Same error whether the draft is unknown, unapproved, or belongs to
+        # another org — no cross-tenant existence oracle (TENANCY.md #6).
+        raise UnknownCertError(
+            f"unknown cert {cert_id!r} — no SME-approved company-knowledge "
+            f"draft with this ref in the caller's org (atp/knowledge.py)"
+        )
     for cert in store.get_data()["CERTS"]:
         if cert["id"] == cert_id:
             return cert
@@ -98,39 +130,52 @@ def _load_cert(cert_id: str) -> dict:
     )
 
 
-def _load_item_bank(cert: dict) -> list[dict]:
-    """Load + validate atp/items/<cert_id>.json against the cert blueprint."""
+def _load_item_bank(cert: dict, org_id: str | None = None) -> list[dict]:
+    """Load + validate the cert's item bank against its blueprint.
+
+    Classic path: atp/items/<cert_id>.json. Phase 6 org path (ORG_CERT_PREFIX
+    refs + org_id): the in-memory bank from atp/knowledge.py — same
+    validation, same errors.
+    """
     cert_id = cert["id"]
-    path = ITEMS_DIR / f"{cert_id}.json"
-    if not path.is_file():
-        raise MissingItemBankError(
-            f"no item bank at {path} — a cert cannot be examined before its "
-            f"blueprint has a bank (blueprints-before-commissioning, "
-            f"docs/ATP.md §7). See atp/items/README.md."
-        )
-    bank = json.loads(path.read_text(encoding="utf-8"))
-    items = bank.get("items") or []
-    if not items:
-        raise MissingItemBankError(f"item bank {path} has an empty 'items' list")
+    org_bank = _org_bank(cert_id, org_id)
+    if org_bank is not None:
+        source = f"org bank {cert_id}"
+        items = org_bank.get("items") or []
+        if not items:
+            raise MissingItemBankError(f"item bank {source} has an empty 'items' list")
+    else:
+        path = ITEMS_DIR / f"{cert_id}.json"
+        if not path.is_file():
+            raise MissingItemBankError(
+                f"no item bank at {path} — a cert cannot be examined before its "
+                f"blueprint has a bank (blueprints-before-commissioning, "
+                f"docs/ATP.md §7). See atp/items/README.md."
+            )
+        bank = json.loads(path.read_text(encoding="utf-8"))
+        items = bank.get("items") or []
+        if not items:
+            raise MissingItemBankError(f"item bank {path} has an empty 'items' list")
+        source = str(path)
 
     section_names = {s["name"] for s in cert["blueprint"]["sections"]}
     for item in items:
         missing = [k for k in _ITEM_KEYS if k not in item]
         if missing:
             raise ValueError(
-                f"item bank {path}: item {item.get('id', '?')!r} is missing "
+                f"item bank {source}: item {item.get('id', '?')!r} is missing "
                 f"key(s) {missing} (format: atp/items/README.md)"
             )
         if item["section"] not in section_names:
             raise ValueError(
-                f"item bank {path}: item {item['id']!r} names unknown section "
+                f"item bank {source}: item {item['id']!r} names unknown section "
                 f"{item['section']!r} — blueprint sections are "
                 f"{sorted(section_names)}"
             )
     uncovered = section_names - {i["section"] for i in items}
     if uncovered:
         raise ValueError(
-            f"item bank {path} has no items for blueprint section(s) "
+            f"item bank {source} has no items for blueprint section(s) "
             f"{sorted(uncovered)} — passCriteria.perSection would be "
             f"unverifiable"
         )
@@ -201,8 +246,10 @@ def run_exam(cert_id: str, candidate_spec: str | None = None,
     any model call; SigningKeyError surfaces from atp/signing.py if evidence
     cannot be signed.
     """
-    cert = _load_cert(cert_id)
-    items = _load_item_bank(cert)
+    # org_id also feeds the Phase 6 loader path (ORG_CERT_PREFIX refs only;
+    # seed cert ids are unaffected by the extra argument).
+    cert = _load_cert(cert_id, org_id)
+    items = _load_item_bank(cert, org_id)
 
     candidate = candidate_spec or "dryrun:candidate"
     judge = "dryrun:judge" if dry_run else os.environ.get(

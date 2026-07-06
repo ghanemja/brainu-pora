@@ -6,7 +6,7 @@
 #   boot-matrix — the P0 3-case auth boot matrix (fail-loud / demo / enabled)
 #   smoke       — scripts/ci_smoke.py: uvicorn + design/ + Playwright chromium
 #                 (login → 6 agent tabs → human trailhead → API e2e)
-#   pg          — postgres:16 service: migrations 001→006 as a non-superuser
+#   pg          — postgres:16 service: migrations 001→007 as a non-superuser
 #                 table-owner role, DAL roundtrip, RLS deny-by-default probe
 #                 via a SECOND non-superuser role
 #
@@ -38,7 +38,7 @@ env:
   # full demo set). Update the pip cache key implicitly by editing this line.
   API_DEPS: >-
     fastapi uvicorn pydantic sqlalchemy httpx PyJWT argon2-cffi
-    cryptography python-multipart
+    cryptography python-multipart reportlab pypdf stripe
 
 jobs:
   lint:
@@ -197,7 +197,7 @@ jobs:
 
           from atp import db, licensing, store
 
-          # 1. migrations 001→006 as the non-superuser table OWNER — the
+          # 1. migrations 001→007 as the non-superuser table OWNER — the
           #    exact role shape FORCE ROW LEVEL SECURITY targets on Render.
           applied = db.run_migrations()
           print("applied:", applied)

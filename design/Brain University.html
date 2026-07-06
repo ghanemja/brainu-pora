@@ -186,6 +186,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script type="text/babel" src="brain-graph.jsx?v=4"></script>
   <script type="text/babel" src="tweaks-panel.jsx"></script>
   <script type="text/babel" src="tutorial.jsx?v=3"></script>
+  <script type="text/babel" src="atp-tour.jsx?v=1"></script>
   <script type="text/babel" src="interactive-exercises.jsx"></script>
   <script type="text/babel" src="podcast-player.jsx"></script>
 
@@ -201,11 +202,11 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
 
   <!-- ATP agent-view screens -->
   <script type="text/babel" src="screens/atp-university.jsx?v=1"></script>
-  <script type="text/babel" src="screens/atp-agents.jsx?v=2"></script>
+  <script type="text/babel" src="screens/atp-agents.jsx?v=3"></script>
   <script type="text/babel" src="screens/atp-certs.jsx?v=2"></script>
   <script type="text/babel" src="screens/atp-marketplace.jsx?v=2"></script>
   <script type="text/babel" src="screens/atp-governance.jsx?v=3"></script>
-  <script type="text/babel" src="screens/atp-vault.jsx?v=1"></script>
+  <script type="text/babel" src="screens/atp-vault.jsx?v=2"></script>
 
   <!-- Main app shell -->
   <script type="text/babel">
@@ -263,6 +264,7 @@ function App() {
   const [openprobOpen, setOpenprobOpen] = useState(false);
   const [learner, setLearner] = useState({ name: "Learner", interest: "" });
   const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [atpTourOpen, setAtpTourOpen]   = useState(false);
 
   // Persist the Human/Agent view + expose it to CSS ([data-view] overrides).
   useEffect(() => {
@@ -274,6 +276,15 @@ function App() {
   useEffect(() => {
     if (view === "human" && window.BUTutorial?.shouldAutoOpenTutorial?.()) {
       setTutorialOpen(true);
+    }
+  }, [view]);
+
+  // Auto-open the agent-view tour on the first agent-view visit. Its own
+  // localStorage flag (atp.tour.seen.v1) — distinct from the human
+  // tutorial's — so each view gets its own first-run walkthrough.
+  useEffect(() => {
+    if (view === "agent" && window.ATPTour?.shouldAutoOpen?.()) {
+      setAtpTourOpen(true);
     }
   }, [view]);
 
@@ -470,8 +481,8 @@ function App() {
             </button>
           </div>
           <button
-            onClick={() => setTutorialOpen(true)}
-            title="How to use Brain University"
+            onClick={() => (view === "agent" ? setAtpTourOpen(true) : setTutorialOpen(true))}
+            title={view === "agent" ? "Tour the Agent University" : "How to use Brain University"}
             style={{
               width: 24, height: 24, borderRadius: "50%",
               background: "transparent",
@@ -598,6 +609,21 @@ function App() {
             setTutorialOpen(false);
             if (screenId) goto(screenId);
           }} />
+
+        {/* Agent-view onboarding tour (auto on first agent-view visit, ? */}
+        {/* reopens it). Referenced only when view === "agent" and the     */}
+        {/* global exists, so a missing atp-tour.jsx can never crash the   */}
+        {/* human view (same guard idiom as the atp-*.jsx screens).        */}
+        {view === "agent" && typeof ATPTour !== "undefined" && (
+          <ATPTour
+            open={atpTourOpen}
+            onClose={() => setAtpTourOpen(false)}
+            onPreview={(screenId) => { if (screenId) goto(screenId); }}
+            onJumpTo={(screenId) => {
+              setAtpTourOpen(false);
+              if (screenId) goto(screenId);
+            }} />
+        )}
       </main>
 
       {/* TWEAKS PANEL */}

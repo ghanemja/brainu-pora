@@ -109,6 +109,91 @@ function AgentsCopyLink({ hashPath, label = "⧉ copy link", title }) {
   );
 }
 
+// ── Report-card PDF download (docs/HARDENING.md Phase 6) ────────
+// Server-side reportlab export (GET /atp/agents/{id}/report.pdf).
+// Preferred path: BU_API.reportCardUrl(id) — api.js's method fetches with
+// the bearer, blobs the response and clicks a synthetic <a download>
+// itself (a bare <a href> could not attach the Authorization header).
+// If api.js predates that method, a local fetch→blob fallback mirrors it
+// byte-for-byte against the same endpoint.
+
+async function agentsDownloadReportCardFallback(agentId) {
+  const base = (window.BU_API_BASE || "").replace(/\/+$/, "");
+  if (!base) throw new Error("no backend configured");
+  const url = base + "/atp/agents/" + encodeURIComponent(agentId) + "/report.pdf";
+  const headers = {};
+  try {
+    const tok = sessionStorage.getItem("bu_auth_token");
+    if (tok) headers["Authorization"] = "Bearer " + tok;
+  } catch (_) {}
+  const r = await fetch(url, { headers });
+  if (!r.ok) {
+    let detail = "";
+    try { detail = ((await r.json()) || {}).detail || ""; } catch (_) {}
+    throw new Error(`report card → ${r.status}` + (detail ? ` — ${detail}` : ""));
+  }
+  const blob = await r.blob();
+  const href = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = href;
+  a.download = "agent-" + agentId + "-report-card.pdf";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => { try { URL.revokeObjectURL(href); } catch (_) {} }, 4000);
+}
+
+function DownloadReportCardButton({ agent }) {
+  const [state, setState] = useState("idle"); // idle | busy | done | failed
+  const [errMsg, setErrMsg] = useState(null);
+  const api = window.BU_API;
+  const online = Boolean(api && typeof api.live === "function" && api.live());
+  const disabled = !online || state === "busy";
+
+  const download = async () => {
+    if (disabled) return;
+    setState("busy"); setErrMsg(null);
+    try {
+      if (api && typeof api.reportCardUrl === "function") {
+        await api.reportCardUrl(agent.id);   // performs the download itself
+      } else {
+        await agentsDownloadReportCardFallback(agent.id);
+      }
+      setState("done");
+    } catch (e) {
+      setErrMsg(e && e.message);
+      setState("failed");
+    }
+    setTimeout(() => setState("idle"), 2400);
+  };
+
+  return (
+    <button
+      type="button"
+      className="btn ghost"
+      disabled={disabled}
+      onClick={download}
+      title={!online
+        ? "Backend offline — the PDF is rendered server-side (start uvicorn api.server:app --port 8090)"
+        : (state === "failed" && errMsg)
+          ? errMsg
+          : "Server-rendered PDF — the registrar record below, exportable"}
+      style={{
+        padding: "4px 10px", fontSize: 11.5, fontFamily: "var(--f-mono)",
+        whiteSpace: "nowrap",
+        opacity: !online ? 0.5 : 1,
+        cursor: disabled ? "not-allowed" : "pointer",
+        color: state === "done" ? "var(--c-cs, #2ec4b6)"
+             : state === "failed" ? "var(--c-here)" : undefined,
+      }}>
+      {state === "busy" ? "… rendering"
+        : state === "done" ? "✓ downloaded"
+        : state === "failed" ? "download failed"
+        : "⤓ Download report card (PDF)"}
+    </button>
+  );
+}
+
 // Gold provenance chip — commissioned agents wear their training origin openly.
 function AgentProvenanceChip({ provenance }) {
   if (!provenance || provenance.origin !== "commissioned") return null;
@@ -259,6 +344,9 @@ function AgentHeaderCard({ A, agent }) {
           ) : (
             <div className="t-cap">not licensed for external use</div>
           )}
+          <div style={{ marginTop: 10 }}>
+            <DownloadReportCardButton agent={agent} />
+          </div>
         </div>
       </div>
       {revoked && (

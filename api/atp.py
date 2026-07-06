@@ -9,6 +9,9 @@ Endpoints (all bearer-gated by the default auth middleware — api/auth.py):
     GET  /atp/data              — full ATP_DATA blob (T0 public seed)
     GET  /atp/agents            — agent roster
     GET  /atp/agents/{agent_id} — one agent profile (404 if unknown)
+    GET  /atp/agents/{agent_id}/report.pdf — official report-card PDF
+                                  (Phase 6; any authenticated role;
+                                  live awards org-scoped; 404 if unknown)
     GET  /atp/certs             — certification catalog
     GET  /atp/certs/{cert_id}   — one cert (404 if unknown)
     GET  /atp/standard          — the ATP standard (label grammar + principles)
@@ -51,7 +54,7 @@ from __future__ import annotations
 import json
 import threading
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from pydantic import BaseModel
 
 # require_role(*roles) → FastAPI dependency that 403s when the verified
@@ -90,6 +93,35 @@ def atp_agent(agent_id: str):
         if a.get("id") == agent_id:
             return a
     raise HTTPException(404, f"agent {agent_id} not found")
+
+
+@router.get("/agents/{agent_id}/report.pdf")
+def atp_agent_report_pdf(agent_id: str, request: Request):
+    """Official report-card PDF (Phase 6, docs/HARDENING.md).
+
+    Any authenticated role — the PDF is built from the T0 public seed plus
+    the CALLER ORG's live cert awards (org_id from verified request state
+    only, TENANCY.md layer 1; atp/reportcard.py reads them through
+    atp/tenant_db.py). Served as an attachment download; 404 for agents
+    not in the seed roster. Deliberately NOT under /videos or /media —
+    those prefixes are public-cached (TENANCY.md leak surface #4).
+    """
+    # Lazy import: reportlab stays an on-demand dependency — the server
+    # boots (and every other route works) even if it is not installed.
+    from atp import reportcard
+
+    try:
+        pdf = reportcard.build_report_card_pdf(agent_id, org_id=_org(request))
+    except reportcard.UnknownAgentError:
+        raise HTTPException(404, f"agent {agent_id} not found")
+    return Response(
+        content=pdf,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition":
+                f'attachment; filename="agent-{agent_id}-report-card.pdf"',
+        },
+    )
 
 
 @router.get("/certs")

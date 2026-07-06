@@ -175,6 +175,20 @@ if billing_router is not None:
     _auth.PUBLIC_PATHS.add("/billing/webhook")
     _auth.PUBLIC_PREFIXES = _auth.PUBLIC_PREFIXES + ("/experts/",)
 
+# Company-knowledge ingestion + L5 exam drafting (Phase 6 —
+# docs/HARDENING.md first-customer UX; see api/knowledge.py). Guarded
+# import, same idiom as identity/billing above. Every /knowledge route is
+# bearer-gated (no public-path additions — uploads are T2 crown jewels).
+try:
+    from api.knowledge import router as knowledge_router
+except ImportError:  # pragma: no cover — api/knowledge.py not deployed yet
+    knowledge_router = None
+    import sys as _sys
+    print("WARNING: api/knowledge.py not present — company-knowledge routes "
+          "not mounted.", file=_sys.stderr)
+if knowledge_router is not None:
+    app.include_router(knowledge_router)
+
 
 def _request_org(request: Request) -> str:
     """Tenant for this request — ONLY ever from verified auth state

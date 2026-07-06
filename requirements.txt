@@ -54,6 +54,16 @@ httpx              # OIDC discovery / token-endpoint calls
 # licenses; the lib is only imported for checkout/webhook/cancel paths.
 stripe
 
+# Report-card PDF export (atp/reportcard.py — Phase 6, docs/HARDENING.md):
+# GET /atp/agents/{id}/report.pdf. Imported lazily by the route, so the
+# server still boots without it.
+reportlab
+
+# Company-knowledge PDF ingestion (atp/knowledge.py — Phase 6,
+# docs/HARDENING.md). OPTIONAL at runtime: without pypdf, PDF uploads return
+# a clean 415 (the import is guarded) and md/txt ingestion works unchanged.
+pypdf
+
 # Runtime ops (api/ops.py — Phase 5, docs/HARDENING.md): rate limiting,
 # /metrics, JSON request logs. DELIBERATELY stdlib-only — the Prometheus
 # text exposition is hand-rolled (few counters/gauges + one histogram with a

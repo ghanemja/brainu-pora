@@ -280,6 +280,32 @@
       }
     },
 
+    // Report-card PDF download (docs/HARDENING.md Phase 6). A bare
+    // <a href> cannot carry the Authorization header, so: fetch with the
+    // bearer → blob → objectURL → synthetic <a download>.click(). Returns
+    // a promise resolving to the (already-clicked) object URL; the URL is
+    // revoked shortly after so callers should not hold on to it. Server-
+    // only (PDF is rendered from live org-scoped awards) — no offline
+    // fallback: failures reject so the button can show an error state.
+    async reportCardUrl(agentId) {
+      if (!live()) throw new Error("BU_API_BASE not set");
+      const path = "/atp/agents/" + encodeURIComponent(agentId) + "/report.pdf";
+      const r = await fetch(base() + path, { headers: authHeader() });
+      handle401(r);
+      handleForbidden(r);
+      if (!r.ok) throw new Error(`GET ${path} → ${r.status}`);
+      const blob = await r.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `agent-${agentId}-report-card.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => { try { URL.revokeObjectURL(url); } catch (_) {} }, 60000);
+      return url;
+    },
+
     // POST — no local fallback; signal offline so the UI degrades gracefully.
     // A 403 (role too low) is surfaced as {forbidden:true}, NOT offline.
     async atpHitl(payload) {
