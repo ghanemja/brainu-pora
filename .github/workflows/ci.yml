@@ -1,0 +1,249 @@
+# CI — docs/HARDENING.md Phase 5.
+#
+# Five lean jobs, all independent:
+#   lint        — ruff (E/F/W) over the hardened surface (see ruff.toml)
+#   integrity   — seed referential-integrity gate (stdlib-only, no pip)
+#   boot-matrix — the P0 3-case auth boot matrix (fail-loud / demo / enabled)
+#   smoke       — scripts/ci_smoke.py: uvicorn + design/ + Playwright chromium
+#                 (login → 6 agent tabs → human trailhead → API e2e)
+#   pg          — postgres:16 service: migrations 001→006 as a non-superuser
+#                 table-owner role, DAL roundtrip, RLS deny-by-default probe
+#                 via a SECOND non-superuser role
+#
+# The zero-build dev mode (in-browser Babel) is exactly what the smoke job
+# boots — CI is the regression test that it keeps working unchanged.
+# Dependencies are pinned to the import-time surface of api/ + atp/ (the
+# heavy demo extras in requirements.txt — graphiti, moviepy, matplotlib… —
+# are lazy-imported by endpoints CI never hits), keyed for pip caching on
+# this file. No job runs npm (nothing here builds the frontend), so there
+# is no npm cache to prime.
+
+name: ci
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PYTHONUNBUFFERED: "1"
+  # Import-time deps of api/server.py + atp/* (see requirements.txt for the
+  # full demo set). Update the pip cache key implicitly by editing this line.
+  API_DEPS: >-
+    fastapi uvicorn pydantic sqlalchemy httpx PyJWT argon2-cffi
+    cryptography python-multipart
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: .github/workflows/ci.yml
+      - run: pip install ruff
+      # scripts/ holds legacy demo tooling — only the CI scripts are linted
+      # (explicit paths bypass ruff.toml's scripts exclude).
+      - run: ruff check atp api scripts/check_integrity.py scripts/ci_smoke.py
+
+  integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # atp/seed.py is pure data (stdlib only) — no pip install needed.
+      - run: python scripts/check_integrity.py
+
+  boot-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: .github/workflows/ci.yml
+      - run: pip install $API_DEPS
+      - name: P0 boot matrix (3 cases)
+        run: |
+          set -uo pipefail
+
+          boot_and_check() {  # $1=port  $2=password  (env is pre-set by caller)
+            local port="$1"
+            for i in $(seq 1 120); do
+              curl -sf "http://127.0.0.1:$port/health" >/dev/null 2>&1 && break
+              sleep 0.5
+            done
+            curl -sf "http://127.0.0.1:$port/health" >/dev/null || return 1
+            TOKEN=$(curl -sf -X POST "http://127.0.0.1:$port/login" \
+              -H 'Content-Type: application/json' \
+              -d "{\"username\":\"admin\",\"password\":\"$2\"}" \
+              | python -c 'import sys,json;print(json.load(sys.stdin)["token"])') || return 1
+            [ -n "$TOKEN" ] || return 1
+            curl -sf -H "Authorization: Bearer $TOKEN" \
+              "http://127.0.0.1:$port/atp/standard" >/dev/null || return 1
+          }
+
+          # case 1 — auth enabled, secrets missing: must refuse to start
+          if env -u BU_AUTH_DISABLED -u BU_AUTH_PASSWORD -u BU_AUTH_SECRET \
+              python -c "import api.auth" 2> "$RUNNER_TEMP/case1.log"; then
+            echo "case1 FAIL: api.auth imported without secrets"; exit 1
+          fi
+          grep -q "Refusing to start" "$RUNNER_TEMP/case1.log" \
+            || { echo "case1 FAIL: wrong error"; cat "$RUNNER_TEMP/case1.log"; exit 1; }
+          echo "case1 OK: fails loudly without secrets"
+
+          # case 2 — BU_AUTH_DISABLED=1 demo boot: /health + dev login + bearer
+          BU_AUTH_DISABLED=1 DATABASE_URL="sqlite:///$RUNNER_TEMP/boot2.db" \
+            python -m uvicorn api.server:app --host 127.0.0.1 --port 8811 \
+            > "$RUNNER_TEMP/uv2.log" 2>&1 &
+          PID=$!
+          boot_and_check 8811 password \
+            || { echo "case2 FAIL"; tail -20 "$RUNNER_TEMP/uv2.log"; exit 1; }
+          kill $PID; wait $PID 2>/dev/null || true
+          echo "case2 OK: demo mode boots, dev login works"
+
+          # case 3 — auth enabled with real secrets: 401 unauth, /login works
+          SECRET=$(python -c 'import secrets;print(secrets.token_urlsafe(48))')
+          env -u BU_AUTH_DISABLED \
+            BU_AUTH_PASSWORD=ci-boot-password BU_AUTH_SECRET="$SECRET" \
+            DATABASE_URL="sqlite:///$RUNNER_TEMP/boot3.db" \
+            python -m uvicorn api.server:app --host 127.0.0.1 --port 8812 \
+            > "$RUNNER_TEMP/uv3.log" 2>&1 &
+          PID=$!
+          for i in $(seq 1 120); do
+            curl -sf "http://127.0.0.1:8812/health" >/dev/null 2>&1 && break
+            sleep 0.5
+          done
+          CODE=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8812/atp/standard)
+          [ "$CODE" = "401" ] \
+            || { echo "case3 FAIL: unauth -> $CODE (want 401)"; tail -20 "$RUNNER_TEMP/uv3.log"; exit 1; }
+          boot_and_check 8812 ci-boot-password \
+            || { echo "case3 FAIL: login/bearer"; tail -20 "$RUNNER_TEMP/uv3.log"; exit 1; }
+          kill $PID; wait $PID 2>/dev/null || true
+          echo "case3 OK: enabled auth gates unauth + logs in"
+
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: .github/workflows/ci.yml
+      - run: pip install $API_DEPS playwright
+      - name: Cache Playwright chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('.github/workflows/ci.yml') }}
+      - run: python -m playwright install --with-deps chromium
+      - run: python scripts/ci_smoke.py
+
+  pg:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: .github/workflows/ci.yml
+      - run: pip install sqlalchemy psycopg2-binary
+      - name: Create non-superuser roles (owner + probe)
+        env:
+          PGPASSWORD: postgres
+        run: |
+          psql -h 127.0.0.1 -U postgres -v ON_ERROR_STOP=1 \
+            -c "CREATE ROLE bu_app LOGIN PASSWORD 'bu_app' NOSUPERUSER NOCREATEDB NOCREATEROLE;" \
+            -c "CREATE ROLE bu_probe LOGIN PASSWORD 'bu_probe' NOSUPERUSER NOCREATEDB NOCREATEROLE;" \
+            -c "CREATE DATABASE bu OWNER bu_app;"
+      - name: Migrations + DAL roundtrip + RLS deny-by-default probe
+        env:
+          BU_AUTH_DISABLED: "1"   # ephemeral license-signing key (dev path)
+          DATABASE_URL: postgresql+psycopg2://bu_app:bu_app@127.0.0.1:5432/bu
+          BU_PROBE_URL: postgresql+psycopg2://bu_probe:bu_probe@127.0.0.1:5432/bu
+        run: |
+          python - <<'EOF'
+          import os
+
+          from sqlalchemy import create_engine, text
+
+          from atp import db, licensing, store
+
+          # 1. migrations 001→006 as the non-superuser table OWNER — the
+          #    exact role shape FORCE ROW LEVEL SECURITY targets on Render.
+          applied = db.run_migrations()
+          print("applied:", applied)
+          assert applied, "expected migrations to apply on a fresh database"
+          rerun = db.run_migrations()
+          assert rerun == [], f"rerun must be a no-op, got {rerun}"
+          print("migrations idempotent: OK")
+
+          ORG = "org-ci"
+
+          # 2. atp store roundtrip through the org-scoped DAL
+          event = store.append_hitl(
+              {"agentId": "gemma-math", "layer": 4, "signal": 1,
+               "reason": "pg CI roundtrip", "rater": "ci"},
+              org_id=ORG)
+          assert event.get("weightedDelta"), event
+          rows = store.read_hitl(limit=5, org_id=ORG)
+          assert rows and rows[0]["reason"] == "pg CI roundtrip", rows[:1]
+          print("store roundtrip: OK (weightedDelta=%s)" % event["weightedDelta"])
+
+          # license lifecycle on PG (issue → check ok → revoke → revoked)
+          issued = licensing.issue_license(ORG, "gemma-math", "production")
+          key = issued["licenseKey"]
+          assert licensing.check_license(key)["ok"]
+          licensing.revoke_license(ORG, issued["license"]["id"], "pg ci")
+          chk = licensing.check_license(key)
+          assert not chk["ok"] and chk["reason"] == "revoked", chk
+          print("license lifecycle on PG: OK")
+
+          # 3. RLS deny-by-default via a SECOND non-superuser role: with no
+          #    org GUC set, granted SELECTs must return ZERO rows.
+          with db.get_engine().begin() as conn:
+              conn.execute(text("GRANT SELECT ON atp_hitl, licenses TO bu_probe"))
+          probe = create_engine(os.environ["BU_PROBE_URL"])
+          with probe.connect() as conn:
+              for table in ("atp_hitl", "licenses"):
+                  n = conn.execute(text(f"SELECT COUNT(*) FROM {table}")).scalar()
+                  assert n == 0, f"RLS LEAK: {table} shows {n} rows with no org context"
+              # positive control — same role WITH the org GUC sees the rows,
+              # proving the zeros are RLS denials, not empty tables.
+              conn.execute(text("SELECT set_config('app.org_id', :o, true)"),
+                           {"o": ORG})
+              n_hitl = conn.execute(text("SELECT COUNT(*) FROM atp_hitl")).scalar()
+              n_lic = conn.execute(text("SELECT COUNT(*) FROM licenses")).scalar()
+              assert n_hitl >= 1 and n_lic >= 1, (n_hitl, n_lic)
+          probe.dispose()
+          print("RLS deny-by-default probe (second non-superuser role): OK")
+          print("pg job: ALL GREEN")
+          EOF

@@ -35,6 +35,10 @@ site/
 *.mp4
 !design/videos/*.mp4
 eval/results/
+# Deploy-time output of scripts/build_frontend.mjs — never commit: a stale
+# checked-in manifest would flip local zero-build dev mode into prod mode.
+design/.compiled/
+node_modules/
 
 # Backups
 *.bak

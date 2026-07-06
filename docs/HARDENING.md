@@ -201,3 +201,61 @@ boot unaffected, 006 applies at startup.
 Still open in Phase 4 (other owners): Stripe checkout/webhook routes, admin
 license API (`require_role`), `/experts/{agent_id}/chat` gate + metering
 middleware, `stripe` lib in requirements.
+
+## Phase 5 — delivered: backup/restore + staging blueprint + ops runbook ✅ (2026-07-06)
+`scripts/backup_db.sh` — DATABASE_URL-aware (mirrors `atp/db.py` parsing:
+`postgres://`/`postgresql://`/`+psycopg2` → pg_dump custom format
+`backups/atp-YYYYmmdd-HHMMSS.dump`; unset/`sqlite:///` → `sqlite3 .backup`
+snapshot, BRAIN_DB honoured) + CSV export of the four audit surfaces
+(`atp_evidence`, `atp_hitl`, `access_log`, `usage_events` —
+docs/TENANCY.md); empty tables still get a header row (sqlite via
+`pragma_table_info`, matching PG `\copy … HEADER`). sha256 manifest
+(`atp-<stamp>.sha256`) is written AND re-verified before exit 0. Optional
+GPG (leak-surface #7): `BACKUP_GPG_RECIPIENT` set → every artifact
+encrypted, plaintext removed, manifest hashes the CIPHERTEXT (integrity
+checks never need the private key); a failed encrypt scraps the whole run
+(`rm atp-<stamp>.*`) so plaintext never lingers. Retention: newest
+`BACKUP_KEEP` (default 14) stem-groups kept, prune only touches
+`atp-[0-9]{8}-[0-9]{6}.*` names. Cron-ready: no prompts, absolute paths from
+script location, exit codes 0 ok / 1 config / 2 dump / 3 manifest-verify;
+drops `backups/.gitignore` (`*`) so dumps can't be committed. **PG FORCE-RLS
+footgun handled fail-loudly**: CSV export runs `SET row_security = off`
+(pg_dump does the same by default), so a role without BYPASSRLS errors
+instead of silently exporting 0 rows — runbook documents a dedicated
+BYPASSRLS backup role.
+`scripts/restore_db.sh` — refuses without `--yes-i-know` (no prompts);
+verifies the artifact against its run manifest BEFORE touching anything
+(tamper → exit 2); decrypts `*.gpg`; kind/target cross-checked
+(`*.dump`↔postgres, `*.sqlite3`↔sqlite); PG: `pg_restore --clean
+--if-exists --no-owner --exit-on-error`; sqlite: current db kept at
+`<db>.pre-restore-<stamp>`, stale `-wal/-shm/-journal` removed. Prints the
+per-org chain check on success: `python3 -c "from atp import signing; …
+verify_chain('<org>')"` (the `python3 -m atp.exams … --verify-chain` CLI
+also verifies, but only after running a fresh exam — noted in the hint).
+`render.staging.yaml` — `brain-university-api-staging`, plan starter,
+`branch: staging` + autoDeploy, 1 GB disk, its own `DATABASE_URL` /
+`CORS_ORIGINS` / `BU_AUTH_*` / `EVIDENCE_SIGNING_KEY` /
+`LICENSE_SIGNING_KEY` (all sync:false — staging secrets deliberately
+distinct so staging tokens/signatures are worthless against prod); header
+documents both Netlify staging options (branch deploy w/ per-context
+`BU_API_BASE` env, or a separate site) and CORS wiring. DEPLOY.md gains §9
+(ops runbook): backup cron example + BYPASSRLS role DDL, quarterly restore
+drill (restore into staging → verify_chain → boot → measure RTO), promote
+flow (`staging` soak → `git merge --ff-only staging` → prod autodeploy;
+backup before promoting migrations), Prometheus scrape config for
+`/metrics`, rate-limit tuning guidance (429s in metrics/access_log,
+tight buckets on LLM endpoints via `usage_events` rates, X-Forwarded-For).
+Verified: shellcheck v0.11.0 clean on both scripts; sqlite e2e on a
+throwaway DB built from the real migrations + a dry-run exam (19 evidence
+rows): backup → 5 artifacts + verified manifest; prune with KEEP=3 removed
+exactly the 3 oldest fake stems and ignored a non-stem file; GPG run
+(isolated keyring) → all artifacts `.gpg`, zero plaintext left; restore
+drill: guard exit 1, tampered snapshot exit 2, encrypted restore then
+`verify_chain` → `{ok: true, length: 19}`; kind-mismatch / bad scheme / bad
+BACKUP_KEEP all exit 1. Both YAML blueprints parse. PG live path not
+runnable on this box (no pg_dump/Docker) — exercised to the fail-loud
+boundary (postgres URL → clear exit-1 missing-tool error); pg_dump/psql
+flags dialect-linted against the FORCE-RLS setup Phase 4 verified on
+Docker PG 16. Constraints intact: purely additive (2 scripts, 1 blueprint,
+doc appends) — zero-build DEV mode, netlify.toml, and `BU_AUTH_DISABLED=1`
+demo boot untouched.

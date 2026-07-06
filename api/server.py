@@ -110,11 +110,30 @@ async def access_log_middleware(request: Request, call_next):
     return response
 
 
+# ── Ops middleware (Phase 5 — api/ops.py: rate limit + metrics + logs) ────
+# Registered AFTER access_log_middleware and BEFORE auth_middleware, so the
+# runtime order (last-registered runs first) is:
+#     auth → ops → tenant-access-log → CORS → routes
+# i.e. the token-bucket key can include the verified token subject, 401s
+# never reach the limiter, and a 429 short-circuits BEFORE the tenant access
+# log (a flood can't amplify into per-request DB writes). Env knobs:
+# BU_RATE_LIMIT ('120/60'; '0' disables), BU_LOG_JSON=1, BU_METRICS_PUBLIC=0.
+from api import ops as _ops
+app.middleware("http")(_ops.ops_middleware)
+
 # Bearer-token auth on every route except an allowlist (/health, /login,
 # /docs, /videos, /media, OPTIONS preflight). Configure via env vars
 # BU_AUTH_USER / BU_AUTH_PASSWORD / BU_AUTH_SECRET. See api/auth.py.
 from api.auth import auth_middleware, mint_token, check_password
 app.middleware("http")(auth_middleware)
+
+# /metrics is on the auth allowlist by default: Prometheus scrapers don't
+# hold bearers and the exposition carries no tenant payload (aggregate
+# counts + route templates only — see api/ops.py §2 for the tradeoff).
+# Set BU_METRICS_PUBLIC=0 to keep it behind the bearer gate instead.
+if _ops.METRICS_PUBLIC:
+    import api.auth as _auth_mod
+    _auth_mod.PUBLIC_PATHS.add("/metrics")
 
 # ATP (Agent University) routes — /atp/* (see api/atp.py + docs/ATP.md §5).
 from api.atp import router as atp_router
@@ -407,6 +426,14 @@ def job_status(job_id: str, request: Request):
 @app.get("/health")
 def health():
     return {"ok": True}
+
+
+@app.get("/metrics")
+def metrics():
+    """Prometheus text exposition — hand-rolled, bounded label set (Phase 5,
+    api/ops.py). Public by default (BU_METRICS_PUBLIC=0 gates it behind
+    auth); exempt from rate limiting so scrapers never see a 429."""
+    return _ops.metrics_response()
 
 
 @app.get("/graph")

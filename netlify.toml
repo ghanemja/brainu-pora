@@ -10,10 +10,17 @@
 
 [build]
   publish = "design"
-  # Generates design/config.js from the BU_API_BASE env var so the deployed
-  # frontend points at your Render backend without hardcoding it in the HTML.
-  # Set BU_API_BASE in Netlify → Site settings → Environment variables.
-  command = "node scripts/gen-config.mjs"
+  # 1. npm ci             — install the pinned Babel toolchain (package.json).
+  # 2. gen-config.mjs     — writes design/config.js from the BU_API_BASE env
+  #    var so the deployed frontend points at your Render backend without
+  #    hardcoding it in the HTML. Set BU_API_BASE in Netlify → Site settings
+  #    → Environment variables.
+  # 3. build_frontend.mjs — precompiles design/**/*.jsx (and the inline app
+  #    shell) to design/.compiled/*.js + manifest.json; the HTML's inline
+  #    loader sees the manifest and switches to self-hosted production
+  #    bundles (design/vendor/). Without this artifact the page falls back
+  #    to the zero-build CDN+Babel dev path unchanged.
+  command = "npm ci && node scripts/gen-config.mjs && node scripts/build_frontend.mjs"
 
 [[redirects]]
   from = "/*"

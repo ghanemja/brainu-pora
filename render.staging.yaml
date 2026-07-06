@@ -1,0 +1,88 @@
+# Render Blueprint — STAGING twin of render.yaml (Phase 5 ops).
+#
+# Deploys the `staging` branch as its own always-on service so risky changes
+# soak before promotion to main/prod. Create it the same way as prod:
+# Render → New → Blueprint → pick this repo → select THIS file
+# (render.staging.yaml) when Render asks which blueprint to use.
+#
+# Staging gets its OWN everything — never share these with prod:
+#   * DATABASE_URL       → a separate Render Postgres (New → PostgreSQL,
+#                          name it e.g. brain-university-db-staging; paste
+#                          its Internal Database URL here). Restoring prod
+#                          backups into staging is the restore drill —
+#                          see DEPLOY.md §9.
+#   * BU_AUTH_SECRET     → distinct from prod, so staging session tokens are
+#                          worthless against the prod API (and vice versa).
+#   * EVIDENCE_SIGNING_KEY / LICENSE_SIGNING_KEY → distinct from prod; a
+#                          leaked staging key must not sign prod evidence.
+#
+# ── Staging FRONTEND on Netlify (two options) ────────────────────────────────
+#
+# Option A — branch deploy on the EXISTING Netlify site (recommended):
+#   1. Netlify → Site configuration → Build & deploy → Continuous deployment
+#      → Branches and deploy contexts → Branch deploys → add `staging`.
+#   2. Netlify → Environment variables → BU_API_BASE → "Add a scope /
+#      different value per deploy context" → Branch deploys:
+#      set it to THIS service's URL, e.g.
+#      https://brain-university-api-staging.onrender.com (no trailing slash).
+#      (netlify.toml's build command runs `scripts/gen-config.mjs`, which
+#      bakes it into design/config.js at deploy — no source edits, and the
+#      zero-build dev mode is untouched.)
+#   3. Push to `staging` → Netlify builds the branch at a stable URL:
+#      https://staging--<sitename>.netlify.app
+#   4. Put that exact URL into CORS_ORIGINS below (dashboard, sync: false).
+#
+# Option B — a fully separate Netlify site:
+#   Add new site → Import from Git → same repo, but set the production branch
+#   to `staging` (Site configuration → Build & deploy → Branches). Set its
+#   own BU_API_BASE env var to this service's URL. Use ITS URL as
+#   CORS_ORIGINS here.
+#
+# Promote flow (staging → prod): DEPLOY.md §9 "Staging promote flow".
+
+services:
+  - type: web
+    name: brain-university-api-staging
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter            # staging is cheap by design; heavy podcast/video
+                             # renders may OOM here — acceptable pre-prod, the
+                             # prod service stays on `standard` (render.yaml)
+    branch: staging          # autoDeploy tracks THIS branch, not main
+    healthCheckPath: /health
+    autoDeploy: true
+    disk:
+      name: brain-data-staging
+      mountPath: /data       # SQLite fallback + rendered media persist here
+      sizeGB: 1
+    envVars:
+      # ── LLM — same choice as prod (see render.yaml Path A/B notes) ───────
+      - key: ANTHROPIC_API_KEY
+        sync: false          # may reuse the prod key or a low-limit one
+      # ── App ──────────────────────────────────────────────────────────────
+      - key: BRAIN_DB
+        value: /data/brain_university.db
+      # ── Persistence — staging's OWN Postgres, never prod's ───────────────
+      - key: DATABASE_URL
+        sync: false          # Internal URL of brain-university-db-staging
+      - key: CORS_ORIGINS
+        sync: false          # e.g. https://staging--brain-u.netlify.app
+      # ── Auth — distinct credentials from prod ────────────────────────────
+      # BU_AUTH_DISABLED must remain unset here too: staging mirrors prod
+      # auth so promotion never changes the security posture.
+      - key: BU_AUTH_USER
+        sync: false
+      - key: BU_AUTH_PASSWORD
+        sync: false
+      - key: BU_AUTH_SECRET
+        sync: false          # distinct from prod — isolates session tokens
+      - key: BU_AUTH_TTL_HOURS
+        value: "24"
+      # ── Signing keys (Phases 3/4) — distinct from prod ───────────────────
+      - key: EVIDENCE_SIGNING_KEY
+        sync: false
+      - key: LICENSE_SIGNING_KEY
+        sync: false
+      # Any new secret documented in .env.example needs a sync:false entry
+      # here AND in render.yaml (e.g. DATA_ENCRYPTION_KEY, OIDC_*, STRIPE_*
+      # once those phases wire them into the deploy).

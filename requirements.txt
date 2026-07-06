@@ -54,5 +54,12 @@ httpx              # OIDC discovery / token-endpoint calls
 # licenses; the lib is only imported for checkout/webhook/cancel paths.
 stripe
 
+# Runtime ops (api/ops.py — Phase 5, docs/HARDENING.md): rate limiting,
+# /metrics, JSON request logs. DELIBERATELY stdlib-only — the Prometheus
+# text exposition is hand-rolled (few counters/gauges + one histogram with a
+# bounded label set), so there is NO prometheus-client dependency. If the
+# metric surface ever grows past that, add prometheus-client here and swap
+# the registry in api/ops.py.
+
 # Utility
 python-louvain   # only used if networkx 3.x community detection unavailable

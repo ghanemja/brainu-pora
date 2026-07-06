@@ -162,3 +162,143 @@ Gemma setup: [HF_ENDPOINT_SETUP.md](HF_ENDPOINT_SETUP.md).
 - [ ] `/health` returns `{ok:true}` on the Render URL
 - [ ] `POST /login` returns a token
 - [ ] First load of the Netlify URL shows login → tutorial after success
+
+---
+
+## 9 · Ops runbook (Phase 5)
+
+### 9.1 Backups
+
+`scripts/backup_db.sh` is DATABASE_URL-aware and cron-ready (no prompts,
+meaningful exit codes — see the script header):
+
+- **Postgres** → `pg_dump --format=custom` to `backups/atp-YYYYmmdd-HHMMSS.dump`
+- **SQLite** (DATABASE_URL unset / `sqlite:///…`) → `sqlite3 .backup` snapshot
+  to `backups/atp-YYYYmmdd-HHMMSS.sqlite3`
+- **Every run** also exports the audit surfaces as CSV
+  (`atp_evidence`, `atp_hitl`, `access_log`, `usage_events` — docs/TENANCY.md)
+  and writes + verifies a `atp-<stamp>.sha256` manifest.
+- **Encryption** (leak-surface #7, docs/TENANCY.md): set
+  `BACKUP_GPG_RECIPIENT=<key id/email>` and every artifact is GPG-encrypted,
+  plaintext removed. The manifest hashes the ciphertext, so integrity checks
+  never need the private key. Keep the private key OFF the backup host.
+- **Retention**: newest `BACKUP_KEEP` runs kept (default 14), older
+  `atp-<stamp>.*` files pruned after each successful run.
+- The script drops `backups/.gitignore` (`*`) so dumps can never be committed.
+
+**Postgres + RLS**: the ATP tables are `FORCE ROW LEVEL SECURITY`. The script
+sets `row_security = off` (and pg_dump does the same by default), so a role
+without `BYPASSRLS` fails **loudly** instead of silently exporting 0 rows.
+Create a dedicated backup role:
+
+```sql
+CREATE ROLE atp_backup LOGIN PASSWORD '…' BYPASSRLS;
+GRANT CONNECT ON DATABASE brain_university TO atp_backup;
+GRANT USAGE ON SCHEMA public TO atp_backup;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO atp_backup;
+```
+
+**Cron example** (any box that can reach the DB — for Render Postgres use the
+*External* connection string, or a Render Cron Job service running the same
+command from the repo image):
+
+```cron
+# Nightly 03:17 UTC, encrypted, keep 30 days
+17 3 * * *  cd /srv/brain-university && \
+  DATABASE_URL='postgresql://atp_backup:…@…/brain_university' \
+  BACKUP_GPG_RECIPIENT=ops@example.com BACKUP_KEEP=30 \
+  scripts/backup_db.sh >> /var/log/atp-backup.log 2>&1
+```
+
+Exit codes: `0` ok · `1` config/tool error · `2` dump/export failed ·
+`3` manifest verification failed (treat the run's artifacts as suspect).
+Alert on any non-zero exit.
+
+### 9.2 Restore drill (run quarterly — a backup is a rumor until restored)
+
+1. Pick a recent artifact: `ls backups/ | tail`.
+2. Restore **into staging**, never prod first:
+   ```bash
+   DATABASE_URL='postgresql://…staging…' \
+     scripts/restore_db.sh --yes-i-know backups/atp-20260706-031700.dump
+   # sqlite flavor:
+   scripts/restore_db.sh --yes-i-know backups/atp-20260706-031700.sqlite3.gpg
+   ```
+   The script refuses to run without `--yes-i-know`, verifies the artifact
+   against its `atp-<stamp>.sha256` manifest first, decrypts `.gpg`
+   artifacts (private key required), and for SQLite keeps the current db at
+   `<db>.pre-restore-<stamp>`.
+3. Verify the tamper-evident evidence chain per org (needs the prod
+   `EVIDENCE_SIGNING_KEY` in env):
+   ```bash
+   python3 -c "from atp import signing; import json; \
+     print(json.dumps(signing.verify_chain('org-demo')))"
+   ```
+   Expect `{"ok": true, …}` for every org id in the `orgs` table. A fresh
+   `python3 -m atp.exams <cert> --dry-run --verify-chain --org <org>` also
+   re-verifies after appending one exam's evidence.
+4. Boot the API against the restored DB, log in, open an agent profile with
+   evidence. Note the wall-clock time — that is your real RTO.
+
+### 9.3 Staging promote flow
+
+`render.staging.yaml` deploys the `staging` branch as
+`brain-university-api-staging` (starter plan, own Postgres/secrets); the
+Netlify staging frontend is a branch deploy of the same site
+(setup notes in `render.staging.yaml`'s header).
+
+1. Merge feature work into `staging` → Render + Netlify auto-deploy.
+2. Smoke on staging: `/health`; login; the 6 agent screens render;
+   `python3 -m atp.exams atp-l4-math --dry-run --verify-chain` against the
+   staging DB; a license issue → check → revoke round-trip.
+3. Promote: `git checkout main && git merge --ff-only staging && git push`.
+   `--ff-only` guarantees prod ships the exact commit staging soaked.
+4. Prod auto-deploys (render.yaml `autoDeploy: true`). Re-run the smoke
+   against prod. Roll back = Render dashboard → Rollback to the previous
+   deploy (code) + restore latest backup (data, only if a migration went bad).
+
+Migrations run at startup (idempotent, transactional on Postgres), so a
+promote that includes a new `migrations/NNN_*.sql` applies it on first boot —
+take a backup **before** promoting a migration.
+
+### 9.4 Metrics scrape
+
+The API exposes Prometheus-format metrics at `/metrics` (Phase 5 contract).
+Scrape it directly:
+
+```yaml
+# prometheus.yml
+scrape_configs:
+  - job_name: brain-university-api
+    metrics_path: /metrics
+    scheme: https
+    static_configs:
+      - targets: ["brain-university-api-XXX.onrender.com:443"]
+    # If /metrics lands behind the bearer gate, mint a token via POST /login
+    # and set:  authorization: { type: Bearer, credentials: "<token>" }
+  - job_name: brain-university-api-staging
+    metrics_path: /metrics
+    scheme: https
+    static_configs:
+      - targets: ["brain-university-api-staging.onrender.com:443"]
+```
+
+Useful first alerts: non-2xx rate, request latency p95, 429 (rate-limit) rate,
+job queue depth, and absence of the nightly backup-success log line.
+
+### 9.5 Rate-limit tuning
+
+In-app limiting is a token bucket keyed by **IP + auth token** (Phase 5
+contract), tuned via env — knob names are documented in `.env.example` in
+your checkout once the limiter lands (bucket size / refill per second).
+Tuning guidance:
+
+- Start permissive (e.g. burst 60, ~1 req/s refill) and tighten from data:
+  watch the 429 count in `/metrics` and `access_log`.
+- LLM-backed endpoints (`/experts/{agent_id}/chat`, exam runs) deserve much
+  tighter buckets than static reads — they cost real money per call; the
+  `usage_events` metering rows tell you actual per-license call rates.
+- Legit bursts: the frontend fires several parallel requests on screen load;
+  keep burst ≥ 20 or logins will 429 on slow connections.
+- Remember Netlify/Render sit behind proxies — the limiter must read the
+  client IP from `X-Forwarded-For`'s first hop, not the socket peer.

@@ -101,18 +101,73 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   </script>
   <div id="root"></div>
 
-  <!-- React + Babel pinned -->
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-
-  <!-- 3D force graph (loads three.js peer).                                -->
   <!-- Shim window.process for libraries that check process.env.NODE_ENV.   -->
   <!-- 3d-force-graph 1.73.4 references it internally; without the shim it  -->
   <!-- throws 'process is not defined' and the WebGL canvas stays blank.    -->
   <script>window.process = window.process || { env: { NODE_ENV: "production" } };</script>
-  <script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
-  <script src="https://unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
+
+  <!-- Prod/dev script-loading switch (docs/HARDENING.md Phase 5).           -->
+  <!-- If .compiled/manifest.json exists (deploy artifact written by         -->
+  <!-- scripts/build_frontend.mjs at Netlify build time), load self-hosted   -->
+  <!-- production React + vendored three/3d-force-graph and, once the DOM is -->
+  <!-- parsed, inject the precompiled .compiled/*.js in the exact order of   -->
+  <!-- the type="text/babel" tags below (which stay inert without Babel).    -->
+  <!-- Otherwise: EXACTLY the zero-build dev path — pinned CDN dev React +   -->
+  <!-- in-browser Babel compiling the raw .jsx tags. Login gate + config.js  -->
+  <!-- already ran above; data.js/api.js keep loading between frameworks and -->
+  <!-- app code in both modes.                                               -->
+  <script>
+  (function () {
+    var manifest = null;
+    try {
+      var xhr = new XMLHttpRequest();
+      // Synchronous on purpose: the prod/dev decision must be made before the
+      // parser reaches the script tags below. ?t= defeats stale caches; a
+      // SPA-rewritten HTML response (deploy without build) fails JSON.parse
+      // and falls through to dev mode.
+      xhr.open("GET", ".compiled/manifest.json?t=" + Date.now(), false);
+      xhr.send(null);
+      if (xhr.status === 200) {
+        var m = JSON.parse(xhr.responseText);
+        if (m && typeof m === "object") manifest = m;
+      }
+    } catch (_) { manifest = null; }
+    window.__BU_COMPILED = manifest;
+    function tag(src, attrs) {
+      document.write('<script src="' + src + '"' + (attrs || "") + '><\/script>');
+    }
+    if (manifest) {
+      // PROD — self-hosted, no CDN, no Babel (design/vendor/, pinned+hashed).
+      tag("vendor/react.production.min.js");
+      tag("vendor/react-dom.production.min.js");
+      tag("vendor/three.min.js");
+      tag("vendor/3d-force-graph.min.js");
+      document.addEventListener("DOMContentLoaded", function () {
+        var babels = document.querySelectorAll('script[type="text/babel"]');
+        var inlineIdx = 0;
+        for (var i = 0; i < babels.length; i++) {
+          var src = babels[i].getAttribute("src");
+          var key = src ? src.split("?")[0].replace(/\.jsx$/, ".js")
+                        : "_inline_" + (inlineIdx++) + ".js";
+          var s = document.createElement("script");
+          s.async = false; // execute in insertion order, same as the tags
+          s.src = ".compiled/" + key + (manifest[key] ? "?v=" + manifest[key] : "");
+          document.body.appendChild(s);
+        }
+      });
+    } else {
+      // DEV — React + Babel pinned (unchanged zero-build path).
+      tag("https://unpkg.com/react@18.3.1/umd/react.development.js",
+          ' integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"');
+      tag("https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js",
+          ' integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"');
+      tag("https://unpkg.com/@babel/standalone@7.29.0/babel.min.js",
+          ' integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"');
+      tag("https://unpkg.com/three@0.150.0/build/three.min.js");
+      tag("https://unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js");
+    }
+  })();
+  </script>
 
   <!-- Data layer (no JSX, plain JS) -->
   <script src="data.js"></script>

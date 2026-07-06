@@ -1,0 +1,43 @@
+# Ruff config — docs/HARDENING.md Phase 5 CI lint.
+#
+# Deliberately LAX to start: only the hardened surface is linted
+# (atp/, api/, and the new CI scripts — see .github/workflows/ci.yml for the
+# exact invocation), and only for real defects (pyflakes F, pycodestyle E/W).
+# Legacy app dirs are excluded below so a bare `ruff check .` stays quiet
+# until they are brought under the same bar; tighten scope + rules over time.
+
+line-length = 100
+target-version = "py311"
+
+# Legacy / non-lint surfaces (initial carve-out — shrink, don't grow).
+# NOTE: `scripts` is excluded for the LEGACY build/demo scripts only; the CI
+# workflow lints the new CI scripts by naming them explicitly
+# (explicitly-passed paths bypass excludes):
+#   ruff check atp api scripts/check_integrity.py scripts/ci_smoke.py
+extend-exclude = [
+    "agents",
+    "graph",
+    "rag",
+    "eval",
+    "lib",
+    "data",
+    "design",
+    "docker",
+    "scripts",
+    "wiki",
+]
+
+[lint]
+select = ["E", "F", "W"]
+ignore = [
+    "E501",  # long lines — docstrings/SQL in atp/ run past 100; advisory for now
+    "E402",  # imports-not-at-top — api/server.py wires middleware between imports by design
+    "E741",  # ambiguous single-letter names — math-heavy seed/exam code
+]
+
+[lint.per-file-ignores]
+# try/except-ImportError availability probe + endpoint-local imports.
+"api/server.py" = ["F401"]
+# Authoring symmetry: every ev(...) evidence row is bound to a name even when
+# only its id side-effect is used — keeps the seed table greppable.
+"atp/seed.py" = ["F841"]
