@@ -33,15 +33,16 @@ Render is the paid alternative for always-on traffic.
    (`ghanemja/brain-university`). Render reads `render.yaml`.
 
 2. Set these env vars in the Blueprint screen (`sync: false` means you set them
-   here, not in source). Suggested fresh secrets below — replace if you want.
+   here, not in source). Generate fresh secrets yourself (see PORTFOLIO_ENV.md
+   §1) — values are never committed to this repo.
 
    | Env var               | Value                                                 |
    |-----------------------|-------------------------------------------------------|
    | `ANTHROPIC_API_KEY`   | (your Anthropic key)                                  |
    | `CORS_ORIGINS`        | (leave blank for now — fill after step 2)             |
-   | `BU_AUTH_USER`        | `admin`                                               |
-   | `BU_AUTH_PASSWORD`    | `MJiqvzRqd9SVfw2kmI65og`                              |
-   | `BU_AUTH_SECRET`      | `-qLRPjwndg7PvJFWW9a8lRDYXVkEGQkG6eqF1hyKCFyOesGCycU3s3k3jGrP24B3` |
+   | `BU_AUTH_USER`        | `<REDACTED — set via env, rotation handled out-of-band>` |
+   | `BU_AUTH_PASSWORD`    | `<REDACTED — set via env, rotation handled out-of-band>` |
+   | `BU_AUTH_SECRET`      | `<REDACTED — set via env, rotation handled out-of-band>` |
    | `BU_AUTH_TTL_HOURS`   | `24` (optional)                                       |
 
    > **Do not** set `BU_AUTH_DISABLED`. That's a local-only escape hatch.
@@ -56,10 +57,11 @@ Render is the paid alternative for always-on traffic.
    curl $API/health
    # → {"ok": true}
 
+   # Uses the BU_AUTH_USER / BU_AUTH_PASSWORD values you set in step 2
    curl -X POST $API/login \
      -H 'Content-Type: application/json' \
-     -d '{"username":"admin","password":"MJiqvzRqd9SVfw2kmI65og"}'
-   # → {"token":"...","username":"admin"}
+     -d "{\"username\":\"$BU_AUTH_USER\",\"password\":\"$BU_AUTH_PASSWORD\"}"
+   # → {"token":"...","username":"..."}
    ```
 
 ---
@@ -90,8 +92,8 @@ Render is the paid alternative for always-on traffic.
 ## 3 · Hand to leadership
 
 > **URL**: https://brain-u.netlify.app
-> **Username**: admin
-> **Password**: MJiqvzRqd9SVfw2kmI65og
+> **Username**: <REDACTED — set via env, rotation handled out-of-band>
+> **Password**: <REDACTED — set via env, rotation handled out-of-band>
 
 Tutorial auto-opens on first visit. `?` button in topbar reopens it. Sessions
 last 24 h (controlled by `BU_AUTH_TTL_HOURS`).

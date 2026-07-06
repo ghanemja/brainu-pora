@@ -1,9 +1,13 @@
 #!/bin/bash
 # Brain University — leadership demo launcher.
 #
-# Disables auth so leadership can poke around w/o a login screen, starts the
-# FastAPI backend on :8090 + a static server on :8091 for the design/ folder,
-# and opens the app in the default browser.
+# Disables auth (BU_AUTH_DISABLED=1) so leadership can poke around, starts
+# the FastAPI backend on :8090 + a static server on :8091 for the design/
+# folder, and opens the app in the default browser.
+#
+# The login gate still appears once per browser session; it accepts the
+# dev-only default credentials  admin / password  (see api/auth.py — these
+# defaults exist ONLY on the BU_AUTH_DISABLED path, never in production).
 #
 # Stop with Ctrl-C; both processes get killed via the EXIT trap.
 
@@ -50,6 +54,7 @@ echo
 echo "Brain University running. Ctrl-C to stop."
 echo "  backend : http://localhost:${PORT_API}/docs"
 echo "  app     : ${URL}"
+echo "  login   : admin / password   (demo-only defaults; auth is bypassed)"
 echo
 echo "To re-enable auth for a public deploy, unset BU_AUTH_DISABLED and set:"
 echo "  BU_AUTH_USER, BU_AUTH_PASSWORD, BU_AUTH_SECRET, CORS_ORIGINS"

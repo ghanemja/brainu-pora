@@ -2,7 +2,12 @@
 __pycache__/
 *.pyc
 .venv/
+
+# Env files — never commit secrets; .env.example is the tracked template
 .env
+.env.*
+*.env
+!.env.example
 
 # Streamlit
 .streamlit/secrets.toml

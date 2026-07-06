@@ -53,9 +53,9 @@ Space page → **Settings → Variables and secrets** → **New secret**. Add:
 |--------------------|------------------------------------------------------|
 | `ANTHROPIC_API_KEY`| your Anthropic key (Path A, ship today)              |
 | `CORS_ORIGINS`     | `https://<your-site>.netlify.app` (fill after step 3) |
-| `BU_AUTH_USER`     | `admin`                                              |
-| `BU_AUTH_PASSWORD` | `MJiqvzRqd9SVfw2kmI65og` (or your own)               |
-| `BU_AUTH_SECRET`   | `-qLRPjwndg7PvJFWW9a8lRDYXVkEGQkG6eqF1hyKCFyOesGCycU3s3k3jGrP24B3` |
+| `BU_AUTH_USER`     | `<REDACTED — set via env, rotation handled out-of-band>` |
+| `BU_AUTH_PASSWORD` | `<REDACTED — set via env, rotation handled out-of-band>` |
+| `BU_AUTH_SECRET`   | `<REDACTED — set via env, rotation handled out-of-band>` |
 | `BU_AUTH_TTL_HOURS`| `24`                                                 |
 
 The Space restarts automatically on secret change.
@@ -115,8 +115,8 @@ the demo will be instant.
 ## 6 · Hand to leadership
 
 > **URL**: https://brain-u.netlify.app
-> **Username**: admin
-> **Password**: MJiqvzRqd9SVfw2kmI65og
+> **Username**: <REDACTED — set via env, rotation handled out-of-band>
+> **Password**: <REDACTED — set via env, rotation handled out-of-band>
 
 Tutorial auto-opens on first visit. `?` reopens.
 

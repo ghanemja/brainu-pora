@@ -8,11 +8,14 @@ Stateless, no DB. Verification recomputes the HMAC and checks expiry.
 
 Env vars (read at process start):
     BU_AUTH_USER       — single allowed username (default "admin")
-    BU_AUTH_PASSWORD   — required; refusing to start without it in production
-    BU_AUTH_SECRET     — HMAC key; auto-generated random fallback if unset
-                         (tokens invalidate on restart, fine for single-instance)
+    BU_AUTH_PASSWORD   — REQUIRED; process refuses to start without it
+                         (unless BU_AUTH_DISABLED=1)
+    BU_AUTH_SECRET     — HMAC key; REQUIRED; process refuses to start without
+                         it (unless BU_AUTH_DISABLED=1, which uses an ephemeral
+                         random key — tokens invalidate on restart)
     BU_AUTH_TTL_HOURS  — token lifetime, default 24
-    BU_AUTH_DISABLED   — "1" to bypass auth entirely (dev only)
+    BU_AUTH_DISABLED   — "1" to bypass auth entirely (dev only; used by
+                         scripts/demo_start.sh)
 
 Routes protected by middleware are everything except an allowlist:
     /health, /login, /docs, /openapi.json, /redoc, /videos/{...}, /media/{...},
@@ -26,8 +29,8 @@ import hashlib
 import hmac
 import os
 import secrets
+import sys
 import time
-import warnings
 
 from fastapi import HTTPException, Request
 
@@ -40,24 +43,37 @@ AUTH_SECRET   = os.environ.get("BU_AUTH_SECRET", "").encode("utf-8")
 AUTH_TTL_S    = int(os.environ.get("BU_AUTH_TTL_HOURS", "24")) * 3600
 AUTH_DISABLED = os.environ.get("BU_AUTH_DISABLED", "") == "1"
 
-if not AUTH_SECRET:
-    AUTH_SECRET = secrets.token_bytes(32)
-    warnings.warn(
-        "BU_AUTH_SECRET not set; using ephemeral random key. Tokens invalidate "
-        "on restart. Set BU_AUTH_SECRET to a 32+ byte random string in prod.",
-        RuntimeWarning,
+if AUTH_DISABLED:
+    # Explicit dev/demo opt-in (scripts/demo_start.sh, .claude/launch.json).
+    # Keep usable defaults so the login gate (which always POSTs /login)
+    # works in demo mode without any env setup.
+    print(
+        "=" * 72 + "\n"
+        "WARNING: BU_AUTH_DISABLED=1 — AUTHENTICATION IS BYPASSED (dev/demo\n"
+        "only). The login gate accepts the dev default credentials, and the\n"
+        "HMAC key is ephemeral (all tokens invalidate on restart). NEVER set\n"
+        "BU_AUTH_DISABLED in production. Unset it and provide\n"
+        "BU_AUTH_PASSWORD + BU_AUTH_SECRET to re-enable auth.\n"
+        + "=" * 72,
+        file=sys.stderr,
     )
-
-if not AUTH_PASSWORD:
-    # Soft-fail: keep dev usable but loudly warn. Production deploy scripts
-    # MUST set BU_AUTH_PASSWORD. Applies even when AUTH_DISABLED so the
-    # login gate (which always POSTs /login) works in demo mode.
-    AUTH_PASSWORD = "password"
-    warnings.warn(
-        "BU_AUTH_PASSWORD not set; defaulting to 'admin/password'. "
-        "Set BU_AUTH_PASSWORD before exposing this server publicly.",
-        RuntimeWarning,
-    )
+    if not AUTH_SECRET:
+        AUTH_SECRET = secrets.token_bytes(32)  # ephemeral; fine for dev
+    if not AUTH_PASSWORD:
+        AUTH_PASSWORD = "password"  # dev-only default; enabled path has NO default
+else:
+    _missing = [name for name, val in (
+        ("BU_AUTH_PASSWORD", AUTH_PASSWORD),
+        ("BU_AUTH_SECRET", AUTH_SECRET),
+    ) if not val]
+    if _missing:
+        raise RuntimeError(
+            "Refusing to start: required auth env var(s) unset: "
+            + ", ".join(_missing)
+            + ". Set them in the deployment environment (see render.yaml / "
+            "DEPLOY.md), or export BU_AUTH_DISABLED=1 for local dev only "
+            "(scripts/demo_start.sh does this)."
+        )
 
 
 # ── Token mint / verify ────────────────────────────────────────────────────

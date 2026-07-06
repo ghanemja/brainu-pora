@@ -22,12 +22,12 @@ python3 -c "import secrets; print('BU_AUTH_SECRET =', secrets.token_urlsafe(48))
 python3 -c "import secrets; print('BU_AUTH_PASSWORD =', secrets.token_urlsafe(16))"
 ```
 
-Suggested values already minted for you:
+Canonical values (kept in your password manager, never in this repo):
 
 ```
-BU_AUTH_USER     = admin
-BU_AUTH_PASSWORD = MJiqvzRqd9SVfw2kmI65og
-BU_AUTH_SECRET   = -qLRPjwndg7PvJFWW9a8lRDYXVkEGQkG6eqF1hyKCFyOesGCycU3s3k3jGrP24B3
+BU_AUTH_USER     = <REDACTED — set via env, rotation handled out-of-band>
+BU_AUTH_PASSWORD = <REDACTED — set via env, rotation handled out-of-band>
+BU_AUTH_SECRET   = <REDACTED — set via env, rotation handled out-of-band>
 BU_AUTH_TTL_HOURS = 24
 ```
 
@@ -74,7 +74,7 @@ For every NEW project (brain-u, charterscope, agentsannonymous, bookshelf-portfo
 
    | Key                  | Value                                          |
    |----------------------|------------------------------------------------|
-   | `BU_AUTH_USER`       | `admin`                                        |
+   | `BU_AUTH_USER`       | (from password manager)                        |
    | `BU_AUTH_PASSWORD`   | (from password manager)                        |
    | `BU_AUTH_SECRET`     | (from password manager)                        |
    | `BU_AUTH_TTL_HOURS`  | `24`                                           |
