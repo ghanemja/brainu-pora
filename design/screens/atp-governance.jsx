@@ -199,6 +199,316 @@ function PolicyCard({ policy }) {
   );
 }
 
+// ── Exhibit 2b: license registry (docs/HARDENING.md Phase 4) ─────
+// Live: BU_API.billingLicenses() — org-scoped rows, revoke w/ reason,
+// per-license usage via billingUsage() on expand. All billing methods
+// are typeof-guarded (api client built in parallel). Offline: seed
+// licensing counts from ATP_DATA, tagged '(offline)'.
+
+const LIC_STATUS_COLOR = {
+  active:  "var(--c-cs)",
+  revoked: "var(--c-here)",
+  expired: "var(--c-visited)",
+};
+
+const LIC_COLS = "minmax(150px, 1.4fr) 96px 92px 112px 112px 96px 96px";
+
+const licTs = v => (v ? String(v).slice(0, 16).replace("T", " ") : "—");
+
+// Normalize a license row across camelCase / snake_case server spellings.
+function licNorm(r) {
+  r = r || {};
+  return {
+    id: r.licenseId || r.license_id || r.id || "",
+    agentId: r.agentId || r.agent_id || r.agent || "",
+    kind: r.kind || r.license || r.plan || "—",
+    status: r.status || "active",
+    created: r.createdAt || r.created_at || r.created || r.ts || null,
+    expires: r.expiresAt || r.expires_at || r.expires || null,
+    revokedReason: r.revokedReason || r.revoked_reason || r.reason || null,
+  };
+}
+
+function LicStatusChip({ status }) {
+  const c = LIC_STATUS_COLOR[status] || "var(--c-ink-muted)";
+  return (
+    <span className="tag" style={{
+      color: c, fontFamily: "var(--f-mono)", fontSize: 10,
+      borderColor: `color-mix(in oklch, ${c} 50%, transparent)`,
+      textDecoration: status === "revoked" ? "line-through" : "none",
+    }}>{status}</span>
+  );
+}
+
+// Offline fallback — seed licensing counts straight from ATP_DATA.
+function LicensesSeed({ agents }) {
+  const rows = (agents || []).filter(a => a.licensing);
+  const total = rows.reduce((s, a) => s + (Number((a.licensing || {}).licensees) || 0), 0);
+  return (
+    <div>
+      <div className="t-tag" style={{
+        display: "grid", gridTemplateColumns: "minmax(150px, 1.4fr) 110px 110px 110px", gap: 10,
+        padding: "9px 16px", color: "var(--c-ink-dim)",
+        borderBottom: "1px solid var(--c-line-strong)",
+      }}>
+        <span>AGENT</span><span>PRICE</span><span>AVAILABLE</span><span>LICENSEES</span>
+      </div>
+      {rows.map((a, i) => (
+        <div key={a.id} style={{
+          display: "grid", gridTemplateColumns: "minmax(150px, 1.4fr) 110px 110px 110px", gap: 10,
+          padding: "8px 16px", alignItems: "baseline", fontSize: 12.5,
+          borderBottom: "1px solid var(--c-line)",
+          background: i % 2 ? "color-mix(in oklch, var(--c-bg-elev-2) 40%, transparent)" : "transparent",
+        }}>
+          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            {a.emoji} {a.name}
+          </span>
+          <span className="t-mono" style={{ fontSize: 11 }}>{(a.licensing || {}).price || "—"}</span>
+          <span className="t-mono" style={{
+            fontSize: 11,
+            color: (a.licensing || {}).available ? "var(--c-cs)" : "var(--c-ink-dim)",
+          }}>{(a.licensing || {}).available ? "yes" : "no"}</span>
+          <span className="t-mono" style={{ fontSize: 11 }}>{(a.licensing || {}).licensees ?? 0}</span>
+        </div>
+      ))}
+      <div className="t-cap" style={{ padding: "10px 16px", color: "var(--c-ink-dim)", fontSize: 11.5 }}>
+        {total} seed licensee{total === 1 ? "" : "s"} across {rows.length} agents — backend
+        unreachable, so no live keys, usage, or revocation from here.
+      </div>
+    </div>
+  );
+}
+
+function LicensesCard({ agents }) {
+  const [state, setState] = useState("loading"); // loading | live | offline | forbidden
+  const [rows, setRows] = useState([]);
+  const [note, setNote] = useState(null);       // {kind: ok|forbidden|offline, text}
+  const [openId, setOpenId] = useState(null);   // expanded license id
+  const [usage, setUsage] = useState({});       // id -> {loading}|{calls,raw}|{error}
+
+  useEffect(() => {
+    let dead = false;
+    (async () => {
+      const api = window.BU_API;
+      if (!(api && typeof api.billingLicenses === "function"
+            && typeof api.live === "function" && api.live())) {
+        if (!dead) setState("offline");
+        return;
+      }
+      try {
+        const r = await api.billingLicenses();
+        if (dead) return;
+        if (r && r.forbidden) { setState("forbidden"); return; }
+        if (r && r.offline) { setState("offline"); return; }
+        const list = Array.isArray(r) ? r : ((r && (r.licenses || r.rows)) || []);
+        setRows(list.map(licNorm));
+        setState("live");
+      } catch (e) {
+        if (!dead) setState(e && e.forbidden ? "forbidden" : "offline");
+      }
+    })();
+    return () => { dead = true; };
+  }, []);
+
+  async function toggleUsage(id) {
+    if (openId === id) { setOpenId(null); return; }
+    setOpenId(id);
+    if (usage[id]) return; // cached
+    const api = window.BU_API;
+    if (!(api && typeof api.billingUsage === "function")) {
+      setUsage(u => ({ ...u, [id]: { error: "usage endpoint unavailable" } }));
+      return;
+    }
+    setUsage(u => ({ ...u, [id]: { loading: true } }));
+    try {
+      const r = await api.billingUsage(id);
+      if (r && (r.forbidden || r.offline)) {
+        setUsage(u => ({ ...u, [id]: {
+          error: r.forbidden ? "requires org admin" : "backend unreachable",
+        } }));
+        return;
+      }
+      const calls = r == null ? null
+        : (r.calls ?? r.count
+           ?? (Array.isArray(r.events) ? r.events.length
+               : (Array.isArray(r.usage) ? r.usage.length : null)));
+      setUsage(u => ({ ...u, [id]: { calls, raw: r } }));
+    } catch (e) {
+      setUsage(u => ({ ...u, [id]: { error: (e && e.message) || "usage fetch failed" } }));
+    }
+  }
+
+  async function revoke(row) {
+    const api = window.BU_API;
+    if (!(api && typeof api.billingRevoke === "function")) return;
+    const reason = window.prompt(
+      `Revoke ${row.kind} license for ${agentLabel(row.agentId)} — reason:`, "");
+    if (reason == null) return; // cancelled
+    let res = null;
+    try {
+      res = await api.billingRevoke(row.id, reason.trim());
+    } catch (e) {
+      res = (e && e.forbidden) ? { ok: false, forbidden: true } : { ok: false, offline: true };
+    }
+    if (res && res.forbidden) {
+      setNote({ kind: "forbidden", text: "Not revoked — requires org admin." });
+      return;
+    }
+    if (!res || res.offline || res.ok === false) {
+      setNote({ kind: "offline", text: "Backend unreachable — revocation not applied." });
+      return;
+    }
+    setRows(prev => prev.map(r => r.id === row.id
+      ? { ...r, status: "revoked", revokedReason: reason.trim(), justRevoked: true }
+      : r));
+    setNote({ kind: "ok", text: "License revoked — delivery endpoint cut off immediately." });
+  }
+
+  const canRevoke = Boolean(window.BU_API && typeof window.BU_API.billingRevoke === "function");
+  const offline = state === "offline";
+
+  return (
+    <div className="card" style={{ padding: 0, overflow: "hidden" }}>
+      <div style={{
+        padding: "12px 16px", borderBottom: "1px solid var(--c-line)",
+        display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12, flexWrap: "wrap",
+      }}>
+        <div className="t-h3" style={{ display: "flex", gap: 8, alignItems: "baseline" }}>
+          License registry
+          {offline && (
+            <span className="tag" style={{
+              color: "var(--c-visited)", fontFamily: "var(--f-mono)", fontSize: 10,
+              borderColor: "color-mix(in oklch, var(--c-visited) 50%, transparent)",
+            }}>(offline)</span>
+          )}
+        </div>
+        <span className="t-mono" style={{ fontSize: 10.5, color: "var(--c-ink-dim)" }}>
+          org-scoped · licenses table · status enforced on every delivery call
+        </span>
+      </div>
+
+      {note && (
+        <div className="t-cap" style={{
+          margin: "10px 16px 0", padding: "7px 10px", borderRadius: "var(--r-md)",
+          border: `1px solid color-mix(in oklch, ${
+            note.kind === "forbidden" ? "var(--c-here)"
+            : note.kind === "offline" ? "var(--c-visited)" : "var(--c-cs)"} 45%, transparent)`,
+          color: note.kind === "forbidden" ? "var(--c-here)"
+               : note.kind === "offline" ? "var(--c-visited)" : "var(--c-cs)",
+        }}>{note.text}</div>
+      )}
+
+      {state === "loading" && (
+        <div className="t-cap" style={{ padding: "14px 16px", color: "var(--c-ink-dim)" }}>
+          Loading licenses…
+        </div>
+      )}
+
+      {state === "forbidden" && (
+        <div className="t-cap" style={{ padding: "14px 16px", color: "var(--c-here)" }}>
+          Viewing the license registry requires org admin.
+        </div>
+      )}
+
+      {offline && <LicensesSeed agents={agents} />}
+
+      {state === "live" && (
+        <div style={{ overflowX: "auto" }}>
+          <div style={{ minWidth: 860 }}>
+            <div className="t-tag" style={{
+              display: "grid", gridTemplateColumns: LIC_COLS, gap: 10,
+              padding: "9px 16px", color: "var(--c-ink-dim)",
+              borderBottom: "1px solid var(--c-line-strong)",
+            }}>
+              <span>AGENT</span><span>KIND</span><span>STATUS</span>
+              <span>CREATED</span><span>EXPIRES</span><span>USAGE</span><span />
+            </div>
+            {rows.length === 0 && (
+              <div className="t-cap" style={{ padding: "14px 16px", color: "var(--c-ink-dim)" }}>
+                No licenses issued yet — the first key comes from the Marketplace License button.
+              </div>
+            )}
+            {rows.map((r, i) => {
+              const revoked = r.status === "revoked";
+              const u = usage[r.id];
+              return (
+                <React.Fragment key={r.id || i}>
+                  <div style={{
+                    display: "grid", gridTemplateColumns: LIC_COLS, gap: 10,
+                    padding: "8px 16px", alignItems: "baseline", fontSize: 12.5,
+                    borderBottom: openId === r.id ? "none" : "1px solid var(--c-line)",
+                    background: revoked
+                      ? "color-mix(in oklch, var(--c-here) 6%, transparent)"
+                      : i % 2 ? "color-mix(in oklch, var(--c-bg-elev-2) 40%, transparent)" : "transparent",
+                    opacity: revoked ? 0.85 : 1,
+                  }}>
+                    <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {agentLabel(r.agentId)}
+                    </span>
+                    <span className="t-mono" style={{ fontSize: 11 }}>{r.kind}</span>
+                    <LicStatusChip status={r.status} />
+                    <span className="t-mono" style={{ fontSize: 11, color: "var(--c-ink-muted)" }}>
+                      {licTs(r.created)}
+                    </span>
+                    <span className="t-mono" style={{ fontSize: 11, color: "var(--c-ink-muted)" }}>
+                      {licTs(r.expires)}
+                    </span>
+                    <button className="btn ghost" style={{ fontSize: 10.5, padding: "2px 7px", justifySelf: "start" }}
+                      onClick={() => toggleUsage(r.id)}>
+                      {openId === r.id ? "▾ usage" : "▸ usage"}
+                    </button>
+                    {revoked ? (
+                      <span className="t-mono" style={{ fontSize: 10, color: "var(--c-here)" }}>⨯ revoked</span>
+                    ) : canRevoke ? (
+                      <button className="btn ghost" style={{
+                        fontSize: 10.5, padding: "2px 7px", color: "var(--c-here)", justifySelf: "start",
+                      }} onClick={() => revoke(r)}>
+                        revoke
+                      </button>
+                    ) : <span />}
+                  </div>
+                  {openId === r.id && (
+                    <div className="t-mono" style={{
+                      padding: "4px 16px 10px", fontSize: 11, color: "var(--c-ink-muted)",
+                      borderBottom: "1px solid var(--c-line)",
+                      background: revoked ? "color-mix(in oklch, var(--c-here) 6%, transparent)" : "transparent",
+                    }}>
+                      {!u || u.loading ? "loading usage…"
+                        : u.error ? <span style={{ color: "var(--c-here)" }}>{u.error}</span>
+                        : `${u.calls != null ? u.calls : "—"} metered call${u.calls === 1 ? "" : "s"} (usage_events)`
+                          + (u.raw && u.raw.tokensIn != null
+                             ? ` · ${u.raw.tokensIn} tok in / ${u.raw.tokensOut} tok out` : "")}
+                      {r.revokedReason && (
+                        <span style={{ color: "var(--c-here)", marginLeft: 12 }}>
+                          revoked: {r.revokedReason}
+                        </span>
+                      )}
+                      {r.justRevoked && (
+                        <span style={{ color: "var(--c-here)", marginLeft: 12 }}>
+                          · delivery endpoint cut off immediately
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  {r.justRevoked && openId !== r.id && (
+                    <div className="t-mono" style={{
+                      padding: "2px 16px 8px", fontSize: 10.5, color: "var(--c-here)",
+                      borderBottom: "1px solid var(--c-line)",
+                      background: "color-mix(in oklch, var(--c-here) 6%, transparent)",
+                    }}>
+                      delivery endpoint cut off immediately — the gate checks status on every call
+                    </div>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Exhibit 3a: reward-weight bar chart (inline SVG) ─────────────
 function RewardWeightChart({ weights }) {
   const entries = [1, 2, 3, 4, 5, 6, 7].map(n => ({ n, w: Number(weights["L" + n]) || 0 }));
@@ -582,6 +892,17 @@ function ATPGovernance() {
           }}>
             {policies.map(p => <PolicyCard key={p.id} policy={p} />)}
           </div>
+        </section>
+
+        {/* Exhibit 2b — license registry (Phase 4 billing) */}
+        <section style={{ marginBottom: 44 }}>
+          <SectionTitle kicker="LICENSES" title="Who holds a key, and what it may call" />
+          <p className="t-cap" style={{ margin: "0 0 16px", maxWidth: 680, lineHeight: 1.55 }}>
+            Licenses are org-scoped commercial bindings: each key gates the delivery
+            endpoint, every call is metered, and revocation is enforced on the next
+            call — not the next billing cycle. Issuing and revoking require org admin.
+          </p>
+          <LicensesCard agents={agents} />
         </section>
 
         {/* Exhibit 3 — reinforcement */}

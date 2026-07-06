@@ -111,7 +111,8 @@ contracts reviewers/CI can grep for.
 - `scoped_query(org_id, sql, params)` / `scoped_execute(…)`: a simple-parse
   guard — any statement naming a tenant table (word-boundary match against
   `TENANT_TABLES = {atp_hitl, atp_requests, atp_evidence, atp_cert_awards,
-  jobs, access_log}`) must carry an `:org` bind (`\b`-anchored, so `:org_id`
+  jobs, access_log, licenses, usage_events}`) must carry an `:org` bind
+  (`\b`-anchored, so `:org_id`
   does not satisfy it) AND `params['org'] == org_id`, else
   `TenantScopeError`. False positives only ever demand MORE scoping.
 - On Postgres every helper runs inside one transaction that first executes

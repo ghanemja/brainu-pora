@@ -57,6 +57,8 @@ TENANT_TABLES = frozenset({
     "atp_cert_awards",
     "jobs",
     "access_log",
+    "licenses",       # Phase 4 (migration 006) — atp/licensing.py; the
+    "usage_events",   # key_lookup read path is documented in _load_by_key_id
 })
 
 _IDENT_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")

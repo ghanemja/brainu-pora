@@ -102,13 +102,208 @@ function MktStatusChip({ status }) {
   );
 }
 
+// ── License-key clipboard (same idiom as atp-certs copy link) ────
+
+async function mktCopyText(text) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch (_) { /* fall through to execCommand */ }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch (_) { return false; }
+}
+
+function MktCopyBtn({ text, label = "⧉ copy key" }) {
+  const [state, setState] = useState("idle"); // idle | copied | failed
+  return (
+    <button type="button" className="btn ghost"
+      title="Copy the license key to the clipboard"
+      onClick={async e => {
+        e.stopPropagation();
+        const ok = await mktCopyText(text);
+        setState(ok ? "copied" : "failed");
+        setTimeout(() => setState("idle"), 1600);
+      }}
+      style={{
+        padding: "2px 7px", fontSize: 10.5, fontFamily: "var(--f-mono)",
+        flexShrink: 0, whiteSpace: "nowrap",
+        color: state === "copied" ? "var(--c-cs)"
+             : state === "failed" ? "var(--c-here)" : undefined,
+      }}>
+      {state === "copied" ? "✓ copied" : state === "failed" ? "copy failed" : label}
+    </button>
+  );
+}
+
+// Extract a VERBATIM error reason from a response body or thrown error —
+// a revoked / invalid key must surface the server's own words, never a
+// softened demo message.
+function mktErrText(x) {
+  if (!x) return "no response";
+  if (typeof x === "string") return x;
+  const s = x.status ? `${x.status} — ` : "";
+  const t = x.detail || x.error || x.reason || x.message;
+  if (t != null) return s + (typeof t === "string" ? t : JSON.stringify(t));
+  try { return s + JSON.stringify(x); } catch (_) { return s + String(x); }
+}
+
+const mktInputStyle = {
+  width: "100%", background: "var(--c-bg-elev)",
+  border: "1px solid var(--c-line-strong)", borderRadius: "var(--r-md)",
+  padding: "7px 9px", color: "var(--c-ink)",
+  fontFamily: "var(--f-mono)", fontSize: 11.5, outline: "none",
+};
+
+// ── Try-it box — hit the licensed delivery endpoint with a key ──
+// Renders only when the api client exposes expertChat (built in
+// parallel — typeof-guarded). The prompt textarea appears once a key
+// is present in the local input; 401/403 reasons render verbatim so
+// revocation is visible at the point of use.
+function MktTryIt({ agentId, tryKey, setTryKey, open, setOpen }) {
+  const [prompt, setPrompt] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [out, setOut] = useState(null); // {reply, usage} | {error}
+
+  const api = window.BU_API;
+  if (!api || typeof api.expertChat !== "function") return null;
+
+  const key = (tryKey || "").trim();
+  const canSend = Boolean(key && prompt.trim() && !busy);
+
+  const send = async () => {
+    if (!canSend) return;
+    setBusy(true); setOut(null);
+    let res;
+    try {
+      res = await api.expertChat(agentId, [{ role: "user", content: prompt.trim() }], key);
+    } catch (e) {
+      setBusy(false);
+      setOut({ error: mktErrText(e) });
+      return;
+    }
+    setBusy(false);
+    if (res && res.ok !== false && (res.reply != null || res.content != null)) {
+      setOut({ reply: res.reply != null ? res.reply : res.content, usage: res.usage || null });
+    } else {
+      setOut({ error: mktErrText(res) });
+    }
+  };
+
+  if (!open) {
+    return (
+      <button className="btn ghost" style={{ fontSize: 11.5, alignSelf: "flex-start" }}
+        onClick={() => setOpen(true)}>
+        ▸ try it with a license key
+      </button>
+    );
+  }
+
+  return (
+    <div className="card recessed" style={{ padding: "10px 12px", display: "flex", flexDirection: "column", gap: 8 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+        <div className="t-tag" style={{ color: "var(--c-ink-dim)" }}>TRY IT · LICENSED DELIVERY</div>
+        <button className="btn ghost" style={{ fontSize: 11, padding: "2px 7px" }}
+          onClick={() => setOpen(false)}>▾ hide</button>
+      </div>
+      <input value={tryKey} onChange={e => setTryKey(e.target.value)}
+        placeholder="paste your license key" spellCheck={false}
+        style={mktInputStyle} />
+      {key !== "" && (
+        <React.Fragment>
+          <textarea value={prompt} onChange={e => setPrompt(e.target.value)}
+            placeholder="ask the expert something…"
+            style={{ ...mktInputStyle, fontFamily: "var(--f-sans)", fontSize: 12.5,
+                     minHeight: 52, resize: "vertical", lineHeight: 1.45 }} />
+          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+            <button className="btn primary" disabled={!canSend} onClick={send}
+              style={{ opacity: canSend ? 1 : 0.5, fontSize: 12 }}>
+              {busy ? "Calling…" : "Send →"}
+            </button>
+            <span className="t-mono" style={{ fontSize: 10, color: "var(--c-ink-dim)" }}>
+              metered — every call lands in usage_events
+            </span>
+          </div>
+        </React.Fragment>
+      )}
+      {out && out.error != null && (
+        <div className="t-mono" style={{
+          fontSize: 11.5, color: "var(--c-here)", padding: "8px 10px",
+          border: "1px solid color-mix(in oklch, var(--c-here) 45%, transparent)",
+          borderRadius: "var(--r-md)", whiteSpace: "pre-wrap", wordBreak: "break-word",
+        }}>
+          {out.error}
+        </div>
+      )}
+      {out && out.reply != null && (
+        <div style={{
+          padding: "8px 10px", borderRadius: "var(--r-md)",
+          border: "1px solid color-mix(in oklch, var(--c-cs, #2ec4b6) 40%, transparent)",
+        }}>
+          <div style={{ fontSize: 13, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{out.reply}</div>
+          {out.usage && (
+            <div className="t-mono" style={{ fontSize: 10.5, color: "var(--c-ink-dim)", marginTop: 6 }}>
+              usage: {typeof out.usage === "object" ? JSON.stringify(out.usage) : String(out.usage)}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Listing card — trust signals LEAD ───────────────────────────
 
 function ListingCard({ A, listing, onViewAgent, matchNote }) {
-  const [lic, setLic] = useState("idle"); // idle | confirm | done
+  // lic.state: idle | confirm | busy | issued | forbidden | demo
+  const [lic, setLic] = useState({ state: "idle" });
+  const [tryOpen, setTryOpen] = useState(false);
+  const [tryKey, setTryKey] = useState("");
   const agent = _mktAgent(A, listing.agentId);
   const trust = listing.trust || {};
   const certs = ((agent && agent.certIds) || []).map(id => _mktCert(A, id)).filter(Boolean);
+
+  // Live billing = api client present + billingIssue shipped (parallel
+  // builder — typeof-guarded) + a backend actually configured.
+  const billingLive = () => {
+    const api = window.BU_API;
+    return Boolean(api && typeof api.billingIssue === "function"
+      && typeof api.live === "function" && api.live());
+  };
+
+  async function issueLicense() {
+    if (!billingLive()) { setLic({ state: "demo" }); return; }
+    setLic({ state: "busy" });
+    let res = null;
+    try {
+      res = await BU_API.billingIssue({ agentId: listing.agentId, kind: listing.license });
+    } catch (e) {
+      res = (e && e.forbidden) ? { ok: false, forbidden: true } : { ok: false, offline: true };
+    }
+    if (res && res.forbidden) { setLic({ state: "forbidden" }); return; }
+    const key = res && res.ok !== false
+      ? (res.licenseKey || res.license_key
+         || (res.license && (res.license.licenseKey || res.license.key)) || null)
+      : null;
+    if (key) {
+      setLic({ state: "issued", key });
+      // Prefill the try-it box — the server never shows this key again.
+      setTryKey(key);
+      setTryOpen(true);
+      return;
+    }
+    setLic({ state: "demo" }); // offline or unexpected shape — degrade to demo
+  }
 
   return (
     <div className="card" style={{
@@ -178,28 +373,73 @@ function ListingCard({ A, listing, onViewAgent, matchNote }) {
       </div>
 
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-        {lic === "idle" && (
-          <button className="btn primary" onClick={() => setLic("confirm")}>License</button>
+        {lic.state === "idle" && (
+          <button className="btn primary" onClick={() => setLic({ state: "confirm" })}>License</button>
         )}
-        {lic === "confirm" && (
+        {lic.state === "confirm" && (
           <React.Fragment>
             <span className="t-cap" style={{ fontSize: 12 }}>
               Confirm {listing.license} license at {listing.price}?
             </span>
-            <button className="btn primary" onClick={() => setLic("done")}>Confirm</button>
-            <button className="btn ghost" onClick={() => setLic("idle")}>Cancel</button>
+            <button className="btn primary" onClick={issueLicense}>Confirm</button>
+            <button className="btn ghost" onClick={() => setLic({ state: "idle" })}>Cancel</button>
           </React.Fragment>
         )}
-        {lic === "done" && (
+        {lic.state === "busy" && (
+          <span className="t-mono" style={{ fontSize: 11.5, color: "var(--c-ink-muted)" }}>
+            Issuing license…
+          </span>
+        )}
+        {lic.state === "demo" && (
           <span className="tag" style={{
             color: "var(--c-cs, #2ec4b6)",
             borderColor: "color-mix(in oklch, var(--c-cs, #2ec4b6) 50%, transparent)",
-          }}>Licensed ✓ (demo)</span>
+          }}>Licensed ✓ (demo — backend offline)</span>
+        )}
+        {lic.state === "forbidden" && (
+          <span className="tag" style={{
+            color: "var(--c-here)",
+            borderColor: "color-mix(in oklch, var(--c-here) 50%, transparent)",
+          }}>issuing a license requires org admin</span>
+        )}
+        {lic.state === "issued" && (
+          <span className="tag" style={{
+            color: "var(--c-cs, #2ec4b6)",
+            borderColor: "color-mix(in oklch, var(--c-cs, #2ec4b6) 50%, transparent)",
+          }}>Licensed ✓</span>
         )}
         <button className="btn" onClick={() => onViewAgent && onViewAgent(listing.agentId)}>
           Full profile →
         </button>
       </div>
+
+      {/* one-time key reveal — the server never returns this key again */}
+      {lic.state === "issued" && (
+        <div className="card recessed slide-up" style={{
+          padding: "10px 12px", borderLeft: `3px solid ${MKT_GOLD}`,
+        }}>
+          <div className="t-tag" style={{ color: MKT_GOLD, marginBottom: 6 }}>
+            LICENSE KEY · SHOWN ONCE
+          </div>
+          <div className="t-mono" style={{
+            fontSize: 11, wordBreak: "break-all", userSelect: "all", marginBottom: 8,
+          }}>{lic.key}</div>
+          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+            <MktCopyBtn text={lic.key} />
+            <span className="t-cap" style={{ fontSize: 11, color: "var(--c-visited, #fbb036)" }}>
+              store this now — not shown again
+            </span>
+            <a className="t-mono" href="#/governance"
+              style={{ fontSize: 11, color: MKT_GOLD, textDecoration: "none" }}>
+              manage in Governance →
+            </a>
+          </div>
+        </div>
+      )}
+
+      <MktTryIt agentId={listing.agentId}
+        tryKey={tryKey} setTryKey={setTryKey}
+        open={tryOpen} setOpen={setTryOpen} />
     </div>
   );
 }

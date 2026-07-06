@@ -133,6 +133,29 @@ except ImportError:  # pragma: no cover — api/identity.py not deployed yet
 if identity_router is not None:
     app.include_router(identity_router)
 
+# Billing + licensed expert delivery (Phase 4 — docs/HARDENING.md; see
+# api/billing.py). Guarded import, same idiom as identity above.
+try:
+    from api.billing import experts_router, router as billing_router
+except ImportError:  # pragma: no cover — api/billing.py not deployed yet
+    billing_router = experts_router = None
+    import sys as _sys
+    print("WARNING: api/billing.py not present — billing/expert routes not "
+          "mounted.", file=_sys.stderr)
+if billing_router is not None:
+    app.include_router(billing_router)
+    app.include_router(experts_router)
+    # Auth-allowlist wiring for the two non-bearer surfaces (api/auth.py owns
+    # the sets; these additions live here with the routes they serve):
+    #   * /billing/webhook — Stripe cannot send a bearer; every delivery is
+    #     authenticated by its Stripe-Signature header inside the handler.
+    #   * /experts/*       — authenticated per-request by license key
+    #     (X-ATP-License-Key); the handler hits the DB on EVERY call, so
+    #     revocation is enforced immediately (bearer optional).
+    import api.auth as _auth
+    _auth.PUBLIC_PATHS.add("/billing/webhook")
+    _auth.PUBLIC_PREFIXES = _auth.PUBLIC_PREFIXES + ("/experts/",)
+
 
 def _request_org(request: Request) -> str:
     """Tenant for this request — ONLY ever from verified auth state

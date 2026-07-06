@@ -49,5 +49,10 @@ PyJWT              # session JWTs + OIDC id_token verification
 cryptography       # RS256/ES256 JWKS keys for PyJWT + Fernet at-rest encryption
 httpx              # OIDC discovery / token-endpoint calls
 
+# Billing & marketplace licensing (api/billing.py — Phase 4, docs/HARDENING.md)
+# OPTIONAL at runtime: without STRIPE_API_KEY the platform issues manual
+# licenses; the lib is only imported for checkout/webhook/cancel paths.
+stripe
+
 # Utility
 python-louvain   # only used if networkx 3.x community detection unavailable

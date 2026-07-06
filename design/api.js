@@ -422,6 +422,92 @@
         return { ok: false, offline: true };
       }
     },
+
+    // ─── Billing & licensing (docs/HARDENING.md Phase 4) ─────────────
+    // Licenses only exist server-side, so there is no seed fallback:
+    // failures degrade to {ok:false, offline:true}; a 403 (role too low)
+    // surfaces {ok:false, forbidden:true} (atpHitl idiom).
+    async billingLicenses() {
+      try { return await jget("/billing/licenses"); }
+      catch (e) {
+        if (e && e.forbidden) return { ok: false, forbidden: true };
+        log("billingLicenses offline", e.message);
+        return { ok: false, offline: true, licenses: [] };
+      }
+    },
+
+    // Issue a manual license: payload {agentId, kind}. The response's
+    // licenseKey is shown ONCE — the server stores only a hash.
+    async billingIssue(payload) {
+      try { return await jpost("/billing/licenses", payload); }
+      catch (e) {
+        if (e && e.forbidden) return { ok: false, forbidden: true };
+        log("billingIssue offline", e.message);
+        return { ok: false, offline: true };
+      }
+    },
+
+    async billingRevoke(id, reason = "") {
+      try {
+        return await jpost(
+          "/billing/licenses/" + encodeURIComponent(id) + "/revoke",
+          { reason });
+      } catch (e) {
+        if (e && e.forbidden) return { ok: false, forbidden: true };
+        log("billingRevoke offline", e.message);
+        return { ok: false, offline: true };
+      }
+    },
+
+    async billingUsage(licenseId = null) {
+      try { return await jget("/billing/usage", { licenseId }); }
+      catch (e) {
+        if (e && e.forbidden) return { ok: false, forbidden: true };
+        log("billingUsage offline", e.message);
+        return { ok: false, offline: true };
+      }
+    },
+
+    // Stripe self-serve checkout → {url}. 404s when the backend has no
+    // STRIPE_API_KEY (manual licensing still works) — that surfaces here
+    // as {ok:false, offline:true} and the UI should fall back to the
+    // "contact us / invoice" path.
+    async billingCheckout(payload) {
+      try { return await jpost("/billing/checkout", payload); }
+      catch (e) {
+        if (e && e.forbidden) return { ok: false, forbidden: true };
+        log("billingCheckout offline", e.message);
+        return { ok: false, offline: true };
+      }
+    },
+
+    // Licensed expert chat. Auth is the LICENSE KEY (X-ATP-License-Key),
+    // not the session bearer, and licensing is server-truth: NO offline
+    // fallback, and a 401/403 here is about the key — it must never clear
+    // the session or reload the gate, so this bypasses handle401().
+    async expertChat(agentId, messages, licenseKey) {
+      if (!live()) throw new Error("BU_API_BASE not set");
+      const r = await fetch(
+        base() + "/experts/" + encodeURIComponent(agentId) + "/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...authHeader(),
+            ...(licenseKey ? { "X-ATP-License-Key": licenseKey } : {}),
+          },
+          body: JSON.stringify({ messages: messages || [] }),
+        });
+      if (!r.ok) {
+        let detail = "";
+        try { detail = (await r.json()).detail || ""; } catch (_) {}
+        const e = new Error(`POST /experts/${agentId}/chat → ${r.status}` +
+                            (detail ? ` — ${detail}` : ""));
+        e.status = r.status;
+        e.licenseError = r.status === 401 || r.status === 403;
+        throw e;
+      }
+      return r.json();
+    },
   };
 
   window.BU_API = API;
