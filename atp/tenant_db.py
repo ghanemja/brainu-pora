@@ -123,6 +123,21 @@ def _scoped_conn(org_id: str):
 
 # ── Public helpers ──────────────────────────────────────────────────────────
 
+@contextmanager
+def scoped_txn(org_id: str):
+    """Public multi-statement transaction with the org GUC pinned.
+
+    For callers that must make several reads/writes ATOMICALLY (e.g. the
+    evidence-chain append in atp/signing.py, which reads the chain head and
+    inserts under it). Yields the SQLAlchemy connection; commit on exit,
+    rollback on exception. Statement-level :org validation is the caller's
+    responsibility inside the block — Postgres RLS remains the backstop.
+    """
+    _require_org(org_id)
+    with _scoped_conn(org_id) as conn:
+        yield conn
+
+
 def scoped_query(org_id: str, sql: str, params: dict | None = None) -> list[dict]:
     """Org-scoped SELECT. Named params (:name); returns rows as list[dict]."""
     params = dict(params or {})

@@ -277,6 +277,102 @@ class HuggingFaceBackend(Backend):
         return text
 
 
+# ── Model families + deterministic dry-run backend (Phase 3 exams) ──────────
+
+_FAMILIES = ("claude", "gemma", "llama", "qwen", "deepseek", "mistral",
+             "gpt", "stub")
+
+
+def family_of(spec: str) -> str:
+    """Model family of a backend spec string.
+
+    Used by atp/exams.py to enforce the ATP standard's judge/candidate
+    separation (docs/ATP.md §2 principle 2): the grading model family must
+    differ from the candidate's. Substring match against the known families;
+    unknown specs map to 'unknown' (which still collides with itself, so two
+    unknown specs are treated as the same family — conservative by design).
+
+    The dry-run specs are special-cased to two DISTINCT synthetic families
+    ('dryrun:candidate' → 'stub-a', 'dryrun:judge' → 'stub-b') so CI can
+    exercise the whole exam loop, separation check included, with no real
+    models. Any other 'dryrun:*' spec is plain 'stub'.
+    """
+    s = (spec or "").lower()
+    if s.startswith("dryrun:candidate"):
+        return "stub-a"
+    if s.startswith("dryrun:judge"):
+        return "stub-b"
+    if s.startswith("dryrun"):
+        return "stub"
+    for fam in _FAMILIES:
+        if fam in s:
+            return fam
+    return "unknown"
+
+
+class DryRunBackend(Backend):
+    """Deterministic stub backend for --dry-run exams and CI.
+
+    complete() is a pure function of (spec, system, user): a SHA-256 over the
+    prompts drives everything — no RNG state, no sampling, no network — so the
+    same inputs always yield byte-identical output (which keeps the Phase 3
+    evidence signatures reproducible). Two behaviours:
+
+      * judge-style prompts (they ask for a JSON object with a "score") get
+        valid strict JSON {"score": <0.55..0.95>, "rationale": "..."} with the
+        score derived from the prompt hash;
+      * anything else gets canned-but-plausible worked-answer text.
+
+    Distinct specs ('dryrun:candidate' vs 'dryrun:judge') hash differently,
+    so candidate and judge never parrot each other.
+    """
+
+    def __init__(self, seed_from_spec: str):
+        self.name = seed_from_spec
+        self.seed = seed_from_spec
+
+    def _digest(self, system: str, user: str) -> str:
+        import hashlib
+        raw = f"{self.seed}\x1f{system}\x1f{user}".encode("utf-8")
+        return hashlib.sha256(raw).hexdigest()
+
+    _RATIONALES = (
+        "Matches the reference result and the key steps are shown.",
+        "Correct final answer; one intermediate step is under-justified.",
+        "Mostly right, but the edge case in the reference is not addressed.",
+        "Sound method; minor imprecision versus the reference criteria.",
+        "Agrees with the reference on substance with small stylistic gaps.",
+    )
+    _OPENERS = (
+        "Working step by step:",
+        "Setting up the problem first:",
+        "Applying the standard method:",
+        "Checking the definition before computing:",
+    )
+    _CLOSERS = (
+        "which matches the expected form.",
+        "so the result follows directly.",
+        "verified by substituting back.",
+        "and the boundary case checks out.",
+    )
+
+    def complete(self, system: str, user: str, max_tokens: int = 1500) -> str:
+        import json
+        h = self._digest(system, user)
+        blob = (system + "\n" + user).lower()
+        if '"score"' in blob or ("json" in blob and "score" in blob):
+            # Judge-style prompt → strict JSON verdict, score in [0.55, 0.95).
+            score = 0.55 + (int(h[:8], 16) % 4000) / 10000.0
+            rationale = self._RATIONALES[int(h[8:12], 16) % len(self._RATIONALES)]
+            return json.dumps({"score": round(score, 4), "rationale": rationale})
+        opener = self._OPENERS[int(h[:4], 16) % len(self._OPENERS)]
+        closer = self._CLOSERS[int(h[4:8], 16) % len(self._CLOSERS)]
+        return (
+            f"{opener} restate the givens, apply the relevant rule, and "
+            f"simplify. Final answer: see derivation ref {h[:12]}, {closer}"
+        )
+
+
 # ── Resolver ─────────────────────────────────────────────────────────────────
 
 def get_backend(spec_str: str) -> Backend:
@@ -289,7 +385,11 @@ def get_backend(spec_str: str) -> Backend:
       "hf:google/gemma-2-9b-it"     → HuggingFaceBackend (local, needs CUDA)
       "hf:base+adapter"             → HuggingFaceBackend with LoRA adapter (CUDA)
       "hf-endpoint:https://..."     → HFEndpointBackend (managed, no local GPU)
+      "dryrun:candidate" / "dryrun:judge" → DryRunBackend (deterministic stub,
+                                      Phase 3 --dry-run exams / CI; no network)
     """
+    if spec_str.startswith("dryrun"):
+        return DryRunBackend(spec_str)
     # Global local-LLM override: when LLM_BACKEND=local (or LOCAL_LLM_BASE is
     # set), route claude/* specialists to the local Gemma server too. The
     # multi-agent debate calls get_backend(spec.base_model).complete() (NOT

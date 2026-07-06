@@ -360,6 +360,68 @@
         };
       }
     },
+
+    // ─── Certification engine (docs/HARDENING.md Phase 3) ────────────
+    // Enqueue an exam run: payload {certId, candidateSpec?, agentId?,
+    // dryRun}. Returns {jobId} — poll with jobStatus()/runJob(); the job
+    // result is the award dict. 403 (role too low) surfaces
+    // {forbidden:true}, any other failure {offline:true} (atpHitl idiom).
+    async atpExamRun(payload) {
+      try { return await jpost("/atp/exams/run", payload); }
+      catch (e) {
+        if (e && e.forbidden) {
+          log("atpExamRun forbidden", e.message);
+          return { ok: false, forbidden: true };
+        }
+        log("atpExamRun offline", e.message);
+        return { ok: false, offline: true };
+      }
+    },
+
+    // Org-scoped cert awards, latest first. Awards only exist server-side
+    // (signed exam runs), so offline mode has none to show.
+    async atpAwards(limit = 100) {
+      try { return await jget("/atp/awards", { limit }); }
+      catch (e) {
+        log("atpAwards fallback", e.message);
+        return { awards: [] };
+      }
+    },
+
+    // One signed evidence row. Offline fallback serves the seed evidence
+    // record from window.ATP_DATA marked {seed:true} (no sig/prevHash —
+    // seed rows predate the signing chain).
+    async atpEvidence(id) {
+      try { return await jget("/atp/evidence/" + encodeURIComponent(id)); }
+      catch (e) {
+        log("atpEvidence fallback", e.message);
+        if (!window.ATP_DATA) throw e;
+        const ev = window.ATP_DATA.evidenceById
+          ? window.ATP_DATA.evidenceById(id)
+          : (window.ATP_DATA.EVIDENCE || []).find(x => x.id === id);
+        if (!ev) throw e;
+        return { ...ev, seed: true };
+      }
+    },
+
+    // Verification needs the server-held signing key + chain — there is no
+    // meaningful offline answer, so failures report {ok:false, offline:true}.
+    async atpEvidenceVerify(id) {
+      try {
+        return await jget("/atp/evidence/" + encodeURIComponent(id) + "/verify");
+      } catch (e) {
+        log("atpEvidenceVerify offline", e.message);
+        return { ok: false, offline: true };
+      }
+    },
+
+    async atpChainVerify() {
+      try { return await jget("/atp/chain/verify"); }
+      catch (e) {
+        log("atpChainVerify offline", e.message);
+        return { ok: false, offline: true };
+      }
+    },
   };
 
   window.BU_API = API;

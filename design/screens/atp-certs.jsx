@@ -17,6 +17,59 @@ const { useState, useEffect, useRef } = React;
 const GOLD = "var(--c-cert, #e8c268)";
 const pct = v => `${Math.round((v || 0) * 100)}%`;
 
+// ── Deep-link helpers (hash router lives in Brain University.html) ──
+// Deep links: #/cert/{id} and #/evidence/{id} — docs/HARDENING.md Phase 3.
+
+function certsDeepUrl(hashPath) {
+  return window.location.href.split("#")[0] + "#" + hashPath;
+}
+
+async function certsCopyText(text) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch (_) { /* fall through to execCommand */ }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch (_) { return false; }
+}
+
+// Small mono "copy link" affordance with transient copied/failed feedback.
+function CertsCopyLink({ hashPath, label = "⧉ copy link", title }) {
+  const [state, setState] = useState("idle"); // idle | copied | failed
+  return (
+    <button
+      type="button"
+      className="btn ghost"
+      title={title || `Copy deep link — ${hashPath}`}
+      onClick={async (e) => {
+        e.stopPropagation();
+        const ok = await certsCopyText(certsDeepUrl(hashPath));
+        setState(ok ? "copied" : "failed");
+        setTimeout(() => setState("idle"), 1600);
+      }}
+      style={{
+        padding: "2px 7px", fontSize: 10.5, fontFamily: "var(--f-mono)",
+        flexShrink: 0, whiteSpace: "nowrap",
+        color: state === "copied" ? "var(--c-cs)"
+             : state === "failed" ? "var(--c-here)" : undefined,
+      }}
+    >
+      {state === "copied" ? "✓ copied" : state === "failed" ? "copy failed" : label}
+    </button>
+  );
+}
+
 const ITEM_TYPE_COLOR = {
   recall: "var(--c-bridge)",
   apply: "var(--c-cs)",
@@ -445,7 +498,205 @@ function SmeSignoffBlock({ signoffs }) {
   );
 }
 
-function AwardCard({ award, cert, onViewAgent }) {
+// ── Deep-linkable evidence list ──────────────────────────────────
+// Mirrors the atoms EvidenceList (design/atp-atoms.jsx) but every row is
+// addressable: it carries a #/evidence/{id} anchor + copy-link affordance,
+// and the row named by window.ATP_EVIDENCE_FOCUS is scrolled to, opened
+// and highlighted on arrival (docs/HARDENING.md Phase 3 deep links).
+
+const CERTS_EV_KIND = {
+  exam_item:            { icon: "✎", label: "exam item" },
+  training_interaction: { icon: "⟲", label: "training" },
+  benchmark_run:        { icon: "▦", label: "benchmark" },
+  hitl_reward:          { icon: "★", label: "HITL reward" },
+  sme_signoff:          { icon: "✓", label: "SME sign-off" },
+};
+const CERTS_EV_OUTCOME = {
+  pass:    "var(--c-cs)",
+  fail:    "var(--c-here)",
+  reward:  "var(--c-cert)",
+  penalty: "var(--c-here)",
+  signed:  "var(--c-bridge)",
+};
+
+function DeepEvidenceRow({ ev, focused, onFocusDone }) {
+  const [open, setOpen] = useState(!!focused);
+  const [flash, setFlash] = useState(!!focused);
+  const rowRef = useRef(null);
+
+  useEffect(() => {
+    if (!focused) return;
+    setOpen(true);
+    setFlash(true);
+    if (rowRef.current) {
+      rowRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    const t = setTimeout(() => {
+      setFlash(false);
+      if (onFocusDone) onFocusDone(ev.id);
+    }, 3200);
+    return () => clearTimeout(t);
+  }, [focused]);
+
+  const kind = CERTS_EV_KIND[ev.kind] || { icon: "•", label: ev.kind || "evidence" };
+  const oc = CERTS_EV_OUTCOME[ev.outcome] || "var(--c-ink-muted)";
+  return (
+    <div
+      ref={rowRef}
+      id={"evidence-" + ev.id}
+      data-evidence-id={ev.id}
+      style={{
+        scrollMarginTop: 80,
+        borderRadius: "var(--r-md)",
+        boxShadow: flash
+          ? `0 0 0 2px color-mix(in oklch, ${GOLD} 75%, transparent)`
+          : "none",
+        transition: "box-shadow 600ms",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+        <button
+          type="button"
+          className={"evidence-item" + (open ? " open" : "")}
+          onClick={() => setOpen(o => !o)}
+          aria-expanded={open}
+          style={{ flex: 1, minWidth: 0 }}
+        >
+          <span className="ev-icon" title={kind.label}>{kind.icon}</span>
+          <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            {ev.summary}
+          </span>
+          <span className="tag" style={{
+            color: oc,
+            borderColor: `color-mix(in oklch, ${oc} 45%, transparent)`,
+            flexShrink: 0,
+          }}>
+            {ev.outcome}
+          </span>
+          <span className="t-mono" style={{ fontSize: 10.5, color: "var(--c-ink-dim)", flexShrink: 0 }}>
+            {ev.ts}
+          </span>
+          <span style={{ color: "var(--c-ink-dim)", fontSize: 10, flexShrink: 0 }}>
+            {open ? "▾" : "▸"}
+          </span>
+        </button>
+        <CertsCopyLink
+          hashPath={"/evidence/" + encodeURIComponent(ev.id)}
+          label="⧉"
+          title={`Copy evidence deep link — #/evidence/${ev.id}`}
+        />
+      </div>
+      {open && (
+        <div className="evidence-detail">
+          <div>{ev.detail}</div>
+          {ev.source && (
+            <div className="t-mono" style={{ fontSize: 10.5, color: "var(--c-ink-dim)", marginTop: 6 }}>
+              source: {ev.source}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DeepEvidenceList({ ids = [], focusId, onFocusDone }) {
+  const D = window.ATP_DATA;
+  if (!D || !D.evidenceById) return null;
+  const resolve = typeof D.evidenceById === "function"
+    ? id => D.evidenceById(id)
+    : id => D.evidenceById[id];
+  const items = (ids || []).map(resolve).filter(Boolean);
+  if (!items.length) {
+    return <div className="t-cap" style={{ color: "var(--c-ink-dim)" }}>No evidence linked.</div>;
+  }
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      {items.map(ev => (
+        <DeepEvidenceRow key={ev.id} ev={ev}
+          focused={focusId === ev.id} onFocusDone={onFocusDone} />
+      ))}
+    </div>
+  );
+}
+
+// ── Live signature verification ──────────────────────────────────
+// Phase 3 (docs/HARDENING.md, docs/ATP.md §2): evidence records are
+// HMAC-signed + prev_hash-chained server-side. When the backend is live
+// this button asks it to re-verify; offline it degrades to a plain note.
+// BU_API.atpChainVerify() → {ok, length, first_bad} (org-wide chain walk);
+// BU_API.atpEvidenceVerify(evId) → {ok, sigValid, chainPosition}. Both
+// return {ok:false, offline:true} when unreachable — a bare ok:false
+// (no offline flag) means TAMPERED, not offline. Methods are owned by
+// the backend build — guard typeof so this screen renders either way.
+function ChainVerifyBadge({ evidenceIds = [] }) {
+  const [st, setSt] = useState({ state: "idle" });
+  const api = window.BU_API || {};
+  const canChain = typeof api.atpChainVerify === "function";
+  const canEvidence = typeof api.atpEvidenceVerify === "function";
+
+  const run = async () => {
+    if (!canChain && !canEvidence) { setSt({ state: "offline" }); return; }
+    setSt({ state: "busy" });
+    try {
+      // Chain verify covers every award on this page; per-evidence verify is
+      // the (sampled) fallback if only the older API client is cached.
+      const r = canChain
+        ? await api.atpChainVerify()
+        : (evidenceIds.length
+            ? await api.atpEvidenceVerify(evidenceIds[0])
+            : null);
+      if (!r || r.offline === true) { setSt({ state: "offline" }); return; }
+      setSt(r.ok ? { state: "valid", r } : { state: "invalid", r });
+    } catch (_) {
+      setSt({ state: "offline" });
+    }
+  };
+
+  if (st.state === "valid") {
+    const n = st.r && (st.r.length !== undefined ? st.r.length : st.r.chainPosition);
+    return (
+      <span className="tag" style={{
+        color: "var(--c-cs)", fontFamily: "var(--f-mono)", fontSize: 11,
+        borderColor: "color-mix(in oklch, var(--c-cs) 50%, transparent)",
+      }} title="HMAC signatures + prev_hash links verified server-side.">
+        ✓ signature valid{n ? ` · ${n} records` : ""}
+      </span>
+    );
+  }
+  if (st.state === "invalid") {
+    const bad = st.r && st.r.first_bad;
+    return (
+      <span className="tag" style={{
+        color: "var(--c-here)", fontFamily: "var(--f-mono)", fontSize: 11,
+        borderColor: "color-mix(in oklch, var(--c-here) 50%, transparent)",
+      }} title="The evidence ledger did NOT verify — a row's signature or prev_hash link is broken.">
+        ⨯ chain check failed{bad != null ? ` · first bad row ${bad}` : ""}
+      </span>
+    );
+  }
+  if (st.state === "offline") {
+    return (
+      <span className="tag" style={{
+        color: "var(--c-ink-dim)", fontFamily: "var(--f-mono)", fontSize: 11,
+      }} title="Backend unreachable (or Phase-3 verify API not deployed) — evidence signatures not re-checked.">
+        offline — signatures unverified
+      </span>
+    );
+  }
+  return (
+    <button type="button" className="btn" onClick={run} disabled={st.state === "busy"}
+      title="Re-verify the HMAC signature + prev_hash chain of the evidence records behind these awards."
+      style={{
+        fontFamily: "var(--f-mono)", fontSize: 11, padding: "4px 10px",
+        color: GOLD, borderColor: `color-mix(in oklch, ${GOLD} 45%, transparent)`,
+      }}>
+      {st.state === "busy" ? "verifying…" : "⛓ verify signatures"}
+    </button>
+  );
+}
+
+function AwardCard({ award, cert, onViewAgent, evidenceFocusId, onEvidenceFocusDone }) {
   const D = window.ATP_DATA;
   const agent = D.agentById(award.agentId);
   const perSection = ((cert.passCriteria || {}).perSection);
@@ -539,14 +790,15 @@ function AwardCard({ award, cert, onViewAgent }) {
           <div className="t-tag" style={{ color: GOLD, marginBottom: 10 }}>
             CERTIFIED BECAUSE OF:
           </div>
-          <EvidenceList ids={award.evidenceIds || []} />
+          <DeepEvidenceList ids={award.evidenceIds || []}
+            focusId={evidenceFocusId} onFocusDone={onEvidenceFocusDone} />
         </div>
       </div>
     </div>
   );
 }
 
-function CertDetail({ cert, onViewAgent, detailRef }) {
+function CertDetail({ cert, onViewAgent, detailRef, evidenceFocusId, onEvidenceFocusDone }) {
   const D = window.ATP_DATA;
   const accent = cert.color || GOLD;
   const layer = (D.LAYERS || []).find(l => l.n === cert.layer);
@@ -580,7 +832,7 @@ function CertDetail({ cert, onViewAgent, detailRef }) {
             <div className="t-cap" style={{ fontSize: 11 }}>
               The citable sentence — what holding this badge licenses anyone to say.
             </div>
-            <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap", alignItems: "center" }}>
               <span className="tag">{(cert.blueprint || {}).totalItems} items</span>
               <span className="tag">{awards.length} awardee{awards.length === 1 ? "" : "s"}</span>
               {smes.length > 0 && (
@@ -589,6 +841,8 @@ function CertDetail({ cert, onViewAgent, detailRef }) {
                   borderColor: "color-mix(in oklch, var(--c-cs) 50%, transparent)",
                 }}>SME signed</span>
               )}
+              <CertsCopyLink hashPath={"/cert/" + encodeURIComponent(cert.id)}
+                title={`Copy cert deep link — #/cert/${cert.id}`} />
             </div>
           </div>
         </div>
@@ -618,12 +872,23 @@ function CertDetail({ cert, onViewAgent, detailRef }) {
         </div>
       )}
 
-      <SectionTitle kicker={`AWARDEES · ${awards.length}`}
-        title="Who holds it — and the evidence behind each award" />
+      <div style={{
+        display: "flex", alignItems: "flex-end", justifyContent: "space-between",
+        gap: 12, flexWrap: "wrap",
+      }}>
+        <SectionTitle kicker={`AWARDEES · ${awards.length}`}
+          title="Who holds it — and the evidence behind each award" />
+        <div style={{ marginBottom: 12 }}>
+          <ChainVerifyBadge
+            evidenceIds={awards.reduce((acc, a) => acc.concat(a.evidenceIds || []), [])} />
+        </div>
+      </div>
       <div style={{ marginTop: 12 }}>
         {awards.map((aw, i) => (
           <AwardCard key={aw.agentId + i} award={aw} cert={cert}
-            onViewAgent={onViewAgent} />
+            onViewAgent={onViewAgent}
+            evidenceFocusId={evidenceFocusId}
+            onEvidenceFocusDone={onEvidenceFocusDone} />
         ))}
         {awards.length === 0 && (
           <div className="card recessed" style={{ padding: 16 }}>
@@ -644,9 +909,27 @@ function ATPCerts({ onViewAgent }) {
   const certs = D.CERTS || [];
 
   // Consume the cross-screen badge-click handoff (set by any screen that
-  // renders a CertBadge and calls goto('certs')).
+  // renders a CertBadge and calls goto('certs')) plus the hash-router
+  // deep-link handoffs: window.ATP_CERT_FOCUS (#/cert/{id}) and
+  // window.ATP_EVIDENCE_FOCUS (#/evidence/{id}) — docs/HARDENING.md P3.
   const arrivedViaBadge = useRef(false);
+
+  // Evidence focus is consumed first: it also decides which cert to open.
+  const [evFocus, setEvFocus] = useState(() => {
+    const f = window.ATP_EVIDENCE_FOCUS || null;
+    if (f) window.ATP_EVIDENCE_FOCUS = null;
+    return f;
+  });
+
+  const certOfEvidence = (evId) => {
+    if (!evId || typeof D.evidenceById !== "function") return null;
+    const ev = D.evidenceById(evId);
+    return (ev && ev.certId && certs.some(c => c.id === ev.certId)) ? ev.certId : null;
+  };
+
   const [selId, setSelId] = useState(() => {
+    const evCert = certOfEvidence(evFocus);
+    if (evCert) return evCert; // the focused row does its own scroll
     const f = window.ATP_CERT_FOCUS;
     if (f && certs.some(c => c.id === f)) {
       window.ATP_CERT_FOCUS = null;
@@ -663,6 +946,34 @@ function ATPCerts({ onViewAgent }) {
       // Landed here from a badge click elsewhere — go straight to the meaning.
       detailRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+  }, []);
+
+  // Deep link fired while this screen is already mounted (the shell's hash
+  // router sets the window globals first — its listener registered at App
+  // mount, before ours, so ordering holds). Re-consume them here.
+  useEffect(() => {
+    const consume = () => {
+      const e = window.ATP_EVIDENCE_FOCUS || null;
+      if (e) {
+        window.ATP_EVIDENCE_FOCUS = null;
+        const evCert = certOfEvidence(e);
+        if (evCert) setSelId(evCert);
+        setEvFocus(e);
+        return;
+      }
+      const c = window.ATP_CERT_FOCUS || null;
+      if (c && certs.some(x => x.id === c)) {
+        window.ATP_CERT_FOCUS = null;
+        setSelId(c);
+        setTimeout(() => {
+          if (detailRef.current) {
+            detailRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 60);
+      }
+    };
+    window.addEventListener("hashchange", consume);
+    return () => window.removeEventListener("hashchange", consume);
   }, []);
 
   const pick = id => {
@@ -739,7 +1050,9 @@ function ATPCerts({ onViewAgent }) {
         {/* Full detail — meaning + evidence */}
         {sel && (
           <CertDetail key={sel.id} cert={sel}
-            onViewAgent={onViewAgent} detailRef={detailRef} />
+            onViewAgent={onViewAgent} detailRef={detailRef}
+            evidenceFocusId={evFocus}
+            onEvidenceFocusDone={() => setEvFocus(null)} />
         )}
       </div>
     </div>

@@ -1,0 +1,96 @@
+{
+  "certId": "atp-l1-core",
+  "label": "ATP-L1.core@2026.1",
+  "version": "2026.1",
+  "notes": "Item bank for the L1 Core Skills cert (Exeter-modeled K-12 competencies). Sections MUST match the cert blueprint in atp/seed.py verbatim. See atp/items/README.md for the format and editing rules.",
+  "items": [
+    {
+      "id": "l1c-num-01",
+      "section": "Numeracy",
+      "type": "recall",
+      "prompt": "What is 7 x 8?",
+      "expected": "56. Exact answer required.",
+      "points": 1
+    },
+    {
+      "id": "l1c-num-02",
+      "section": "Numeracy",
+      "type": "apply",
+      "prompt": "Compute 3/4 + 1/6, giving the answer as a fraction in lowest terms. Show the common-denominator step.",
+      "expected": "11/12. Common denominator 12: 3/4 = 9/12 and 1/6 = 2/12, so 9/12 + 2/12 = 11/12 (already in lowest terms). The common-denominator step must be shown.",
+      "points": 2
+    },
+    {
+      "id": "l1c-num-03",
+      "section": "Numeracy",
+      "type": "apply",
+      "prompt": "A jacket costs $80 and is discounted by 15%. What is the sale price? Show the calculation.",
+      "expected": "$68. Discount is 0.15 x 80 = $12, so 80 - 12 = 68 (equivalently 0.85 x 80). The working must be shown, not just the final number.",
+      "points": 2
+    },
+    {
+      "id": "l1c-red-01",
+      "section": "Reading comprehension",
+      "type": "recall",
+      "prompt": "Passage: 'Honeybees tell hive-mates where food is through a waggle dance. The angle of the dance relative to vertical encodes the direction of the food relative to the sun, while the duration of the waggle encodes the distance.' Question: according to the passage, what does the DURATION of the waggle encode?",
+      "expected": "The distance to the food. (Direction is encoded by the angle, not the duration — answers citing direction are wrong.)",
+      "points": 1
+    },
+    {
+      "id": "l1c-red-02",
+      "section": "Reading comprehension",
+      "type": "apply",
+      "prompt": "Passage: 'Maria watered her ferns every morning, yet their leaves kept yellowing. When she finally moved the pots away from the bright south-facing window, the ferns recovered within two weeks — same watering schedule as before.' Question: what most likely caused the yellowing, and which detail in the passage supports that inference?",
+      "expected": "Too much direct sunlight (not under-watering): the ferns recovered when moved away from the bright window while the watering schedule stayed identical, so light exposure is the variable that changed. Both the inference and the supporting detail are required.",
+      "points": 2
+    },
+    {
+      "id": "l1c-red-03",
+      "section": "Reading comprehension",
+      "type": "apply",
+      "prompt": "Passage: 'The town library began opening on Sundays last year. Weekend visits doubled, late returns fell by a third, and — to the surprise of the council — weekday visits rose too, as families who discovered the library on Sundays started coming back midweek.' Question: state the main idea of the passage in one sentence.",
+      "expected": "Opening the library on Sundays improved usage overall — not just on weekends, but on weekdays as well. A main-idea answer must cover the spillover effect; restating only one statistic is insufficient.",
+      "points": 2
+    },
+    {
+      "id": "l1c-cmp-01",
+      "section": "Composition",
+      "type": "synthesize",
+      "prompt": "Write a paragraph of exactly three sentences arguing that schools should have vegetable gardens. Sentence 1 must state the claim, sentence 2 must give one concrete supporting reason, sentence 3 must conclude.",
+      "expected": "Grading criteria, not a fixed text: (1) exactly three sentences; (2) first sentence states the claim plainly; (3) second sentence gives one concrete, relevant reason (e.g. hands-on science learning, nutrition); (4) third sentence concludes without introducing a new argument. Grammatical, coherent prose.",
+      "points": 3
+    },
+    {
+      "id": "l1c-cmp-02",
+      "section": "Composition",
+      "type": "synthesize",
+      "prompt": "Rewrite this run-on sentence as correct English, preserving all of its information: 'The experiment failed we forgot to label the samples so we had to start over.'",
+      "expected": "Any grammatical fix that keeps all three facts, e.g. 'The experiment failed because we forgot to label the samples, so we had to start over.' or 'The experiment failed. We had forgotten to label the samples, so we had to start over.' Must eliminate the comma-splice/run-on and preserve failure, cause, and restart.",
+      "points": 2
+    },
+    {
+      "id": "l1c-sci-01",
+      "section": "Scientific & chronological reasoning",
+      "type": "apply",
+      "prompt": "A student wants to test whether a fertilizer makes bean plants grow taller. She plants 10 beans with fertilizer and 10 beans without, keeping light, water, soil, and pot size identical for all 20. Which group is the control, and why is it needed?",
+      "expected": "The 10 plants WITHOUT fertilizer are the control group. It is needed as the baseline: without it, any growth in the fertilized group could not be attributed to the fertilizer rather than to the shared conditions. Both identification and justification required.",
+      "points": 2
+    },
+    {
+      "id": "l1c-sci-02",
+      "section": "Scientific & chronological reasoning",
+      "type": "adversarial",
+      "prompt": "In summer, both ice-cream sales and drowning deaths rise sharply, and the two track each other closely all year. A report concludes that ice cream causes drowning. Explain the error in this conclusion and identify the more plausible explanation.",
+      "expected": "Correlation is not causation: both variables are driven by a confounding third factor — hot weather brings more swimming (hence more drownings) AND more ice-cream sales. The answer must name the confounder (season/heat) and reject the causal claim; simply saying 'correlation isn't causation' without the confounder is partial credit at best.",
+      "points": 3
+    },
+    {
+      "id": "l1c-sci-03",
+      "section": "Scientific & chronological reasoning",
+      "type": "apply",
+      "prompt": "Place these four events in chronological order, earliest first: the first telephone call (Bell), the moon landing, the printing press (Gutenberg), the first public telegraph line (Morse).",
+      "expected": "Printing press (c. 1440) -> telegraph (1844) -> telephone (1876) -> moon landing (1969). All four in the correct order required; exact years are not required but wreck nothing if given correctly.",
+      "points": 2
+    }
+  ]
+}

@@ -55,6 +55,60 @@ function _certOf(A, id) {
 
 function _pct(x) { return Math.round((x || 0) * 100) + "%"; }
 
+// ── Deep-link helpers (hash router lives in Brain University.html) ──
+// Deep links: #/agent/{id} and #/cert/{id} — docs/HARDENING.md Phase 3.
+// (Names are file-local on purpose: screens share the page's global scope.)
+
+function agentsDeepUrl(hashPath) {
+  return window.location.href.split("#")[0] + "#" + hashPath;
+}
+
+async function agentsCopyText(text) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch (_) { /* fall through to execCommand */ }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch (_) { return false; }
+}
+
+// Small mono "copy link" affordance with transient copied/failed feedback.
+function AgentsCopyLink({ hashPath, label = "⧉ copy link", title }) {
+  const [state, setState] = useState("idle"); // idle | copied | failed
+  return (
+    <button
+      type="button"
+      className="btn ghost"
+      title={title || `Copy deep link — ${hashPath}`}
+      onClick={async (e) => {
+        e.stopPropagation();
+        const ok = await agentsCopyText(agentsDeepUrl(hashPath));
+        setState(ok ? "copied" : "failed");
+        setTimeout(() => setState("idle"), 1600);
+      }}
+      style={{
+        padding: "2px 7px", fontSize: 10.5, fontFamily: "var(--f-mono)",
+        flexShrink: 0, whiteSpace: "nowrap",
+        color: state === "copied" ? "var(--c-cs, #2ec4b6)"
+             : state === "failed" ? "var(--c-here)" : undefined,
+      }}
+    >
+      {state === "copied" ? "✓ copied" : state === "failed" ? "copy failed" : label}
+    </button>
+  );
+}
+
 // Gold provenance chip — commissioned agents wear their training origin openly.
 function AgentProvenanceChip({ provenance }) {
   if (!provenance || provenance.origin !== "commissioned") return null;
@@ -173,8 +227,12 @@ function AgentHeaderCard({ A, agent }) {
           boxShadow: "inset 0 0 0 3px var(--c-bg-elev)",
         }}>{agent.emoji}</div>
         <div style={{ flex: 1, minWidth: 220 }}>
-          <div className="t-tag" style={{ color: "var(--c-ink-muted)" }}>
-            {agent.baseModel} · {agent.id}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+            <div className="t-tag" style={{ color: "var(--c-ink-muted)" }}>
+              {agent.baseModel} · {agent.id}
+            </div>
+            <AgentsCopyLink hashPath={"/agent/" + encodeURIComponent(agent.id)}
+              title={`Copy agent deep link — #/agent/${agent.id}`} />
           </div>
           <h1 className="t-h1" style={{ margin: "4px 0 6px" }}>{agent.name}</h1>
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
@@ -337,8 +395,14 @@ function CertificationsSection({ A, agent }) {
       )}
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
         {certs.map(c => (
-          <CertBadge key={c.id} cert={c} size={48}
-            onClick={() => setOpenId(openId === c.id ? null : c.id)} />
+          <div key={c.id} style={{
+            display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+          }}>
+            <CertBadge cert={c} size={48}
+              onClick={() => setOpenId(openId === c.id ? null : c.id)} />
+            <AgentsCopyLink hashPath={"/cert/" + encodeURIComponent(c.id)}
+              label="⧉ link" title={`Copy cert deep link — #/cert/${c.id}`} />
+          </div>
         ))}
         <AgentProvenanceChip provenance={agent.provenance} />
       </div>

@@ -111,3 +111,45 @@ the real migrations: §1 formula (`weightedDelta = signal × 0.2 ×
 6/6-3/atp-l6-bio → gap), legacy import + idempotency, UPDATE/DELETE on
 `atp_hitl` aborting via trigger, plus a TestClient smoke over the untouched
 `/atp/*` routes and the `BU_AUTH_DISABLED=1` boot check.
+
+## Phase 3 — delivered: exam-core (engine + signing + item banks) ✅ (2026-07-06)
+`atp/exams.py` `run_exam(cert_id, candidate_spec=None, org_id='org-demo',
+dry_run=False, agent_id=None) -> award dict`: seed cert → item bank
+(`atp/items/<cert_id>.json`; missing bank raises `MissingItemBankError` —
+blueprints-before-commissioning) → per item × `runs=min(passCriteria.runs,3)`:
+candidate answer via `get_backend()`, judge scores strict JSON
+`{score 0..1, rationale}` (defensive parse, one retry, else item flagged &
+scored 0) → points-weighted section scores, blueprint-weighted overall,
+verdict vs `passCriteria` (overall + perSection + zero flagged) → one signed
+`exam_item` evidence row per item + one `benchmark_run` summary + an
+`atp_cert_awards` row, all through `atp/tenant_db` (org-scoped, RLS on PG).
+**Judge/candidate separation enforced in code before any model call**:
+`family_of(judge) != family_of(candidate)` else `SeparationError`; judge from
+env `ATP_JUDGE_SPEC` (default `claude-haiku-4-5`), `dry_run` →
+`dryrun:judge`. `agents/backend.py` gains `family_of()`
+(claude/gemma/llama/qwen/deepseek/mistral/gpt/stub, substring;
+unknown→'unknown') + `DryRunBackend` — deterministic pure function of the
+prompts (SHA-256-driven; judge-style prompts get valid JSON w/ score in
+[0.55, 0.95)); `dryrun:candidate`/`dryrun:judge` map to distinct synthetic
+families ('stub-a'/'stub-b') so CI exercises the whole loop incl. separation.
+`atp/signing.py`: `canonical()` (sorted-keys/compact JSON), `sign(payload,
+prev_hash)` = HMAC-SHA256(`EVIDENCE_SIGNING_KEY`) over `prev_hash ||
+canonical(payload)`, `verify_row()`, `last_sig(org)`, `verify_chain(org) ->
+{ok, length, first_bad}` — per-org prev_hash chain rooted at `'genesis'`;
+key is fail-loud (`SigningKeyError`) when unset with auth enabled;
+`BU_AUTH_DISABLED=1` dev fallback derives from `BU_AUTH_SECRET` or uses a
+process-ephemeral key w/ loud warning. `.env.example` documents
+`EVIDENCE_SIGNING_KEY` (key only). Item banks: `atp-l4-math` (18 items, all 4
+blueprint sections, adversarial incl.) + `atp-l1-core` (11 items) + SME
+editing guide (`atp/items/README.md`); banks are validated at load (section
+names must match the blueprint, every section covered). CLI:
+`python3 -m atp.exams <cert> [--candidate S] [--dry-run] [--verify-chain]`.
+Verified on fresh sqlite: dry-run `atp-l4-math` → award w/ verdict, 19
+evidence rows, `verify_chain` ok; rerun appends (19→38, still ok); identical
+inputs + key + empty chain reproduce byte-identical sigs; candidate
+`claude-haiku-4-5` vs default claude judge → `SeparationError` before any
+model call; unknown cert / bank-less cert raise; rotated key flips the chain
+to `{ok: false, first_bad: 1}`; `BU_AUTH_DISABLED=1` boot unaffected.
+Still open in Phase 3 (other owners): deep-link hash routing
+(`#/agent/{id}`, `#/cert/{id}`, `#/evidence/{id}`) and API/UI surfacing of
+live awards.

@@ -146,15 +146,15 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
 
   <!-- ATP agent-view screens -->
   <script type="text/babel" src="screens/atp-university.jsx?v=1"></script>
-  <script type="text/babel" src="screens/atp-agents.jsx?v=1"></script>
-  <script type="text/babel" src="screens/atp-certs.jsx?v=1"></script>
+  <script type="text/babel" src="screens/atp-agents.jsx?v=2"></script>
+  <script type="text/babel" src="screens/atp-certs.jsx?v=2"></script>
   <script type="text/babel" src="screens/atp-marketplace.jsx?v=1"></script>
   <script type="text/babel" src="screens/atp-governance.jsx?v=2"></script>
   <script type="text/babel" src="screens/atp-vault.jsx?v=1"></script>
 
   <!-- Main app shell -->
   <script type="text/babel">
-const { useState, useEffect, useMemo, useCallback } = React;
+const { useState, useEffect, useMemo, useCallback, useRef } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "palette": "paper",
@@ -187,6 +187,7 @@ const SCREENS_AGENT = [
 ];
 
 const AGENT_SCREEN_IDS = new Set(SCREENS_AGENT.map(s => s.id));
+const HUMAN_SCREEN_IDS = new Set(SCREENS_HUMAN.map(s => s.id));
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
@@ -290,6 +291,88 @@ function App() {
       else setScreen(id);
     }
   };
+
+  // ── Hash router (docs/HARDENING.md Phase 3 deep links) ──────────
+  // Resolved on load + on every hashchange:
+  //   #/agent/{id}    → agent view · agents screen · that agent selected
+  //   #/cert/{id}     → agent view · certs screen  · window.ATP_CERT_FOCUS
+  //   #/evidence/{id} → agent view · certs screen  · window.ATP_EVIDENCE_FOCUS
+  //   #/{screenId}    → plain screen (either view; human ids switch view)
+  // Nav actions mirror state back into the hash below via
+  // history.replaceState — replaceState never fires hashchange, and the
+  // _navFromHash guard skips the mirror on renders caused by consuming a
+  // deep link, so a just-applied #/cert/… or #/evidence/… hash is never
+  // clobbered by the canonical screen hash. No reload loops either way.
+  const _navFromHash = useRef(false);
+
+  const applyHash = () => {
+    const raw = (window.location.hash || "").replace(/^#\/?/, "");
+    if (!raw) return;
+    const seg = raw.split("/");
+    const head = seg[0];
+    const id = seg.length > 1 ? decodeURIComponent(seg.slice(1).join("/")) : null;
+    const closeOverlays = () => {
+      setExplorer(false); setArxivisOpen(false); setOpenprobOpen(false);
+    };
+    _navFromHash.current = true;
+    if (head === "agent" && id) {
+      closeOverlays(); setView("agent"); setAtpAgentId(id); setScreen("agents");
+    } else if (head === "cert" && id) {
+      window.ATP_CERT_FOCUS = id;
+      closeOverlays(); setView("agent"); setScreen("certs");
+    } else if (head === "evidence" && id) {
+      window.ATP_EVIDENCE_FOCUS = id;
+      closeOverlays(); setView("agent"); setScreen("certs");
+    } else if (AGENT_SCREEN_IDS.has(head)) {
+      closeOverlays(); setView("agent"); setScreen(head);
+    } else if (HUMAN_SCREEN_IDS.has(head)) {
+      setView("human");
+      if (head === "explorer" || head === "arxivis" || head === "openprob") {
+        // Overlays float above a base screen — make sure the base screen
+        // is a human one before goto() opens the overlay.
+        setScreen(s => (AGENT_SCREEN_IDS.has(s) ? "trailhead" : s));
+      }
+      goto(head);
+    } else {
+      _navFromHash.current = false; // unknown hash — leave state alone
+      return;
+    }
+    // Release the guard after the state flush + its effects have run
+    // (effect-originated updates flush before paint, before this timer).
+    setTimeout(() => { _navFromHash.current = false; }, 0);
+  };
+
+  // Latest-closure trampoline: the mount effect registers one listener,
+  // but applyHash must see the current tour/stopIdx through goto().
+  const applyHashRef = useRef(applyHash);
+  applyHashRef.current = applyHash;
+
+  useEffect(() => {
+    const onHash = () => applyHashRef.current();
+    onHash(); // resolve a deep link present at load
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  // State → hash mirror (canonical): every nav action lands here.
+  useEffect(() => {
+    if (_navFromHash.current) return;
+    let h;
+    if (view === "human") {
+      h = explorerOpen ? "explorer"
+        : arxivisOpen ? "arxivis"
+        : openprobOpen ? "openprob"
+        : screen;
+    } else {
+      h = (screen === "agents" && atpAgentId)
+        ? "agent/" + encodeURIComponent(atpAgentId)
+        : screen;
+    }
+    const next = "#/" + h;
+    if (window.location.hash !== next) {
+      try { history.replaceState(null, "", next); } catch (_) {}
+    }
+  }, [view, screen, atpAgentId, explorerOpen, arxivisOpen, openprobOpen]);
 
   return (
     <div className="app-shell">

@@ -1,0 +1,152 @@
+{
+  "certId": "atp-l4-math",
+  "label": "ATP-L4.math@2026.1",
+  "version": "2026.1",
+  "notes": "Item bank for the L4 Math cert (world-knowledge engines: CAS interop). Sections MUST match the cert blueprint in atp/seed.py verbatim. See atp/items/README.md for the format and editing rules.",
+  "items": [
+    {
+      "id": "l4m-sym-01",
+      "section": "Symbolic manipulation (CAS interop)",
+      "type": "apply",
+      "prompt": "Expand (x + 2)^3 completely. Show the intermediate binomial steps.",
+      "expected": "x^3 + 6x^2 + 12x + 8. Full credit requires the binomial expansion steps (coefficients 1,3,3,1 with powers of 2) or an equivalent two-stage multiplication.",
+      "points": 2
+    },
+    {
+      "id": "l4m-sym-02",
+      "section": "Symbolic manipulation (CAS interop)",
+      "type": "apply",
+      "prompt": "Factor x^4 - 5x^2 + 4 completely over the integers.",
+      "expected": "(x - 1)(x + 1)(x - 2)(x + 2). Substitution u = x^2 gives (u - 1)(u - 4), then each difference of squares splits. All four linear factors required.",
+      "points": 2
+    },
+    {
+      "id": "l4m-sym-03",
+      "section": "Symbolic manipulation (CAS interop)",
+      "type": "apply",
+      "prompt": "Simplify the rational expression (x^2 - 9) / (x^2 - x - 6) and state every excluded value of x.",
+      "expected": "(x + 3)/(x + 2), with x != 3 and x != -2 excluded (zeros of the ORIGINAL denominator). Numerator factors as (x-3)(x+3), denominator as (x-3)(x+2). Both exclusions must be stated.",
+      "points": 3
+    },
+    {
+      "id": "l4m-sym-04",
+      "section": "Symbolic manipulation (CAS interop)",
+      "type": "apply",
+      "prompt": "Decompose (3x + 5) / ((x + 1)(x + 2)) into partial fractions.",
+      "expected": "2/(x + 1) + 1/(x + 2). Setting 3x + 5 = A(x + 2) + B(x + 1): x = -1 gives A = 2, x = -2 gives B = 1.",
+      "points": 3
+    },
+    {
+      "id": "l4m-sym-05",
+      "section": "Symbolic manipulation (CAS interop)",
+      "type": "apply",
+      "prompt": "Differentiate f(x) = x^2 sin(x) with respect to x, naming the rule used.",
+      "expected": "f'(x) = 2x sin(x) + x^2 cos(x), by the product rule. Both terms required; naming the product rule required for full rigor credit.",
+      "points": 2
+    },
+    {
+      "id": "l4m-prf-01",
+      "section": "Proof & synthesis",
+      "type": "synthesize",
+      "prompt": "Prove that sqrt(2) is irrational.",
+      "expected": "Proof by contradiction: assume sqrt(2) = p/q in lowest terms, so p^2 = 2q^2, hence p is even (p = 2k), then 4k^2 = 2q^2 gives q^2 = 2k^2 so q is also even — contradicting lowest terms. Must state the lowest-terms assumption and derive the parity contradiction; no skipped steps.",
+      "points": 4
+    },
+    {
+      "id": "l4m-prf-02",
+      "section": "Proof & synthesis",
+      "type": "synthesize",
+      "prompt": "Prove by mathematical induction that 1 + 3 + 5 + ... + (2n - 1) = n^2 for all integers n >= 1.",
+      "expected": "Base case n = 1: LHS = 1 = 1^2. Inductive step: assume sum to k terms = k^2; adding the next odd number (2k + 1) gives k^2 + 2k + 1 = (k + 1)^2. Both the base case and an explicitly stated inductive hypothesis are required.",
+      "points": 4
+    },
+    {
+      "id": "l4m-prf-03",
+      "section": "Proof & synthesis",
+      "type": "adversarial",
+      "prompt": "Claim: if f is differentiable and f'(c) = 0, then f has a local maximum or local minimum at c. Prove the claim or refute it.",
+      "expected": "The claim is FALSE. Counterexample: f(x) = x^3 at c = 0 has f'(0) = 0 but is strictly increasing, so x = 0 is neither a local max nor a local min (it is an inflection point). A single valid counterexample suffices; a 'proof' of the claim scores 0 on correctness.",
+      "points": 4
+    },
+    {
+      "id": "l4m-prf-04",
+      "section": "Proof & synthesis",
+      "type": "adversarial",
+      "prompt": "The following argument concludes 2 = 1. Identify the exact flawed step and explain why it is invalid. Let a = b. Then a^2 = ab; a^2 - b^2 = ab - b^2; (a - b)(a + b) = b(a - b); a + b = b; 2b = b; therefore 2 = 1.",
+      "expected": "The step dividing both sides by (a - b) is invalid: since a = b, a - b = 0, and division by zero is undefined. Every other step is legal. The answer must locate the cancellation of (a - b) specifically, not just say 'division by zero somewhere'.",
+      "points": 3
+    },
+    {
+      "id": "l4m-prf-05",
+      "section": "Proof & synthesis",
+      "type": "synthesize",
+      "prompt": "Prove that there are infinitely many prime numbers.",
+      "expected": "Euclid's argument: suppose p1..pk were all the primes; let N = p1*p2*...*pk + 1. N leaves remainder 1 on division by every pi, so any prime factor of N (which exists since N > 1) is a prime not in the list — contradiction. Must note N need not itself be prime, only that its prime factor is new.",
+      "points": 4
+    },
+    {
+      "id": "l4m-eng-01",
+      "section": "Engine tool-use (SymPy/CAS)",
+      "type": "apply",
+      "prompt": "Write the exact SymPy code to solve x^2 - 5x + 6 = 0 for x, and state the result the engine returns.",
+      "expected": "import sympy; x = sympy.symbols('x'); sympy.solve(x**2 - 5*x + 6, x) — returns [2, 3]. Code must be runnable (symbol declared, correct API) and the reported roots must be exactly 2 and 3.",
+      "points": 3
+    },
+    {
+      "id": "l4m-eng-02",
+      "section": "Engine tool-use (SymPy/CAS)",
+      "type": "apply",
+      "prompt": "Using SymPy, compute the indefinite integral of x*exp(x) with respect to x. Give the code and the engine's result.",
+      "expected": "sympy.integrate(x*sympy.exp(x), x) returns (x - 1)*exp(x). Answer must report the engine output faithfully — writing x*exp(x) - exp(x) is equivalent and acceptable; omitting the code or misreading the result is not.",
+      "points": 3
+    },
+    {
+      "id": "l4m-eng-03",
+      "section": "Engine tool-use (SymPy/CAS)",
+      "type": "apply",
+      "prompt": "Using SymPy, evaluate the limit of sin(x)/x as x approaches 0. Give the code and the result.",
+      "expected": "sympy.limit(sympy.sin(x)/x, x, 0) returns 1. Full credit requires the limit() call (not a numeric approximation) and the exact value 1.",
+      "points": 2
+    },
+    {
+      "id": "l4m-eng-04",
+      "section": "Engine tool-use (SymPy/CAS)",
+      "type": "apply",
+      "prompt": "Using SymPy's Matrix class, invert the matrix [[2, 1], [1, 1]]. Give the code and the exact inverse.",
+      "expected": "sympy.Matrix([[2, 1], [1, 1]]).inv() returns Matrix([[1, -1], [-1, 2]]) (determinant is 1). The exact integer inverse is required; a decimal/numeric inverse shows the engine was not used faithfully.",
+      "points": 3
+    },
+    {
+      "id": "l4m-num-01",
+      "section": "Numerical stability",
+      "type": "apply",
+      "prompt": "In float64 arithmetic, computing 1 - cos(x) directly for very small x (say x = 1e-8) loses almost all significant digits. Explain why, and give a numerically stable equivalent expression.",
+      "expected": "Catastrophic cancellation: cos(x) is approximately 1 - x^2/2, so 1 - cos(x) subtracts two nearly equal numbers and the leading digits cancel, leaving only rounding noise. Stable rewrite: 2*sin(x/2)^2 (exactly equal analytically, no subtraction of near-equal quantities).",
+      "points": 3
+    },
+    {
+      "id": "l4m-num-02",
+      "section": "Numerical stability",
+      "type": "adversarial",
+      "prompt": "Solving x^2 - 1e8*x + 1 = 0 with the textbook quadratic formula in float64 returns 0.0 for the small root. Diagnose the failure and give a stable procedure that recovers both roots accurately.",
+      "expected": "For the small root the formula computes (1e8 - sqrt(1e16 - 4))/2: sqrt(1e16 - 4) rounds to 1e8 in float64, so the subtraction cancels catastrophically to 0. Stable: compute the large root x1 = (-b - sign(b)*sqrt(b^2 - 4ac)) / (2a) (no cancellation), then the small root via Vieta: x2 = c/(a*x1) = 1e-8. Both the diagnosis (cancellation in the subtraction) and the Vieta rescue are required.",
+      "points": 4
+    },
+    {
+      "id": "l4m-num-03",
+      "section": "Numerical stability",
+      "type": "adversarial",
+      "prompt": "True or false: IEEE-754 float64 addition is associative. Justify with a concrete counterexample evaluated in float64.",
+      "expected": "False. Counterexample: (1e16 + 1.0) - 1e16 evaluates to 0.0 because 1e16 + 1.0 rounds back to 1e16 (the spacing between adjacent float64 values at 1e16 is 2), while 1e16 - 1e16 + 1.0 evaluates to 1.0. Any counterexample with correct float64 rounding behaviour is acceptable.",
+      "points": 3
+    },
+    {
+      "id": "l4m-num-04",
+      "section": "Numerical stability",
+      "type": "apply",
+      "prompt": "Naive Gaussian elimination WITHOUT pivoting fails badly on the system [[1e-20, 1], [1, 1]] * [x, y] = [1, 2] in float64. Explain the mechanism and name the standard fix.",
+      "expected": "Using the tiny pivot 1e-20 produces the multiplier 1e20; the row update computes 1 - 1e20 which rounds to -1e20, wiping out the original coefficients (the true data is absorbed into rounding error), yielding x = 0 instead of x approximately 1. Fix: partial pivoting — swap rows so the largest-magnitude entry in the column is the pivot, keeping multipliers bounded by 1.",
+      "points": 3
+    }
+  ]
+}
