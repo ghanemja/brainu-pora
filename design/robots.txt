@@ -1,0 +1,5 @@
+# Ask well-behaved crawlers not to index this demo.
+# NOTE: this is advisory only — it does not stop scrapers or bots that ignore
+# robots.txt. It only keeps compliant search engines from indexing the site.
+User-agent: *
+Disallow: /
