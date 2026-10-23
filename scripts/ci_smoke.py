@@ -317,15 +317,19 @@ def browser_smoke(api: str, web: str) -> None:
         ok("login gate accepted admin/password")
 
         # App shell up = in-browser Babel compiled every .jsx (zero-build
-        # dev mode contract). Fresh profile defaults to the agent view.
+        # dev mode contract). A fresh profile opens on the human view's
+        # Courses screen (the front door).
         # One reload retry: the pinned React/Babel/three CDN fetches are the
         # only non-local resources and occasionally stall on a cold edge.
         try:
-            page.wait_for_selector('nav.nav button[data-nav="university"]')
+            page.wait_for_selector('nav.nav button[data-nav="courses"].active')
         except PWTimeoutError:
             print("  … app shell slow (CDN?) — reloading once", file=sys.stderr)
             page.reload()
-            page.wait_for_selector('nav.nav button[data-nav="university"]')
+            page.wait_for_selector('nav.nav button[data-nav="courses"].active')
+        ok("fresh profile opens on Courses")
+        page.click('.view-toggle button:has-text("Agent")')
+        page.wait_for_selector('nav.nav button[data-nav="university"]')
 
         for tab in AGENT_TABS:
             page.click(f'button[data-nav="{tab}"]')
@@ -345,15 +349,12 @@ def browser_smoke(api: str, web: str) -> None:
         page.click('.view-toggle button:has-text("Human")')
         page.wait_for_function(
             """() => {
-                const btn  = document.querySelector('button[data-nav="trailhead"]');
-                const main = document.querySelector('main');
-                return btn && btn.classList.contains('active') &&
-                       main && main.innerText.trim().length > 40;
+                const btn  = document.querySelector('button[data-nav="courses"]');
+                return btn && btn.classList.contains('active');
             }""")
-        ok("human view toggle → trailhead rendered")
+        ok("human view toggle → Courses")
 
         # Courses → two questions → Start the walk → a PoRA lesson on the Walk.
-        page.click('button[data-nav="courses"]')
         page.wait_for_selector('iframe[src*="pora-atlas.html"]')
         atlas = page.frame_locator('iframe[src*="pora-atlas.html"]')
         atlas.locator('button[data-bg="new"]').click()

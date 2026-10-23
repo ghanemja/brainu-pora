@@ -12,6 +12,8 @@ One clear path, one question per screen:
 2. **What do you want to be able to do?** Eight plain-language goals (follow a path, plan around obstacles, know where the robot is, build a map, and so on), or the whole book in order.
 3. **Your path.** A short ordered list of lessons that skips what your background already covers. Inside Brain University, **Start the walk** hands it to The Walk, one lesson per stop: key ideas, the Stanford lecture (played inline), the notebook (one click to Colab), the chapter to read, and a quick check. Standalone, the same lessons open on the page.
 
+Beside the card, **the course at a glance** draws every concept in five columns (the assumed background, then the book's four parts, grouped by chapter). As you answer, your path lights up in order, what your background already covers turns green, and the goal is filled in; arrows show what each lesson builds on. Click any concept to make it your goal. Brain University opens on this screen.
+
 Two optional extras sit below the card: a refresher walk through the book's assumed background (linear algebra, calculus and ODEs, optimization, neural networks), which also has its own cluster in the Brain University graph, and a collapsed list to open any single chapter. Progress is saved in the browser and shared with The Walk.
 
 The Agent view's L3 curriculum includes a Robot autonomy track (PORA-I to PORA-IV).

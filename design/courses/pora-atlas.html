@@ -55,7 +55,7 @@ a { color: var(--link); }
 button { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 [hidden] { display: none !important; }
-.wrap { max-width: 720px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 56px; display: grid; gap: 22px; }
+.wrap { max-width: 1360px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 56px; display: grid; gap: 22px; }
 .tag { font: 500 11.5px var(--f-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--ink-dim); }
 .head { text-align: center; display: grid; gap: 8px; }
 .head h1 { margin: 0; font-size: clamp(28px, 5vw, 40px); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
@@ -130,6 +130,44 @@ ol.ideas { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
 .why b.ok { color: var(--good); } .why b.no { color: var(--bad); }
 .try { font-size: 14.5px; padding: 12px 14px; border: 1px dashed var(--line-strong); border-radius: var(--r-sm); }
 .nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; border-top: 1px solid var(--line); padding-top: 16px; }
+/* Two panes: the question card, and the course map beside it. */
+.layout { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 22px; align-items: start; }
+.layout.solo { grid-template-columns: minmax(0, 760px); justify-content: center; }
+.layout.solo .graph { display: none; }
+@media (max-width: 1080px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+main { display: grid; gap: 18px; min-width: 0; }
+.graph { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 16px 10px; display: grid; gap: 10px; min-width: 0; position: sticky; top: 16px; }
+@media (max-width: 1080px) { .graph { position: static; } }
+.graph-h { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; }
+.graph-h h2 { margin: 0; font-size: 16px; letter-spacing: -0.01em; }
+.key { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; color: var(--ink-muted); align-items: center; }
+.key i { display: inline-block; width: 12px; height: 12px; border-radius: 4px; vertical-align: -2px; margin-right: 5px; border: 1.5px solid var(--ink-dim); }
+.key i.k-path { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.key i.k-goal { border-color: var(--accent); background: var(--accent); }
+.key i.k-known { border-color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
+.map { overflow-x: auto; overscroll-behavior-x: contain; }
+.map svg { display: block; width: 100%; min-width: 780px; height: auto; }
+.map .col-t { font: 600 12px var(--f-sans); fill: var(--ink); }
+.map .col-s { font: 500 10px var(--f-mono); fill: var(--ink-dim); letter-spacing: .04em; }
+.map .ch-t { font: 500 9.5px var(--f-mono); fill: var(--ink-dim); letter-spacing: .03em; }
+.map .n { cursor: pointer; }
+.map .n rect { fill: var(--bg-elev-2); stroke: var(--line-strong); stroke-width: 1; }
+.map .n text { font: 500 11.5px var(--f-sans); fill: var(--ink); pointer-events: none; }
+.map .n .num { font: 700 9.5px var(--f-mono); fill: var(--accent-ink); }
+.map .n .numbg { fill: var(--accent); }
+.map .n:hover rect, .map .n:focus-visible rect { stroke: var(--ink); stroke-width: 1.6; }
+.map .n:focus-visible { outline: none; }
+.map.has-path .n { opacity: .38; }
+.map.has-path .n.path, .map.has-path .n.known, .map.has-path .n.hover { opacity: 1; }
+.map .n.path rect { stroke: var(--accent); stroke-width: 1.6; fill: color-mix(in srgb, var(--accent) 9%, var(--bg-elev-2)); }
+.map .n.goal rect { fill: var(--accent); stroke: var(--accent); }
+.map .n.goal text { fill: var(--accent-ink); font-weight: 600; }
+.map .n.known rect { stroke: var(--good); fill: color-mix(in srgb, var(--good) 10%, var(--bg-elev-2)); }
+.map .n.known text { fill: var(--ink-muted); }
+.map .n.done rect { stroke: var(--good); }
+.map .e { fill: none; stroke: var(--accent); stroke-width: 1.4; opacity: .55; }
+.map .e.hov { stroke: var(--ink-muted); opacity: .8; stroke-dasharray: 3 3; }
+.graph .note { margin: 0; font-size: 12.5px; color: var(--ink-dim); }
 footer { text-align: center; font-size: 12.5px; color: var(--ink-dim); display: grid; gap: 4px; }
 footer p { margin: 0; }
 </style>
@@ -138,9 +176,18 @@ footer p { margin: 0; }
   <header class="head">
     <div class="tag">Unofficial study companion</div>
     <h1>Principles of Robot Autonomy</h1>
-    <p>Stanford's free robot autonomy textbook, one short lesson at a time. <a href="https://porabook.com/" target="_blank" rel="noopener">Read the book ↗</a></p>
+    <p>Stanford's free robot autonomy textbook, one short lesson at a time.</p>
+    <p class="hint"><a href="https://porabook.com/" target="_blank" rel="noopener">Read the book ↗</a> · <a id="paper-link" href="https://arxiv.org/abs/2608.03496" target="_blank" rel="noopener">Paper on arXiv ↗</a> · <a id="repo-link" href="https://github.com/StanfordASL/pora-exercises" target="_blank" rel="noopener">Exercises repo ↗</a></p>
   </header>
-  <main id="main" aria-live="polite"></main>
+  <div class="layout" id="layout">
+    <main id="main" aria-live="polite"></main>
+    <section class="graph" aria-labelledby="graph-t">
+      <div class="graph-h"><h2 id="graph-t">The course at a glance</h2>
+        <div class="key"><span><i class="k-path"></i>your path</span><span><i class="k-goal"></i>goal</span><span><i class="k-known"></i>you know it</span></div></div>
+      <div class="map" id="map"><svg id="mapsvg" role="img" aria-label="Every concept in the course, by part of the book"></svg></div>
+      <p class="note" id="map-note">Click any concept to make it your goal. Arrows run from what you need first to what it unlocks.</p>
+    </section>
+  </div>
   <footer>
     <p>Not affiliated with the book's authors, Stanford, or Cambridge University Press. Lessons are an independent study aid; the book is the reference.</p>
     <p id="credits"></p>
@@ -277,6 +324,88 @@ const PORA = {"meta":{"id":"pora","title":"Principles of Robot Autonomy","author
     else if (!S.goal || S.view === "goal") html = viewGoal();
     else html = viewPath();
     $("#main").innerHTML = html + (S.view === "lesson" && !EMBED ? "" : viewMore());
+    $("#layout").classList.toggle("solo", S.view === "lesson" && !EMBED);
+    if (typeof paintMap === "function") paintMap();
+  }
+
+  // ── Course map: five columns (background, then the book's four parts) ──
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+  const COLS = [{ title: "Background", sub: "MATH THE BOOK ASSUMES", chs: [null] }].concat(D.parts.filter(p => p.id !== 0).map((p, i) => ({
+    title: p.name.replace(/^Part [IV]+ · /, ""), sub: "PART " + ["I", "II", "III", "IV"][i], chs: (i === 0 ? [0] : []).concat(p.chapters) })));
+  const NW = 172, NH = 22, GAP = 4, CW = 196, HEAD = 40, CHH = 17;
+  const npos = {};
+  const trunc = (t, n) => t.length > n ? t.slice(0, n - 1) + "…" : t;
+  let mapH = 0;
+  const svg = $("#mapsvg"), gE = el("g", {}, svg), gN = el("g", {}, svg), gT = el("g", {}, svg);
+  const nodeEl = {};
+  COLS.forEach((col, ci) => {
+    const x = 8 + ci * CW; let y = HEAD;
+    const t = el("text", { x, y: 14, class: "col-s" }, gT); t.textContent = col.sub;
+    const t2 = el("text", { x, y: 30, class: "col-t" }, gT); t2.textContent = col.title;
+    col.chs.forEach(n => {
+      const items = D.concepts.filter(c => c.ch === n);
+      if (!items.length) return;
+      if (n != null) { const h = el("text", { x, y: y + 11, class: "ch-t" }, gT); const full = n === 0 ? "GETTING STARTED" : "CH " + n + " · " + chap[n].title.toUpperCase(); h.textContent = full.length > 30 ? full.slice(0, 29) + "…" : full;
+        const ht = el("title", {}, h); ht.textContent = n === 0 ? "Getting started" : "Chapter " + n + ": " + chap[n].title; y += CHH; }
+      items.forEach(c => {
+        npos[c.id] = { x, y, col: ci };
+        const g = el("g", { class: "n", transform: `translate(${x},${y})`, tabindex: 0, role: "button", "aria-label": `${c.name}. Make this my goal.` }, gN);
+        el("rect", { width: NW, height: NH, rx: 6 }, g);
+        const label = el("text", { x: 8, y: 15 }, g); label.textContent = trunc(c.name, 27);
+        const tip = el("title", {}, g); tip.textContent = `${c.name} (${chLong(c.ch)})`;
+        const nb = el("circle", { cx: 11, cy: NH / 2, r: 8, class: "numbg" }, g);
+        const nt = el("text", { x: 11, y: 15, class: "num", "text-anchor": "middle" }, g);
+        nb.style.display = nt.style.display = "none";
+        const pick = () => { custom = null; go("path", { bg: S.bg || "new", goal: c.id, i: 0 }); };
+        g.addEventListener("click", pick);
+        g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+        g.addEventListener("mouseenter", () => hover(c.id));
+        g.addEventListener("mouseleave", () => hover(null));
+        nodeEl[c.id] = { g, nb, nt, label };
+        y += NH + GAP;
+      });
+      y += 6;
+    });
+    mapH = Math.max(mapH, y);
+  });
+  svg.setAttribute("viewBox", `0 0 ${8 + COLS.length * CW} ${mapH + 4}`);
+  // Edge from prerequisite a to concept b, routed around the boxes.
+  const edgePath = (a, b) => {
+    const A = npos[a], B = npos[b], ay = A.y + NH / 2, by = B.y + NH / 2;
+    if (A.col === B.col) { const x = A.x + NW, bend = x + 14 + Math.min(10, Math.abs(by - ay) / 20); return `M${x},${ay} C${bend},${ay} ${bend},${by} ${x},${by}`; }
+    const fwd = A.col < B.col, x1 = fwd ? A.x + NW : A.x, x2 = fwd ? B.x : B.x + NW, mx = (x1 + x2) / 2;
+    return `M${x1},${ay} C${mx},${ay} ${mx},${by} ${x2},${by}`;
+  };
+  let hovered = null;
+  function hover(id) { hovered = id; paintMap(); }
+  function paintMap() {
+    const ids = steps(), on = new Set(ids), order = {};
+    ids.forEach((id, i) => order[id] = i + 1);
+    const b = !custom && S.bg ? D.backgrounds.find(x => x.id === S.bg) : null;
+    const goal = !custom && S.goal && S.goal !== ALL ? S.goal : null;
+    const need = goal ? new Set([goal, ...ancestors(goal)]) : null;
+    const known = new Set(b && need ? b.knows.filter(k => need.has(k)) : []);
+    $("#map").classList.toggle("has-path", on.size > 0);
+    D.concepts.forEach(c => {
+      const n = nodeEl[c.id], inPath = on.has(c.id);
+      n.g.classList.toggle("path", inPath);
+      n.g.classList.toggle("goal", c.id === goal);
+      n.g.classList.toggle("known", known.has(c.id));
+      n.g.classList.toggle("done", done.has(c.id));
+      n.g.classList.toggle("hover", c.id === hovered);
+      const show = inPath && c.id !== goal && on.size <= 40;
+      n.nb.style.display = n.nt.style.display = show ? "" : "none";
+      n.label.setAttribute("x", show ? 24 : 8);
+      n.label.textContent = trunc(c.name, show ? 25 : 27);
+      n.nt.textContent = done.has(c.id) ? "✓" : order[c.id] || "";
+    });
+    gE.textContent = "";
+    if (on.size && on.size <= 40) D.concepts.forEach(c => { if (on.has(c.id)) c.prereqs.forEach(p => { if (on.has(p)) el("path", { d: edgePath(p, c.id), class: "e" }, gE); }); });
+    if (hovered && !on.has(hovered)) C[hovered].prereqs.forEach(p => el("path", { d: edgePath(p, hovered), class: "e hov" }, gE));
+    $("#map-note").textContent = on.size
+      ? (on.size > 40 ? `All ${on.size} lessons are on this path. Click any concept to aim for it instead.` : `Your path is numbered in order${known.size ? `; the ${known.size} green ones you already know are skipped` : ""}. Click any concept to aim for it instead.`)
+      : "Click any concept to make it your goal. Hover one to see what it needs first.";
   }
 
   // ── Events ───────────────────────────────────────────────────────────
@@ -304,6 +433,8 @@ const PORA = {"meta":{"id":"pora","title":"Principles of Robot Autonomy","author
     }
   });
 
+  if (D.meta.arxivUrl) $("#paper-link").href = D.meta.arxivUrl;
+  if (D.meta.exercisesRepo) $("#repo-link").href = D.meta.exercisesRepo;
   $("#credits").innerHTML = `Lectures: Stanford AA174A and AA203. Notebooks: <a href="${esc(D.meta.exercisesRepo)}" target="_blank" rel="noopener">StanfordASL/pora-exercises</a>.`;
   if (S.view === "lesson") S.view = S.goal ? "path" : "bg";   // reopen on the path, not mid-lesson
   render();

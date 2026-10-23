@@ -173,17 +173,17 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const SCREENS_HUMAN = [
-  { id: "trailhead", label: "Trailhead",  hint: "01" },
-  { id: "walk",      label: "The walk",   hint: "02" },
-  { id: "branch",    label: "Bridge",     hint: "03" },
-  { id: "summit",    label: "Summit",     hint: "04" },
-  { id: "dashboard", label: "Dashboard",  hint: "05" },
-  { id: "propose",   label: "Propose",    hint: "06" },
-  { id: "explorer",  label: "3D mode",    hint: "07" },
-  { id: "arxivis",   label: "arXivis",    hint: "08" },
-  { id: "openprob",  label: "open problems", hint: "09" },
-  { id: "podcast",   label: "Podcast",    hint: "10" },
-  { id: "courses",   label: "Courses",    hint: "11" },
+  { id: "courses",   label: "Courses",    hint: "01" },
+  { id: "trailhead", label: "Trailhead",  hint: "02" },
+  { id: "walk",      label: "The walk",   hint: "03" },
+  { id: "branch",    label: "Bridge",     hint: "04" },
+  { id: "summit",    label: "Summit",     hint: "05" },
+  { id: "dashboard", label: "Dashboard",  hint: "06" },
+  { id: "propose",   label: "Propose",    hint: "07" },
+  { id: "explorer",  label: "3D mode",    hint: "08" },
+  { id: "arxivis",   label: "arXivis",    hint: "09" },
+  { id: "openprob",  label: "open problems", hint: "10" },
+  { id: "podcast",   label: "Podcast",    hint: "11" },
 ];
 
 const SCREENS_AGENT = [
@@ -203,10 +203,10 @@ function App() {
   const [view, setView] = useState(() => {
     try {
       const saved = localStorage.getItem("bu_view");
-      return saved === "human" || saved === "agent" ? saved : "agent";
-    } catch (_) { return "agent"; }
+      return saved === "human" || saved === "agent" ? saved : "human";
+    } catch (_) { return "human"; }
   });
-  const [screen, setScreen]     = useState(view === "agent" ? "university" : "trailhead");
+  const [screen, setScreen]     = useState(view === "agent" ? "university" : "courses");
   const [atpAgentId, setAtpAgentId] = useState(null);
   const [tour, setTour]         = useState(null);
   const [stopIdx, setStopIdx]   = useState(0);
@@ -227,7 +227,7 @@ function App() {
 
   // Auto-open the welcome tutorial on first visit (human view only).
   useEffect(() => {
-    if (view === "human" && window.BUTutorial?.shouldAutoOpenTutorial?.()) {
+    if (view === "human" && screen !== "courses" && window.BUTutorial?.shouldAutoOpenTutorial?.()) {
       setTutorialOpen(true);
     }
   }, [view]);
@@ -286,7 +286,7 @@ function App() {
     if (v === view) return;
     setView(v);
     setExplorer(false); setArxivisOpen(false); setOpenprobOpen(false);
-    setScreen(v === "agent" ? "university" : "trailhead");
+    setScreen(v === "agent" ? "university" : "courses");
   }, [view]);
 
   // Fast nav across top

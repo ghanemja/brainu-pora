@@ -675,3 +675,13 @@ body::before {
 [data-view="agent"] ::selection {
   background: color-mix(in oklch, var(--c-cert) 30%, transparent);
 }
+
+/* Phone width: keep the top bar inside the screen. The brand keeps its
+   glyph, the status labels hide, and the nav takes the remaining space. */
+@media (max-width: 760px) {
+  .topbar { padding: 0 10px; gap: 8px; }
+  .topbar .brand { max-width: none; }
+  .topbar .brand > span:not(.glyph) { display: none; }
+  .topbar .right { gap: 6px; }
+  .topbar .right > span { display: none; }
+}
