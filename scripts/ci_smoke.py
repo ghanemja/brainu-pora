@@ -352,20 +352,17 @@ def browser_smoke(api: str, web: str) -> None:
             }""")
         ok("human view toggle → trailhead rendered")
 
-        # Courses → PoRA course page (iframe) → plan a route → walk it.
+        # Courses → two questions → Start the walk → a PoRA lesson on the Walk.
         page.click('button[data-nav="courses"]')
         page.wait_for_selector('iframe[src*="pora-atlas.html"]')
         atlas = page.frame_locator('iframe[src*="pora-atlas.html"]')
-        atlas.locator("#v-syllabus .chap").first.wait_for()
-        chapters = atlas.locator("#v-syllabus .chap").count()
-        if chapters < 19:
-            die(f"PoRA syllabus rendered {chapters} chapter cards, expected ≥ 19")
-        atlas.locator('[data-go="kalman_filter"]').first.click()
-        atlas.locator("#drawer.open [data-check] .opt").first.wait_for()
-        ok(f"courses tab: PoRA syllabus ({chapters} cards) + concept drawer")
-        atlas.locator("#dr-close").click()
-        atlas.locator("#go").click()
-        atlas.locator("[data-walkroute]").click()
+        atlas.locator('button[data-bg="new"]').click()
+        atlas.locator('button[data-goal="ekf_localization"]').click()
+        steps = atlas.locator("ol.path li").count()
+        if steps < 5:
+            die(f"PoRA path to EKF localization has {steps} lessons, expected ≥ 5")
+        ok(f"courses tab: two questions → {steps}-lesson path")
+        atlas.locator("button[data-start]").click()
         page.wait_for_function(
             """() => {
                 const btn  = document.querySelector('button[data-nav="walk"]');

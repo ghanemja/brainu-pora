@@ -6,23 +6,23 @@ The book teaches the autonomy stack as a whole: dynamics and control, planning, 
 
 ## What it does
 
-- **Syllabus.** The book's four parts and 19 chapters (plus the software chapter and assumed background) as cards: the concepts in each chapter, how many lectures and notebooks cover it, a link to read it, and progress.
-- **Stack map.** Concepts in six lanes (foundations at the bottom), ordered left to right by prerequisite depth, with zoom and lane filters. Square boxes are classical methods, rounded boxes are learned ones.
-- **Lectures.** All 33 Stanford recordings (AA174A and AA203), playable in the page, each tagged with the concepts it covers.
-- **Notebooks.** All 40 notebooks from the exercises repo, grouped by chapter, marked exercise or demo, with one-click Colab and GitHub links.
-- **Concept cards.** Three key ideas, the lectures (inline), notebooks, the chapter to read, a concept check with explanation, a try-it prompt, and what the concept needs and unlocks.
-- **Route planner.** Pick a background and a goal; the Atlas skips what you know and orders the rest by prerequisites, then chapter.
-- **Progress.** "I've learned this" (or a correct concept check) is saved in the browser and shared with the Walk screen.
-- **Brain University handoff.** Inside Brain University (Human view, Courses tab) any route or chapter can be walked as a guided tour. Each stop shows the key ideas, plays the lecture inline, links the notebooks, and asks the concept check.
-- **Agent view.** ATP's L3 curriculum includes a Robot autonomy track (PORA-I to PORA-IV), and the open Controls & robotics expert request lists the book as a training corpus.
+One clear path, one question per screen:
+
+1. **Where are you starting from?** New to robotics, or coming from ML, controls, or software.
+2. **What do you want to be able to do?** Eight plain-language goals (follow a path, plan around obstacles, know where the robot is, build a map, and so on), or the whole book in order.
+3. **Your path.** A short ordered list of lessons that skips what your background already covers. Inside Brain University, **Start the walk** hands it to The Walk, one lesson per stop: key ideas, the Stanford lecture (played inline), the notebook (one click to Colab), the chapter to read, and a quick check. Standalone, the same lessons open on the page.
+
+Two optional extras sit below the card: a refresher walk through the book's assumed background (linear algebra, calculus and ODEs, optimization, neural networks), which also has its own cluster in the Brain University graph, and a collapsed list to open any single chapter. Progress is saved in the browser and shared with The Walk.
+
+The Agent view's L3 curriculum includes a Robot autonomy track (PORA-I to PORA-IV).
 
 ## Files
 
 | Path | What it is |
 | --- | --- |
-| `courses/pora/pora.json` | Concepts, prerequisites, chapters, notebooks, lectures, backgrounds, official resource links |
+| `courses/pora/pora.json` | Concepts, prerequisites, chapters, notebooks, lectures, backgrounds, goals, resource links |
 | `courses/pora/study.json` | Per concept: three key ideas, a four-option concept check with explanation, and a try-it prompt |
-| `courses/pora/atlas.template.html` | The course page; data is inlined at build time |
+| `courses/pora/atlas.template.html` | The Courses screen (two questions, then a path); data is inlined at build time |
 | `courses/pora/build.py` | Validates the data and generates every output below |
 | `design/courses/pora-atlas.html` | Standalone course page, served by Brain University |
 | `design/courses/pora_bu.js` | Adds the course cluster, lessons (with materials and checks), and tours to `BU_DATA` |

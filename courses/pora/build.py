@@ -140,6 +140,9 @@ def validate(d: dict) -> None:
         for x in b["knows"]:
             if x not in C:
                 err.append(f"background {b['id']}: unknown concept {x}")
+    for g in d.get("goals", []):
+        if g["id"] not in C:
+            err.append(f"goal {g['label']}: unknown concept {g['id']}")
     if not any(b["id"] == "new" for b in d["backgrounds"]):
         err.append("backgrounds must include id 'new' (the planner default)")
     for r in d["meta"].get("resources", []):
@@ -247,8 +250,6 @@ def bu_lessons(d: dict, C: dict, kids: dict) -> dict:
     for c in d["concepts"]:
         m = materials(c, d)
         ideas = [{"h": "", "b": p} for p in c["points"]]
-        if kids[c["id"]]:
-            ideas.append({"h": "Unlocks.", "b": ", ".join(C[k]["name"] for k in kids[c["id"]]) + "."})
         lessons[c["wiki"]] = {
             "title": c["name"], "summary": c["summary"], "key_ideas": ideas,
             "worked_example": c["tryIt"],
@@ -261,7 +262,8 @@ def bu_lessons(d: dict, C: dict, kids: dict) -> dict:
 
 
 def bu_js(d: dict, C: dict, kids: dict) -> str:
-    nodes = [{"id": c["wiki"], "name": c["name"], "degree": len(c["prereqs"]) + len(kids[c["id"]])} for c in d["concepts"]]
+    nodes = [{"id": c["wiki"], "name": c["name"], "degree": len(c["prereqs"]) + len(kids[c["id"]]),
+              "bg": c["ch"] is None} for c in d["concepts"]]
     edges = [[C[p]["wiki"], c["wiki"]] for c in d["concepts"] for p in c["prereqs"]]
     payload = {"nodes": nodes, "edges": edges, "lessons": bu_lessons(d, C, kids),
                "chapters": {c["wiki"]: c["ch"] for c in d["concepts"]},
@@ -277,9 +279,15 @@ def bu_js(d: dict, C: dict, kids: dict) -> str:
   var cid = B.CLUSTERS.length;
   B.CLUSTERS.push({{ id: cid, name: "Robot autonomy (PoRA)", color: "#c2410c", emoji: "\\u2699",
     blurb: "Principles of Robot Autonomy: dynamics, control, planning, perception, estimation, and learning." }});
+  // The math the book assumes gets its own cluster, so it reads as optional prep in the graph.
+  var bgid = B.CLUSTERS.length;
+  B.CLUSTERS.push({{ id: bgid, name: "Robot autonomy: assumed background", color: "#64748b", emoji: "\u2211",
+    blurb: "The math Principles of Robot Autonomy assumes: linear algebra, calculus and ODEs, optimization, and neural networks." }});
   var have = {{}};
   B.NODES.forEach(function (n) {{ have[n.id] = n; }});
-  P.nodes.forEach(function (n) {{ if (!have[n.id]) B.NODES.push({{ id: n.id, name: n.name, degree: n.degree, cluster: cid }}); }});
+  P.nodes.forEach(function (n) {{ if (!have[n.id]) B.NODES.push({{ id: n.id, name: n.name, degree: n.degree, cluster: n.bg ? bgid : cid }}); }});
+  var clusterOf = {{}};
+  P.nodes.forEach(function (n) {{ clusterOf[n.id] = have[n.id] ? have[n.id].cluster : n.bg ? bgid : cid; }});
   P.edges.forEach(function (e) {{ B.EDGES.push(e); }});
   var names = {{}};
   Object.keys(P.lessons).forEach(function (k) {{
@@ -294,7 +302,7 @@ def bu_js(d: dict, C: dict, kids: dict) -> str:
     }}) : L;
     names[k] = B.LESSONS[k].title || L.title;
   }});
-  B.PORA = {{ clusterId: cid, lessons: P.lessons, names: names,
+  B.PORA = {{ clusterId: cid, backgroundClusterId: bgid, lessons: P.lessons, names: names,
     // Shares progress with the Atlas (same origin, same localStorage key).
     isLearned: function (k) {{ try {{ return JSON.parse(localStorage.getItem("pora-done") || "[]").indexOf(P.ids[k]) >= 0; }} catch (e) {{ return false; }} }},
     markLearned: function (k) {{
@@ -311,7 +319,7 @@ def bu_js(d: dict, C: dict, kids: dict) -> str:
       var prev = arr[i - 1], ch = P.chapters[s];
       var where = ch === null || ch === undefined ? "assumed background" : ch === 0 ? "the software chapter" : "chapter " + ch;
       return {{
-        node: s, cluster: have[s] ? have[s].cluster : cid,
+        node: s, cluster: clusterOf[s],
         kind: arr.length === 1 ? "capstone" : i === 0 ? "start" : i === arr.length - 1 ? "capstone" : "deepen",
         rationale: i === 0
           ? "Start with " + names[s] + " (" + where + ")." + (arr.length > 1 ? " Everything later on this route builds on it." : "")

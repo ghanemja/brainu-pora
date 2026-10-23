@@ -1,29 +1,22 @@
 <title>PoRA Atlas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="An unofficial interactive companion to Principles of Robot Autonomy: chapter-by-chapter syllabus, prerequisite routes, embedded Stanford lectures, and runnable notebooks.">
+<meta name="description" content="An unofficial study companion to Principles of Robot Autonomy: answer two questions and get a short path of lessons, each with its lecture, notebook, and a quick check.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
-/* Tokens mirror Brain University (design/styles.css). When embedded in Brain
-   University the script copies the parent's live palette over these. */
+/* One centered card, one question at a time, like Brain University's Trailhead.
+   Tokens mirror design/styles.css; when embedded, the script copies the parent's live palette. */
 :root {
   --bg: #efebe2; --bg-elev: #f6f3ec; --bg-elev-2: #fbf9f4;
   --ink: #1a1d2b; --ink-muted: #565b6c; --ink-dim: #868b9a;
   --line: rgba(26, 29, 43, 0.10); --line-strong: rgba(26, 29, 43, 0.22);
   --accent: #c2410c; --accent-ink: #ffffff; --good: #15803d; --bad: #b91c1c; --link: #1e6fa8;
-  --lane-F: #64748b; --lane-D: #1d6f9f; --lane-P: #0f8a6a; --lane-S: #a16207; --lane-E: #7c3aed; --lane-L: #be123c;
   --f-sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
-  --r: 10px; --r-sm: 6px;
-  --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 28px rgba(0,0,0,.08);
+  --r: 14px; --r-sm: 8px;
+  --shadow: 0 1px 2px rgba(0,0,0,.05), 0 12px 40px rgba(0,0,0,.08);
   color-scheme: light;
-}
-:root[data-tone="dark"] {
-  --accent: #fb923c; --accent-ink: #1c0d03; --good: #4ade80; --bad: #f87171; --link: #7dd3fc;
-  --lane-F: #94a3b8; --lane-D: #60b4e6; --lane-P: #34d399; --lane-S: #fbbf24; --lane-E: #b794f6; --lane-L: #fb7185;
-  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 32px rgba(0,0,0,.4);
-  color-scheme: dark;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not([data-embedded]) {
@@ -31,7 +24,7 @@
     --ink: #eef1f8; --ink-muted: #a3abc2; --ink-dim: #6b7390;
     --line: rgba(160, 190, 230, 0.13); --line-strong: rgba(160, 190, 230, 0.26);
     --accent: #fb923c; --accent-ink: #1c0d03; --good: #4ade80; --bad: #f87171; --link: #7dd3fc;
-    --lane-F: #94a3b8; --lane-D: #60b4e6; --lane-P: #34d399; --lane-S: #fbbf24; --lane-E: #b794f6; --lane-L: #fb7185;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.4);
     color-scheme: dark;
   }
 }
@@ -40,7 +33,12 @@
   --ink: #eef1f8; --ink-muted: #a3abc2; --ink-dim: #6b7390;
   --line: rgba(160, 190, 230, 0.13); --line-strong: rgba(160, 190, 230, 0.26);
   --accent: #fb923c; --accent-ink: #1c0d03; --good: #4ade80; --bad: #f87171; --link: #7dd3fc;
-  --lane-F: #94a3b8; --lane-D: #60b4e6; --lane-P: #34d399; --lane-S: #fbbf24; --lane-E: #b794f6; --lane-L: #fb7185;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.4);
+  color-scheme: dark;
+}
+:root[data-tone="dark"] {
+  --accent: #fb923c; --accent-ink: #1c0d03; --good: #4ade80; --bad: #f87171; --link: #7dd3fc;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.4);
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -48,284 +46,117 @@ html, body { margin: 0; background: var(--bg); color: var(--ink); }
 body { font: 15px/1.55 var(--f-sans); -webkit-font-smoothing: antialiased; }
 a { color: var(--link); }
 button { font: inherit; color: inherit; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-.wrap { max-width: 1280px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.mono { font-family: var(--f-mono); }
-.eyebrow { font: 500 11.5px var(--f-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--ink-dim); }
-.muted { color: var(--ink-muted); }
-.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 [hidden] { display: none !important; }
+.wrap { max-width: 720px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 56px; display: grid; gap: 22px; }
+.tag { font: 500 11.5px var(--f-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--ink-dim); }
+.head { text-align: center; display: grid; gap: 8px; }
+.head h1 { margin: 0; font-size: clamp(28px, 5vw, 40px); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
+.head p { margin: 0; color: var(--ink-muted); }
 
-/* Buttons */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--bg-elev-2); font-weight: 600; font-size: 14px; cursor: pointer; text-decoration: none; color: var(--ink); white-space: nowrap; }
-.btn:hover { border-color: var(--ink-muted); }
+.card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 26px; display: grid; gap: 18px; min-width: 0; }
+@media (max-width: 520px) { .card { padding: 18px; } }
+.card h2 { margin: 0; font-size: 22px; letter-spacing: -0.015em; line-height: 1.25; text-wrap: balance; }
+.step { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 560px) { .choices { grid-template-columns: minmax(0, 1fr); } }
+.choice { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 3px; align-content: start; padding: 14px 16px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--bg-elev-2); min-width: 0; }
+.choice b { font-size: 15px; font-weight: 600; }
+.choice span { font-size: 13px; color: var(--ink-muted); }
+.choice:hover { border-color: var(--ink-muted); }
+.choice:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.choice.wide { grid-column: 1 / -1; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 22px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--bg-elev-2); font-weight: 600; font-size: 15px; cursor: pointer; text-decoration: none; color: var(--ink); }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .btn.primary:hover { filter: brightness(1.06); }
-.btn.sm { min-height: 32px; padding: 4px 12px; font-size: 13px; }
-.btn.ghost { background: transparent; }
-.btn.block { width: 100%; }
+.btn.sm { min-height: 34px; padding: 6px 14px; font-size: 13.5px; }
+.link { all: unset; cursor: pointer; color: var(--link); font-size: 14px; }
+.link:hover { text-decoration: underline; }
+.link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* Hero */
-.hero { padding: 28px 0 20px; display: grid; gap: 18px; }
-.hero-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: end; }
-@media (max-width: 760px) { .hero-top { grid-template-columns: minmax(0, 1fr); } }
-h1 { font-size: clamp(30px, 4.4vw, 46px); line-height: 1.04; letter-spacing: -0.025em; margin: 6px 0 10px; font-weight: 700; text-wrap: balance; }
-.lede { margin: 0; max-width: 68ch; color: var(--ink-muted); font-size: 16px; }
-.progress-card { min-width: 240px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 8px; }
-.progress-card b { font-size: 26px; letter-spacing: -0.02em; }
-.bar { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
-.bar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width .3s; }
-.resources { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
-@media (max-width: 1000px) { .resources { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 420px) { .resources { grid-template-columns: minmax(0, 1fr); } }
-.res { display: grid; gap: 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-elev); text-decoration: none; color: var(--ink); min-width: 0; }
-.res:hover { border-color: var(--line-strong); box-shadow: var(--shadow); }
-.res b { font-size: 14px; display: flex; align-items: center; gap: 6px; }
-.res span { font-size: 12.5px; color: var(--ink-muted); }
-.res b::after { content: "↗"; color: var(--ink-dim); font-weight: 400; margin-left: auto; }
+ol.path { list-style: none; margin: 0; padding: 0; display: grid; max-height: 340px; overflow: auto; }
+ol.path li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 4px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+ol.path li:last-child { border-bottom: 0; }
+ol.path .n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font: 600 11px var(--f-mono); border: 1px solid var(--line-strong); color: var(--ink-muted); }
+ol.path li.done .n { background: var(--good); border-color: var(--good); color: #fff; }
+ol.path li.next .n { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+ol.path small { font: 500 11px var(--f-mono); color: var(--ink-dim); white-space: nowrap; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.hint { font-size: 13px; color: var(--ink-muted); }
 
-/* Planner */
-.planner { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.4fr) auto; gap: 12px; align-items: end; padding: 14px 16px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r); }
-.planner .ttl { align-self: center; font-weight: 600; font-size: 15px; padding-right: 6px; }
-.planner .ttl small { display: block; color: var(--ink-muted); font-weight: 400; font-size: 12.5px; }
-@media (max-width: 900px) { .planner { grid-template-columns: minmax(0, 1fr); } }
-.field { display: grid; gap: 4px; min-width: 0; }
-.field label { font: 500 11px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
-select, input[type="search"] { font: 500 14.5px var(--f-sans); color: var(--ink); background: var(--bg-elev-2); border: 1px solid var(--line-strong); border-radius: var(--r-sm); padding: 9px 10px; min-height: 40px; width: 100%; min-width: 0; }
+.more { display: grid; gap: 12px; justify-items: center; text-align: center; }
+details { width: 100%; text-align: left; border-top: 1px solid var(--line); padding-top: 12px; }
+summary { cursor: pointer; color: var(--ink-muted); font-size: 14px; text-align: center; list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: " ▾"; }
+details[open] summary::after { content: " ▴"; }
+.chapters { display: grid; gap: 14px; margin-top: 14px; }
+.chapters h3 { margin: 0 0 4px; font-size: 13px; color: var(--ink-dim); font-weight: 600; }
+.chapters ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.chapters button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; gap: 10px; padding: 6px 4px; font-size: 14.5px; border-radius: 6px; width: 100%; }
+.chapters button:hover { background: var(--bg-elev); }
+.chapters button:focus-visible { outline: 2px solid var(--accent); }
+.chapters button span { font: 500 11.5px var(--f-mono); color: var(--ink-dim); min-width: 22px; padding-top: 2px; }
 
-/* Tabs */
-.tabs { display: flex; gap: 4px; margin: 22px 0 16px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
-.tabs button { all: unset; cursor: pointer; padding: 10px 14px; font-weight: 600; font-size: 14.5px; color: var(--ink-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
-.tabs button[aria-selected="true"] { color: var(--ink); border-color: var(--accent); }
-.tabs button:focus-visible { outline: 2px solid var(--accent); }
-.tabs .count { font: 500 11px var(--f-mono); color: var(--ink-dim); margin-left: 6px; }
-
-/* Syllabus */
-.part { margin: 4px 0 26px; }
-.part-h { display: flex; align-items: baseline; gap: 12px; margin: 0 0 12px; }
-.part-h h2 { margin: 0; font-size: 19px; letter-spacing: -0.01em; }
-.part-h span { color: var(--ink-dim); font: 500 12px var(--f-mono); }
-.chapters { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: 12px; }
-.chap { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
-.chap-h { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; }
-.chap-n { font: 600 12px var(--f-mono); width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; background: var(--bg-elev-2); border: 1px solid var(--line); color: var(--ink-muted); }
-.chap.done .chap-n { background: var(--good); color: #fff; border-color: var(--good); }
-.chap h3 { margin: 0; font-size: 16px; line-height: 1.3; letter-spacing: -0.01em; }
-.chap .sub { font: 500 11.5px var(--f-mono); color: var(--ink-dim); margin-top: 3px; }
-.concepts { display: flex; flex-wrap: wrap; gap: 6px; }
-.cchip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 8px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--bg-elev-2); font-size: 13px; cursor: pointer; text-align: left; }
-.cchip:hover { border-color: var(--ink-muted); }
-.cchip i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
-.cchip.done { border-color: color-mix(in srgb, var(--good) 55%, transparent); }
-.cchip.done::after { content: "✓"; color: var(--good); font-weight: 700; font-size: 12px; }
-.chap-f { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; border-top: 1px dashed var(--line); padding-top: 10px; }
-.chap-f .mats { font: 500 12px var(--f-mono); color: var(--ink-muted); display: flex; gap: 12px; }
-.chap-f .acts { display: flex; gap: 6px; flex-wrap: wrap; }
-
-/* Map */
-.toolbar { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin-bottom: 10px; }
-.toolbar .search { flex: 1 1 220px; max-width: 340px; }
-.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line-strong); background: var(--bg-elev-2); border-radius: 999px; padding: 4px 10px 4px 8px; cursor: pointer; font-size: 13px; font-weight: 500; }
-.chip i { width: 10px; height: 10px; border-radius: 3px; }
-.chip[aria-pressed="false"] { opacity: .4; }
-.zoom { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 999px; overflow: hidden; margin-left: auto; }
-.zoom button { all: unset; cursor: pointer; padding: 5px 12px; font: 600 13px var(--f-mono); }
-.zoom button + button { border-left: 1px solid var(--line); }
-.zoom button:hover { background: var(--bg-elev-2); }
-.graph-box { border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-elev); overflow: auto; height: min(72vh, 760px); position: relative; overscroll-behavior: contain; }
-svg#g { display: block; }
-.lane-band { fill: var(--ink); opacity: .028; }
-.lane-label { font: 700 12px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; }
-.edge { fill: none; stroke: var(--ink-dim); stroke-width: 1.1; opacity: .4; }
-.node rect { fill: var(--bg-elev-2); stroke-width: 1.6; }
-.node text { font: 500 13px var(--f-sans); fill: var(--ink); pointer-events: none; }
-.node .chn { font: 500 10px var(--f-mono); fill: var(--ink-dim); }
-.node { cursor: pointer; }
-.node.foundation rect { stroke-dasharray: 4 3; }
-.node:hover rect, .node:focus-visible rect { stroke-width: 3; }
-.node:focus-visible { outline: none; }
-.node.done rect { fill: color-mix(in srgb, var(--good) 14%, var(--bg-elev-2)); }
-.dim .node { opacity: .16; }
-.dim .edge { opacity: .05; }
-.dim .node.on { opacity: 1; }
-.dim .edge.on { opacity: .95; stroke: var(--accent); stroke-width: 2; }
-.node.sel rect { stroke: var(--accent) !important; stroke-width: 3.5; }
-.node .step { font: 700 11px var(--f-mono); fill: var(--accent-ink); }
-.node .stepbg { fill: var(--accent); }
-.node.faded { opacity: .18; }
-.hide { display: none; }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-size: 12.5px; color: var(--ink-muted); }
-.legend s { display: inline-block; width: 22px; height: 12px; border: 1.5px solid var(--ink-muted); text-decoration: none; vertical-align: -2px; margin-right: 6px; }
-
-/* Lectures + notebooks */
-.course-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 14px; margin: 6px 0 12px; }
-.course-h h2 { margin: 0; font-size: 19px; }
-.grid-cards { display: grid; align-items: start; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 12px; margin-bottom: 28px; }
-.lec { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; display: grid; align-content: start; min-width: 0; }
-.thumb { all: unset; box-sizing: border-box; cursor: pointer; position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; background: #0b0f1a center / cover no-repeat; }
-.thumb.nothumb { background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 30%, #10131c), #10131c); text-decoration: none; }
-.thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,.55)); }
-.thumb .play { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 54px; height: 54px; border-radius: 50%; background: rgba(0,0,0,.6); display: grid; place-items: center; z-index: 1; transition: transform .15s; }
-.thumb .play::before { content: ""; border-left: 16px solid #fff; border-top: 10px solid transparent; border-bottom: 10px solid transparent; margin-left: 4px; }
-.thumb:hover .play, .thumb:focus-visible .play { transform: scale(1.08); background: var(--accent); }
-.thumb .tag { position: absolute; left: 10px; bottom: 8px; z-index: 1; font: 600 11px var(--f-mono); color: #fff; letter-spacing: .05em; }
-.lec-b { padding: 12px 14px 14px; display: grid; gap: 8px; }
-.lec-b h3 { margin: 0; font-size: 14.5px; line-height: 1.35; }
-.video { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: var(--r-sm); overflow: hidden; }
+/* Lesson view: standalone only. Inside Brain University, lessons are The Walk. */
+.lesson { gap: 22px; }
+.lesson h2 { font-size: clamp(24px, 4vw, 30px); }
+.lesson .sum { margin: 0; color: var(--ink-muted); font-size: 16px; }
+.sec { display: grid; gap: 8px; min-width: 0; }
+.sec h3 { margin: 0; font: 600 11.5px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
+ol.ideas { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.row { display: flex; justify-content: space-between; align-items: center; gap: 10px 14px; flex-wrap: wrap; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--bg-elev-2); }
+.row b { font-size: 14.5px; display: block; }
+.row small { font: 500 11.5px var(--f-mono); color: var(--ink-dim); }
+.video { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: #000; border-radius: var(--r-sm); overflow: hidden; }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.nb-list { display: grid; gap: 8px; margin-bottom: 26px; }
-.nb { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; align-items: center; padding: 12px 14px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r); }
-@media (max-width: 640px) { .nb { grid-template-columns: minmax(0, 1fr); } }
-.nb b { font-size: 14.5px; }
-.nb .meta { font: 500 11.5px var(--f-mono); color: var(--ink-dim); display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 2px; }
-.nb .acts { display: flex; gap: 6px; flex-wrap: wrap; }
-.kindtag { font: 600 10.5px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; background: var(--bg-elev-2); border: 1px solid var(--line); color: var(--ink-muted); }
-.kindtag.ex { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
-
-/* Drawer */
-.scrim { position: fixed; inset: 0; background: rgba(5, 8, 16, .38); z-index: 20; opacity: 0; pointer-events: none; transition: opacity .2s; }
-.scrim.open { opacity: 1; pointer-events: auto; }
-.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(500px, 100vw); background: var(--bg); border-left: 1px solid var(--line-strong); box-shadow: var(--shadow); z-index: 21; transform: translateX(102%); transition: transform .24s ease; display: grid; grid-template-rows: auto minmax(0, 1fr); }
-.drawer.open { transform: none; }
-@media (prefers-reduced-motion: reduce) { .drawer, .scrim { transition: none; } }
-.drawer-h { display: flex; align-items: center; gap: 8px; padding: calc(12px + env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px)) 12px 20px; border-bottom: 1px solid var(--line); }
-.drawer-h .crumb { flex: 1; min-width: 0; font: 500 12px var(--f-mono); color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.icon-btn { all: unset; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 20px; color: var(--ink-muted); }
-.icon-btn:hover { background: var(--bg-elev-2); color: var(--ink); }
-.drawer-b { overflow: auto; padding: 20px max(20px, env(safe-area-inset-right, 0px)) calc(40px + env(safe-area-inset-bottom, 0px)) 20px; display: grid; gap: 22px; align-content: start; overscroll-behavior: contain; }
-.drawer-b h2 { margin: 4px 0 6px; font-size: 26px; line-height: 1.15; letter-spacing: -0.02em; }
-.sec h4 { margin: 0 0 8px; font: 600 11.5px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
-.pills { display: flex; flex-wrap: wrap; gap: 6px; font: 500 12px var(--f-mono); }
-.pill { padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg-elev); }
-ol.points { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; counter-reset: p; }
-ol.points li { counter-increment: p; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; }
-ol.points li::before { content: counter(p, decimal-leading-zero); font: 600 12px var(--f-mono); color: var(--accent); padding-top: 2px; }
-.try { background: var(--bg-elev); border: 1px dashed var(--line-strong); border-radius: var(--r-sm); padding: 12px 14px; font-size: 14px; }
-.links { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.linkrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--bg-elev); }
-.linkrow b { font-size: 14px; display: block; }
-.linkrow small { font: 500 11.5px var(--f-mono); color: var(--ink-dim); }
-.linkrow .acts { display: flex; gap: 6px; }
-.vids { display: grid; gap: 12px; }
-.vid { border: 1px solid var(--line); border-radius: var(--r-sm); overflow: hidden; background: var(--bg-elev); }
-.vid .cap { padding: 8px 12px; display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px; align-items: baseline; }
-.vid .cap small { font: 500 11px var(--f-mono); color: var(--ink-dim); white-space: nowrap; }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.check { border: 1px solid var(--line); border-radius: var(--r); padding: 14px; background: var(--bg-elev); display: grid; gap: 10px; }
-.check p { margin: 0; font-weight: 500; }
-.opt { all: unset; cursor: pointer; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; padding: 9px 10px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--bg-elev-2); font-size: 14px; }
-.opt span:first-child { font: 600 12px var(--f-mono); color: var(--ink-dim); padding-top: 1px; }
+.quiz { display: grid; gap: 8px; }
+.quiz p { margin: 0; font-weight: 500; }
+.opt { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--bg-elev-2); font-size: 14.5px; }
+.opt span:first-child { font: 600 12px var(--f-mono); color: var(--ink-dim); padding-top: 2px; }
 .opt:hover:not([disabled]) { border-color: var(--ink-muted); }
+.opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .opt.right { border-color: var(--good); background: color-mix(in srgb, var(--good) 12%, var(--bg-elev-2)); }
 .opt.wrong { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 10%, var(--bg-elev-2)); }
 .opt[disabled] { cursor: default; }
-.why { font-size: 13.5px; padding: 10px 12px; border-radius: var(--r-sm); background: var(--bg-elev-2); }
+.why { font-size: 14px; padding: 10px 12px; border-radius: var(--r-sm); background: var(--bg-elev-2); }
 .why b.ok { color: var(--good); } .why b.no { color: var(--bad); }
-.done-toggle { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--r); border: 1px solid var(--line-strong); background: var(--bg-elev); cursor: pointer; font-weight: 600; }
-.done-toggle input { width: 18px; height: 18px; accent-color: var(--good); }
-.cta { display: grid; gap: 8px; }
-ol.route { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
-ol.route li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--bg-elev); }
-ol.route li.done { opacity: .62; }
-ol.route li .n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); font: 700 11px var(--f-mono); }
-ol.route li.done .n { background: var(--good); color: #fff; }
-ol.route button { all: unset; cursor: pointer; font-weight: 500; font-size: 14px; }
-ol.route button:hover { text-decoration: underline; }
-ol.route small { font: 500 11px var(--f-mono); color: var(--ink-dim); }
-.note { font-size: 12.5px; color: var(--ink-dim); margin: 0; }
-footer { border-top: 1px solid var(--line); margin-top: 18px; padding: 18px 0 34px; font-size: 13px; color: var(--ink-muted); display: grid; gap: 6px; }
-footer p { margin: 0; max-width: 95ch; }
-.toast { position: fixed; left: 50%; bottom: 20px; translate: -50% 0; background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; font-weight: 500; z-index: 40; box-shadow: var(--shadow); }
-@media (prefers-reduced-motion: no-preference) { .node rect, .edge, .node { transition: opacity .2s, stroke .2s; } }
+.try { font-size: 14.5px; padding: 12px 14px; border: 1px dashed var(--line-strong); border-radius: var(--r-sm); }
+.nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; border-top: 1px solid var(--line); padding-top: 16px; }
+footer { text-align: center; font-size: 12.5px; color: var(--ink-dim); display: grid; gap: 4px; }
+footer p { margin: 0; }
 </style>
 
-<div class="wrap" id="app">
-  <header class="hero">
-    <div class="hero-top">
-      <div>
-        <div class="eyebrow">Unofficial study companion · Stanford's free robot autonomy textbook</div>
-        <h1>Principles of Robot Autonomy</h1>
-        <p class="lede">The full PoRA course in one place: every chapter, the Stanford lectures that teach it, and the notebooks that let you build it. Plan a route from what you already know, watch the lectures that teach each idea, and check yourself as you go.</p>
-      </div>
-      <div class="progress-card" aria-live="polite">
-        <span class="eyebrow">Your progress</span>
-        <div><b id="pg-n">0</b> <span class="muted" id="pg-of">of 0 concepts learned</span></div>
-        <div class="bar"><i id="pg-bar" style="width:0%"></i></div>
-        <span class="muted" style="font-size:12.5px" id="pg-hint">Saved in this browser. Mark a concept learned from its card.</span>
-      </div>
-    </div>
-    <nav class="resources" id="resources" aria-label="Official course resources"></nav>
+<div class="wrap">
+  <header class="head">
+    <div class="tag">Unofficial study companion</div>
+    <h1>Principles of Robot Autonomy</h1>
+    <p>Stanford's free robot autonomy textbook, one short lesson at a time. <a href="https://porabook.com/" target="_blank" rel="noopener">Read the book ↗</a></p>
   </header>
-
-  <section class="planner" aria-label="Plan a learning route">
-    <div class="ttl">Plan a route<small>Skips what you know, orders the rest.</small></div>
-    <div class="field"><label for="bg">I'm coming from</label><select id="bg"></select></div>
-    <div class="field"><label for="goal">I want to understand</label><select id="goal"></select></div>
-    <button class="btn primary" id="go" type="button">Build my route</button>
-  </section>
-
-  <div class="tabs" role="tablist" aria-label="Views" id="tabs">
-    <button role="tab" id="t-syllabus" aria-controls="v-syllabus" data-tab="syllabus">Syllabus<span class="count" id="n-ch"></span></button>
-    <button role="tab" id="t-map" aria-controls="v-map" data-tab="map">Stack map<span class="count" id="n-c"></span></button>
-    <button role="tab" id="t-lectures" aria-controls="v-lectures" data-tab="lectures">Lectures<span class="count" id="n-l"></span></button>
-    <button role="tab" id="t-notebooks" aria-controls="v-notebooks" data-tab="notebooks">Notebooks<span class="count" id="n-nb"></span></button>
-  </div>
-
-  <main>
-    <section id="v-syllabus" role="tabpanel" aria-labelledby="t-syllabus"></section>
-    <section id="v-map" role="tabpanel" aria-labelledby="t-map" hidden>
-      <div class="toolbar">
-        <div class="search"><label class="sr" for="q">Find a concept</label><input type="search" id="q" placeholder="Find a concept: Kalman, RRT, imitation…" autocomplete="off"></div>
-        <div id="lanes" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-        <div class="zoom" role="group" aria-label="Zoom"><button type="button" id="zout" aria-label="Zoom out">−</button><button type="button" id="zfit">Fit</button><button type="button" id="zin" aria-label="Zoom in">+</button></div>
-      </div>
-      <div class="graph-box" id="box"><svg id="g" role="img" aria-label="Concept graph of the robot autonomy stack"></svg></div>
-      <div class="legend"><span><s style="border-radius:2px"></s>classical method</span><span><s style="border-radius:8px"></s>learned method</span><span><s style="border-style:dashed"></s>foundation</span><span>Lines run from a prerequisite to what it unlocks. Click any box.</span></div>
-    </section>
-    <section id="v-lectures" role="tabpanel" aria-labelledby="t-lectures" hidden></section>
-    <section id="v-notebooks" role="tabpanel" aria-labelledby="t-notebooks" hidden></section>
-  </main>
-
+  <main id="main" aria-live="polite"></main>
   <footer>
-    <p><b>Unofficial companion.</b> Not made by or affiliated with the book's authors, Stanford University, or Cambridge University Press. Key ideas, concept checks, and prerequisite links are an independent study aid; the book is the authoritative reference.</p>
+    <p>Not affiliated with the book's authors, Stanford, or Cambridge University Press. Lessons are an independent study aid; the book is the reference.</p>
     <p id="credits"></p>
-    <p>Atlas code under the MIT License; summaries, study notes, and graph data under CC BY 4.0. Lectures are embedded from the authors' public YouTube recordings.</p>
   </footer>
 </div>
-
-<div class="scrim" id="scrim"></div>
-<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dr-title" aria-hidden="true">
-  <div class="drawer-h">
-    <button class="icon-btn" id="dr-back" type="button" aria-label="Back" hidden>←</button>
-    <span class="crumb" id="dr-crumb"></span>
-    <button class="icon-btn" id="dr-close" type="button" aria-label="Close">×</button>
-  </div>
-  <div class="drawer-b" id="dr-body"></div>
-</aside>
 
 <script>
 const PORA = /*PORA_DATA*/null;
 (function () {
   "use strict";
-  const D = PORA, C = {}, kids = {};
-  D.concepts.forEach(c => { C[c.id] = c; kids[c.id] = []; });
-  D.concepts.forEach(c => c.prereqs.forEach(p => kids[p].push(c.id)));
+  const D = PORA, C = {};
+  D.concepts.forEach(c => { C[c.id] = c; });
   const chap = {}; D.chapters.forEach(ch => chap[ch.n] = ch);
-  const laneName = {}; D.layers.forEach(l => laneName[l.id] = l.name);
-  const laneOrder = ["L", "E", "S", "P", "D", "F"];
-  const laneVar = id => `var(--lane-${id})`;
   const EMBED = /[?&]embed=bu\b/.test(location.search);
-  // Hosts that cannot frame YouTube set this; lectures then open on YouTube.
-  const LINK_ONLY = window.PORA_LINK_ONLY === true;
+  const LINK_ONLY = window.PORA_LINK_ONLY === true;   // set by hosts that cannot frame YouTube
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
   };
-  const reduce = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // ── Theme: follow Brain University's palette when embedded ────────────
+  // Follow Brain University's palette when embedded.
   const root = document.documentElement;
   const syncTheme = () => {
     let src = null;
@@ -342,313 +173,133 @@ const PORA = /*PORA_DATA*/null;
   syncTheme();
   try { if (EMBED && parent !== window) new parent.MutationObserver(syncTheme).observe(parent.document.documentElement, { attributes: true, attributeFilter: ["data-palette", "style", "class"] }); } catch (e) {}
 
-  // ── Helpers ──────────────────────────────────────────────────────────
-  const chLabel = n => n == null ? "Background" : n === 0 ? "Getting started" : "Ch " + n;
-  const chLong = n => n == null ? "Assumed background" : n === 0 ? "Getting started" : "Chapter " + n;
-  const ytId = url => { const m = String(url).match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/); return m ? m[1] : null; };
-  const nbTitle = p => p.split("/").pop().replace(".ipynb", "").replace(/_/g, " ").replace(/\b\w/g, m => m.toUpperCase())
-    .replace(/\b(Lqr|Mpc|Pid|Rrt|Prm|Icp|Cnn|Ekf|Ukf|Slam|Tpbvp|Jax|Sift)\b/g, m => m.toUpperCase()).replace(/\bA Star\b/, "A*").replace(/\bPrm Star\b/i, "PRM*");
-  const isExercise = p => /\/exercises\//.test(p);
-  const nbLinks = p => ({ colab: D.exerciseBase.colab + p, github: D.exerciseBase.github + p });
-  const NB = {}; D.concepts.forEach(c => (c.exercises || []).forEach(p => (NB[p] = NB[p] || []).push(c.id)));
-  const LEC = {}; D.concepts.forEach(c => (c.lectures || []).forEach(l => (LEC[l] = LEC[l] || []).push(c.id)));
-
-  let done = new Set((store.get("pora-done", []) || []).filter(id => C[id]));
-  const isDone = id => done.has(id);
-  const setDone = (id, v) => { v ? done.add(id) : done.delete(id); store.set("pora-done", [...done]); refreshProgress(); paintMap(); renderSyllabus(); };
-
-  // depth = longest prerequisite chain; topo sort for routes
+  // ── Path planning: everything the goal needs, minus what the background knows ──
   const depth = {};
   const dfs = id => depth[id] ?? (depth[id] = C[id].prereqs.length ? 1 + Math.max(...C[id].prereqs.map(dfs)) : 0);
   D.concepts.forEach(c => dfs(c.id));
-  const ancestors = id => { const s = new Set(); const go = x => C[x].prereqs.forEach(p => { if (!s.has(p)) { s.add(p); go(p); } }); go(id); return s; };
   const chKey = id => C[id].ch ?? -1;
+  const ancestors = id => { const s = new Set(); const go = x => C[x].prereqs.forEach(p => { if (!s.has(p)) { s.add(p); go(p); } }); go(id); return s; };
   const topo = ids => { const set = new Set(ids), out = [], seen = new Set();
     const visit = x => { if (seen.has(x)) return; seen.add(x); C[x].prereqs.filter(p => set.has(p)).sort((a, b) => chKey(a) - chKey(b)).forEach(visit); out.push(x); };
     [...set].sort((a, b) => chKey(a) - chKey(b) || depth[a] - depth[b]).forEach(visit); return out; };
-
-  // ── Hero ─────────────────────────────────────────────────────────────
-  const M = D.meta, R = M.resources || [];
-  $("#resources").innerHTML = R.map(r => `<a class="res" href="${esc(r.url)}" target="_blank" rel="noopener"><b>${esc(r.name)}</b><span>${esc(r.blurb)}</span></a>`).join("");
-  $("#credits").innerHTML = `Book: <a href="${esc(M.siteUrl)}" target="_blank" rel="noopener">${esc(M.title)}</a> by ${esc(M.authors.slice(0, -1).join(", "))}, and ${esc(M.authors.slice(-1)[0])} (${esc(M.publisher)}). Exercises: <a href="${esc(M.exercisesRepo)}" target="_blank" rel="noopener">StanfordASL/pora-exercises</a>. Lectures: Stanford AA174A and AA203.`;
-  const nNb = Object.keys(NB).length, nLec = Object.keys(D.lectures).length, nCh = D.chapters.filter(c => c.n > 0).length;
-  $("#n-ch").textContent = nCh; $("#n-c").textContent = D.concepts.length; $("#n-l").textContent = nLec; $("#n-nb").textContent = nNb;
-  const refreshProgress = () => {
-    const n = done.size, t = D.concepts.length;
-    $("#pg-n").textContent = n; $("#pg-of").textContent = `of ${t} concepts learned`;
-    $("#pg-bar").style.width = (100 * n / t).toFixed(1) + "%";
-  };
-  refreshProgress();
-
-  // ── Planner ──────────────────────────────────────────────────────────
-  const bgSel = $("#bg"), goalSel = $("#goal");
-  D.backgrounds.forEach(b => bgSel.add(new Option(b.name, b.id)));
-  D.parts.forEach(p => { const og = document.createElement("optgroup"); og.label = p.name;
-    D.concepts.filter(c => p.chapters.includes(c.ch)).forEach(c => og.appendChild(new Option(`${c.name} (${chLabel(c.ch)})`, c.id))); goalSel.appendChild(og); });
-  bgSel.value = D.backgrounds.some(b => b.id === store.get("pora-bg2", "")) ? store.get("pora-bg2") : "new";
-  goalSel.value = C[store.get("pora-goal", "")] ? store.get("pora-goal") : "ekf_slam";
-  function routeTo(bgId, goal) {
+  const BACKGROUND = D.concepts.filter(c => c.ch == null).map(c => c.id);
+  const ALL = "__all";
+  function pathFor(bgId, goal) {
     const b = D.backgrounds.find(x => x.id === bgId) || D.backgrounds[0];
-    const need = ancestors(goal); need.add(goal);
-    const skip = x => x !== goal && (b.knows.includes(x));
-    return { bg: b.id, goal, steps: topo([...need].filter(x => !skip(x))), known: [...need].filter(skip) };
+    const need = goal === ALL ? new Set(D.concepts.map(c => c.id)) : new Set([goal, ...ancestors(goal)]);
+    return topo([...need].filter(x => x === goal || !b.knows.includes(x)));
   }
-  $("#go").onclick = () => {
-    store.set("pora-bg2", bgSel.value); store.set("pora-goal", goalSel.value);
-    route = routeTo(bgSel.value, goalSel.value); paintMap(); openDrawer({ type: "route" }, true);
+  const chLabel = n => n == null ? "Background" : n === 0 ? "Getting started" : "Ch " + n;
+  const chLong = n => n == null ? "Assumed background" : n === 0 ? "Getting started" : "Chapter " + n;
+
+  // ── State ────────────────────────────────────────────────────────────
+  const S = Object.assign({ view: "bg", bg: null, goal: null, i: 0 }, store.get("pora-simple", {}));
+  if (!D.backgrounds.some(b => b.id === S.bg)) S.bg = null;
+  if (S.goal !== ALL && !C[S.goal]) S.goal = null;
+  let custom = null;   // a one-off list: the background refresher or one chapter
+  const done = new Set((store.get("pora-done", []) || []).filter(id => C[id]));
+  const save = () => store.set("pora-simple", { view: custom ? "path" : S.view, bg: S.bg, goal: S.goal, i: custom ? 0 : S.i });
+  const markDone = id => { done.add(id); store.set("pora-done", [...done]); };
+  const steps = () => custom ? custom.steps : (S.bg && S.goal ? pathFor(S.bg, S.goal) : []);
+  const go = (view, extra) => { Object.assign(S, extra || {}, { view }); save(); render(); window.scrollTo({ top: 0 }); };
+
+  // Inside Brain University a path becomes a Walk; standalone it opens here as lessons.
+  const start = (ids, label) => {
+    if (EMBED) {
+      const w = ids.filter(id => C[id]).map(id => C[id].wiki);
+      try { parent.postMessage({ type: "pora:walk", label, steps: w }, location.origin); } catch (e) {}
+      return;
+    }
+    const first = ids.findIndex(id => !done.has(id));
+    go("lesson", { i: first < 0 ? 0 : first });
   };
 
-  // ── Tabs ─────────────────────────────────────────────────────────────
-  const tabs = [...document.querySelectorAll("#tabs [role=tab]")];
-  let tab = null;
-  const showTab = (name, focus) => {
-    if (!tabs.some(t => t.dataset.tab === name)) name = "syllabus";
-    tab = name; store.set("pora-tab", name);
-    tabs.forEach(t => { const on = t.dataset.tab === name; t.setAttribute("aria-selected", on); t.tabIndex = on ? 0 : -1; $("#" + t.getAttribute("aria-controls")).hidden = !on; if (on && focus) t.focus(); });
-    if (name === "map" && zoom === null) requestAnimationFrame(initZoom);
-  };
-  tabs.forEach((t, i) => {
-    t.addEventListener("click", () => showTab(t.dataset.tab));
-    t.addEventListener("keydown", e => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (d) { e.preventDefault(); showTab(tabs[(i + d + tabs.length) % tabs.length].dataset.tab, true); } });
-  });
-
-  // ── Syllabus ─────────────────────────────────────────────────────────
-  const chip = id => `<button class="cchip${isDone(id) ? " done" : ""}" type="button" data-go="${id}"><i style="background:${laneVar(C[id].layer)}"></i>${esc(C[id].name)}</button>`;
-  function renderSyllabus() {
-    const parts = D.parts.map(p => {
-      const cards = p.chapters.map(n => {
-        const ch = chap[n], items = D.concepts.filter(c => c.ch === n);
-        const nbs = new Set(items.flatMap(c => c.exercises || [])).size, lecs = new Set(items.flatMap(c => c.lectures || [])).size;
-        const all = items.length && items.every(c => isDone(c.id));
-        return `<article class="chap${all ? " done" : ""}">
-          <div class="chap-h"><div class="chap-n">${all ? "✓" : n === 0 ? "0" : n}</div>
-            <div><h3>${esc(ch.title)}</h3><div class="sub">${items.filter(c => isDone(c.id)).length}/${items.length} concepts learned</div></div></div>
-          <div class="concepts">${items.map(c => chip(c.id)).join("")}</div>
-          <div class="chap-f"><span class="mats"><span>▶ ${lecs} lecture${lecs === 1 ? "" : "s"}</span><span>⌘ ${nbs} notebook${nbs === 1 ? "" : "s"}</span></span>
-            <span class="acts"><a class="btn sm ghost" href="${esc(ch.url)}" target="_blank" rel="noopener">Read ↗</a>${EMBED && items.length ? `<button class="btn sm" type="button" data-walkch="${n}">Walk chapter</button>` : ""}</span></div>
-        </article>`; }).join("");
-      return `<section class="part"><div class="part-h"><h2>${esc(p.name)}</h2><span>${p.chapters.length} chapter${p.chapters.length === 1 ? "" : "s"}</span></div><div class="chapters">${cards}</div></section>`;
-    }).join("");
-    const bgc = D.concepts.filter(c => c.ch == null);
-    $("#v-syllabus").innerHTML = parts + `<section class="part"><div class="part-h"><h2>Assumed background</h2><span>math the book builds on</span></div>
-      <div class="chap"><p class="muted" style="margin:0">The book assumes these. Review any that feel shaky before Part I.</p><div class="concepts">${bgc.map(c => chip(c.id)).join("")}</div></div></section>`;
+  // ── Views ────────────────────────────────────────────────────────────
+  const stepTag = (n, back) => `<div class="step"><span class="tag">Step ${n} of 2</span>${back ? `<button class="link" type="button" data-back="${back}">← Back</button>` : ""}</div>`;
+  const viewBg = () => `<section class="card">${stepTag(1)}<h2>Where are you starting from?</h2>
+    <div class="choices">${D.backgrounds.map(b => `<button class="choice" type="button" data-bg="${b.id}"><b>${esc(b.name)}</b><span>${esc(b.blurb)}</span></button>`).join("")}</div></section>`;
+  const viewGoal = () => `<section class="card">${stepTag(2, "bg")}<h2>What do you want to be able to do?</h2>
+    <div class="choices">${(D.goals || []).map(g => `<button class="choice" type="button" data-goal="${g.id}"><b>${esc(g.label)}</b><span>${esc(g.blurb)}</span></button>`).join("")}
+    <button class="choice wide" type="button" data-goal="${ALL}"><b>Everything, in book order</b><span>The whole course, ${D.concepts.length} lessons.</span></button></div></section>`;
+  function viewPath() {
+    const ids = steps(), b = D.backgrounds.find(x => x.id === S.bg);
+    const g = S.goal === ALL ? "the whole course" : ((D.goals || []).find(x => x.id === S.goal) || { label: C[S.goal].name }).label;
+    const next = ids.findIndex(id => !done.has(id)), started = ids.some(id => done.has(id));
+    const label = EMBED ? (started ? "Continue the walk" : "Start the walk") : (started ? "Continue" : "Start lesson 1");
+    return `<section class="card">
+      <div class="step"><span class="tag">Your path · ${ids.length} lesson${ids.length === 1 ? "" : "s"}</span><button class="link" type="button" data-back="bg">Change answers</button></div>
+      <h2>${esc(g)}</h2>
+      <ol class="path">${ids.map((id, i) => `<li class="${done.has(id) ? "done" : i === next ? "next" : ""}"><span class="n">${done.has(id) ? "✓" : i + 1}</span><span>${esc(C[id].name)}</span><small>${chLabel(C[id].ch)}</small></li>`).join("")}</ol>
+      <div class="actions"><button class="btn primary" type="button" data-start>${label} →</button>
+        <span class="hint">Starting from: ${esc(b.name)}. Each lesson has key ideas, the lecture, the notebook, and a quick check.</span></div>
+    </section>`;
   }
-  renderSyllabus();
+  const viewMore = () => `<div class="more">
+    <button class="link" type="button" data-refresh>Need a refresher first? Brush up on the assumed background (${BACKGROUND.length} lessons) →</button>
+    <details><summary>Or open one chapter</summary><div class="chapters">${D.parts.map(p => `<div><h3>${esc(p.name)}</h3><ul>${p.chapters.map(n => `<li><button type="button" data-ch="${n}"><span>${n}</span>${esc(chap[n].title)}</button></li>`).join("")}</ul></div>`).join("")}</div></details>
+  </div>`;
+  function lectureHTML(L) {
+    const id = (String(L.url).match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/) || [])[1];
+    if (!LINK_ONLY && id) return `<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1" title="${esc(L.course)} lecture ${L.n}: ${esc(L.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
+    return `<div class="row"><div><b>${esc(L.title)}</b><small>Stanford ${esc(L.course)} · lecture ${L.n}</small></div><a class="btn sm" href="${esc(L.url)}" target="_blank" rel="noopener">Watch on YouTube ↗</a></div>`;
+  }
+  const nbName = p => p.split("/").pop().replace(".ipynb", "").replace(/_/g, " ").replace(/\b\w/g, m => m.toUpperCase());
+  function viewLesson() {
+    const ids = steps(); S.i = Math.max(0, Math.min(S.i, ids.length - 1));
+    const id = ids[S.i], c = C[id], ch = c.ch != null ? chap[c.ch] : null, k = c.check, last = S.i === ids.length - 1;
+    return `<section class="card lesson">
+      <div class="step"><span class="tag">Lesson ${S.i + 1} of ${ids.length} · ${chLong(c.ch)}</span><button class="link" type="button" data-back="path">${custom ? "← Back" : "← My path"}</button></div>
+      <div class="sec"><h2>${esc(c.name)}</h2><p class="sum">${esc(c.summary)}</p></div>
+      <div class="sec"><h3>Key ideas</h3><ol class="ideas">${c.points.map(p => `<li>${esc(p)}</li>`).join("")}</ol></div>
+      ${c.lectures.length ? `<div class="sec"><h3>Watch</h3>${c.lectures.map(l => lectureHTML(D.lectures[l])).join("")}</div>` : ""}
+      ${c.exercises.length ? `<div class="sec"><h3>Run</h3>${c.exercises.map(p => `<div class="row"><div><b>${esc(nbName(p))}</b><small>${/\/exercises\//.test(p) ? "Exercise" : "Demo"} notebook</small></div><a class="btn sm primary" href="${esc(D.exerciseBase.colab + p)}" target="_blank" rel="noopener">Open in Colab ↗</a></div>`).join("")}</div>` : ""}
+      ${ch ? `<div class="sec"><h3>Read</h3><div class="row"><div><b>${esc(ch.title)}</b><small>${chLong(c.ch)} · porabook.com</small></div><a class="btn sm" href="${esc(ch.url)}" target="_blank" rel="noopener">Read ↗</a></div></div>` : ""}
+      <div class="sec"><h3>Quick check</h3><div class="quiz" data-check="${id}"><p>${esc(k.q)}</p>${k.choices.map((x, i) => `<button class="opt" type="button" data-opt="${i}"><span>${"ABCD"[i]}</span><span>${esc(x)}</span></button>`).join("")}<div class="why" hidden></div></div></div>
+      <div class="sec"><h3>Try it</h3><div class="try">${esc(c.tryIt)}</div></div>
+      <div class="nav">${S.i > 0 ? `<button class="btn" type="button" data-step="-1">← Previous</button>` : "<span></span>"}
+        <button class="btn primary" type="button" data-step="1" data-done="${id}">${last ? "Done, finish ✓" : "Done, next lesson →"}</button></div>
+    </section>`;
+  }
+  const viewFinished = () => `<section class="card" style="text-align:center;justify-items:center"><span class="tag">Path complete</span>
+    <h2>You finished every lesson on this path.</h2><button class="btn primary" type="button" data-back="goal">Choose another goal</button></section>`;
+  function render() {
+    let html;
+    if (S.view === "lesson" && !EMBED && steps().length) html = viewLesson();
+    else if (S.view === "finished") html = viewFinished();
+    else if (!S.bg || S.view === "bg") html = viewBg();
+    else if (!S.goal || S.view === "goal") html = viewGoal();
+    else html = viewPath();
+    $("#main").innerHTML = html + (S.view === "lesson" && !EMBED ? "" : viewMore());
+  }
 
-  // ── Lectures ─────────────────────────────────────────────────────────
-  const courseName = { AA174A: "AA174A · Principles of Robot Autonomy I", AA203: "AA203 · Optimal and Learning-Based Control" };
-  const thumb = (L, key) => { const id = ytId(L.url);
-    if (LINK_ONLY) return `<a class="thumb nothumb" href="${esc(L.url)}" target="_blank" rel="noopener" aria-label="Watch ${esc(L.course)} lecture ${L.n} on YouTube: ${esc(L.title)}"><span class="play"></span><span class="tag">${esc(L.course)} · ${L.n} · YouTube ↗</span></a>`;
-    return `<button class="thumb" type="button" data-play="${key}" aria-label="Play ${esc(L.course)} lecture ${L.n}: ${esc(L.title)}" style="background-image:url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')"><span class="play"></span><span class="tag">${esc(L.course)} · ${L.n}</span></button>`; };
-  const player = (L, auto) => { const id = ytId(L.url);
-    return id ? `<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1${auto ? "&autoplay=1" : ""}" title="${esc(L.course)} lecture ${L.n}: ${esc(L.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""; };
-  (function renderLectures() {
-    const by = {}; Object.entries(D.lectures).forEach(([k, L]) => (by[L.course] = by[L.course] || []).push([k, L]));
-    $("#v-lectures").innerHTML = `<p class="muted" style="margin:0 0 16px">Full Stanford lecture recordings. ${LINK_ONLY ? "Each opens on YouTube" : "Press play to watch here"}; each lecture lists the concepts it covers.</p>` +
-      Object.keys(by).map(course => `<div class="course-h"><h2>${esc(courseName[course] || course)}</h2><span class="eyebrow">${by[course].length} lectures</span></div>
-      <div class="grid-cards">${by[course].sort((a, b) => a[1].n - b[1].n).map(([k, L]) => `<article class="lec" data-lec="${k}">${thumb(L, k)}
-        <div class="lec-b"><h3>${L.n}. ${esc(L.title)}</h3><div class="tags">${(LEC[k] || []).map(chip).join("")}</div>
-        <a class="note" href="${esc(L.url)}" target="_blank" rel="noopener">Open on YouTube ↗</a></div></article>`).join("")}</div>`).join("");
-  })();
+  // ── Events ───────────────────────────────────────────────────────────
   document.addEventListener("click", e => {
-    const t = e.target.closest("[data-play]"); if (!t) return;
-    const L = D.lectures[t.dataset.play]; if (!L) return;
-    const holder = document.createElement("div"); holder.innerHTML = player(L, true);
-    t.replaceWith(holder.firstElementChild || holder);
-  });
-
-  // ── Notebooks ────────────────────────────────────────────────────────
-  (function renderNotebooks() {
-    const byCh = {}; Object.keys(NB).forEach(p => { const n = +(p.match(/^ch(\d+)/) || [0, 0])[1]; (byCh[n] = byCh[n] || []).push(p); });
-    $("#v-notebooks").innerHTML = `<p class="muted" style="margin:0 0 16px">The book's runnable Python notebooks. <b>Open in Colab</b> runs one in your browser with nothing to install; <span class="kindtag ex">Exercise</span> notebooks have parts for you to complete, <span class="kindtag">Demo</span> notebooks walk through a worked implementation.</p>` +
-      Object.keys(byCh).sort((a, b) => a - b).map(n => `<div class="course-h"><h2>${n == 0 ? "" : "Chapter " + n + " · "}${esc(chap[n] ? chap[n].title : "")}</h2></div>
-      <div class="nb-list">${byCh[n].sort((a, b) => isExercise(b) - isExercise(a) || a.localeCompare(b)).map(p => { const l = nbLinks(p); return `<div class="nb"><div>
-        <b>${esc(nbTitle(p))}</b> <span class="kindtag${isExercise(p) ? " ex" : ""}">${isExercise(p) ? "Exercise" : "Demo"}</span>
-        <div class="meta"><span>${esc(p)}</span></div><div class="tags" style="margin-top:8px">${NB[p].map(chip).join("")}</div></div>
-        <div class="acts"><a class="btn sm primary" href="${esc(l.colab)}" target="_blank" rel="noopener">Open in Colab ↗</a><a class="btn sm" href="${esc(l.github)}" target="_blank" rel="noopener">GitHub ↗</a></div></div>`; }).join("")}</div>`).join("");
-  })();
-
-  // ── Stack map ────────────────────────────────────────────────────────
-  const maxDepth = Math.max(...Object.values(depth));
-  const NW = 196, NH = 46, COL = 236, ROW = 56, PADX = 132, LANEPAD = 14;
-  const slots = {};
-  D.concepts.forEach(c => { const k = c.layer + "|" + depth[c.id]; (slots[k] = slots[k] || []).push(c.id); });
-  const laneRows = {}; laneOrder.forEach(l => { let m = 1; for (let d = 0; d <= maxDepth; d++) m = Math.max(m, (slots[l + "|" + d] || []).length); laneRows[l] = m; });
-  const laneY = {}; let yy = 8;
-  laneOrder.forEach(l => { laneY[l] = yy; yy += laneRows[l] * ROW + LANEPAD * 2; });
-  const H = yy + 8, W = PADX + (maxDepth + 1) * COL + 20;
-  const pos = {};
-  Object.entries(slots).forEach(([k, ids]) => { const [l, d] = k.split("|");
-    ids.sort((a, b) => chKey(a) - chKey(b));
-    const top = laneY[l] + LANEPAD + (laneRows[l] - ids.length) * ROW / 2;
-    ids.forEach((id, i) => pos[id] = { x: PADX + (+d) * COL, y: top + i * ROW + (ROW - NH) / 2 }); });
-  const NS = "http://www.w3.org/2000/svg";
-  const el = (t, a, parent) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); parent && parent.appendChild(e); return e; };
-  const svg = $("#g"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-  const gl = el("g", {}, svg), ge = el("g", {}, svg), gn = el("g", {}, svg);
-  laneOrder.forEach(l => { const h = laneRows[l] * ROW + LANEPAD * 2;
-    el("rect", { x: 0, y: laneY[l], width: W, height: h - 6, class: "lane-band" }, gl);
-    el("rect", { x: 0, y: laneY[l], width: 4, height: h - 6, fill: laneVar(l) }, gl);
-    const t = el("text", { x: 14, y: laneY[l] + h / 2, class: "lane-label", fill: laneVar(l), "dominant-baseline": "middle" }, gl);
-    const words = laneName[l].split(" & ");
-    words.forEach((w, i) => { const s = el("tspan", { x: 14, dy: i ? 15 : (words.length > 1 ? -7 : 0) }, t); s.textContent = w + (i < words.length - 1 ? " &" : ""); }); });
-  const edges = [];
-  const curve = (a, b) => { const x1 = pos[a].x + NW, y1 = pos[a].y + NH / 2, x2 = pos[b].x, y2 = pos[b].y + NH / 2, mx = (x1 + x2) / 2; return `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`; };
-  D.concepts.forEach(c => c.prereqs.forEach(p => edges.push({ a: p, b: c.id, e: el("path", { d: curve(p, c.id), class: "edge" }, ge) })));
-  const wrapLabel = s => { if (s.length <= 24) return [s]; const w = s.split(" "); let a = ""; const out = []; w.forEach(x => { if ((a + " " + x).trim().length > 24 && a) { out.push(a); a = x; } else a = (a + " " + x).trim(); }); out.push(a); return out.length > 2 ? [out[0], out.slice(1).join(" ").slice(0, 23) + "…"] : out; };
-  const nodes = {};
-  D.concepts.forEach(c => {
-    const g = el("g", { class: `node ${c.kind}`, transform: `translate(${pos[c.id].x},${pos[c.id].y})`, tabindex: 0, role: "button", "aria-label": `${c.name}, ${chLong(c.ch)}` }, gn);
-    el("rect", { width: NW, height: NH, rx: c.kind === "learned" ? 20 : 4, stroke: laneVar(c.layer) }, g);
-    const lines = wrapLabel(c.name);
-    lines.forEach((ln, i) => { const t = el("text", { x: 12, y: NH / 2 + (lines.length === 1 ? 5 : (i ? 14 : -2)) }, g); t.textContent = ln; });
-    if (c.ch != null) { const t = el("text", { x: NW - 8, y: 12, class: "chn", "text-anchor": "end" }, g); t.textContent = c.ch === 0 ? "SW" : "Ch " + c.ch; }
-    const sb = el("circle", { cx: 0, cy: 0, r: 11, class: "stepbg hide" }, g);
-    const st = el("text", { x: 0, y: 4, class: "step hide", "text-anchor": "middle" }, g);
-    g.addEventListener("click", () => openConcept(c.id, true));
-    g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openConcept(c.id, true); } });
-    nodes[c.id] = { g, sb, st };
-  });
-  const box = $("#box");
-  let zoom = null;
-  const applyZoom = () => { svg.setAttribute("width", Math.round(W * zoom)); svg.setAttribute("height", Math.round(H * zoom)); };
-  const fitScale = () => Math.max(0.4, Math.min(1, (box.clientWidth - 2) / W));
-  const readable = () => Math.max(0.8, fitScale());
-  function fit() { if (!box.clientWidth) return; zoom = fitScale(); applyZoom(); }
-  function initZoom() { if (!box.clientWidth) return; zoom = readable(); applyZoom(); }
-  new ResizeObserver(() => { if (zoom === null) initZoom(); }).observe(box);
-  $("#zin").onclick = () => { zoom = Math.min(1.8, (zoom || 1) * 1.2); applyZoom(); };
-  $("#zout").onclick = () => { zoom = Math.max(0.4, (zoom || 1) / 1.2); applyZoom(); };
-  $("#zfit").onclick = fit;
-  const hidden = new Set();
-  laneOrder.slice().reverse().forEach(l => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.setAttribute("aria-pressed", "true");
-    b.innerHTML = `<i style="background:${laneVar(l)}"></i>${esc(laneName[l])}`;
-    b.onclick = () => { hidden.has(l) ? hidden.delete(l) : hidden.add(l); b.setAttribute("aria-pressed", hidden.has(l) ? "false" : "true");
-      D.concepts.forEach(c => nodes[c.id].g.classList.toggle("hide", hidden.has(c.layer)));
-      edges.forEach(x => x.e.classList.toggle("hide", hidden.has(C[x.a].layer) || hidden.has(C[x.b].layer))); };
-    $("#lanes").appendChild(b); });
-  const q = $("#q");
-  const match = (c, s) => (c.name + " " + c.summary + " " + (c.points || []).join(" ")).toLowerCase().includes(s);
-  q.addEventListener("input", () => { const s = q.value.trim().toLowerCase(); D.concepts.forEach(c => nodes[c.id].g.classList.toggle("faded", !!s && !match(c, s))); });
-  q.addEventListener("keydown", e => { if (e.key !== "Enter") return; const s = q.value.trim().toLowerCase(); if (!s) return;
-    const hit = D.concepts.find(c => c.name.toLowerCase().includes(s)) || D.concepts.find(c => match(c, s)); if (hit) openConcept(hit.id, true); else toast("No concept matches “" + q.value.trim() + "”"); });
-
-  let sel = null, route = null;
-  function paintMap() {
-    svg.classList.remove("dim");
-    Object.entries(nodes).forEach(([id, n]) => { n.g.classList.remove("on", "sel"); n.g.classList.toggle("done", isDone(id)); n.sb.classList.add("hide"); n.st.classList.add("hide"); });
-    edges.forEach(x => x.e.classList.remove("on"));
-    const on = new Set();
-    if (route && drawerState && drawerState.type === "route") {
-      route.steps.forEach((id, i) => { on.add(id); const n = nodes[id]; n.sb.classList.remove("hide"); n.st.classList.remove("hide"); n.st.textContent = i + 1; });
-      route.known.forEach(id => on.add(id));
-    } else if (sel) { on.add(sel); ancestors(sel).forEach(x => on.add(x)); kids[sel].forEach(x => on.add(x)); }
-    if (sel && nodes[sel]) nodes[sel].g.classList.add("sel");
-    if (on.size) { svg.classList.add("dim"); on.forEach(id => nodes[id].g.classList.add("on")); edges.forEach(x => { if (on.has(x.a) && on.has(x.b)) x.e.classList.add("on"); }); }
-  }
-  const scrollMapTo = id => { if (tab !== "map" || !pos[id]) return; const p = pos[id]; box.scrollTo({ left: p.x * zoom - box.clientWidth / 2 + NW * zoom / 2, top: p.y * zoom - box.clientHeight / 2, behavior: reduce() ? "auto" : "smooth" }); };
-
-  // ── Drawer ───────────────────────────────────────────────────────────
-  const drawer = $("#drawer"), scrim = $("#scrim"), body = $("#dr-body");
-  let drawerState = null, history_ = [], lastFocus = null;
-  function openDrawer(state, fresh) {
-    if (fresh) history_ = []; else if (drawerState) history_.push(drawerState);
-    drawerState = state;
-    if (!drawer.classList.contains("open")) lastFocus = document.activeElement;
-    drawer.classList.add("open"); scrim.classList.add("open"); drawer.setAttribute("aria-hidden", "false");
-    renderDrawer(); body.scrollTop = 0;
-    $("#dr-close").focus({ preventScroll: true });
-  }
-  function closeDrawer() {
-    drawer.classList.remove("open"); scrim.classList.remove("open"); drawer.setAttribute("aria-hidden", "true");
-    drawerState = null; sel = null; history_ = []; paintMap();
-    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
-    if (lastFocus && document.contains(lastFocus)) lastFocus.focus({ preventScroll: true });
-  }
-  function openConcept(id, fresh) { if (!C[id]) return; sel = id; openDrawer({ type: "concept", id }, fresh); paintMap(); scrollMapTo(id); try { history.replaceState(null, "", "#" + id); } catch (e) {} }
-  $("#dr-close").onclick = closeDrawer; scrim.onclick = closeDrawer;
-  $("#dr-back").onclick = () => { const s = history_.pop(); if (!s) return; drawerState = s; sel = s.type === "concept" ? s.id : null; renderDrawer(); paintMap(); };
-  document.addEventListener("keydown", e => {
-    if (!drawer.classList.contains("open")) return;
-    if (e.key === "Escape") { e.preventDefault(); closeDrawer(); }
-    if (e.key === "Tab") { const f = [...drawer.querySelectorAll("button:not([disabled]):not([hidden]), a[href], input, iframe, [tabindex='0']")].filter(x => x.offsetParent !== null);
-      if (!f.length) return; const a = f[0], z = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); } }
-  });
-
-  const tagBtns = ids => ids.map(chip).join("");
-  function conceptHTML(id) {
-    const c = C[id], ch = c.ch != null ? chap[c.ch] : null, k = c.check;
-    const vids = (c.lectures || []).map(l => { const L = D.lectures[l]; return `<div class="vid">${thumb(L, l)}<div class="cap"><span>${esc(L.title)}</span><small>${esc(L.course)} · ${L.n}</small></div></div>`; }).join("");
-    const nbs = (c.exercises || []).map(p => { const l = nbLinks(p); return `<li class="linkrow"><div><b>${esc(nbTitle(p))}</b><small>${isExercise(p) ? "Exercise" : "Demo"} · ${esc(p.split("/")[0])}</small></div>
-      <div class="acts"><a class="btn sm primary" href="${esc(l.colab)}" target="_blank" rel="noopener">Colab ↗</a><a class="btn sm" href="${esc(l.github)}" target="_blank" rel="noopener" aria-label="View ${esc(nbTitle(p))} on GitHub">Code ↗</a></div></li>`; }).join("");
-    return `<div><div class="pills"><span class="pill" style="color:${laneVar(c.layer)};border-color:currentColor">${esc(laneName[c.layer])}</span><span class="pill">${chLong(c.ch)}</span><span class="pill">${esc(c.kind)}</span></div>
-      <h2 id="dr-title">${esc(c.name)}</h2><p style="margin:0" class="muted">${esc(c.summary)}</p></div>
-      ${(c.points || []).length ? `<div class="sec"><h4>Key ideas</h4><ol class="points">${c.points.map(p => `<li><span>${esc(p)}</span></li>`).join("")}</ol></div>` : ""}
-      ${vids ? `<div class="sec"><h4>Watch the lecture${(c.lectures || []).length > 1 ? "s" : ""}</h4><div class="vids">${vids}</div></div>` : ""}
-      ${nbs ? `<div class="sec"><h4>Run the notebook${(c.exercises || []).length > 1 ? "s" : ""}</h4><ul class="links">${nbs}</ul></div>` : ""}
-      ${ch ? `<div class="sec"><h4>Read</h4><ul class="links"><li class="linkrow"><div><b>${esc(ch.title)}</b><small>${chLong(c.ch)} · porabook.com</small></div><div class="acts"><a class="btn sm" href="${esc(ch.url)}" target="_blank" rel="noopener">Open ↗</a></div></li></ul></div>` : ""}
-      ${k ? `<div class="sec"><h4>Check yourself</h4><div class="check" data-check="${id}"><p>${esc(k.q)}</p>${k.choices.map((x, i) => `<button class="opt" type="button" data-opt="${i}"><span>${"ABCD"[i]}</span><span>${esc(x)}</span></button>`).join("")}<div class="why" hidden></div></div></div>` : ""}
-      ${c.tryIt ? `<div class="sec"><h4>Try it</h4><div class="try">${esc(c.tryIt)}</div></div>` : ""}
-      <label class="done-toggle"><input type="checkbox" data-done="${id}" ${isDone(id) ? "checked" : ""}> I've learned this</label>
-      <div class="sec"><h4>Needs first</h4><div class="tags">${tagBtns(c.prereqs) || `<span class="note">Nothing. A good place to start.</span>`}</div></div>
-      <div class="sec"><h4>Unlocks</h4><div class="tags">${tagBtns(kids[id]) || `<span class="note">Nothing in the book builds on this directly.</span>`}</div></div>
-      ${(c.related || []).length ? `<div class="sec"><h4>Related</h4><div class="tags">${tagBtns(c.related)}</div></div>` : ""}
-      <div class="cta">${EMBED ? `<button class="btn primary" type="button" data-walkto="${id}">Walk a route to this in Brain University</button>` : ""}<button class="btn" type="button" data-routeto="${id}">Plan a route to this</button></div>`;
-  }
-  function routeHTML() {
-    const b = D.backgrounds.find(x => x.id === route.bg), g = C[route.goal];
-    const chs = new Set(route.steps.map(id => C[id].ch).filter(x => x != null));
-    const nb = route.steps.reduce((n, id) => n + (C[id].exercises || []).length, 0), lv = route.steps.reduce((n, id) => n + (C[id].lectures || []).length, 0);
-    const left = route.steps.filter(id => !isDone(id));
-    return `<div><div class="pills"><span class="pill">${esc(b.name)}</span><span class="pill">→ ${esc(g.name)}</span></div>
-      <h2 id="dr-title">${route.steps.length} step${route.steps.length === 1 ? "" : "s"} to ${esc(g.name)}</h2>
-      <p class="muted" style="margin:0">${esc(b.blurb)} Skips ${route.known.length} concept${route.known.length === 1 ? "" : "s"} you already have; covers ${chs.size} chapter${chs.size === 1 ? "" : "s"}, ${lv} lecture video${lv === 1 ? "" : "s"}, and ${nb} notebook${nb === 1 ? "" : "s"}.</p></div>
-      <div class="cta">${EMBED ? `<button class="btn primary" type="button" data-walkroute>Walk this route in Brain University</button>` : ""}
-        ${left.length ? `<button class="btn${EMBED ? "" : " primary"}" type="button" data-go="${left[0]}">${done.size && left.length < route.steps.length ? "Continue" : "Start"} with ${esc(C[left[0]].name)}</button>` : `<p class="note">You've marked every step learned. Nice work.</p>`}</div>
-      <ol class="route">${route.steps.map((id, i) => `<li class="${isDone(id) ? "done" : ""}"><span class="n">${isDone(id) ? "✓" : i + 1}</span><button type="button" data-go="${id}">${esc(C[id].name)}</button><small>${chLabel(C[id].ch)}</small></li>`).join("")}</ol>
-      <p class="note">Order follows the prerequisite links, then the book's chapter order. Open any step for its key ideas, lectures, notebooks, and a self-check.</p>`;
-  }
-  function renderDrawer() {
-    if (!drawerState) return;
-    $("#dr-back").hidden = !history_.length;
-    if (drawerState.type === "route" && route) { $("#dr-crumb").textContent = "Your route"; body.innerHTML = routeHTML(); }
-    else if (drawerState.type === "concept") { const c = C[drawerState.id]; $("#dr-crumb").textContent = `${laneName[c.layer]} · ${chLong(c.ch)}`; body.innerHTML = conceptHTML(drawerState.id); }
-  }
-
-  // ── Delegated actions ────────────────────────────────────────────────
-  const walk = (steps, label) => {
-    const ids = steps.filter(id => C[id]).map(id => C[id].wiki);
-    if (!ids.length) return;
-    try { parent.postMessage({ type: "pora:walk", label, steps: ids }, location.origin); } catch (e) { toast("Couldn't reach Brain University. Reload the page and try again."); }
-  };
-  document.addEventListener("click", e => {
-    const t = e.target.closest("[data-go],[data-routeto],[data-walkto],[data-walkroute],[data-walkch],[data-opt]"); if (!t) return;
-    const inDrawer = drawer.contains(t);
-    if (t.dataset.go) openConcept(t.dataset.go, !inDrawer);
-    else if (t.dataset.routeto) { goalSel.value = t.dataset.routeto; $("#go").click(); }
-    else if (t.dataset.walkto) { walk(routeTo(bgSel.value, t.dataset.walkto).steps, C[t.dataset.walkto].name); }
-    else if (t.hasAttribute("data-walkroute")) { walk(route.steps, C[route.goal].name); }
-    else if (t.dataset.walkch) { const n = +t.dataset.walkch; walk(topo(D.concepts.filter(c => c.ch === n).map(c => c.id)), chap[n].title); }
-    else if (t.dataset.opt) {
-      const box_ = t.closest("[data-check]"), c = C[box_.dataset.check], k = c.check, i = +t.dataset.opt, ok = i === k.correct;
-      box_.querySelectorAll(".opt").forEach((o, j) => { o.disabled = true; if (j === k.correct) o.classList.add("right"); else if (j === i) o.classList.add("wrong"); });
-      const w = box_.querySelector(".why"); w.hidden = false;
-      w.innerHTML = `<b class="${ok ? "ok" : "no"}">${ok ? "Correct." : "Not quite."}</b> ${esc(k.why)} <button class="btn sm ghost" type="button" data-retry style="margin-left:4px">Try again</button>`;
-      if (ok && !isDone(c.id)) { const cb = drawer.querySelector(`[data-done="${c.id}"]`); if (cb) { cb.checked = true; setDone(c.id, true); toast("Marked as learned"); } }
+    const t = e.target.closest("button"); if (!t) return;
+    const d = t.dataset;
+    if (d.bg) { custom = null; go(S.goal ? "path" : "goal", { bg: d.bg }); }
+    else if (d.goal) { custom = null; go("path", { goal: d.goal, i: 0 }); }
+    else if (d.back) { custom = null; go(d.back); }
+    else if ("start" in d) start(steps(), S.goal === ALL ? "Principles of Robot Autonomy" : C[S.goal] ? C[S.goal].name : "PoRA");
+    else if ("refresh" in d) { custom = { steps: topo(BACKGROUND) }; start(custom.steps, "Assumed background"); }
+    else if (d.ch) { const n = +d.ch, ids = topo(D.concepts.filter(c => c.ch === n).map(c => c.id)); if (!ids.length) return; custom = { steps: ids }; start(ids, chap[n].title); }
+    else if (d.step) {
+      if (d.done) markDone(d.done);
+      const n = S.i + (+d.step);
+      if (n < steps().length) go("lesson", { i: n });
+      else { const wasCustom = !!custom; custom = null; go(wasCustom ? "path" : "finished"); }
+    }
+    else if (d.opt) {
+      const q = t.closest("[data-check]"), c = C[q.dataset.check], k = c.check, i = +d.opt, ok = i === k.correct;
+      q.querySelectorAll(".opt").forEach((o, j) => { o.disabled = true; if (j === k.correct) o.classList.add("right"); else if (j === i) o.classList.add("wrong"); });
+      const w = q.querySelector(".why"); w.hidden = false;
+      w.innerHTML = `<b class="${ok ? "ok" : "no"}">${ok ? "Correct." : "Not quite."}</b> ${esc(k.why)}`;
+      if (ok) markDone(c.id);
     }
   });
-  document.addEventListener("click", e => { if (e.target.closest("[data-retry]")) renderDrawer(); });
-  document.addEventListener("change", e => { const t = e.target.closest("[data-done]"); if (t) { setDone(t.dataset.done, t.checked); if (drawerState && drawerState.type === "route") renderDrawer(); } });
-  let toastT = null;
-  function toast(msg) { let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
-    t.textContent = msg; clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 2200); }
 
-  // ── Boot ─────────────────────────────────────────────────────────────
-  showTab(store.get("pora-tab", "syllabus"));
-  paintMap();
-  const h = decodeURIComponent(location.hash.slice(1));
-  if (C[h]) openConcept(h, true);
-  window.PORA_ATLAS = { open: openConcept, close: closeDrawer, showTab, plan: () => $("#go").click(), setBg: v => bgSel.value = v, setGoal: v => goalSel.value = v, route: () => route, done: () => [...done] };
+  $("#credits").innerHTML = `Lectures: Stanford AA174A and AA203. Notebooks: <a href="${esc(D.meta.exercisesRepo)}" target="_blank" rel="noopener">StanfordASL/pora-exercises</a>.`;
+  if (S.view === "lesson") S.view = S.goal ? "path" : "bg";   // reopen on the path, not mid-lesson
+  render();
+  window.PORA_ATLAS = { state: () => Object.assign({}, S), steps };
 })();
 </script>

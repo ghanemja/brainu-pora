@@ -1539,5 +1539,47 @@
    ],
    "blurb": "You know systems. Pick up probability and dynamics first."
   }
+ ],
+ "goals": [
+  {
+   "id": "trajectory_tracking",
+   "label": "Make a robot follow a path",
+   "blurb": "Model the robot, plan a trajectory, and track it with feedback."
+  },
+  {
+   "id": "mpc",
+   "label": "Control a robot with constraints",
+   "blurb": "Optimal control, LQR, and model predictive control."
+  },
+  {
+   "id": "sampling_planning",
+   "label": "Plan a path around obstacles",
+   "blurb": "Configuration space, A*, and sampling-based planners like RRT."
+  },
+  {
+   "id": "object_detection",
+   "label": "Recognize objects with a camera",
+   "blurb": "Camera models, image features, and deep-learning detectors."
+  },
+  {
+   "id": "ekf_localization",
+   "label": "Know where the robot is",
+   "blurb": "Probability, Kalman filters, and localization in a map."
+  },
+  {
+   "id": "pose_graph_slam",
+   "label": "Build a map while exploring",
+   "blurb": "SLAM: estimate the robot's pose and the map together."
+  },
+  {
+   "id": "policy_gradient",
+   "label": "Learn behavior by trial and error",
+   "blurb": "Decision making, dynamic programming, and reinforcement learning."
+  },
+  {
+   "id": "covariate_shift",
+   "label": "Learn from demonstrations",
+   "blurb": "Imitation learning, and why cloned policies drift."
+  }
  ]
 }
