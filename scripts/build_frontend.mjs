@@ -33,6 +33,11 @@ const htmlPath = join(designDir, "Brain University.html");
 // classic-script semantics, no module transform, modern JS left untouched.
 const BABEL_OPTS = {
   presets: [["@babel/preset-react", {}]],
+  // Every compiled file runs as a classic <script> sharing one global scope,
+  // and many screens open with `const { useState, ... } = React;`. Top-level
+  // const/let collide across scripts ("Can't create duplicate variable"), so
+  // lower them to var, matching what in-browser Babel (preset-env) does in dev.
+  plugins: ["@babel/plugin-transform-block-scoping"],
   sourceType: "script",
   babelrc: false,
   configFile: false,
