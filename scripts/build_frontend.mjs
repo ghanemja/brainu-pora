@@ -127,6 +127,10 @@ async function main() {
     throw new Error(`HTML references uncompiled jsx: ${missing.join(", ")}`);
   }
 
+  // Format stamp: the HTML loader only trusts bundles built by this version of
+  // the build, so a stale design/.compiled left over from an older build falls
+  // back to dev mode instead of loading broken or missing bundles.
+  manifest.__format = 2;
   writeFileSync(join(outDir, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
   console.log(`[build_frontend] wrote manifest.json (${Object.keys(manifest).length} entries)`);
 }

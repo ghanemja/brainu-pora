@@ -77,7 +77,9 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
       xhr.send(null);
       if (xhr.status === 200) {
         var m = JSON.parse(xhr.responseText);
-        if (m && typeof m === "object") manifest = m;
+        // Only trust bundles from the current build format (see
+        // scripts/build_frontend.mjs); anything older falls back to dev mode.
+        if (m && typeof m === "object" && m.__format === 2) manifest = m;
       }
     } catch (_) { manifest = null; }
     window.__BU_COMPILED = manifest;
