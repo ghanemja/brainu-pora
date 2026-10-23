@@ -328,6 +328,11 @@ def browser_smoke(api: str, web: str) -> None:
             page.reload()
             page.wait_for_selector('nav.nav button[data-nav="courses"].active')
         ok("fresh profile opens on Courses")
+        # First visit opens the walkthrough over Courses; check it, then skip it.
+        page.wait_for_selector(".tut-card")
+        ok("first-visit walkthrough opens")
+        page.click(".tut-skip")
+        page.wait_for_selector(".tut", state="detached")
         page.click('.view-toggle button:has-text("Agent")')
         page.wait_for_selector('nav.nav button[data-nav="university"]')
 

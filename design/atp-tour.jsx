@@ -13,7 +13,7 @@ const { useState: useAtpTourState, useEffect: useAtpTourEffect } = React;
 // (the same button opens the human tutorial in human view — wired
 // in Brain University.html).
 //
-// The flag is DISTINCT from the human tutorial's "bu.tutorial.seen.v1"
+// The flag is DISTINCT from the human tutorial's "bu.tutorial.seen.v2"
 // so each view gets its own first-run moment.
 // ─────────────────────────────────────────────────────────────────
 

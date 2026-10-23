@@ -1,343 +1,208 @@
 /* global React */
 
-const { useState: useTutState, useEffect: useTutEffect } = React;
+const { useState: useTutState, useEffect: useTutEffect, useRef: useTutRef, useCallback: useTutCallback } = React;
 
 // ─────────────────────────────────────────────────────────────────
-// TUTORIAL — first-time welcome walkthrough
+// WALKTHROUGH — the first-visit tour of the learning path
 //
-// Auto-opens on first visit (localStorage flag); reopened from the
-// "?" button in the topbar. Six slides match the user's actual
-// journey through the app, mapped onto the nav order.
+// Five short steps that follow what a learner actually does: answer two
+// questions on Courses, read the course map, take one lesson on The Walk,
+// and come back later. Each step moves the app to the screen it describes
+// and spotlights the real element (inside the Courses iframe too), so the
+// learner sees the thing instead of reading about it.
+//
+// Auto-opens once per browser (localStorage flag); "?" in the top bar
+// reopens it.
 // ─────────────────────────────────────────────────────────────────
 
-const TUT_FLAG = "bu.tutorial.seen.v1";
+const TUT_FLAG = "bu.tutorial.seen.v2";   // v2: new walkthrough, shown once to everyone
 
-// Live paper count off the bundled corpus (filled at module-load).
-function _paperCount() {
-  try { return (window.ARXIVIS?.papers || []).length || 0; } catch { return 0; }
-}
-
-const SLIDES = [
+const STEPS = [
   {
-    icon: "🧠",
-    tag: "00 · WELCOME",
-    title: "Brain University in 60 seconds.",
-    body:
-      "A self-paced learning system built on top of an LLM-curated knowledge graph. Pick a concept, walk a planned tour, watch 30-second video explainers, and let the system re-weight the graph based on what you actually click. Every tab in the top nav is a different way into the same brain.",
-    cta: "Show me everything",
+    screen: "courses",
+    kicker: "Welcome",
+    title: "Learn robot autonomy, one lesson at a time.",
+    body: "Brain University turns Stanford's free Principles of Robot Autonomy course into a path built for you. Here is how it works. It takes about 30 seconds.",
+    next: "Show me",
   },
   {
-    icon: "▲",
-    tag: "01 · TRAILHEAD",
-    title: "Start at the trailhead.",
-    body:
-      "Type any concept you're curious about — or accept the foundation picks the system ranks by graph centrality. The 3D 'brain' on the right is the knowledge graph itself; foundation concepts are the high-betweenness nodes. ▲ Begin plans a 6-stop tour for you.",
-    highlight: "trailhead",
-    tryIt: "trailhead",
-    cta: "Try the trailhead",
+    screen: "courses",
+    target: { frame: "pora-atlas", selector: "#main .card" },
+    kicker: "Your path",
+    title: "Answer two questions.",
+    body: "Where you are starting from, and what you want to be able to do. Brain University skips what you already know and puts the rest in order.",
   },
   {
-    icon: "↘",
-    tag: "02 · THE WALK",
-    title: "Follow the planned tour.",
-    body:
-      "Six stops: start → deepen ×2 → bridge → deepen ×1-2 → capstone. Each card carries a short rationale paragraph (\"why we go here next\") plus an interactive exercise that lets you play with the idea. Prev / Next moves you through; the 3D minimap shows progress.",
-    highlight: "walk",
-    tryIt: "walk",
-    cta: "Open the walk",
+    screen: "courses",
+    target: { frame: "pora-atlas", selector: ".graph" },
+    kicker: "The map",
+    title: "See the whole course.",
+    body: "Every concept in the book, by part. Your path lights up in order as you answer, and green means you already know it. Click any concept to make it your goal.",
   },
   {
-    icon: "▣",
-    tag: "02b · INTERACTIVE EXERCISES",
-    title: "Each lesson has a playground.",
-    body:
-      "Spanning-tree builder, BFS step-through, approximation-ratio explorer — embedded canvas sims in 3blue1brown style: yellow vertices, color-coded selection, narrator captions. Click an edge to commit, watch the system tell you if it's valid. Click-to-play, not click-to-read.",
-    highlight: "walk",
-    cta: "Next",
+    screen: "walk-sample",
+    target: { selector: ".walk-body" },
+    place: "corner",
+    kicker: "Lessons",
+    title: "One lesson per screen.",
+    body: "Each lesson has the key ideas, the Stanford lecture, a notebook you can run, and a quick check. The bar at the top shows every lesson on your walk; Next moves you on.",
   },
   {
-    icon: "≈",
-    tag: "03 · BRIDGE",
-    title: "Cross-course bridges are the magic.",
-    body:
-      "Mid-tour, the system surfaces a 'bridge' to a related course — diff geo → information theory, graph theory → biology. Click ≈ Fork to splice it into your current trail. This is how surprise connections become intuition.",
-    highlight: "branch",
-    cta: "Next",
-  },
-  {
-    icon: "★",
-    tag: "04 · SUMMIT",
-    title: "Reach the capstone.",
-    body:
-      "Finish a trail → Summit. Shows the path you walked across the brain, the concepts you touched, and offers options to start a new trail or open the dashboard.",
-    highlight: "summit",
-    cta: "Next",
-  },
-  {
-    icon: "▦",
-    tag: "05 · DASHBOARD",
-    title: "Track your manifold + see the RL.",
-    body:
-      "Every trail journaled. 3D brain w/ amber-highlighted visited concepts. Plain-English RL panel — \"interest in Manifold concepts +34%\", \"memory of older sessions 92% kept / week\". Hover any number to see the math behind it.",
-    highlight: "dashboard",
-    tryIt: "dashboard",
-    cta: "Open dashboard",
-  },
-  {
-    icon: "💡",
-    tag: "06 · PROPOSE",
-    title: "Idea → graph response.",
-    body:
-      "Type any free-text idea or research question. The system finds matching concepts in the graph, traces shortest paths to surface bridge concepts you might not have considered, and writes a grounded paragraph you can use as a starting answer.",
-    highlight: "propose",
-    tryIt: "propose",
-    cta: "Open Propose",
-  },
-  {
-    icon: "◉",
-    tag: "07 · 3D MODE",
-    title: "Fly through the whole brain.",
-    body:
-      "Fullscreen WebGL force-directed graph w/ kind-aware coloring (wiki / defense / arXiv), always-on labels sized by degree, cinematic auto-orbit, signal-flow animation that mimics neural firing along edges. The map you've been walking lives here in full.",
-    highlight: "explorer",
-    tryIt: "explorer",
-    cta: "Enter 3D mode",
-  },
-  {
-    icon: "📄",
-    tag: "08 · ARXIVIS",
-    title: () =>
-      `arXivis · ${_paperCount() || "260+"} papers, 30 seconds each.`,
-    body:
-      "Academic papers projected onto the concept manifold. Each paper gets a 30-second 9:16 video explainer: foundations it rests on, new concepts it introduces, then a 'what the paper teaches' diagram showing the innovation as linked concept nodes. Sort by composite, novelty, rigor, year. Filter by source: arXiv, NTRS, DTIC, OpenAlex.",
-    highlight: "arxivis",
-    tryIt: "arxivis",
-    cta: "Open arXivis",
-  },
-  {
-    icon: "▸",
-    tag: "08b · INGEST + ON-DEMAND VIDEO",
-    title: "Drop any arXiv URL, watch the cascade.",
-    body:
-      "+ Ingest paper opens a modal w/ a live SSE cascade: resolve → fetch metadata → Semantic Scholar enrichment (SPECTER2 embedding + TLDR + citations) → classify into nearest cluster → corpus add → 30s video. Papers without a cached video get a 'Generate 30s explainer (~10s)' button — multiprocess render, no pre-bake required.",
-    highlight: "arxivis",
-    cta: "Next",
-  },
-  {
-    icon: "◇",
-    tag: "09 · OPEN PROBLEMS",
-    title: "Research gaps the brain surfaces.",
-    body:
-      "Three lenses: STALE CLUSTERS (corners w/ no recent papers), MISSING BRIDGES (high-degree concepts that should connect but don't co-activate), UNDEREXPLORED HUBS (foundations used by many papers but active in few). This is where a thesis topic hides.",
-    highlight: "openprob",
-    tryIt: "openprob",
-    cta: "See open problems",
-  },
-  {
-    icon: "⚙",
-    tag: "10 · TWEAKS",
-    title: "Themes, fonts, lesson layout.",
-    body:
-      "The gear icon in the bottom-right opens a Tweaks panel: palette (Night / Paper / Ocean), display font (Grotesk / Serif / Mono), lesson layout (Postcard / Split / Spread), cinematic auto-orbit on/off. Useful for matching the room you're presenting in.",
-    cta: "Got it",
+    screen: "courses",
+    target: { selector: 'nav.nav [data-nav="courses"]', pad: 6, minTop: 0 },
+    kicker: "Coming back",
+    title: "Pick up where you left off.",
+    body: "Lessons you pass are ticked on your path and on the map, saved in this browser. Come back to Courses to continue or choose a new goal. The rest of the top bar (3D graph, arXivis, Podcast) is there when you want to explore.",
+    next: "Start learning",
   },
 ];
 
+// Find a step's target element (in the page, or inside the Courses iframe).
+function tutTargetEl(target) {
+  if (!target) return null;
+  try {
+    let doc = document;
+    if (target.frame) {
+      const f = document.querySelector(`iframe[src*="${target.frame}"]`);
+      if (!f || !f.contentDocument) return null;
+      doc = f.contentDocument;
+    }
+    return doc.querySelector(target.selector);
+  } catch (e) { return null; }
+}
+
+// Return the target's box in page coordinates.
+function tutTargetRect(target) {
+  if (!target) return null;
+  try {
+    let doc = document, dx = 0, dy = 0;
+    if (target.frame) {
+      const f = document.querySelector(`iframe[src*="${target.frame}"]`);
+      if (!f || !f.contentDocument) return null;
+      const fr = f.getBoundingClientRect();
+      doc = f.contentDocument; dx = fr.left; dy = fr.top;
+    }
+    const el = doc.querySelector(target.selector);
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return null;
+    const pad = target.pad ?? 10;
+    // Clip to the visible window so a tall target still frames sensibly.
+    const top = Math.max(target.minTop ?? 64, r.top + dy - pad), bottom = Math.min(window.innerHeight - 8, r.bottom + dy + pad);
+    return { left: r.left + dx - pad, top, width: r.width + pad * 2, height: Math.max(40, bottom - top) };
+  } catch (e) { return null; }
+}
+
 function Tutorial({ open, onClose, onJumpTo, onPreview }) {
   const [idx, setIdx] = useTutState(0);
+  const [rect, setRect] = useTutState(null);
+  const nextRef = useTutRef(null);
+  const step = STEPS[idx];
+  const last = idx === STEPS.length - 1;
 
-  useTutEffect(() => {
-    if (open) setIdx(0);
-  }, [open]);
+  useTutEffect(() => { if (open) setIdx(0); }, [open]);
 
-  // Guided tour: as the user advances, navigate the app to the part each slide
-  // describes (Trailhead → Walk → Bridge → …) so they SEE it behind the card,
-  // instead of just reading cards. onPreview navigates WITHOUT closing.
+  // Move the app to the screen this step describes.
   useTutEffect(() => {
-    if (!open || !onPreview) return;
-    const s = SLIDES[idx];
-    if (s && s.highlight) onPreview(s.highlight);
+    if (open && onPreview && step) onPreview(step.screen);
   }, [open, idx]);
 
-  // Spotlight: ring the nav tab for the current slide so the user SEES which
-  // part is being described. Measured after navigation settles.
-  const [navRect, setNavRect] = useTutState(null);
+  // Measure the spotlight target; keep it in place on resize and scroll, and
+  // retry briefly while the screen (or the Courses iframe) is still loading.
   useTutEffect(() => {
-    if (!open) { setNavRect(null); return; }
-    const s = SLIDES[idx];
-    if (!s || !s.highlight) { setNavRect(null); return; }
-    const measure = () => {
-      const el = document.querySelector('[data-nav="' + s.highlight + '"]');
-      setNavRect(el ? el.getBoundingClientRect() : null);
+    if (!open) { setRect(null); return; }
+    let tries = 0, timer = null;
+    const measure = () => setRect(tutTargetRect(step && step.target));
+    let scrolled = false;
+    const poll = () => {
+      // Bring the target on screen first (on phones the map sits below the fold).
+      const el = tutTargetEl(step && step.target);
+      if (el && !scrolled) {
+        scrolled = true;
+        const r0 = el.getBoundingClientRect(), win = el.ownerDocument.defaultView;
+        if (r0.top < 72 || r0.top > win.innerHeight * 0.6) el.scrollIntoView({ block: "start", behavior: "auto" });
+      }
+      const r = tutTargetRect(step && step.target);
+      setRect(r);
+      if (step && step.target && !r && tries++ < 20) timer = setTimeout(poll, 150);
     };
-    const id = setTimeout(measure, 140);
+    timer = setTimeout(poll, 120);
     window.addEventListener("resize", measure);
-    return () => { clearTimeout(id); window.removeEventListener("resize", measure); };
+    window.addEventListener("scroll", measure, true);
+    return () => { clearTimeout(timer); window.removeEventListener("resize", measure); window.removeEventListener("scroll", measure, true); };
   }, [open, idx]);
+
+  const close = useTutCallback((goHome) => {
+    try { localStorage.setItem(TUT_FLAG, "1"); } catch (e) {}
+    onClose();
+    if (goHome && onJumpTo) onJumpTo("courses");
+    // Land on the first question, not wherever the tour scrolled to.
+    try { const f = document.querySelector('iframe[src*="pora-atlas"]'); if (f && f.contentWindow) f.contentWindow.scrollTo(0, 0); } catch (e) {}
+    window.scrollTo(0, 0);
+  }, [onClose, onJumpTo]);
+
+  const next = () => (last ? close(true) : setIdx(i => i + 1));
+  const back = () => setIdx(i => Math.max(0, i - 1));
 
   useTutEffect(() => {
     if (!open) return;
     const onKey = (e) => {
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") setIdx(i => Math.min(SLIDES.length - 1, i + 1));
-      if (e.key === "ArrowLeft")  setIdx(i => Math.max(0, i - 1));
+      if (e.key === "Escape") close(true);
+      else if (e.key === "ArrowRight") setIdx(i => Math.min(STEPS.length - 1, i + 1));
+      else if (e.key === "ArrowLeft") setIdx(i => Math.max(0, i - 1));
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+  }, [open, close]);
 
-  if (!open) return null;
-  const slide = SLIDES[idx];
-  const last  = idx === SLIDES.length - 1;
+  useTutEffect(() => { if (open && nextRef.current) nextRef.current.focus({ preventScroll: true }); }, [open, idx]);
 
-  const finish = () => {
-    try { localStorage.setItem(TUT_FLAG, "1"); } catch {}
-    onClose();
-    // Land back at the start of the app, not on the last slide's screen.
-    if (onJumpTo) onJumpTo("trailhead");
-  };
+  if (!open || !step) return null;
 
-  const next = () => {
-    if (last) return finish();
-    setIdx(i => i + 1);
-  };
+  // Put the card where it does not cover the spotlight.
+  const vw = window.innerWidth, vh = window.innerHeight;
+  let place = "center";
+  if (rect && step.place) place = step.place;
+  else if (rect) {
+    const roomRight = vw - (rect.left + rect.width), roomLeft = rect.left;
+    if (vw > 900 && roomRight >= 400) place = "right";
+    else if (vw > 900 && roomLeft >= 400) place = "left";
+    else place = rect.top + rect.height / 2 > vh / 2 ? "top" : "bottom";
+  }
+  const cardPos = {
+    center: { left: "50%", top: "50%", transform: "translate(-50%, -50%)" },
+    right:  { left: rect ? Math.min(vw - 404, rect.left + rect.width + 20) : 0, top: rect ? Math.max(72, Math.min(vh - 300, rect.top)) : 0 },
+    left:   { left: rect ? Math.max(16, rect.left - 404) : 0, top: rect ? Math.max(72, Math.min(vh - 300, rect.top)) : 0 },
+    top:    { left: "50%", top: 72, transform: "translateX(-50%)" },
+    bottom: { left: "50%", bottom: 20, transform: "translateX(-50%)" },
+    corner: { right: 20, bottom: 88 },
+  }[place];
 
   return (
-    <div
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-      style={{
-        position: "fixed", inset: 0, zIndex: 500,
-        // Light dim only — the live screen the tour is pointing at must stay
-        // visible behind the card. A faint top→bottom gradient keeps the card
-        // readable without blacking out the UI.
-        background: "linear-gradient(180deg, rgba(8,12,24,0.10) 40%, rgba(8,12,24,0.55) 100%)",
-        display: "flex", alignItems: "flex-end", justifyContent: "center",
-        padding: "24px 24px 40px",
-        fontFamily: "var(--f-sans, system-ui)",
-        pointerEvents: "none",   // let the live UI stay interactive; card re-enables below
-      }}>
-      {/* Spotlight ring around the nav tab this slide describes */}
-      {navRect && (
-        <div style={{
-          position: "fixed",
-          left: navRect.left - 6, top: navRect.top - 5,
-          width: navRect.width + 12, height: navRect.height + 10,
-          border: "2px solid var(--c-bridge)", borderRadius: 10,
-          boxShadow: "0 0 0 4px color-mix(in oklch, var(--c-bridge) 28%, transparent), 0 0 22px var(--c-bridge)",
-          pointerEvents: "none", zIndex: 501,
-          transition: "left 220ms, top 220ms, width 220ms",
-          animation: "pulseRing 1.4s infinite",
-        }} />
-      )}
-      <div style={{
-        pointerEvents: "auto",
-        width: "min(620px, 100%)",
-        background: "var(--c-bg-elev)",
-        border: "1px solid var(--c-line-strong)",
-        borderRadius: 16,
-        boxShadow: "0 24px 80px rgba(0,0,0,0.55)",
-        overflow: "hidden",
-      }}>
-        {/* Progress strip */}
-        <div style={{ display: "flex", gap: 4, padding: "10px 22px 0" }}>
-          {SLIDES.map((_, i) => (
-            <div key={i}
-              onClick={() => setIdx(i)}
-              style={{
-                flex: 1, height: 3, borderRadius: 2, cursor: "pointer",
-                background: i <= idx ? "var(--c-bridge)" : "color-mix(in oklch, var(--c-ink) 12%, transparent)",
-                transition: "background 200ms",
-              }} />
-          ))}
-        </div>
+    <div className="tut" role="dialog" aria-modal="true" aria-labelledby="tut-title" aria-describedby="tut-body">
+      {/* Dim everything except the target */}
+      {rect
+        ? <div className="tut-spot" style={{ left: rect.left, top: rect.top, width: rect.width, height: rect.height }} />
+        : <div className="tut-dim" onClick={() => close(true)} />}
 
-        <div style={{ padding: "28px 32px 8px" }}>
-          <div style={{ fontSize: 34, marginBottom: 12 }}>{slide.icon}</div>
-          <div className="t-tag" style={{
-            color: "var(--c-bridge)", marginBottom: 8,
-            fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: "0.12em",
-          }}>
-            {slide.tag}
+      <div className="tut-card" style={cardPos}>
+        <div className="tut-top">
+          <span className="tut-kicker">{step.kicker}</span>
+          <button className="tut-skip" onClick={() => close(true)}>Skip</button>
+        </div>
+        <h2 id="tut-title" className="tut-title">{step.title}</h2>
+        <p id="tut-body" className="tut-body" aria-live="polite">{step.body}</p>
+        <div className="tut-foot">
+          <div className="tut-dots" aria-label={`Step ${idx + 1} of ${STEPS.length}`}>
+            {STEPS.map((_, i) => (
+              <button key={i} className={i === idx ? "on" : i < idx ? "past" : ""}
+                aria-label={`Go to step ${i + 1}`} aria-current={i === idx ? "step" : undefined}
+                onClick={() => setIdx(i)} />
+            ))}
           </div>
-          <h2 style={{
-            margin: "0 0 14px",
-            fontSize: 24, lineHeight: 1.25, letterSpacing: "-0.01em",
-            color: "var(--c-ink)",
-          }}>
-            {typeof slide.title === "function" ? slide.title() : slide.title}
-          </h2>
-          <p style={{
-            margin: "0 0 18px",
-            fontSize: 14.5, lineHeight: 1.6, color: "var(--c-ink-muted)",
-          }}>
-            {slide.body}
-          </p>
-          {slide.tryIt && (
-            <button
-              onClick={() => {
-                try { localStorage.setItem(TUT_FLAG, "1"); } catch {}
-                onClose();
-                if (onJumpTo) onJumpTo(slide.tryIt);
-              }}
-              style={{
-                marginBottom: 10,
-                padding: "8px 14px", fontSize: 12.5, fontWeight: 600,
-                background: "color-mix(in oklch, var(--c-bridge) 18%, transparent)",
-                color: "var(--c-bridge)",
-                border: "1px solid var(--c-bridge)",
-                borderRadius: 999, cursor: "pointer",
-              }}>
-              ▸ Try it now
-            </button>
-          )}
-        </div>
-
-        <div style={{
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-          padding: "14px 22px 22px",
-          gap: 10,
-        }}>
-          <button
-            onClick={() => {
-              try { localStorage.setItem(TUT_FLAG, "1"); } catch {}
-              onClose();
-            }}
-            style={{
-              padding: "8px 14px", fontSize: 12,
-              background: "transparent", color: "var(--c-ink-muted)",
-              border: "none", cursor: "pointer",
-              fontFamily: "var(--f-mono)", letterSpacing: "0.05em",
-            }}>
-            skip tour
-          </button>
-
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <button
-              onClick={() => setIdx(i => Math.max(0, i - 1))}
-              disabled={idx === 0}
-              style={{
-                padding: "8px 12px", fontSize: 13,
-                background: "transparent",
-                color: idx === 0 ? "var(--c-ink-dim)" : "var(--c-ink)",
-                border: "1px solid var(--c-line)",
-                borderRadius: 999,
-                cursor: idx === 0 ? "not-allowed" : "pointer",
-              }}>
-              ← Back
-            </button>
-            <div style={{ fontSize: 11, color: "var(--c-ink-muted)", fontFamily: "var(--f-mono)" }}>
-              {idx + 1} / {SLIDES.length}
-            </div>
-            <button
-              onClick={next}
-              style={{
-                padding: "8px 18px", fontSize: 13, fontWeight: 600,
-                background: "var(--c-bridge)", color: "var(--c-bg)",
-                border: "none", borderRadius: 999,
-                cursor: "pointer",
-              }}>
-              {slide.cta || (last ? "Done" : "Next →")}
-            </button>
+          <div className="tut-actions">
+            {idx > 0 && <button className="btn ghost sm" onClick={back}>Back</button>}
+            <button ref={nextRef} className="btn primary" onClick={next}>{step.next || "Next"}</button>
           </div>
         </div>
       </div>
@@ -346,7 +211,7 @@ function Tutorial({ open, onClose, onJumpTo, onPreview }) {
 }
 
 function shouldAutoOpenTutorial() {
-  try { return !localStorage.getItem(TUT_FLAG); } catch { return true; }
+  try { return !localStorage.getItem(TUT_FLAG); } catch (e) { return true; }
 }
 
 window.Tutorial = Tutorial;

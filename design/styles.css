@@ -771,3 +771,37 @@ a.btn { text-decoration: none; }
 .walk-nav-in { max-width: 720px; margin: 0 auto; padding: 12px max(20px, env(safe-area-inset-left, 0px)); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .walk-nav-name { display: inline-block; max-width: 34ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
 @media (max-width: 560px) { .walk-nav .btn.ghost .walk-nav-name { display: none; } .walk-nav-name { max-width: 20ch; } }
+
+/* ───── Walkthrough: spotlight the real element, short card beside it ───── */
+.tut { position: fixed; inset: 0; z-index: 500; font-family: var(--f-sans); }
+.tut-dim { position: absolute; inset: 0; background: rgba(10, 12, 20, 0.5); }
+.tut-spot {
+  position: fixed; border-radius: 14px; pointer-events: none;
+  box-shadow: 0 0 0 2px var(--c-here), 0 0 0 9999px rgba(10, 12, 20, 0.5);
+  transition: left 260ms ease, top 260ms ease, width 260ms ease, height 260ms ease;
+}
+.tut-card {
+  position: fixed; width: min(384px, calc(100vw - 32px));
+  background: var(--c-bg-elev-2); color: var(--c-ink);
+  border: 1px solid var(--c-line-strong); border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+  padding: 20px 20px 16px; display: grid; gap: 10px;
+  animation: tutIn 220ms ease;
+}
+@keyframes tutIn { from { opacity: 0; translate: 0 6px; } to { opacity: 1; translate: 0 0; } }
+@media (prefers-reduced-motion: reduce) { .tut-card { animation: none; } .tut-spot { transition: none; } }
+.tut-top { display: flex; justify-content: space-between; align-items: center; }
+.tut-kicker { font-family: var(--f-mono); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--c-here); }
+.tut-skip { all: unset; cursor: pointer; font-size: 13px; color: var(--c-ink-muted); padding: 2px 4px; border-radius: 6px; }
+.tut-skip:hover { color: var(--c-ink); }
+.tut-skip:focus-visible { outline: 2px solid var(--c-bridge); }
+.tut-title { margin: 0; font-size: 21px; line-height: 1.25; letter-spacing: -0.015em; font-weight: 650; text-wrap: balance; }
+.tut-body { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--c-ink-muted); }
+.tut-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 6px; }
+.tut-dots { display: flex; gap: 6px; }
+.tut-dots button { all: unset; cursor: pointer; width: 8px; height: 8px; border-radius: 99px; background: var(--c-line-strong); transition: width 160ms, background 160ms; }
+.tut-dots button.past { background: color-mix(in srgb, var(--c-here) 45%, transparent); }
+.tut-dots button.on { width: 22px; background: var(--c-here); }
+.tut-dots button:focus-visible { outline: 2px solid var(--c-bridge); outline-offset: 2px; }
+.tut-actions { display: flex; gap: 6px; align-items: center; }
+@media (max-width: 560px) { .tut-card { left: 16px !important; right: 16px; bottom: 16px !important; top: auto !important; transform: none !important; width: auto; } }

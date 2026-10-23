@@ -227,7 +227,7 @@ function App() {
 
   // Auto-open the welcome tutorial on first visit (human view only).
   useEffect(() => {
-    if (view === "human" && screen !== "courses" && window.BUTutorial?.shouldAutoOpenTutorial?.()) {
+    if (view === "human" && window.BUTutorial?.shouldAutoOpenTutorial?.()) {
       setTutorialOpen(true);
     }
   }, [view]);
@@ -306,8 +306,8 @@ function App() {
       setOpenprobOpen(true);
     } else {
       setArxivisOpen(false); setOpenprobOpen(false);
-      if (id === "walk" && !tour) startTour("Reynolds_number");
-      else setScreen(id);
+      // With no walk yet, The walk shows a pointer to Courses (EmptyTour), not a demo lesson.
+      setScreen(id);
     }
   };
 
@@ -473,7 +473,7 @@ function App() {
                 onShow3D={() => { setExplorer(true); setExplorerNode(tour[stopIdx].node); }} />
         )}
         {screen === "walk" && !tour && (
-          <EmptyTour onPick={() => setScreen("trailhead")} />
+          <EmptyTour onPick={() => setScreen("courses")} />
         )}
         {screen === "branch" && (
           <BranchStandalone onOpen={() => { setScreen("walk"); if (!tour) startTour("Reynolds_number"); setTimeout(() => setBranch(true), 300); }} />
@@ -566,8 +566,18 @@ function App() {
         {/* Welcome tutorial overlay (auto on first visit, ? to reopen) */}
         <Tutorial
           open={tutorialOpen}
-          onClose={() => setTutorialOpen(false)}
-          onPreview={(screenId) => { if (screenId) goto(screenId); }}
+          onClose={() => {
+            setTutorialOpen(false);
+            // Drop the sample walk the tour showed, so The Walk tab is empty until the learner starts one.
+            setTour(t => (t && t === BU_DATA.TOURS["tour-sample"] ? null : t));
+          }}
+          onPreview={(screenId) => {
+            if (screenId === "walk-sample") {
+              // Show a real course lesson behind the tour card.
+              const key = BU_DATA.poraTour && BU_DATA.poraTour(["Recursive_Bayes_filter", "Kalman_filter", "EKF_and_UKF"], "tour-sample");
+              if (key) { startTour(key); setStopIdx(1); } else goto("walk");
+            } else if (screenId) goto(screenId);
+          }}
           onJumpTo={(screenId) => {
             setTutorialOpen(false);
             if (screenId) goto(screenId);
@@ -648,13 +658,12 @@ function EmptyTour({ onPick }) {
   return (
     <div style={{ minHeight: "calc(100vh - 56px)", display: "grid", placeItems: "center", padding: 40 }}>
       <div className="card" style={{ textAlign: "center", padding: 40, maxWidth: 460 }}>
-        <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 6 }}>NO ACTIVE TRAIL</div>
-        <h2 className="t-h1" style={{ margin: "0 0 8px" }}>Pick a peak first</h2>
-        <p className="t-cap" style={{ margin: "0 0 18px" }}>
-          The walk is generated from your starting concept. Visit the trailhead to choose one
-          (or let the system rank options for you).
+        <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 6 }}>NO WALK YET</div>
+        <h2 className="t-h1" style={{ margin: "0 0 8px" }}>Start from Courses</h2>
+        <p className="t-cap" style={{ margin: "0 0 18px", fontSize: 14 }}>
+          Answer two questions and Brain University builds your walk, one lesson at a time.
         </p>
-        <button className="btn primary" onClick={onPick}>▲ Go to trailhead</button>
+        <button className="btn primary lg" onClick={onPick}>Go to Courses →</button>
       </div>
     </div>
   );
