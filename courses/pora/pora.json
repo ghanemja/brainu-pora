@@ -15,7 +15,35 @@
   "siteUrl": "https://porabook.com/",
   "arxivUrl": "https://arxiv.org/abs/2608.03496",
   "exercisesRepo": "https://github.com/StanfordASL/pora-exercises",
-  "disclaimer": "Unofficial companion map. Concept summaries and prerequisite links are written independently and are not part of the book. The book is the authoritative reference."
+  "disclaimer": "Unofficial companion map. Concept summaries and prerequisite links are written independently and are not part of the book. The book is the authoritative reference.",
+  "resources": [
+   {
+    "name": "Textbook",
+    "blurb": "Read free online, chapter by chapter",
+    "url": "https://porabook.com/book/"
+   },
+   {
+    "name": "Video lectures",
+    "blurb": "AA174A and AA203 recordings",
+    "url": "https://porabook.com/lectures/"
+   },
+   {
+    "name": "Interactive exercises",
+    "blurb": "Python and Jupyter notebooks",
+    "url": "https://porabook.com/exercises/"
+   },
+   {
+    "name": "Teaching materials",
+    "blurb": "Slides and resources for instructors",
+    "url": "https://porabook.com/instructors/"
+   },
+   {
+    "name": "Ask the Book",
+    "blurb": "AI study assistant inside the textbook",
+    "url": "https://porabook.com/"
+   }
+  ],
+  "announcementUrl": "https://news.stanford.edu/stories/2026/10/autonomous-robotics-education-curriculum-textbook"
  },
  "layers": [
   {

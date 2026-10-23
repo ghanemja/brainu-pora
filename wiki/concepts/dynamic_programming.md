@@ -96,11 +96,19 @@ $$\text{opt}(m_0, m_1) = \min_{\substack{1 \leq j_0 \leq m_0 \\ 1 \leq j_1 \leq 
 - Watch: [AA203 lecture 7: Dynamic Programming and Discrete-Time LQR](https://youtu.be/hy-e9g4nugE)
 - Watch: [AA203 lecture 10: Hamilton–Jacobi–Bellman, HJI, and Reachability](https://youtu.be/Fl5EjGhQjgs)
 
+### Key ideas
+
+1. Principle of optimality: the tail of an optimal policy is optimal for the tail subproblem, so costs can be computed backward from the final stage.
+2. Finite horizon backward recursion: J_N(x) = terminal cost, J_k(x) = min_u [g(x, u) + E J_k+1(f(x, u, w))]; the minimizing u gives the optimal feedback policy at each stage.
+3. The Bellman equation V*(s) = max_a [R(s, a) + γ Σ P(s'|s,a) V*(s')] is the infinite-horizon version; LQR and Dijkstra-style shortest path are special cases of this recursion.
+
+Try it: On a 5-node directed graph with edge costs, compute shortest costs-to-go to a goal by backward DP by hand, then read off the optimal next node from every node.
+
 Needs first: [[Markov_decision_processes]]
 
 Unlocks: [[Value_and_policy_iteration]]
 
 Related: [[LQR]], [[Graph_search_and_A-star]]
 
-Part of [[Principles_of_Robot_Autonomy]]. Summary and links from the unofficial PoRA Atlas; the book is the authoritative reference.
+Part of [[Principles_of_Robot_Autonomy]]. Summary and study notes from the unofficial PoRA Atlas; the book is the authoritative reference.
 <!-- pora:end -->

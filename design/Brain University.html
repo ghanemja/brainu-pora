@@ -121,7 +121,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
 
   <!-- Data layer (no JSX, plain JS) -->
   <script src="data.js"></script>
-  <script src="courses/pora_bu.js?v=1"></script>
+  <script src="courses/pora_bu.js?v=2"></script>
   <script src="atp_data.js?v=1"></script>
   <script src="arxivis_data.js?v=4"></script>
   <script src="open_problems.js"></script>
@@ -150,7 +150,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script type="text/babel" src="screens/arxivis.jsx?v=8"></script>
   <script type="text/babel" src="screens/open-problems.jsx?v=1"></script>
   <script type="text/babel" src="screens/podcast.jsx?v=2"></script>
-  <script type="text/babel" src="screens/courses.jsx?v=1"></script>
+  <script type="text/babel" src="screens/courses.jsx?v=2"></script>
 
   <!-- ATP agent-view screens -->
   <script type="text/babel" src="screens/atp-university.jsx?v=1"></script>
@@ -403,14 +403,19 @@ function App() {
             {view === "agent" ? "Agent University · est. 2026" : "· learning prototype"}
           </span></span>
         </div>
-        <nav className="nav">
+        <nav className="nav" ref={(el) => {
+          // Keep the active tab visible when the nav is narrower than its tabs.
+          const b = el && el.querySelector("button.active");
+          if (b && (b.offsetLeft < el.scrollLeft || b.offsetLeft + b.offsetWidth > el.scrollLeft + el.clientWidth))
+            el.scrollTo({ left: b.offsetLeft - el.clientWidth / 2 + b.offsetWidth / 2 });
+        }}>
           {(view === "agent" ? SCREENS_AGENT : SCREENS_HUMAN).map(s => (
             <button key={s.id}
               data-nav={s.id}
               className={screen === s.id || (s.id === "explorer" && explorerOpen) || (s.id === "arxivis" && arxivisOpen) || (s.id === "openprob" && openprobOpen) ? "active" : ""}
               onClick={() => goto(s.id)}
               title={`Screen ${s.hint} · ${s.label}`}>
-              <span style={{ opacity: 0.45, fontFamily: "var(--f-mono)", fontSize: 10, marginRight: 6 }}>
+              <span className="nav-hint" style={{ opacity: 0.45, fontFamily: "var(--f-mono)", fontSize: 10, marginRight: 6 }}>
                 {s.hint}
               </span>
               {s.label}
@@ -491,7 +496,7 @@ function App() {
         )}
         {screen === "courses" && (
           typeof Courses !== "undefined"
-            ? <Courses onWalk={(steps) => startTour(BU_DATA.poraTour(steps, "pora-route"))} />
+            ? <Courses onWalk={(key) => startTour(key)} />
             : null
         )}
 

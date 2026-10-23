@@ -352,6 +352,29 @@ def browser_smoke(api: str, web: str) -> None:
             }""")
         ok("human view toggle → trailhead rendered")
 
+        # Courses → PoRA course page (iframe) → plan a route → walk it.
+        page.click('button[data-nav="courses"]')
+        page.wait_for_selector('iframe[src*="pora-atlas.html"]')
+        atlas = page.frame_locator('iframe[src*="pora-atlas.html"]')
+        atlas.locator("#v-syllabus .chap").first.wait_for()
+        chapters = atlas.locator("#v-syllabus .chap").count()
+        if chapters < 19:
+            die(f"PoRA syllabus rendered {chapters} chapter cards, expected ≥ 19")
+        atlas.locator('[data-go="kalman_filter"]').first.click()
+        atlas.locator("#drawer.open [data-check] .opt").first.wait_for()
+        ok(f"courses tab: PoRA syllabus ({chapters} cards) + concept drawer")
+        atlas.locator("#dr-close").click()
+        atlas.locator("#go").click()
+        atlas.locator("[data-walkroute]").click()
+        page.wait_for_function(
+            """() => {
+                const btn  = document.querySelector('button[data-nav="walk"]');
+                const main = document.querySelector('main');
+                return btn && btn.classList.contains('active') &&
+                       main && /COMPREHENSION CHECK/.test(main.innerText);
+            }""")
+        ok("PoRA route handed to the Walk screen with a concept check")
+
         page.wait_for_timeout(1500)  # let late async fetches surface errors
         browser.close()
 
@@ -360,7 +383,7 @@ def browser_smoke(api: str, web: str) -> None:
         for e in real_errors:
             print(f"  console/network error: {e}", file=sys.stderr)
         die(f"{len(real_errors)} console/network error(s) during the browser smoke")
-    ok("zero console errors across login + 7 screens")
+    ok("zero console errors across login + 8 screens")
 
 
 def main() -> int:

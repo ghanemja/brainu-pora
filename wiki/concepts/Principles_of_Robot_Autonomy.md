@@ -9,6 +9,14 @@ Free textbook by Daniele Gammelli, Joseph Lorenzetti, Katie Luo, Gioele Zardini,
 
 Unofficial companion map. Concept summaries and prerequisite links are written independently and are not part of the book. The book is the authoritative reference.
 
+## Course resources
+
+- [Textbook](https://porabook.com/book/): Read free online, chapter by chapter
+- [Video lectures](https://porabook.com/lectures/): AA174A and AA203 recordings
+- [Interactive exercises](https://porabook.com/exercises/): Python and Jupyter notebooks
+- [Teaching materials](https://porabook.com/instructors/): Slides and resources for instructors
+- [Ask the Book](https://porabook.com/): AI study assistant inside the textbook
+
 ## Getting started
 - [Robot Autonomy Software](https://porabook.com/book/software/): [[Autonomy_software_stack]]
 

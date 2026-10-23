@@ -120,9 +120,17 @@ Training time (∼400 seconds for 100 streams in Wang et al. [6]) is acceptable 
 - Watch: [AA203 lecture 14: Intro to Imitation Learning and Reinforcement Learning](https://youtu.be/7YdOx-ih0II)
 - Watch: [AA203 lecture 16: Fundamentals of Reinforcement Learning](https://youtu.be/cqPbt3OfRK4)
 
+### Key ideas
+
+1. In RL the agent does not know P or R; it interacts with the environment, observing (s, a, r, s') tuples, and must learn a good policy from this experience.
+2. Exploration versus exploitation: acting greedily on current estimates can miss better actions, so strategies like ε-greedy or optimism deliberately try uncertain actions.
+3. Methods split into model-free (learn values or policies directly) and model-based (learn dynamics, then plan), and into on-policy versus off-policy depending on which policy generated the data.
+
+Try it: Simulate a 10-armed bandit with Gaussian rewards and compare average reward over 1000 steps for ε = 0, 0.01, and 0.1 using sample-average value estimates.
+
 Needs first: [[Markov_decision_processes]], [[Neural_network]]
 
 Unlocks: [[Monte_Carlo_and_TD_learning]], [[Policy_gradients_and_actor-critic]], [[Model-based_RL_and_system_ID]], [[Inverse_reinforcement_learning]]
 
-Part of [[Principles_of_Robot_Autonomy]]. Summary and links from the unofficial PoRA Atlas; the book is the authoritative reference.
+Part of [[Principles_of_Robot_Autonomy]]. Summary and study notes from the unofficial PoRA Atlas; the book is the authoritative reference.
 <!-- pora:end -->

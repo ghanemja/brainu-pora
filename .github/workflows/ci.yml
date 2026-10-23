@@ -64,6 +64,8 @@ jobs:
           python-version: "3.11"
       # atp/seed.py is pure data (stdlib only) — no pip install needed.
       - run: python scripts/check_integrity.py
+      # PoRA course data is valid and every generated output is up to date.
+      - run: python courses/pora/build.py --check
 
   boot-matrix:
     runs-on: ubuntu-latest

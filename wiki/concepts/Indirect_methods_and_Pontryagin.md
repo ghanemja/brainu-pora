@@ -20,7 +20,15 @@ Derive necessary conditions for optimality first, then solve them. This turns tr
 - Watch: [AA203 lecture 4: Indirect Methods for Optimal Control](https://youtu.be/7rejaoMWviw)
 - Watch: [AA203 lecture 5: Pontryagin's Minimum Principle and Computational Methods](https://youtu.be/R4_fHzTo0IM)
 
+### Key ideas
+
+1. Pontryagin's principle introduces costates p and the Hamiltonian H = g(x, u) + p^T f(x, u); the optimal input minimizes H at each time.
+2. Necessary conditions are x_dot = ∂H/∂p, p_dot = -∂H/∂x, plus boundary conditions on x(0) and on x(t_f) or p(t_f), giving a two-point boundary value problem.
+3. Indirect methods can be very accurate but are sensitive: shooting on the costate initial value often diverges without a good guess, and inequality constraints complicate the conditions.
+
+Try it: For x_dot = u minimizing ∫ u^2/2 dt from x(0)=0 to x(1)=1, form H, derive p_dot = 0 and u = -p, and solve for the constant optimal u.
+
 Needs first: [[Optimal_control_problems]]
 
-Part of [[Principles_of_Robot_Autonomy]]. Summary and links from the unofficial PoRA Atlas; the book is the authoritative reference.
+Part of [[Principles_of_Robot_Autonomy]]. Summary and study notes from the unofficial PoRA Atlas; the book is the authoritative reference.
 <!-- pora:end -->
