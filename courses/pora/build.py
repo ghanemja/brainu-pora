@@ -142,11 +142,11 @@ def bu_lessons(d: dict, C: dict, kids: dict) -> dict:
     for c in d["concepts"]:
         ideas = []
         if c["ch"] is not None:
-            ideas.append({"h": "Read.", "b": f"{CH_LABEL.get(c['ch'], 'Chapter %d: %s' % (c['ch'], chap[c['ch']]['title']))} ({chap[c['ch']]['url']})"})
+            ideas.append({"h": "Read.", "b": f"{CH_LABEL.get(c['ch'], 'Chapter %d: %s' % (c['ch'], chap[c['ch']]['title']))} at porabook.com."})
         if c["exercises"]:
-            ideas.append({"h": "Run.", "b": "; ".join(f"{ex_title(e)} ({d['exerciseBase']['colab']}{e})" for e in c["exercises"])})
+            ideas.append({"h": "Run.", "b": ", ".join(ex_title(e) for e in c["exercises"]) + " notebook" + ("s" if len(c["exercises"]) > 1 else "") + " in Colab. Open links from the Courses tab."})
         if c["lectures"]:
-            ideas.append({"h": "Watch.", "b": "; ".join(f"{d['lectures'][l]['course']} {d['lectures'][l]['n']}: {d['lectures'][l]['title']} ({d['lectures'][l]['url']})" for l in c["lectures"])})
+            ideas.append({"h": "Watch.", "b": "; ".join(f"{d['lectures'][l]['course']} lecture {d['lectures'][l]['n']}, {d['lectures'][l]['title']}" for l in c["lectures"]) + "."})
         if kids[c["id"]]:
             ideas.append({"h": "Unlocks.", "b": ", ".join(C[k]["name"] for k in kids[c["id"]]) + "."})
         quiz = []

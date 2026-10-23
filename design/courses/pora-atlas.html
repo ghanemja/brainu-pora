@@ -365,7 +365,7 @@ const PORA = {"meta":{"id":"pora","title":"Principles of Robot Autonomy","author
 
   const h = location.hash.slice(1);
   if (C[h]) select(h); else { render(); }
-  window.PORA_ATLAS = { select, plan, setBg: v => bgSel.value = v, setGoal: v => goalSel.value = v };
+  window.PORA_ATLAS = { select, plan, setBg: v => bgSel.value = v, setGoal: v => goalSel.value = v, nodeOf: id => nodes[id] && nodes[id].g, route: () => route };
 })();
 </script>
 
