@@ -21,3 +21,17 @@
 - [[State_space_model]]
 - [[Observability]]
 - [[Target_tracking]]
+
+<!-- pora:begin -->
+## In Principles of Robot Autonomy
+
+- Read: [Chapter 15: Sensor Fusion and Object Tracking](https://porabook.com/book/sensor-fusion/)
+- Stack layer: Estimation & mapping · classical
+- Run: [Kalman Sensor Fusion](https://colab.research.google.com/github/StanfordASL/pora-exercises/blob/main/ch15/exercises/kalman_sensor_fusion.ipynb) ([source](https://github.com/StanfordASL/pora-exercises/blob/main/ch15/exercises/kalman_sensor_fusion.ipynb))
+
+Needs first: [[Kalman_filter]], [[Robot_sensors]]
+
+Unlocks: [[Learned_fusion_BEV_and_features]]
+
+Part of [[Principles_of_Robot_Autonomy]]. Summary and links from the unofficial PoRA Atlas; the book is the authoritative reference.
+<!-- pora:end -->

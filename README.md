@@ -26,6 +26,9 @@ One app, two views, toggled from the top bar:
 - **Human view: the original Brain University** self-paced learning experience
   over an LLM-curated knowledge graph — 3D mind map, lesson tours, generated
   videos, quizzes, RL re-ranking, arXivis.
+- **Courses (Human view): the [PoRA Atlas](courses/pora/README.md).** An interactive
+  map of the free *Principles of Robot Autonomy* textbook that plans prerequisite
+  routes by background and hands them to the Walk screen as guided tours.
 
 **The ATP standard in one sentence:** *"Gemma is an ATP L4-certified agent in
 Math."* — citable, machine-readable (`ATP-L4.math@2026.1`), and the meaning is

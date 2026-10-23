@@ -1,0 +1,1515 @@
+{
+ "meta": {
+  "id": "pora",
+  "title": "Principles of Robot Autonomy",
+  "authors": [
+   "Daniele Gammelli",
+   "Joseph Lorenzetti",
+   "Katie Luo",
+   "Gioele Zardini",
+   "Marco Pavone"
+  ],
+  "publisher": "Cambridge University Press",
+  "year": 2026,
+  "bookUrl": "https://porabook.com/book/",
+  "siteUrl": "https://porabook.com/",
+  "arxivUrl": "https://arxiv.org/abs/2608.03496",
+  "exercisesRepo": "https://github.com/StanfordASL/pora-exercises",
+  "disclaimer": "Unofficial companion map. Concept summaries and prerequisite links are written independently and are not part of the book. The book is the authoritative reference."
+ },
+ "layers": [
+  {
+   "id": "F",
+   "name": "Foundations",
+   "blurb": "Math and tooling the rest of the stack assumes."
+  },
+  {
+   "id": "D",
+   "name": "Dynamics & control",
+   "blurb": "How a robot moves and how to make it move the way you want."
+  },
+  {
+   "id": "P",
+   "name": "Planning",
+   "blurb": "Finding collision-free paths through the space of configurations."
+  },
+  {
+   "id": "S",
+   "name": "Perception",
+   "blurb": "Turning raw sensor data into geometry and semantics."
+  },
+  {
+   "id": "E",
+   "name": "Estimation & mapping",
+   "blurb": "Tracking where the robot and the world are under uncertainty."
+  },
+  {
+   "id": "L",
+   "name": "Decisions & learning",
+   "blurb": "Choosing actions, from hand-built logic to learned policies."
+  }
+ ],
+ "parts": [
+  {
+   "id": 0,
+   "name": "Getting started",
+   "chapters": [
+    0
+   ]
+  },
+  {
+   "id": 1,
+   "name": "Part I · Motion planning and control",
+   "chapters": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "id": 2,
+   "name": "Part II · Perception",
+   "chapters": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ]
+  },
+  {
+   "id": 3,
+   "name": "Part III · Localization and mapping",
+   "chapters": [
+    11,
+    12,
+    13,
+    14,
+    15
+   ]
+  },
+  {
+   "id": 4,
+   "name": "Part IV · Decision making",
+   "chapters": [
+    16,
+    17,
+    18,
+    19
+   ]
+  }
+ ],
+ "chapters": [
+  {
+   "n": 0,
+   "title": "Robot Autonomy Software",
+   "url": "https://porabook.com/book/software/"
+  },
+  {
+   "n": 1,
+   "title": "Modeling Robot Dynamics",
+   "url": "https://porabook.com/book/modeling-robot-dynamics/"
+  },
+  {
+   "n": 2,
+   "title": "Open-Loop Control & Trajectory Optimization",
+   "url": "https://porabook.com/book/open-loop-control/"
+  },
+  {
+   "n": 3,
+   "title": "Closed-Loop Control & Trajectory Tracking",
+   "url": "https://porabook.com/book/closed-loop-control/"
+  },
+  {
+   "n": 4,
+   "title": "Motion Planning",
+   "url": "https://porabook.com/book/motion-planning/"
+  },
+  {
+   "n": 5,
+   "title": "Introduction to Robot Sensors",
+   "url": "https://porabook.com/book/robot-sensors/"
+  },
+  {
+   "n": 6,
+   "title": "Camera Models and Calibration",
+   "url": "https://porabook.com/book/camera-models/"
+  },
+  {
+   "n": 7,
+   "title": "Stereo Vision and Structure From Motion",
+   "url": "https://porabook.com/book/stereo-vision/"
+  },
+  {
+   "n": 8,
+   "title": "Classical Methods for Perception",
+   "url": "https://porabook.com/book/classical-perception/"
+  },
+  {
+   "n": 9,
+   "title": "Deep Learning Architectures for Perception",
+   "url": "https://porabook.com/book/deep-learning-perception/"
+  },
+  {
+   "n": 10,
+   "title": "Object Detection and Recognition",
+   "url": "https://porabook.com/book/object-detection/"
+  },
+  {
+   "n": 11,
+   "title": "Introduction to Localization and Filtering",
+   "url": "https://porabook.com/book/localization-filtering/"
+  },
+  {
+   "n": 12,
+   "title": "Approximate Filters for State Estimation",
+   "url": "https://porabook.com/book/approximate-filters/"
+  },
+  {
+   "n": 13,
+   "title": "Robot Localization",
+   "url": "https://porabook.com/book/robot-localization/"
+  },
+  {
+   "n": 14,
+   "title": "Simultaneous Localization and Mapping (SLAM)",
+   "url": "https://porabook.com/book/slam/"
+  },
+  {
+   "n": 15,
+   "title": "Sensor Fusion and Object Tracking",
+   "url": "https://porabook.com/book/sensor-fusion/"
+  },
+  {
+   "n": 16,
+   "title": "Finite State Machines",
+   "url": "https://porabook.com/book/finite-state-machines/"
+  },
+  {
+   "n": 17,
+   "title": "Sequential Decision Making and Dynamic Programming",
+   "url": "https://porabook.com/book/decision-making/"
+  },
+  {
+   "n": 18,
+   "title": "Reinforcement Learning",
+   "url": "https://porabook.com/book/reinforcement-learning/"
+  },
+  {
+   "n": 19,
+   "title": "Imitation Learning",
+   "url": "https://porabook.com/book/imitation-learning/"
+  }
+ ],
+ "lectures": {
+  "aa174-01": {
+   "course": "AA174A",
+   "n": 1,
+   "title": "Course Overview and Mobile Robot Kinematics",
+   "url": "https://youtu.be/Lgt5ONBtFI0"
+  },
+  "aa174-02": {
+   "course": "AA174A",
+   "n": 2,
+   "title": "Trajectory Optimization",
+   "url": "https://youtu.be/Kv5G2OlrIbU"
+  },
+  "aa174-03": {
+   "course": "AA174A",
+   "n": 3,
+   "title": "Trajectory Tracking",
+   "url": "https://youtu.be/nluc4rMiipA"
+  },
+  "aa174-04": {
+   "course": "AA174A",
+   "n": 4,
+   "title": "Advanced Trajectory Optimization",
+   "url": "https://youtu.be/Izu4_AUiHyk"
+  },
+  "aa174-05": {
+   "course": "AA174A",
+   "n": 5,
+   "title": "Motion Planning: Graph Search Methods",
+   "url": "https://youtu.be/hFCIZjVkSaw"
+  },
+  "aa174-06": {
+   "course": "AA174A",
+   "n": 6,
+   "title": "Motion Planning: Sampling-Based Methods",
+   "url": "https://youtu.be/AN4jXyWwV7Q"
+  },
+  "aa174-07": {
+   "course": "AA174A",
+   "n": 7,
+   "title": "Sensors and Introduction to Computer Vision",
+   "url": "https://youtu.be/emb_KF3OSu0"
+  },
+  "aa174-08": {
+   "course": "AA174A",
+   "n": 8,
+   "title": "Camera Models & Calibration",
+   "url": "https://youtu.be/QyG0PTgLBxQ"
+  },
+  "aa174-09": {
+   "course": "AA174A",
+   "n": 9,
+   "title": "Stereo Vision",
+   "url": "https://youtu.be/idD08N4rgJU"
+  },
+  "aa174-10": {
+   "course": "AA174A",
+   "n": 10,
+   "title": "Image Processing",
+   "url": "https://youtu.be/8A3NmdQJRNc"
+  },
+  "aa174-11": {
+   "course": "AA174A",
+   "n": 11,
+   "title": "Classic Visual Recognition",
+   "url": "https://youtu.be/GsIRJJ5sYoU"
+  },
+  "aa174-12": {
+   "course": "AA174A",
+   "n": 12,
+   "title": "Localization & Filters",
+   "url": "https://youtu.be/dG3-D-vDwe8"
+  },
+  "aa174-13": {
+   "course": "AA174A",
+   "n": 13,
+   "title": "Parametric Filtering",
+   "url": "https://youtu.be/pSBhRF6j-Zc"
+  },
+  "aa174-14": {
+   "course": "AA174A",
+   "n": 14,
+   "title": "EKF Localization",
+   "url": "https://youtu.be/9y_lJdQmKcY"
+  },
+  "aa203-01": {
+   "course": "AA203",
+   "n": 1,
+   "title": "Course Overview and Intro to Nonlinear Optimization",
+   "url": "https://youtu.be/Au2stLALZew"
+  },
+  "aa203-02": {
+   "course": "AA203",
+   "n": 2,
+   "title": "Optimization Theory",
+   "url": "https://youtu.be/FbkNYklySak"
+  },
+  "aa203-03": {
+   "course": "AA203",
+   "n": 3,
+   "title": "Calculus of Variations",
+   "url": "https://youtu.be/duZJ2_ajLso"
+  },
+  "aa203-04": {
+   "course": "AA203",
+   "n": 4,
+   "title": "Indirect Methods for Optimal Control",
+   "url": "https://youtu.be/7rejaoMWviw"
+  },
+  "aa203-05": {
+   "course": "AA203",
+   "n": 5,
+   "title": "Pontryagin's Minimum Principle and Computational Methods",
+   "url": "https://youtu.be/R4_fHzTo0IM"
+  },
+  "aa203-06": {
+   "course": "AA203",
+   "n": 6,
+   "title": "Direct Methods for Optimal Control",
+   "url": "https://youtu.be/zX8raxUa2DE"
+  },
+  "aa203-07": {
+   "course": "AA203",
+   "n": 7,
+   "title": "Dynamic Programming and Discrete-Time LQR",
+   "url": "https://youtu.be/hy-e9g4nugE"
+  },
+  "aa203-08": {
+   "course": "AA203",
+   "n": 8,
+   "title": "Tracking LQR, Iterative LQR, Differential Dynamic Programming",
+   "url": "https://youtu.be/1YdgSwEtf_s"
+  },
+  "aa203-09": {
+   "course": "AA203",
+   "n": 9,
+   "title": "Stochastic DP, Value Iteration, and Policy Iteration",
+   "url": "https://youtu.be/C9mLpI8Td9g"
+  },
+  "aa203-10": {
+   "course": "AA203",
+   "n": 10,
+   "title": "Hamilton–Jacobi–Bellman, HJI, and Reachability",
+   "url": "https://youtu.be/Fl5EjGhQjgs"
+  },
+  "aa203-11": {
+   "course": "AA203",
+   "n": 11,
+   "title": "Introduction to Model Predictive Control",
+   "url": "https://youtu.be/3_gxaB_Pp3k"
+  },
+  "aa203-12": {
+   "course": "AA203",
+   "n": 12,
+   "title": "Persistent Feasibility of MPC, Stability, and Explicit MPC",
+   "url": "https://youtu.be/8Elrw30y0tg"
+  },
+  "aa203-13": {
+   "course": "AA203",
+   "n": 13,
+   "title": "Intro to Learning, System Identification and Adaptive Control",
+   "url": "https://youtu.be/RtJSHiqOdgQ"
+  },
+  "aa203-14": {
+   "course": "AA203",
+   "n": 14,
+   "title": "Intro to Imitation Learning and Reinforcement Learning",
+   "url": "https://youtu.be/7YdOx-ih0II"
+  },
+  "aa203-15": {
+   "course": "AA203",
+   "n": 15,
+   "title": "Imitation Learning",
+   "url": "https://youtu.be/udHX5Auj7ik"
+  },
+  "aa203-16": {
+   "course": "AA203",
+   "n": 16,
+   "title": "Fundamentals of Reinforcement Learning",
+   "url": "https://youtu.be/cqPbt3OfRK4"
+  },
+  "aa203-17": {
+   "course": "AA203",
+   "n": 17,
+   "title": "Model-free RL: Value-based Methods",
+   "url": "https://youtu.be/zanXSI7zSws"
+  },
+  "aa203-18": {
+   "course": "AA203",
+   "n": 18,
+   "title": "Model-free RL: Policy Optimization",
+   "url": "https://youtu.be/a1g9U_5zO54"
+  },
+  "aa203-19": {
+   "course": "AA203",
+   "n": 19,
+   "title": "Model-based RL and Conclusions",
+   "url": "https://youtu.be/ZXMThMHFD_w"
+  }
+ },
+ "exerciseBase": {
+  "colab": "https://colab.research.google.com/github/StanfordASL/pora-exercises/blob/main/",
+  "github": "https://github.com/StanfordASL/pora-exercises/blob/main/"
+ },
+ "concepts": [
+  {
+   "id": "linear_algebra",
+   "name": "Linear algebra",
+   "layer": "F",
+   "ch": null,
+   "kind": "foundation",
+   "prereqs": [],
+   "summary": "Vectors, matrices, eigenvalues, and least squares. Nearly every model in robotics is written in this language.",
+   "wiki": "Linear_algebra"
+  },
+  {
+   "id": "probability",
+   "name": "Probability & Gaussians",
+   "layer": "F",
+   "ch": 11,
+   "kind": "foundation",
+   "prereqs": [],
+   "summary": "Random variables, Bayes' rule, and the multivariate Gaussian. The book reviews these at the start of the estimation part, and they underpin every filter that follows.",
+   "wiki": "Probability"
+  },
+  {
+   "id": "odes",
+   "name": "Calculus & ODEs",
+   "layer": "F",
+   "ch": null,
+   "kind": "foundation",
+   "prereqs": [],
+   "summary": "Derivatives, Jacobians, and ordinary differential equations, used to describe how state changes over time.",
+   "wiki": "Ordinary_differential_equation"
+  },
+  {
+   "id": "optimization",
+   "name": "Numerical optimization",
+   "layer": "F",
+   "ch": null,
+   "kind": "foundation",
+   "prereqs": [
+    "linear_algebra",
+    "odes"
+   ],
+   "summary": "Minimizing a cost subject to constraints: gradients, optimality conditions, and the solvers that trajectory optimization and calibration run on.",
+   "wiki": "Numerical_optimization",
+   "lectures": [
+    "aa203-01",
+    "aa203-02"
+   ]
+  },
+  {
+   "id": "deep_learning_basics",
+   "name": "Neural networks & training",
+   "layer": "F",
+   "ch": null,
+   "kind": "foundation",
+   "prereqs": [
+    "linear_algebra",
+    "optimization"
+   ],
+   "summary": "Layers, losses, backpropagation, and stochastic gradient descent. Needed for learned perception and learned policies.",
+   "wiki": "Neural_network"
+  },
+  {
+   "id": "autonomy_software",
+   "name": "Autonomy software stack",
+   "layer": "F",
+   "ch": 0,
+   "kind": "foundation",
+   "prereqs": [],
+   "summary": "The Python tooling and the idea of a modular stack where perception, estimation, planning, and control run as connected components."
+  },
+  {
+   "id": "state_space",
+   "name": "State-space models",
+   "layer": "D",
+   "ch": 1,
+   "kind": "classical",
+   "prereqs": [
+    "linear_algebra",
+    "odes"
+   ],
+   "summary": "Describe a robot by a state vector and inputs, with dynamics giving the state's rate of change. Every later control and estimation method starts here.",
+   "wiki": "State_space_model",
+   "lectures": [
+    "aa174-01"
+   ]
+  },
+  {
+   "id": "kinematic_models",
+   "name": "Kinematic vs. dynamic models",
+   "layer": "D",
+   "ch": 1,
+   "kind": "classical",
+   "prereqs": [
+    "state_space"
+   ],
+   "summary": "Kinematic models relate velocities to motion and ignore forces; dynamic models include mass, inertia, and actuation. Choosing the right fidelity is a design decision.",
+   "lectures": [
+    "aa174-01"
+   ],
+   "exercises": [
+    "ch01/exercises/double_integrator_dynamics.ipynb"
+   ]
+  },
+  {
+   "id": "nonholonomic",
+   "name": "Nonholonomic wheeled robots",
+   "layer": "D",
+   "ch": 1,
+   "kind": "classical",
+   "prereqs": [
+    "kinematic_models"
+   ],
+   "summary": "Wheels that cannot slide sideways constrain velocity but not position. The unicycle and differential-drive models capture this and recur through the book.",
+   "lectures": [
+    "aa174-01"
+   ],
+   "exercises": [
+    "ch01/exercises/nonholonomic_wheeled_robot_dynamics.ipynb"
+   ]
+  },
+  {
+   "id": "simulation",
+   "name": "Numerical integration & simulation",
+   "layer": "D",
+   "ch": 1,
+   "kind": "classical",
+   "prereqs": [
+    "state_space"
+   ],
+   "summary": "Step continuous dynamics forward in time with Euler or Runge–Kutta schemes, and understand when discretization error matters.",
+   "exercises": [
+    "ch01/exercises/simulation.ipynb",
+    "ch01/numerical_integration.ipynb"
+   ]
+  },
+  {
+   "id": "optimal_control",
+   "name": "Optimal control problems",
+   "layer": "D",
+   "ch": 2,
+   "kind": "classical",
+   "prereqs": [
+    "state_space",
+    "optimization"
+   ],
+   "summary": "Pose motion as choosing inputs that minimize a cost while respecting dynamics and constraints, producing an open-loop plan.",
+   "lectures": [
+    "aa174-02",
+    "aa203-03"
+   ],
+   "exercises": [
+    "ch02/exercises/unicycle_optimal_control.ipynb"
+   ]
+  },
+  {
+   "id": "indirect_methods",
+   "name": "Indirect methods & Pontryagin",
+   "layer": "D",
+   "ch": 2,
+   "kind": "classical",
+   "prereqs": [
+    "optimal_control"
+   ],
+   "summary": "Derive necessary conditions for optimality first, then solve them. This turns trajectory optimization into a boundary value problem.",
+   "lectures": [
+    "aa203-04",
+    "aa203-05"
+   ],
+   "exercises": [
+    "ch02/tpbvp.ipynb",
+    "ch02/free_final_time_optimal_control.ipynb",
+    "ch02/zermelos_problem.ipynb"
+   ]
+  },
+  {
+   "id": "direct_methods",
+   "name": "Direct methods & transcription",
+   "layer": "D",
+   "ch": 2,
+   "kind": "classical",
+   "prereqs": [
+    "optimal_control",
+    "simulation"
+   ],
+   "summary": "Discretize the trajectory and hand the whole problem to a nonlinear solver. The workhorse of practical trajectory optimization.",
+   "lectures": [
+    "aa174-04",
+    "aa203-06"
+   ]
+  },
+  {
+   "id": "differential_flatness",
+   "name": "Differential flatness",
+   "layer": "D",
+   "ch": 2,
+   "kind": "classical",
+   "prereqs": [
+    "kinematic_models"
+   ],
+   "summary": "For some systems, all states and inputs follow from a few flat outputs and their derivatives, so smooth trajectories can be designed in those outputs directly.",
+   "lectures": [
+    "aa174-02"
+   ],
+   "exercises": [
+    "ch02/differentially_flat_planar_quadrotor.ipynb"
+   ]
+  },
+  {
+   "id": "pid",
+   "name": "PID control",
+   "layer": "D",
+   "ch": 3,
+   "kind": "classical",
+   "prereqs": [
+    "state_space"
+   ],
+   "summary": "Feedback from the error, its integral, and its derivative. Simple, ubiquitous, and the baseline every other controller is compared against.",
+   "wiki": "PID_control",
+   "exercises": [
+    "ch03/exercises/pid_control.ipynb"
+   ]
+  },
+  {
+   "id": "linearization",
+   "name": "Linearization",
+   "layer": "D",
+   "ch": 3,
+   "kind": "classical",
+   "prereqs": [
+    "state_space",
+    "odes"
+   ],
+   "summary": "Approximate nonlinear dynamics near a point or trajectory with a linear model so linear tools apply. Automatic differentiation makes the Jacobians cheap.",
+   "exercises": [
+    "ch03/jax_linearization.ipynb"
+   ]
+  },
+  {
+   "id": "lqr",
+   "name": "LQR",
+   "layer": "D",
+   "ch": 3,
+   "kind": "classical",
+   "prereqs": [
+    "linearization",
+    "optimal_control"
+   ],
+   "summary": "For linear dynamics and quadratic cost, the optimal feedback is a fixed gain matrix from a Riccati equation. The default controller for stabilizing a robot near a setpoint.",
+   "lectures": [
+    "aa203-07"
+   ],
+   "exercises": [
+    "ch03/lqr.ipynb",
+    "ch03/exercises/cartpole_lqr_control.ipynb"
+   ],
+   "related": [
+    "dynamic_programming"
+   ]
+  },
+  {
+   "id": "trajectory_tracking",
+   "name": "Trajectory tracking",
+   "layer": "D",
+   "ch": 3,
+   "kind": "classical",
+   "prereqs": [
+    "pid",
+    "linearization",
+    "differential_flatness"
+   ],
+   "summary": "Close the loop around a planned trajectory so the robot follows it despite disturbances and model error.",
+   "lectures": [
+    "aa174-03"
+   ],
+   "exercises": [
+    "ch03/exercises/unicycle_trajectory_tracking.ipynb"
+   ]
+  },
+  {
+   "id": "ilqr",
+   "name": "iLQR & DDP",
+   "layer": "D",
+   "ch": 3,
+   "kind": "classical",
+   "prereqs": [
+    "lqr"
+   ],
+   "summary": "Repeatedly linearize about the current trajectory and solve an LQR problem, extending LQR to nonlinear systems.",
+   "lectures": [
+    "aa203-08"
+   ],
+   "exercises": [
+    "ch03/exercises/cartpole_iterative_lqr.ipynb"
+   ]
+  },
+  {
+   "id": "mpc",
+   "name": "Model predictive control",
+   "layer": "D",
+   "ch": 3,
+   "kind": "classical",
+   "prereqs": [
+    "direct_methods",
+    "lqr"
+   ],
+   "summary": "Re-solve a short-horizon trajectory optimization at every step and apply only the first input. Handles constraints explicitly.",
+   "lectures": [
+    "aa203-11",
+    "aa203-12"
+   ],
+   "exercises": [
+    "ch03/exercises/linear_mpc.ipynb"
+   ]
+  },
+  {
+   "id": "config_space",
+   "name": "Configuration space",
+   "layer": "P",
+   "ch": 4,
+   "kind": "classical",
+   "prereqs": [
+    "kinematic_models"
+   ],
+   "summary": "Represent every possible robot pose as a point, with obstacles becoming forbidden regions. Planning becomes finding a path between points.",
+   "lectures": [
+    "aa174-05"
+   ]
+  },
+  {
+   "id": "graph_search",
+   "name": "Graph search & A*",
+   "layer": "P",
+   "ch": 4,
+   "kind": "classical",
+   "prereqs": [
+    "config_space"
+   ],
+   "summary": "Discretize the space into a grid or graph and search it with label-correcting algorithms such as A*, using a heuristic to explore toward the goal first.",
+   "lectures": [
+    "aa174-05"
+   ],
+   "exercises": [
+    "ch04/exercises/a_star.ipynb"
+   ],
+   "related": [
+    "dynamic_programming"
+   ]
+  },
+  {
+   "id": "sampling_planning",
+   "name": "Sampling-based planning (PRM, RRT)",
+   "layer": "P",
+   "ch": 4,
+   "kind": "classical",
+   "prereqs": [
+    "config_space",
+    "probability"
+   ],
+   "summary": "Sample random configurations and connect them into a roadmap or tree. Scales to high-dimensional spaces where grids fail.",
+   "lectures": [
+    "aa174-06"
+   ],
+   "exercises": [
+    "ch04/exercises/rrt.ipynb",
+    "ch04/prm_star.ipynb"
+   ]
+  },
+  {
+   "id": "potential_fields",
+   "name": "Potential field methods",
+   "layer": "P",
+   "ch": 4,
+   "kind": "classical",
+   "prereqs": [
+    "config_space"
+   ],
+   "summary": "Attract the robot to the goal and repel it from obstacles with an artificial field. Fast and reactive, but prone to local minima."
+  },
+  {
+   "id": "kinodynamic_planning",
+   "name": "Planning with dynamics",
+   "layer": "P",
+   "ch": 4,
+   "kind": "classical",
+   "prereqs": [
+    "sampling_planning",
+    "optimal_control"
+   ],
+   "summary": "Plan paths that respect the robot's dynamics, not just its geometry, so the result is something the robot can actually execute."
+  },
+  {
+   "id": "sensors",
+   "name": "Robot sensors",
+   "layer": "S",
+   "ch": 5,
+   "kind": "classical",
+   "prereqs": [],
+   "summary": "Encoders, IMUs, GPS, lidar, radar, and cameras: what each measures, at what rate, and how it fails.",
+   "lectures": [
+    "aa174-07"
+   ]
+  },
+  {
+   "id": "measurement_noise",
+   "name": "Measurement noise models",
+   "layer": "S",
+   "ch": 5,
+   "kind": "classical",
+   "prereqs": [
+    "sensors",
+    "probability"
+   ],
+   "summary": "Describe sensor error statistically, usually as bias plus Gaussian noise, so estimators can weigh each reading correctly."
+  },
+  {
+   "id": "pinhole_camera",
+   "name": "Pinhole camera model",
+   "layer": "S",
+   "ch": 6,
+   "kind": "classical",
+   "prereqs": [
+    "linear_algebra"
+   ],
+   "summary": "Project 3D points onto an image plane with homogeneous coordinates. The geometric basis for everything a camera tells a robot.",
+   "lectures": [
+    "aa174-07",
+    "aa174-08"
+   ]
+  },
+  {
+   "id": "camera_calibration",
+   "name": "Intrinsics, extrinsics & calibration",
+   "layer": "S",
+   "ch": 6,
+   "kind": "classical",
+   "prereqs": [
+    "pinhole_camera",
+    "optimization"
+   ],
+   "summary": "Estimate a camera's focal length, distortion, and pose relative to the robot from images of a known pattern.",
+   "lectures": [
+    "aa174-08"
+   ],
+   "exercises": [
+    "ch06/exercises/camera_intrinsics.ipynb",
+    "ch06/exercises/camera_extrinsics.ipynb"
+   ]
+  },
+  {
+   "id": "features",
+   "name": "Feature detection & matching",
+   "layer": "S",
+   "ch": 8,
+   "kind": "classical",
+   "prereqs": [
+    "image_filtering"
+   ],
+   "summary": "Find distinctive image points and describe them so the same point can be matched across views, as SIFT does.",
+   "exercises": [
+    "ch06/sift_feature_matching.ipynb"
+   ]
+  },
+  {
+   "id": "epipolar",
+   "name": "Epipolar geometry",
+   "layer": "S",
+   "ch": 7,
+   "kind": "classical",
+   "prereqs": [
+    "camera_calibration"
+   ],
+   "summary": "Two views of a scene constrain where a point in one image can appear in the other, captured by the essential and fundamental matrices.",
+   "lectures": [
+    "aa174-09"
+   ]
+  },
+  {
+   "id": "stereo",
+   "name": "Stereo depth & triangulation",
+   "layer": "S",
+   "ch": 7,
+   "kind": "classical",
+   "prereqs": [
+    "epipolar"
+   ],
+   "summary": "Recover depth from disparity between two calibrated cameras.",
+   "lectures": [
+    "aa174-09"
+   ]
+  },
+  {
+   "id": "sfm",
+   "name": "Structure from motion",
+   "layer": "S",
+   "ch": 7,
+   "kind": "classical",
+   "prereqs": [
+    "stereo",
+    "features",
+    "optimization"
+   ],
+   "summary": "Jointly recover camera motion and 3D structure from many images, refined with bundle adjustment."
+  },
+  {
+   "id": "visual_odometry",
+   "name": "Visual odometry & loop closure",
+   "layer": "S",
+   "ch": 7,
+   "kind": "classical",
+   "prereqs": [
+    "sfm"
+   ],
+   "summary": "Estimate the camera's motion frame to frame, and recognize revisited places to correct the drift that accumulates.",
+   "related": [
+    "slam_front_end"
+   ]
+  },
+  {
+   "id": "image_filtering",
+   "name": "Image filtering & convolution",
+   "layer": "S",
+   "ch": 8,
+   "kind": "classical",
+   "prereqs": [
+    "linear_algebra"
+   ],
+   "summary": "Slide small kernels over an image to smooth it, find edges, or match templates. The same operation later becomes the core of CNNs.",
+   "lectures": [
+    "aa174-10"
+   ],
+   "exercises": [
+    "ch08/exercises/correlation_filter.ipynb"
+   ]
+  },
+  {
+   "id": "point_cloud_registration",
+   "name": "Point cloud registration (ICP)",
+   "layer": "S",
+   "ch": 8,
+   "kind": "classical",
+   "prereqs": [
+    "linear_algebra",
+    "optimization"
+   ],
+   "summary": "Align two 3D scans by alternating between matching nearest points and solving for the best rigid transform.",
+   "exercises": [
+    "ch08/exercises/icp.ipynb"
+   ]
+  },
+  {
+   "id": "classical_recognition",
+   "name": "Classical visual recognition",
+   "layer": "S",
+   "ch": 8,
+   "kind": "classical",
+   "prereqs": [
+    "image_filtering",
+    "features"
+   ],
+   "summary": "Recognize objects from hand-designed features and classifiers, the approach learned models later replaced.",
+   "lectures": [
+    "aa174-11"
+   ]
+  },
+  {
+   "id": "cnn",
+   "name": "Convolutional neural networks",
+   "layer": "S",
+   "ch": 9,
+   "kind": "learned",
+   "prereqs": [
+    "deep_learning_basics",
+    "image_filtering"
+   ],
+   "summary": "Stack learned convolution filters so the network discovers its own features from data.",
+   "exercises": [
+    "ch09/exercises/cnn.ipynb"
+   ]
+  },
+  {
+   "id": "transformers",
+   "name": "Attention & vision transformers",
+   "layer": "S",
+   "ch": 9,
+   "kind": "learned",
+   "prereqs": [
+    "deep_learning_basics"
+   ],
+   "summary": "Models that relate every part of the input to every other part through attention, now common for images, point clouds, and multimodal input."
+  },
+  {
+   "id": "point_cloud_networks",
+   "name": "Point cloud & voxel networks",
+   "layer": "S",
+   "ch": 9,
+   "kind": "learned",
+   "prereqs": [
+    "deep_learning_basics"
+   ],
+   "summary": "Architectures such as PointNet and 3D convolutions that consume lidar and depth data directly instead of images."
+  },
+  {
+   "id": "object_detection",
+   "name": "Object detection & recognition",
+   "layer": "S",
+   "ch": 10,
+   "kind": "learned",
+   "prereqs": [
+    "cnn"
+   ],
+   "summary": "Locate and label objects with bounding boxes, the input most downstream tracking and planning modules consume.",
+   "exercises": [
+    "ch10/exercises/object_detection.ipynb"
+   ],
+   "related": [
+    "classical_recognition"
+   ]
+  },
+  {
+   "id": "detection_3d",
+   "name": "3D object detection",
+   "layer": "S",
+   "ch": 10,
+   "kind": "learned",
+   "prereqs": [
+    "object_detection",
+    "point_cloud_networks"
+   ],
+   "summary": "Predict oriented 3D boxes from point clouds or voxels, which is what a planner needs to reason about other agents."
+  },
+  {
+   "id": "segmentation",
+   "name": "Semantic & instance segmentation",
+   "layer": "S",
+   "ch": 10,
+   "kind": "learned",
+   "prereqs": [
+    "cnn"
+   ],
+   "summary": "Label every pixel or point by class, and separate individual objects of the same class."
+  },
+  {
+   "id": "bayes_filter",
+   "name": "Recursive Bayes filter",
+   "layer": "E",
+   "ch": 11,
+   "kind": "classical",
+   "prereqs": [
+    "probability",
+    "state_space"
+   ],
+   "summary": "Maintain a belief over state with two alternating steps: predict with the motion model, correct with the measurement.",
+   "lectures": [
+    "aa174-12"
+   ]
+  },
+  {
+   "id": "histogram_filter",
+   "name": "Discrete (histogram) filter",
+   "layer": "E",
+   "ch": 11,
+   "kind": "classical",
+   "prereqs": [
+    "bayes_filter"
+   ],
+   "summary": "Run the Bayes filter over a grid of possible states. Exact but limited to small spaces.",
+   "exercises": [
+    "ch11/discrete_bayes.ipynb"
+   ]
+  },
+  {
+   "id": "kalman_filter",
+   "name": "Kalman filter",
+   "layer": "E",
+   "ch": 12,
+   "kind": "classical",
+   "prereqs": [
+    "bayes_filter",
+    "linear_algebra",
+    "measurement_noise"
+   ],
+   "summary": "The Bayes filter in closed form when dynamics are linear and noise is Gaussian.",
+   "wiki": "Kalman_filter",
+   "lectures": [
+    "aa174-13"
+   ],
+   "exercises": [
+    "ch12/exercises/kalman_filter.ipynb"
+   ]
+  },
+  {
+   "id": "ekf_ukf",
+   "name": "EKF & UKF",
+   "layer": "E",
+   "ch": 12,
+   "kind": "classical",
+   "prereqs": [
+    "kalman_filter",
+    "linearization"
+   ],
+   "summary": "Extend the Kalman filter to nonlinear systems, by linearizing (EKF) or by propagating sigma points (UKF).",
+   "lectures": [
+    "aa174-13"
+   ],
+   "exercises": [
+    "ch12/ekf_ukf_range_bearing.ipynb"
+   ]
+  },
+  {
+   "id": "particle_filter",
+   "name": "Particle filter",
+   "layer": "E",
+   "ch": 12,
+   "kind": "classical",
+   "prereqs": [
+    "bayes_filter"
+   ],
+   "summary": "Represent the belief with weighted samples, which handles multimodal and non-Gaussian distributions."
+  },
+  {
+   "id": "motion_measurement_models",
+   "name": "Probabilistic motion & sensor models",
+   "layer": "E",
+   "ch": 13,
+   "kind": "classical",
+   "prereqs": [
+    "nonholonomic",
+    "measurement_noise"
+   ],
+   "summary": "Odometry and range-bearing models written as probability distributions, ready to plug into a filter."
+  },
+  {
+   "id": "ekf_localization",
+   "name": "EKF localization",
+   "layer": "E",
+   "ch": 13,
+   "kind": "classical",
+   "prereqs": [
+    "ekf_ukf",
+    "motion_measurement_models"
+   ],
+   "summary": "Estimate the robot's pose in a known map by fusing odometry with landmark measurements.",
+   "lectures": [
+    "aa174-14"
+   ],
+   "exercises": [
+    "ch13/exercises/ekf_localization.ipynb"
+   ]
+  },
+  {
+   "id": "mcl",
+   "name": "Monte Carlo localization",
+   "layer": "E",
+   "ch": 13,
+   "kind": "classical",
+   "prereqs": [
+    "particle_filter",
+    "motion_measurement_models"
+   ],
+   "summary": "Particle-filter localization that can recover from being lost or placed at an unknown starting pose.",
+   "exercises": [
+    "ch13/exercises/particle_filter_localization.ipynb"
+   ]
+  },
+  {
+   "id": "ekf_slam",
+   "name": "EKF SLAM",
+   "layer": "E",
+   "ch": 14,
+   "kind": "classical",
+   "prereqs": [
+    "ekf_localization"
+   ],
+   "summary": "Add landmark positions to the state so the robot estimates its pose and the map together.",
+   "exercises": [
+    "ch14/exercises/ekf_slam.ipynb",
+    "ch14/range_bearing_ekf_slam.ipynb"
+   ]
+  },
+  {
+   "id": "slam_front_end",
+   "name": "SLAM front end",
+   "layer": "E",
+   "ch": 14,
+   "kind": "classical",
+   "prereqs": [
+    "features",
+    "point_cloud_registration"
+   ],
+   "summary": "The perception side of SLAM: extract features, associate them with landmarks, reject outliers, and detect loop closures before any estimation runs."
+  },
+  {
+   "id": "pose_graph_slam",
+   "name": "Graph & factor-graph SLAM",
+   "layer": "E",
+   "ch": 14,
+   "kind": "classical",
+   "prereqs": [
+    "motion_measurement_models",
+    "optimization",
+    "slam_front_end"
+   ],
+   "summary": "Treat poses as graph nodes and measurements as constraints, then solve for the configuration that best satisfies them all. Standard in modern SLAM.",
+   "exercises": [
+    "ch14/pose_graph_slam.ipynb"
+   ],
+   "related": [
+    "point_cloud_registration",
+    "sfm"
+   ]
+  },
+  {
+   "id": "sensor_fusion",
+   "name": "Multi-sensor fusion",
+   "layer": "E",
+   "ch": 15,
+   "kind": "classical",
+   "prereqs": [
+    "kalman_filter",
+    "sensors"
+   ],
+   "summary": "Combine sensors with different rates and error profiles, such as IMU with GPS, into one consistent estimate.",
+   "wiki": "Sensor_fusion",
+   "exercises": [
+    "ch15/exercises/kalman_sensor_fusion.ipynb"
+   ]
+  },
+  {
+   "id": "object_tracking",
+   "name": "Object tracking & data association",
+   "layer": "E",
+   "ch": 15,
+   "kind": "classical",
+   "prereqs": [
+    "kalman_filter",
+    "object_detection"
+   ],
+   "summary": "Follow detected objects over time, deciding which new detection belongs to which existing track.",
+   "related": [
+    "sensor_fusion"
+   ]
+  },
+  {
+   "id": "learned_fusion",
+   "name": "Learned fusion (BEV & features)",
+   "layer": "E",
+   "ch": 15,
+   "kind": "learned",
+   "prereqs": [
+    "sensor_fusion",
+    "transformers"
+   ],
+   "summary": "Fuse sensors inside a network, for example in a bird's-eye-view feature space, then hand the result to classical filters. Where the classical and learned halves of the stack meet."
+  },
+  {
+   "id": "fsm",
+   "name": "Finite state machines",
+   "layer": "L",
+   "ch": 16,
+   "kind": "classical",
+   "prereqs": [
+    "autonomy_software"
+   ],
+   "summary": "Hand-designed modes and transitions that sequence behaviors. Still how many deployed robots decide what to do next."
+  },
+  {
+   "id": "mdp",
+   "name": "Markov decision processes",
+   "layer": "L",
+   "ch": 17,
+   "kind": "classical",
+   "prereqs": [
+    "probability"
+   ],
+   "summary": "States, actions, transition probabilities, and rewards: the formal model of sequential decisions under uncertainty."
+  },
+  {
+   "id": "dynamic_programming",
+   "name": "Dynamic programming & Bellman",
+   "layer": "L",
+   "ch": 17,
+   "kind": "classical",
+   "prereqs": [
+    "mdp"
+   ],
+   "summary": "Solve decisions backward in time through the principle of optimality. The same idea underlies LQR, shortest-path search, and value iteration.",
+   "wiki": "dynamic_programming",
+   "lectures": [
+    "aa203-07",
+    "aa203-10"
+   ],
+   "exercises": [
+    "ch17/exercises/markovian_drone.ipynb"
+   ],
+   "related": [
+    "lqr",
+    "graph_search"
+   ]
+  },
+  {
+   "id": "value_policy_iteration",
+   "name": "Value & policy iteration",
+   "layer": "L",
+   "ch": 18,
+   "kind": "classical",
+   "prereqs": [
+    "dynamic_programming"
+   ],
+   "summary": "Iterative algorithms that compute the optimal value function and policy when the model is known.",
+   "lectures": [
+    "aa203-09"
+   ],
+   "exercises": [
+    "ch18/policy_iteration.ipynb"
+   ]
+  },
+  {
+   "id": "rl_fundamentals",
+   "name": "Reinforcement learning basics",
+   "layer": "L",
+   "ch": 18,
+   "kind": "learned",
+   "prereqs": [
+    "mdp",
+    "deep_learning_basics"
+   ],
+   "summary": "Learn to act from trial and error when the dynamics model is unknown, trading off exploration and exploitation.",
+   "wiki": "reinforcement_learning",
+   "lectures": [
+    "aa203-14",
+    "aa203-16"
+   ],
+   "exercises": [
+    "ch18/exercises/widget_sales.ipynb"
+   ]
+  },
+  {
+   "id": "td_learning",
+   "name": "Monte Carlo & TD learning",
+   "layer": "L",
+   "ch": 18,
+   "kind": "learned",
+   "prereqs": [
+    "rl_fundamentals",
+    "value_policy_iteration"
+   ],
+   "summary": "Estimate values from sampled experience, either from full episodes or by bootstrapping from the next state's estimate."
+  },
+  {
+   "id": "value_based_rl",
+   "name": "Value-based RL (Q-learning)",
+   "layer": "L",
+   "ch": 18,
+   "kind": "learned",
+   "prereqs": [
+    "td_learning"
+   ],
+   "summary": "Learn action values from experience and act greedily on them, scaling to large problems with function approximation.",
+   "lectures": [
+    "aa203-17"
+   ]
+  },
+  {
+   "id": "policy_gradient",
+   "name": "Policy gradients & actor-critic",
+   "layer": "L",
+   "ch": 18,
+   "kind": "learned",
+   "prereqs": [
+    "rl_fundamentals"
+   ],
+   "summary": "Optimize a parameterized policy directly by gradient ascent on expected return, with a learned critic to reduce variance.",
+   "lectures": [
+    "aa203-18"
+   ],
+   "exercises": [
+    "ch18/exercises/advantage_actor_critic.ipynb",
+    "ch18/exercises/cartpole_balance.ipynb"
+   ]
+  },
+  {
+   "id": "model_based_rl",
+   "name": "Model-based RL & system ID",
+   "layer": "L",
+   "ch": 18,
+   "kind": "learned",
+   "prereqs": [
+    "rl_fundamentals",
+    "state_space"
+   ],
+   "summary": "Learn a dynamics model from data and plan or control with it, connecting learning back to the control chapters.",
+   "lectures": [
+    "aa203-13",
+    "aa203-19"
+   ],
+   "related": [
+    "mpc"
+   ]
+  },
+  {
+   "id": "behavior_cloning",
+   "name": "Behavior cloning",
+   "layer": "L",
+   "ch": 19,
+   "kind": "learned",
+   "prereqs": [
+    "deep_learning_basics",
+    "mdp"
+   ],
+   "summary": "Train a policy by supervised learning on expert demonstrations. Fast to set up, but errors compound once the robot drifts from what it saw.",
+   "lectures": [
+    "aa203-15"
+   ]
+  },
+  {
+   "id": "covariate_shift",
+   "name": "Covariate shift",
+   "layer": "L",
+   "ch": 19,
+   "kind": "learned",
+   "prereqs": [
+    "behavior_cloning"
+   ],
+   "summary": "A cloned policy makes small errors, drifts into states the expert never showed, and errors compound. Understanding this explains most imitation learning failures and the fixes for them.",
+   "lectures": [
+    "aa203-15"
+   ]
+  },
+  {
+   "id": "inverse_rl",
+   "name": "Inverse reinforcement learning",
+   "layer": "L",
+   "ch": 19,
+   "kind": "learned",
+   "prereqs": [
+    "behavior_cloning",
+    "rl_fundamentals"
+   ],
+   "summary": "Infer the reward an expert seems to be optimizing, then learn a policy for that reward.",
+   "lectures": [
+    "aa203-15"
+   ]
+  }
+ ],
+ "backgrounds": [
+  {
+   "id": "new",
+   "name": "New to robotics",
+   "knows": [],
+   "blurb": "Start from the math foundations."
+  },
+  {
+   "id": "ml",
+   "name": "Coming from ML",
+   "knows": [
+    "linear_algebra",
+    "probability",
+    "odes",
+    "optimization",
+    "deep_learning_basics",
+    "cnn",
+    "transformers",
+    "mdp",
+    "rl_fundamentals",
+    "policy_gradient",
+    "value_based_rl",
+    "behavior_cloning",
+    "td_learning",
+    "point_cloud_networks",
+    "segmentation",
+    "object_detection"
+   ],
+   "blurb": "You know learning. The gaps are dynamics, control, and estimation."
+  },
+  {
+   "id": "controls",
+   "name": "Coming from controls",
+   "knows": [
+    "linear_algebra",
+    "probability",
+    "odes",
+    "optimization",
+    "state_space",
+    "linearization",
+    "pid",
+    "lqr",
+    "optimal_control",
+    "kalman_filter",
+    "mdp",
+    "dynamic_programming"
+   ],
+   "blurb": "You know feedback. The gaps are perception and learned policies."
+  },
+  {
+   "id": "swe",
+   "name": "Coming from software",
+   "knows": [
+    "linear_algebra",
+    "autonomy_software",
+    "graph_search",
+    "fsm"
+   ],
+   "blurb": "You know systems. Pick up probability and dynamics first."
+  }
+ ]
+}

@@ -22,3 +22,17 @@ Linear assumption breaks for nonlinear plants. [[Lyapunov_stability]] analysis r
 - [[Lyapunov_stability]]
 - [[Transfer_function]]
 - [[Kalman_filter]]
+
+<!-- pora:begin -->
+## In Principles of Robot Autonomy
+
+- Read: [Chapter 3: Closed-Loop Control & Trajectory Tracking](https://porabook.com/book/closed-loop-control/)
+- Stack layer: Dynamics & control · classical
+- Run: [PID Control](https://colab.research.google.com/github/StanfordASL/pora-exercises/blob/main/ch03/exercises/pid_control.ipynb) ([source](https://github.com/StanfordASL/pora-exercises/blob/main/ch03/exercises/pid_control.ipynb))
+
+Needs first: [[State_space_model]]
+
+Unlocks: [[Trajectory_tracking]]
+
+Part of [[Principles_of_Robot_Autonomy]]. Summary and links from the unofficial PoRA Atlas; the book is the authoritative reference.
+<!-- pora:end -->

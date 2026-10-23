@@ -119,6 +119,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
 
   <!-- Data layer (no JSX, plain JS) -->
   <script src="data.js"></script>
+  <script src="courses/pora_bu.js?v=1"></script>
   <script src="atp_data.js?v=1"></script>
   <script src="arxivis_data.js?v=4"></script>
   <script src="open_problems.js"></script>
@@ -147,6 +148,7 @@ html[data-display-font="mono"]    { --f-display: "JetBrains Mono", "SF Mono", Me
   <script type="text/babel" src="screens/arxivis.jsx?v=8"></script>
   <script type="text/babel" src="screens/open-problems.jsx?v=1"></script>
   <script type="text/babel" src="screens/podcast.jsx?v=2"></script>
+  <script type="text/babel" src="screens/courses.jsx?v=1"></script>
 
   <!-- ATP agent-view screens -->
   <script type="text/babel" src="screens/atp-university.jsx?v=1"></script>
@@ -179,6 +181,7 @@ const SCREENS_HUMAN = [
   { id: "arxivis",   label: "arXivis",    hint: "08" },
   { id: "openprob",  label: "open problems", hint: "09" },
   { id: "podcast",   label: "Podcast",    hint: "10" },
+  { id: "courses",   label: "Courses",    hint: "11" },
 ];
 
 const SCREENS_AGENT = [
@@ -483,6 +486,11 @@ function App() {
         )}
         {screen === "podcast" && (
           <PodcastStudio />
+        )}
+        {screen === "courses" && (
+          typeof Courses !== "undefined"
+            ? <Courses onWalk={(steps) => startTour(BU_DATA.poraTour(steps, "pora-route"))} />
+            : null
         )}
 
         {/* ATP agent-view screens. Referenced ONLY when view === "agent" so */}

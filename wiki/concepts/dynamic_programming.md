@@ -86,3 +86,21 @@ $$\text{opt}(m_0, m_1) = \min_{\substack{1 \leq j_0 \leq m_0 \\ 1 \leq j_1 \leq 
 
 4. **Poor state representation**: Choosing a state space that's exponential when a polynomial one exists (like $2^n$ instead of $n^k$ for structured problems)
    -
+
+<!-- pora:begin -->
+## In Principles of Robot Autonomy
+
+- Read: [Chapter 17: Sequential Decision Making and Dynamic Programming](https://porabook.com/book/decision-making/)
+- Stack layer: Decisions & learning · classical
+- Run: [Markovian Drone](https://colab.research.google.com/github/StanfordASL/pora-exercises/blob/main/ch17/exercises/markovian_drone.ipynb) ([source](https://github.com/StanfordASL/pora-exercises/blob/main/ch17/exercises/markovian_drone.ipynb))
+- Watch: [AA203 lecture 7: Dynamic Programming and Discrete-Time LQR](https://youtu.be/hy-e9g4nugE)
+- Watch: [AA203 lecture 10: Hamilton–Jacobi–Bellman, HJI, and Reachability](https://youtu.be/Fl5EjGhQjgs)
+
+Needs first: [[Markov_decision_processes]]
+
+Unlocks: [[Value_and_policy_iteration]]
+
+Related: [[LQR]], [[Graph_search_and_A-star]]
+
+Part of [[Principles_of_Robot_Autonomy]]. Summary and links from the unofficial PoRA Atlas; the book is the authoritative reference.
+<!-- pora:end -->
