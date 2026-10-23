@@ -397,6 +397,31 @@ window.ATP_DATA = (() => {
           ]
         },
         {
+          "track": "Robot autonomy · PoRA (Stanford AA174A / AA203)",
+          "items": [
+            {
+              "code": "PORA-I",
+              "name": "Motion planning & control",
+              "competency": "Dynamics, trajectory optimization, LQR/MPC, motion planning"
+            },
+            {
+              "code": "PORA-II",
+              "name": "Robot perception",
+              "competency": "Camera geometry, stereo/SfM, classical and learned detection"
+            },
+            {
+              "code": "PORA-III",
+              "name": "Localization & mapping",
+              "competency": "Bayes/Kalman/particle filters, localization, SLAM, sensor fusion"
+            },
+            {
+              "code": "PORA-IV",
+              "name": "Robot decision making",
+              "competency": "FSMs, dynamic programming, reinforcement and imitation learning"
+            }
+          ]
+        },
+        {
           "track": "Research artifact",
           "items": [
             {
@@ -6805,7 +6830,8 @@ window.ATP_DATA = (() => {
       ],
       "corpora": [
         "OCW 2.003",
-        "OCW 2.004"
+        "OCW 2.004",
+        "Principles of Robot Autonomy (porabook.com)"
       ],
       "status": "training",
       "matchedAgentId": null,

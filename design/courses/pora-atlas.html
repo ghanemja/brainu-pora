@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<title>PoRA Atlas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="An unofficial interactive map of the concepts in Principles of Robot Autonomy, with prerequisite paths and links to every chapter, notebook, and lecture.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the autonomy stack drawn as six horizontal lanes (foundations at the bottom),
+   concepts placed left to right by prerequisite depth, on engineering graph paper. */
+:root {
+  --paper: #f3f5f2;
+  --paper-2: #e8ece7;
+  --grid: rgba(40, 70, 90, 0.07);
+  --ink: #17242e;
+  --ink-2: #4b5b66;
+  --ink-3: #7c8a93;
+  --rule: #c9d2d0;
+  --accent: #c2410c;
+  --accent-ink: #ffffff;
+  --node: #ffffff;
+  --lane-F: #6b7280;
+  --lane-D: #1d6f9f;
+  --lane-P: #0f8a6a;
+  --lane-S: #8a5a00;
+  --lane-E: #7a3fb0;
+  --lane-L: #b4233c;
+  --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e1a24; --paper-2: #13222f; --grid: rgba(150, 190, 220, 0.06);
+    --ink: #e3ebef; --ink-2: #a8b6bf; --ink-3: #74848f; --rule: #2a3b48;
+    --accent: #fb8a4c; --accent-ink: #1a0d05; --node: #142330;
+    --lane-F: #9aa3ad; --lane-D: #5fb3e3; --lane-P: #43c9a2; --lane-S: #e0a83a; --lane-E: #b98ae8; --lane-L: #f07088;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e1a24; --paper-2: #13222f; --grid: rgba(150, 190, 220, 0.06);
+  --ink: #e3ebef; --ink-2: #a8b6bf; --ink-3: #74848f; --rule: #2a3b48;
+  --accent: #fb8a4c; --accent-ink: #1a0d05; --node: #142330;
+  --lane-F: #9aa3ad; --lane-D: #5fb3e3; --lane-P: #43c9a2; --lane-S: #e0a83a; --lane-E: #b98ae8; --lane-L: #f07088;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--paper); color: var(--ink); }
+body {
+  font-family: var(--f-body); font-size: 15px; line-height: 1.5;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 1440px; margin: 0 auto; }
+
+header.top { padding-block: 28px 18px; display: grid; gap: 10px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(40px, 6vw, 68px); line-height: 0.95; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+h1 span { color: var(--accent); }
+.lede { max-width: 66ch; color: var(--ink-2); margin: 0; }
+.stats { display: flex; flex-wrap: wrap; gap: 6px 22px; font-family: var(--f-mono); font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.stats b { color: var(--ink); font-weight: 500; }
+
+.planner { border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); padding-block: 14px; display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: end; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+select, input[type="search"] {
+  font: 500 15px var(--f-body); color: var(--ink); background: var(--node);
+  border: 1px solid var(--rule); border-radius: 3px; padding: 8px 10px; min-width: 0; max-width: 100%;
+}
+.field.grow { flex: 1 1 220px; }
+.btn { font: 600 14px var(--f-body); border: 1px solid var(--ink); background: transparent; color: var(--ink); padding: 8px 14px; border-radius: 3px; cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn:hover { filter: brightness(1.05); }
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; padding-block: 12px; font-size: 13px; color: var(--ink-2); align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--rule); background: var(--node); border-radius: 999px; padding: 3px 10px 3px 8px; cursor: pointer; font: 500 13px var(--f-body); color: var(--ink); }
+.chip i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.chip[aria-pressed="false"] { opacity: 0.4; }
+.shape { display: inline-flex; align-items: center; gap: 6px; }
+.shape s { display: inline-block; width: 22px; height: 12px; border: 1.5px solid var(--ink-2); text-decoration: none; }
+.shape .classical { border-radius: 1px; }
+.shape .learned { border-radius: 8px; }
+.shape .foundation { border-style: dashed; }
+
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 18px; padding-block: 4px 40px; align-items: start; }
+@media (max-width: 1000px) { .main { grid-template-columns: minmax(0, 1fr); } }
+
+.graph-box { border: 1px solid var(--rule); background: color-mix(in srgb, var(--paper) 70%, transparent); overflow: auto; border-radius: 3px; max-height: 78vh; position: relative; }
+svg#g { display: block; }
+.lane-band { fill: var(--paper-2); opacity: 0.55; }
+.lane-label { font: 700 13px var(--f-display); letter-spacing: 0.1em; text-transform: uppercase; }
+.edge { fill: none; stroke: var(--ink-3); stroke-width: 1; opacity: 0.35; }
+.edge.related { stroke-dasharray: 3 4; opacity: 0.25; }
+.node rect { fill: var(--node); stroke-width: 1.5; }
+.node text { font: 500 12px var(--f-body); fill: var(--ink); pointer-events: none; }
+.node .chn { font: 500 10px var(--f-mono); fill: var(--ink-3); }
+.node { cursor: pointer; }
+.node.foundation rect { stroke-dasharray: 4 3; }
+.node:hover rect { stroke-width: 2.5; }
+.dim .node { opacity: 0.18; }
+.dim .edge { opacity: 0.06; }
+.dim .node.on { opacity: 1; }
+.dim .edge.on { opacity: 0.9; stroke: var(--accent); stroke-width: 1.6; }
+.node.sel rect { stroke: var(--accent) !important; stroke-width: 3; }
+.node.known rect { fill: var(--paper-2); }
+.node.known text { fill: var(--ink-3); }
+.node .step { font: 700 11px var(--f-mono); fill: var(--accent-ink); }
+.node .stepbg { fill: var(--accent); }
+.hide { display: none; }
+
+aside.panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); border: 1px solid var(--rule); background: var(--node); border-radius: 3px; padding: 18px; display: grid; gap: 14px; max-height: calc(100vh - 24px); overflow: auto; min-width: 0; }
+@media (max-width: 1000px) { aside.panel { position: static; max-height: none; } }
+.panel h2 { font: 700 30px/1 var(--f-display); margin: 0; text-wrap: balance; }
+.panel h3 { font: 600 12px var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 6px; }
+.meta { font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.panel p { margin: 0; }
+.links { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.links a { text-decoration: none; display: flex; gap: 8px; align-items: baseline; }
+.links a:hover span { text-decoration: underline; }
+.links small { font-family: var(--f-mono); color: var(--ink-3); font-size: 11px; white-space: nowrap; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font: 500 13px var(--f-body); border: 1px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 3px; padding: 2px 8px; cursor: pointer; }
+.tag:hover { border-color: var(--ink-2); }
+ol.route { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 4px; counter-reset: s; }
+ol.route li { counter-increment: s; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 8px; align-items: baseline; font-size: 14px; }
+ol.route li::before { content: counter(s); font: 600 12px var(--f-mono); color: var(--accent); text-align: right; }
+ol.route button { all: unset; cursor: pointer; }
+ol.route button:hover { text-decoration: underline; }
+ol.route small { font: 11px var(--f-mono); color: var(--ink-3); }
+.bu-link { border: 1px dashed var(--accent); padding: 8px 10px; border-radius: 3px; font-size: 14px; }
+.note { font-size: 12px; color: var(--ink-3); }
+footer { border-top: 1px solid var(--rule); padding-block: 18px 30px; font-size: 13px; color: var(--ink-2); display: grid; gap: 6px; }
+footer p { margin: 0; max-width: 90ch; }
+@media (prefers-reduced-motion: no-preference) { .node rect, .edge { transition: opacity .2s, stroke .2s; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Unofficial study map · Principles of Robot Autonomy</div>
+    <h1>PoRA <span>Atlas</span></h1>
+    <p class="lede">Every concept in the free robot autonomy textbook from Stanford, laid out as the stack it describes: foundations at the bottom, then dynamics and control, planning, perception, estimation, and decisions. Tell it what you already know and what you want to learn, and it orders the chapters, notebooks, and lectures you need.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <section class="planner" aria-label="Plan a route">
+    <div class="field"><label for="bg">I'm coming from</label><select id="bg"></select></div>
+    <div class="field grow"><label for="goal">I want to understand</label><select id="goal"></select></div>
+    <button class="btn primary" id="go" type="button">Plan my route</button>
+    <button class="btn" id="clear" type="button">Clear</button>
+    <div class="field grow"><label for="q">Find a concept</label><input type="search" id="q" placeholder="Kalman, RRT, imitation…" autocomplete="off"></div>
+  </section>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="main">
+    <div class="graph-box" id="box"><svg id="g" role="img" aria-label="Concept graph of the robot autonomy stack"></svg></div>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+
+  <footer>
+    <p><b>Unofficial.</b> PoRA Atlas is an independent study aid. It is not made by or affiliated with the book's authors, Stanford University, or Cambridge University Press. Concept summaries and prerequisite links are our own reading of the material; the book is the authoritative reference.</p>
+    <p>Book: <a href="https://porabook.com/" target="_blank" rel="noopener">Principles of Robot Autonomy</a> by Gammelli, Lorenzetti, Luo, Zardini, and Pavone. Exercises: <a href="https://github.com/StanfordASL/pora-exercises" target="_blank" rel="noopener">StanfordASL/pora-exercises</a>. Lectures: Stanford AA174A and AA203 recordings.</p>
+    <p>Atlas code under the MIT License; concept summaries and graph data under CC BY 4.0. Part of Brain University.</p>
+  </footer>
+</div>
+
+<script>
+const PORA = {"meta":{"id":"pora","title":"Principles of Robot Autonomy","authors":["Daniele Gammelli","Joseph Lorenzetti","Katie Luo","Gioele Zardini","Marco Pavone"],"publisher":"Cambridge University Press","year":2026,"bookUrl":"https://porabook.com/book/","siteUrl":"https://porabook.com/","arxivUrl":"https://arxiv.org/abs/2608.03496","exercisesRepo":"https://github.com/StanfordASL/pora-exercises","disclaimer":"Unofficial companion map. Concept summaries and prerequisite links are written independently and are not part of the book. The book is the authoritative reference."},"layers":[{"id":"F","name":"Foundations","blurb":"Math and tooling the rest of the stack assumes."},{"id":"D","name":"Dynamics & control","blurb":"How a robot moves and how to make it move the way you want."},{"id":"P","name":"Planning","blurb":"Finding collision-free paths through the space of configurations."},{"id":"S","name":"Perception","blurb":"Turning raw sensor data into geometry and semantics."},{"id":"E","name":"Estimation & mapping","blurb":"Tracking where the robot and the world are under uncertainty."},{"id":"L","name":"Decisions & learning","blurb":"Choosing actions, from hand-built logic to learned policies."}],"parts":[{"id":0,"name":"Getting started","chapters":[0]},{"id":1,"name":"Part I · Motion planning and control","chapters":[1,2,3,4]},{"id":2,"name":"Part II · Perception","chapters":[5,6,7,8,9,10]},{"id":3,"name":"Part III · Localization and mapping","chapters":[11,12,13,14,15]},{"id":4,"name":"Part IV · Decision making","chapters":[16,17,18,19]}],"chapters":[{"n":0,"title":"Robot Autonomy Software","url":"https://porabook.com/book/software/"},{"n":1,"title":"Modeling Robot Dynamics","url":"https://porabook.com/book/modeling-robot-dynamics/"},{"n":2,"title":"Open-Loop Control & Trajectory Optimization","url":"https://porabook.com/book/open-loop-control/"},{"n":3,"title":"Closed-Loop Control & Trajectory Tracking","url":"https://porabook.com/book/closed-loop-control/"},{"n":4,"title":"Motion Planning","url":"https://porabook.com/book/motion-planning/"},{"n":5,"title":"Introduction to Robot Sensors","url":"https://porabook.com/book/robot-sensors/"},{"n":6,"title":"Camera Models and Calibration","url":"https://porabook.com/book/camera-models/"},{"n":7,"title":"Stereo Vision and Structure From Motion","url":"https://porabook.com/book/stereo-vision/"},{"n":8,"title":"Classical Methods for Perception","url":"https://porabook.com/book/classical-perception/"},{"n":9,"title":"Deep Learning Architectures for Perception","url":"https://porabook.com/book/deep-learning-perception/"},{"n":10,"title":"Object Detection and Recognition","url":"https://porabook.com/book/object-detection/"},{"n":11,"title":"Introduction to Localization and Filtering","url":"https://porabook.com/book/localization-filtering/"},{"n":12,"title":"Approximate Filters for State Estimation","url":"https://porabook.com/book/approximate-filters/"},{"n":13,"title":"Robot Localization","url":"https://porabook.com/book/robot-localization/"},{"n":14,"title":"Simultaneous Localization and Mapping (SLAM)","url":"https://porabook.com/book/slam/"},{"n":15,"title":"Sensor Fusion and Object Tracking","url":"https://porabook.com/book/sensor-fusion/"},{"n":16,"title":"Finite State Machines","url":"https://porabook.com/book/finite-state-machines/"},{"n":17,"title":"Sequential Decision Making and Dynamic Programming","url":"https://porabook.com/book/decision-making/"},{"n":18,"title":"Reinforcement Learning","url":"https://porabook.com/book/reinforcement-learning/"},{"n":19,"title":"Imitation Learning","url":"https://porabook.com/book/imitation-learning/"}],"lectures":{"aa174-01":{"course":"AA174A","n":1,"title":"Course Overview and Mobile Robot Kinematics","url":"https://youtu.be/Lgt5ONBtFI0"},"aa174-02":{"course":"AA174A","n":2,"title":"Trajectory Optimization","url":"https://youtu.be/Kv5G2OlrIbU"},"aa174-03":{"course":"AA174A","n":3,"title":"Trajectory Tracking","url":"https://youtu.be/nluc4rMiipA"},"aa174-04":{"course":"AA174A","n":4,"title":"Advanced Trajectory Optimization","url":"https://youtu.be/Izu4_AUiHyk"},"aa174-05":{"course":"AA174A","n":5,"title":"Motion Planning: Graph Search Methods","url":"https://youtu.be/hFCIZjVkSaw"},"aa174-06":{"course":"AA174A","n":6,"title":"Motion Planning: Sampling-Based Methods","url":"https://youtu.be/AN4jXyWwV7Q"},"aa174-07":{"course":"AA174A","n":7,"title":"Sensors and Introduction to Computer Vision","url":"https://youtu.be/emb_KF3OSu0"},"aa174-08":{"course":"AA174A","n":8,"title":"Camera Models & Calibration","url":"https://youtu.be/QyG0PTgLBxQ"},"aa174-09":{"course":"AA174A","n":9,"title":"Stereo Vision","url":"https://youtu.be/idD08N4rgJU"},"aa174-10":{"course":"AA174A","n":10,"title":"Image Processing","url":"https://youtu.be/8A3NmdQJRNc"},"aa174-11":{"course":"AA174A","n":11,"title":"Classic Visual Recognition","url":"https://youtu.be/GsIRJJ5sYoU"},"aa174-12":{"course":"AA174A","n":12,"title":"Localization & Filters","url":"https://youtu.be/dG3-D-vDwe8"},"aa174-13":{"course":"AA174A","n":13,"title":"Parametric Filtering","url":"https://youtu.be/pSBhRF6j-Zc"},"aa174-14":{"course":"AA174A","n":14,"title":"EKF Localization","url":"https://youtu.be/9y_lJdQmKcY"},"aa203-01":{"course":"AA203","n":1,"title":"Course Overview and Intro to Nonlinear Optimization","url":"https://youtu.be/Au2stLALZew"},"aa203-02":{"course":"AA203","n":2,"title":"Optimization Theory","url":"https://youtu.be/FbkNYklySak"},"aa203-03":{"course":"AA203","n":3,"title":"Calculus of Variations","url":"https://youtu.be/duZJ2_ajLso"},"aa203-04":{"course":"AA203","n":4,"title":"Indirect Methods for Optimal Control","url":"https://youtu.be/7rejaoMWviw"},"aa203-05":{"course":"AA203","n":5,"title":"Pontryagin's Minimum Principle and Computational Methods","url":"https://youtu.be/R4_fHzTo0IM"},"aa203-06":{"course":"AA203","n":6,"title":"Direct Methods for Optimal Control","url":"https://youtu.be/zX8raxUa2DE"},"aa203-07":{"course":"AA203","n":7,"title":"Dynamic Programming and Discrete-Time LQR","url":"https://youtu.be/hy-e9g4nugE"},"aa203-08":{"course":"AA203","n":8,"title":"Tracking LQR, Iterative LQR, Differential Dynamic Programming","url":"https://youtu.be/1YdgSwEtf_s"},"aa203-09":{"course":"AA203","n":9,"title":"Stochastic DP, Value Iteration, and Policy Iteration","url":"https://youtu.be/C9mLpI8Td9g"},"aa203-10":{"course":"AA203","n":10,"title":"Hamilton–Jacobi–Bellman, HJI, and Reachability","url":"https://youtu.be/Fl5EjGhQjgs"},"aa203-11":{"course":"AA203","n":11,"title":"Introduction to Model Predictive Control","url":"https://youtu.be/3_gxaB_Pp3k"},"aa203-12":{"course":"AA203","n":12,"title":"Persistent Feasibility of MPC, Stability, and Explicit MPC","url":"https://youtu.be/8Elrw30y0tg"},"aa203-13":{"course":"AA203","n":13,"title":"Intro to Learning, System Identification and Adaptive Control","url":"https://youtu.be/RtJSHiqOdgQ"},"aa203-14":{"course":"AA203","n":14,"title":"Intro to Imitation Learning and Reinforcement Learning","url":"https://youtu.be/7YdOx-ih0II"},"aa203-15":{"course":"AA203","n":15,"title":"Imitation Learning","url":"https://youtu.be/udHX5Auj7ik"},"aa203-16":{"course":"AA203","n":16,"title":"Fundamentals of Reinforcement Learning","url":"https://youtu.be/cqPbt3OfRK4"},"aa203-17":{"course":"AA203","n":17,"title":"Model-free RL: Value-based Methods","url":"https://youtu.be/zanXSI7zSws"},"aa203-18":{"course":"AA203","n":18,"title":"Model-free RL: Policy Optimization","url":"https://youtu.be/a1g9U_5zO54"},"aa203-19":{"course":"AA203","n":19,"title":"Model-based RL and Conclusions","url":"https://youtu.be/ZXMThMHFD_w"}},"exerciseBase":{"colab":"https://colab.research.google.com/github/StanfordASL/pora-exercises/blob/main/","github":"https://github.com/StanfordASL/pora-exercises/blob/main/"},"concepts":[{"id":"linear_algebra","name":"Linear algebra","layer":"F","ch":null,"kind":"foundation","prereqs":[],"summary":"Vectors, matrices, eigenvalues, and least squares. Nearly every model in robotics is written in this language.","wiki":"Linear_algebra","exercises":[],"lectures":[],"related":[]},{"id":"probability","name":"Probability & Gaussians","layer":"F","ch":11,"kind":"foundation","prereqs":[],"summary":"Random variables, Bayes' rule, and the multivariate Gaussian. The book reviews these at the start of the estimation part, and they underpin every filter that follows.","wiki":"Probability","exercises":[],"lectures":[],"related":[]},{"id":"odes","name":"Calculus & ODEs","layer":"F","ch":null,"kind":"foundation","prereqs":[],"summary":"Derivatives, Jacobians, and ordinary differential equations, used to describe how state changes over time.","wiki":"Ordinary_differential_equation","exercises":[],"lectures":[],"related":[]},{"id":"optimization","name":"Numerical optimization","layer":"F","ch":null,"kind":"foundation","prereqs":["linear_algebra","odes"],"summary":"Minimizing a cost subject to constraints: gradients, optimality conditions, and the solvers that trajectory optimization and calibration run on.","wiki":"Numerical_optimization","lectures":["aa203-01","aa203-02"],"exercises":[],"related":[]},{"id":"deep_learning_basics","name":"Neural networks & training","layer":"F","ch":null,"kind":"foundation","prereqs":["linear_algebra","optimization"],"summary":"Layers, losses, backpropagation, and stochastic gradient descent. Needed for learned perception and learned policies.","wiki":"Neural_network","exercises":[],"lectures":[],"related":[]},{"id":"autonomy_software","name":"Autonomy software stack","layer":"F","ch":0,"kind":"foundation","prereqs":[],"summary":"The Python tooling and the idea of a modular stack where perception, estimation, planning, and control run as connected components.","wiki":"Autonomy_software_stack","exercises":[],"lectures":[],"related":[]},{"id":"state_space","name":"State-space models","layer":"D","ch":1,"kind":"classical","prereqs":["linear_algebra","odes"],"summary":"Describe a robot by a state vector and inputs, with dynamics giving the state's rate of change. Every later control and estimation method starts here.","wiki":"State_space_model","lectures":["aa174-01"],"exercises":[],"related":[]},{"id":"kinematic_models","name":"Kinematic vs. dynamic models","layer":"D","ch":1,"kind":"classical","prereqs":["state_space"],"summary":"Kinematic models relate velocities to motion and ignore forces; dynamic models include mass, inertia, and actuation. Choosing the right fidelity is a design decision.","lectures":["aa174-01"],"exercises":["ch01/exercises/double_integrator_dynamics.ipynb"],"wiki":"Kinematic_vs_dynamic_models","related":[]},{"id":"nonholonomic","name":"Nonholonomic wheeled robots","layer":"D","ch":1,"kind":"classical","prereqs":["kinematic_models"],"summary":"Wheels that cannot slide sideways constrain velocity but not position. The unicycle and differential-drive models capture this and recur through the book.","lectures":["aa174-01"],"exercises":["ch01/exercises/nonholonomic_wheeled_robot_dynamics.ipynb"],"wiki":"Nonholonomic_wheeled_robots","related":[]},{"id":"simulation","name":"Numerical integration & simulation","layer":"D","ch":1,"kind":"classical","prereqs":["state_space"],"summary":"Step continuous dynamics forward in time with Euler or Runge–Kutta schemes, and understand when discretization error matters.","exercises":["ch01/exercises/simulation.ipynb","ch01/numerical_integration.ipynb"],"wiki":"Numerical_integration_and_simulation","lectures":[],"related":[]},{"id":"optimal_control","name":"Optimal control problems","layer":"D","ch":2,"kind":"classical","prereqs":["state_space","optimization"],"summary":"Pose motion as choosing inputs that minimize a cost while respecting dynamics and constraints, producing an open-loop plan.","lectures":["aa174-02","aa203-03"],"exercises":["ch02/exercises/unicycle_optimal_control.ipynb"],"wiki":"Optimal_control_problems","related":[]},{"id":"indirect_methods","name":"Indirect methods & Pontryagin","layer":"D","ch":2,"kind":"classical","prereqs":["optimal_control"],"summary":"Derive necessary conditions for optimality first, then solve them. This turns trajectory optimization into a boundary value problem.","lectures":["aa203-04","aa203-05"],"exercises":["ch02/tpbvp.ipynb","ch02/free_final_time_optimal_control.ipynb","ch02/zermelos_problem.ipynb"],"wiki":"Indirect_methods_and_Pontryagin","related":[]},{"id":"direct_methods","name":"Direct methods & transcription","layer":"D","ch":2,"kind":"classical","prereqs":["optimal_control","simulation"],"summary":"Discretize the trajectory and hand the whole problem to a nonlinear solver. The workhorse of practical trajectory optimization.","lectures":["aa174-04","aa203-06"],"wiki":"Direct_methods_and_transcription","exercises":[],"related":[]},{"id":"differential_flatness","name":"Differential flatness","layer":"D","ch":2,"kind":"classical","prereqs":["kinematic_models"],"summary":"For some systems, all states and inputs follow from a few flat outputs and their derivatives, so smooth trajectories can be designed in those outputs directly.","lectures":["aa174-02"],"exercises":["ch02/differentially_flat_planar_quadrotor.ipynb"],"wiki":"Differential_flatness","related":[]},{"id":"pid","name":"PID control","layer":"D","ch":3,"kind":"classical","prereqs":["state_space"],"summary":"Feedback from the error, its integral, and its derivative. Simple, ubiquitous, and the baseline every other controller is compared against.","wiki":"PID_control","exercises":["ch03/exercises/pid_control.ipynb"],"lectures":[],"related":[]},{"id":"linearization","name":"Linearization","layer":"D","ch":3,"kind":"classical","prereqs":["state_space","odes"],"summary":"Approximate nonlinear dynamics near a point or trajectory with a linear model so linear tools apply. Automatic differentiation makes the Jacobians cheap.","exercises":["ch03/jax_linearization.ipynb"],"wiki":"Linearization","lectures":[],"related":[]},{"id":"lqr","name":"LQR","layer":"D","ch":3,"kind":"classical","prereqs":["linearization","optimal_control"],"summary":"For linear dynamics and quadratic cost, the optimal feedback is a fixed gain matrix from a Riccati equation. The default controller for stabilizing a robot near a setpoint.","lectures":["aa203-07"],"exercises":["ch03/lqr.ipynb","ch03/exercises/cartpole_lqr_control.ipynb"],"related":["dynamic_programming"],"wiki":"LQR"},{"id":"trajectory_tracking","name":"Trajectory tracking","layer":"D","ch":3,"kind":"classical","prereqs":["pid","linearization","differential_flatness"],"summary":"Close the loop around a planned trajectory so the robot follows it despite disturbances and model error.","lectures":["aa174-03"],"exercises":["ch03/exercises/unicycle_trajectory_tracking.ipynb"],"wiki":"Trajectory_tracking","related":[]},{"id":"ilqr","name":"iLQR & DDP","layer":"D","ch":3,"kind":"classical","prereqs":["lqr"],"summary":"Repeatedly linearize about the current trajectory and solve an LQR problem, extending LQR to nonlinear systems.","lectures":["aa203-08"],"exercises":["ch03/exercises/cartpole_iterative_lqr.ipynb"],"wiki":"ILQR_and_DDP","related":[]},{"id":"mpc","name":"Model predictive control","layer":"D","ch":3,"kind":"classical","prereqs":["direct_methods","lqr"],"summary":"Re-solve a short-horizon trajectory optimization at every step and apply only the first input. Handles constraints explicitly.","lectures":["aa203-11","aa203-12"],"exercises":["ch03/exercises/linear_mpc.ipynb"],"wiki":"Model_predictive_control","related":[]},{"id":"config_space","name":"Configuration space","layer":"P","ch":4,"kind":"classical","prereqs":["kinematic_models"],"summary":"Represent every possible robot pose as a point, with obstacles becoming forbidden regions. Planning becomes finding a path between points.","lectures":["aa174-05"],"wiki":"Configuration_space","exercises":[],"related":[]},{"id":"graph_search","name":"Graph search & A*","layer":"P","ch":4,"kind":"classical","prereqs":["config_space"],"summary":"Discretize the space into a grid or graph and search it with label-correcting algorithms such as A*, using a heuristic to explore toward the goal first.","lectures":["aa174-05"],"exercises":["ch04/exercises/a_star.ipynb"],"related":["dynamic_programming"],"wiki":"Graph_search_and_A-star"},{"id":"sampling_planning","name":"Sampling-based planning (PRM, RRT)","layer":"P","ch":4,"kind":"classical","prereqs":["config_space","probability"],"summary":"Sample random configurations and connect them into a roadmap or tree. Scales to high-dimensional spaces where grids fail.","lectures":["aa174-06"],"exercises":["ch04/exercises/rrt.ipynb","ch04/prm_star.ipynb"],"wiki":"Sampling-based_planning_PRM_RRT","related":[]},{"id":"potential_fields","name":"Potential field methods","layer":"P","ch":4,"kind":"classical","prereqs":["config_space"],"summary":"Attract the robot to the goal and repel it from obstacles with an artificial field. Fast and reactive, but prone to local minima.","wiki":"Potential_field_methods","exercises":[],"lectures":[],"related":[]},{"id":"kinodynamic_planning","name":"Planning with dynamics","layer":"P","ch":4,"kind":"classical","prereqs":["sampling_planning","optimal_control"],"summary":"Plan paths that respect the robot's dynamics, not just its geometry, so the result is something the robot can actually execute.","wiki":"Planning_with_dynamics","exercises":[],"lectures":[],"related":[]},{"id":"sensors","name":"Robot sensors","layer":"S","ch":5,"kind":"classical","prereqs":[],"summary":"Encoders, IMUs, GPS, lidar, radar, and cameras: what each measures, at what rate, and how it fails.","lectures":["aa174-07"],"wiki":"Robot_sensors","exercises":[],"related":[]},{"id":"measurement_noise","name":"Measurement noise models","layer":"S","ch":5,"kind":"classical","prereqs":["sensors","probability"],"summary":"Describe sensor error statistically, usually as bias plus Gaussian noise, so estimators can weigh each reading correctly.","wiki":"Measurement_noise_models","exercises":[],"lectures":[],"related":[]},{"id":"pinhole_camera","name":"Pinhole camera model","layer":"S","ch":6,"kind":"classical","prereqs":["linear_algebra"],"summary":"Project 3D points onto an image plane with homogeneous coordinates. The geometric basis for everything a camera tells a robot.","lectures":["aa174-07","aa174-08"],"wiki":"Pinhole_camera_model","exercises":[],"related":[]},{"id":"camera_calibration","name":"Intrinsics, extrinsics & calibration","layer":"S","ch":6,"kind":"classical","prereqs":["pinhole_camera","optimization"],"summary":"Estimate a camera's focal length, distortion, and pose relative to the robot from images of a known pattern.","lectures":["aa174-08"],"exercises":["ch06/exercises/camera_intrinsics.ipynb","ch06/exercises/camera_extrinsics.ipynb"],"wiki":"Intrinsics_extrinsics_and_calibration","related":[]},{"id":"features","name":"Feature detection & matching","layer":"S","ch":8,"kind":"classical","prereqs":["image_filtering"],"summary":"Find distinctive image points and describe them so the same point can be matched across views, as SIFT does.","exercises":["ch06/sift_feature_matching.ipynb"],"wiki":"Feature_detection_and_matching","lectures":[],"related":[]},{"id":"epipolar","name":"Epipolar geometry","layer":"S","ch":7,"kind":"classical","prereqs":["camera_calibration"],"summary":"Two views of a scene constrain where a point in one image can appear in the other, captured by the essential and fundamental matrices.","lectures":["aa174-09"],"wiki":"Epipolar_geometry","exercises":[],"related":[]},{"id":"stereo","name":"Stereo depth & triangulation","layer":"S","ch":7,"kind":"classical","prereqs":["epipolar"],"summary":"Recover depth from disparity between two calibrated cameras.","lectures":["aa174-09"],"wiki":"Stereo_depth_and_triangulation","exercises":[],"related":[]},{"id":"sfm","name":"Structure from motion","layer":"S","ch":7,"kind":"classical","prereqs":["stereo","features","optimization"],"summary":"Jointly recover camera motion and 3D structure from many images, refined with bundle adjustment.","wiki":"Structure_from_motion","exercises":[],"lectures":[],"related":[]},{"id":"visual_odometry","name":"Visual odometry & loop closure","layer":"S","ch":7,"kind":"classical","prereqs":["sfm"],"summary":"Estimate the camera's motion frame to frame, and recognize revisited places to correct the drift that accumulates.","related":["slam_front_end"],"wiki":"Visual_odometry_and_loop_closure","exercises":[],"lectures":[]},{"id":"image_filtering","name":"Image filtering & convolution","layer":"S","ch":8,"kind":"classical","prereqs":["linear_algebra"],"summary":"Slide small kernels over an image to smooth it, find edges, or match templates. The same operation later becomes the core of CNNs.","lectures":["aa174-10"],"exercises":["ch08/exercises/correlation_filter.ipynb"],"wiki":"Image_filtering_and_convolution","related":[]},{"id":"point_cloud_registration","name":"Point cloud registration (ICP)","layer":"S","ch":8,"kind":"classical","prereqs":["linear_algebra","optimization"],"summary":"Align two 3D scans by alternating between matching nearest points and solving for the best rigid transform.","exercises":["ch08/exercises/icp.ipynb"],"wiki":"Point_cloud_registration_ICP","lectures":[],"related":[]},{"id":"classical_recognition","name":"Classical visual recognition","layer":"S","ch":8,"kind":"classical","prereqs":["image_filtering","features"],"summary":"Recognize objects from hand-designed features and classifiers, the approach learned models later replaced.","lectures":["aa174-11"],"wiki":"Classical_visual_recognition","exercises":[],"related":[]},{"id":"cnn","name":"Convolutional neural networks","layer":"S","ch":9,"kind":"learned","prereqs":["deep_learning_basics","image_filtering"],"summary":"Stack learned convolution filters so the network discovers its own features from data.","exercises":["ch09/exercises/cnn.ipynb"],"wiki":"Convolutional_neural_networks","lectures":[],"related":[]},{"id":"transformers","name":"Attention & vision transformers","layer":"S","ch":9,"kind":"learned","prereqs":["deep_learning_basics"],"summary":"Models that relate every part of the input to every other part through attention, now common for images, point clouds, and multimodal input.","wiki":"Attention_and_vision_transformers","exercises":[],"lectures":[],"related":[]},{"id":"point_cloud_networks","name":"Point cloud & voxel networks","layer":"S","ch":9,"kind":"learned","prereqs":["deep_learning_basics"],"summary":"Architectures such as PointNet and 3D convolutions that consume lidar and depth data directly instead of images.","wiki":"Point_cloud_and_voxel_networks","exercises":[],"lectures":[],"related":[]},{"id":"object_detection","name":"Object detection & recognition","layer":"S","ch":10,"kind":"learned","prereqs":["cnn"],"summary":"Locate and label objects with bounding boxes, the input most downstream tracking and planning modules consume.","exercises":["ch10/exercises/object_detection.ipynb"],"related":["classical_recognition"],"wiki":"Object_detection_and_recognition","lectures":[]},{"id":"detection_3d","name":"3D object detection","layer":"S","ch":10,"kind":"learned","prereqs":["object_detection","point_cloud_networks"],"summary":"Predict oriented 3D boxes from point clouds or voxels, which is what a planner needs to reason about other agents.","wiki":"3D_object_detection","exercises":[],"lectures":[],"related":[]},{"id":"segmentation","name":"Semantic & instance segmentation","layer":"S","ch":10,"kind":"learned","prereqs":["cnn"],"summary":"Label every pixel or point by class, and separate individual objects of the same class.","wiki":"Semantic_and_instance_segmentation","exercises":[],"lectures":[],"related":[]},{"id":"bayes_filter","name":"Recursive Bayes filter","layer":"E","ch":11,"kind":"classical","prereqs":["probability","state_space"],"summary":"Maintain a belief over state with two alternating steps: predict with the motion model, correct with the measurement.","lectures":["aa174-12"],"wiki":"Recursive_Bayes_filter","exercises":[],"related":[]},{"id":"histogram_filter","name":"Discrete (histogram) filter","layer":"E","ch":11,"kind":"classical","prereqs":["bayes_filter"],"summary":"Run the Bayes filter over a grid of possible states. Exact but limited to small spaces.","exercises":["ch11/discrete_bayes.ipynb"],"wiki":"Discrete_histogram_filter","lectures":[],"related":[]},{"id":"kalman_filter","name":"Kalman filter","layer":"E","ch":12,"kind":"classical","prereqs":["bayes_filter","linear_algebra","measurement_noise"],"summary":"The Bayes filter in closed form when dynamics are linear and noise is Gaussian.","wiki":"Kalman_filter","lectures":["aa174-13"],"exercises":["ch12/exercises/kalman_filter.ipynb"],"related":[]},{"id":"ekf_ukf","name":"EKF & UKF","layer":"E","ch":12,"kind":"classical","prereqs":["kalman_filter","linearization"],"summary":"Extend the Kalman filter to nonlinear systems, by linearizing (EKF) or by propagating sigma points (UKF).","lectures":["aa174-13"],"exercises":["ch12/ekf_ukf_range_bearing.ipynb"],"wiki":"EKF_and_UKF","related":[]},{"id":"particle_filter","name":"Particle filter","layer":"E","ch":12,"kind":"classical","prereqs":["bayes_filter"],"summary":"Represent the belief with weighted samples, which handles multimodal and non-Gaussian distributions.","wiki":"Particle_filter","exercises":[],"lectures":[],"related":[]},{"id":"motion_measurement_models","name":"Probabilistic motion & sensor models","layer":"E","ch":13,"kind":"classical","prereqs":["nonholonomic","measurement_noise"],"summary":"Odometry and range-bearing models written as probability distributions, ready to plug into a filter.","wiki":"Probabilistic_motion_and_sensor_models","exercises":[],"lectures":[],"related":[]},{"id":"ekf_localization","name":"EKF localization","layer":"E","ch":13,"kind":"classical","prereqs":["ekf_ukf","motion_measurement_models"],"summary":"Estimate the robot's pose in a known map by fusing odometry with landmark measurements.","lectures":["aa174-14"],"exercises":["ch13/exercises/ekf_localization.ipynb"],"wiki":"EKF_localization","related":[]},{"id":"mcl","name":"Monte Carlo localization","layer":"E","ch":13,"kind":"classical","prereqs":["particle_filter","motion_measurement_models"],"summary":"Particle-filter localization that can recover from being lost or placed at an unknown starting pose.","exercises":["ch13/exercises/particle_filter_localization.ipynb"],"wiki":"Monte_Carlo_localization","lectures":[],"related":[]},{"id":"ekf_slam","name":"EKF SLAM","layer":"E","ch":14,"kind":"classical","prereqs":["ekf_localization"],"summary":"Add landmark positions to the state so the robot estimates its pose and the map together.","exercises":["ch14/exercises/ekf_slam.ipynb","ch14/range_bearing_ekf_slam.ipynb"],"wiki":"EKF_SLAM","lectures":[],"related":[]},{"id":"slam_front_end","name":"SLAM front end","layer":"E","ch":14,"kind":"classical","prereqs":["features","point_cloud_registration"],"summary":"The perception side of SLAM: extract features, associate them with landmarks, reject outliers, and detect loop closures before any estimation runs.","wiki":"SLAM_front_end","exercises":[],"lectures":[],"related":[]},{"id":"pose_graph_slam","name":"Graph & factor-graph SLAM","layer":"E","ch":14,"kind":"classical","prereqs":["motion_measurement_models","optimization","slam_front_end"],"summary":"Treat poses as graph nodes and measurements as constraints, then solve for the configuration that best satisfies them all. Standard in modern SLAM.","exercises":["ch14/pose_graph_slam.ipynb"],"related":["point_cloud_registration","sfm"],"wiki":"Graph_and_factor-graph_SLAM","lectures":[]},{"id":"sensor_fusion","name":"Multi-sensor fusion","layer":"E","ch":15,"kind":"classical","prereqs":["kalman_filter","sensors"],"summary":"Combine sensors with different rates and error profiles, such as IMU with GPS, into one consistent estimate.","wiki":"Sensor_fusion","exercises":["ch15/exercises/kalman_sensor_fusion.ipynb"],"lectures":[],"related":[]},{"id":"object_tracking","name":"Object tracking & data association","layer":"E","ch":15,"kind":"classical","prereqs":["kalman_filter","object_detection"],"summary":"Follow detected objects over time, deciding which new detection belongs to which existing track.","related":["sensor_fusion"],"wiki":"Object_tracking_and_data_association","exercises":[],"lectures":[]},{"id":"learned_fusion","name":"Learned fusion (BEV & features)","layer":"E","ch":15,"kind":"learned","prereqs":["sensor_fusion","transformers"],"summary":"Fuse sensors inside a network, for example in a bird's-eye-view feature space, then hand the result to classical filters. Where the classical and learned halves of the stack meet.","wiki":"Learned_fusion_BEV_and_features","exercises":[],"lectures":[],"related":[]},{"id":"fsm","name":"Finite state machines","layer":"L","ch":16,"kind":"classical","prereqs":["autonomy_software"],"summary":"Hand-designed modes and transitions that sequence behaviors. Still how many deployed robots decide what to do next.","wiki":"Finite_state_machines","exercises":[],"lectures":[],"related":[]},{"id":"mdp","name":"Markov decision processes","layer":"L","ch":17,"kind":"classical","prereqs":["probability"],"summary":"States, actions, transition probabilities, and rewards: the formal model of sequential decisions under uncertainty.","wiki":"Markov_decision_processes","exercises":[],"lectures":[],"related":[]},{"id":"dynamic_programming","name":"Dynamic programming & Bellman","layer":"L","ch":17,"kind":"classical","prereqs":["mdp"],"summary":"Solve decisions backward in time through the principle of optimality. The same idea underlies LQR, shortest-path search, and value iteration.","wiki":"dynamic_programming","lectures":["aa203-07","aa203-10"],"exercises":["ch17/exercises/markovian_drone.ipynb"],"related":["lqr","graph_search"]},{"id":"value_policy_iteration","name":"Value & policy iteration","layer":"L","ch":18,"kind":"classical","prereqs":["dynamic_programming"],"summary":"Iterative algorithms that compute the optimal value function and policy when the model is known.","lectures":["aa203-09"],"exercises":["ch18/policy_iteration.ipynb"],"wiki":"Value_and_policy_iteration","related":[]},{"id":"rl_fundamentals","name":"Reinforcement learning basics","layer":"L","ch":18,"kind":"learned","prereqs":["mdp","deep_learning_basics"],"summary":"Learn to act from trial and error when the dynamics model is unknown, trading off exploration and exploitation.","wiki":"reinforcement_learning","lectures":["aa203-14","aa203-16"],"exercises":["ch18/exercises/widget_sales.ipynb"],"related":[]},{"id":"td_learning","name":"Monte Carlo & TD learning","layer":"L","ch":18,"kind":"learned","prereqs":["rl_fundamentals","value_policy_iteration"],"summary":"Estimate values from sampled experience, either from full episodes or by bootstrapping from the next state's estimate.","wiki":"Monte_Carlo_and_TD_learning","exercises":[],"lectures":[],"related":[]},{"id":"value_based_rl","name":"Value-based RL (Q-learning)","layer":"L","ch":18,"kind":"learned","prereqs":["td_learning"],"summary":"Learn action values from experience and act greedily on them, scaling to large problems with function approximation.","lectures":["aa203-17"],"wiki":"Value-based_RL_Q-learning","exercises":[],"related":[]},{"id":"policy_gradient","name":"Policy gradients & actor-critic","layer":"L","ch":18,"kind":"learned","prereqs":["rl_fundamentals"],"summary":"Optimize a parameterized policy directly by gradient ascent on expected return, with a learned critic to reduce variance.","lectures":["aa203-18"],"exercises":["ch18/exercises/advantage_actor_critic.ipynb","ch18/exercises/cartpole_balance.ipynb"],"wiki":"Policy_gradients_and_actor-critic","related":[]},{"id":"model_based_rl","name":"Model-based RL & system ID","layer":"L","ch":18,"kind":"learned","prereqs":["rl_fundamentals","state_space"],"summary":"Learn a dynamics model from data and plan or control with it, connecting learning back to the control chapters.","lectures":["aa203-13","aa203-19"],"related":["mpc"],"wiki":"Model-based_RL_and_system_ID","exercises":[]},{"id":"behavior_cloning","name":"Behavior cloning","layer":"L","ch":19,"kind":"learned","prereqs":["deep_learning_basics","mdp"],"summary":"Train a policy by supervised learning on expert demonstrations. Fast to set up, but errors compound once the robot drifts from what it saw.","lectures":["aa203-15"],"wiki":"Behavior_cloning","exercises":[],"related":[]},{"id":"covariate_shift","name":"Covariate shift","layer":"L","ch":19,"kind":"learned","prereqs":["behavior_cloning"],"summary":"A cloned policy makes small errors, drifts into states the expert never showed, and errors compound. Understanding this explains most imitation learning failures and the fixes for them.","lectures":["aa203-15"],"wiki":"Covariate_shift","exercises":[],"related":[]},{"id":"inverse_rl","name":"Inverse reinforcement learning","layer":"L","ch":19,"kind":"learned","prereqs":["behavior_cloning","rl_fundamentals"],"summary":"Infer the reward an expert seems to be optimizing, then learn a policy for that reward.","lectures":["aa203-15"],"wiki":"Inverse_reinforcement_learning","exercises":[],"related":[]}],"backgrounds":[{"id":"new","name":"New to robotics","knows":[],"blurb":"Start from the math foundations."},{"id":"ml","name":"Coming from ML","knows":["linear_algebra","probability","odes","optimization","deep_learning_basics","cnn","transformers","mdp","rl_fundamentals","policy_gradient","value_based_rl","behavior_cloning","td_learning","point_cloud_networks","segmentation","object_detection"],"blurb":"You know learning. The gaps are dynamics, control, and estimation."},{"id":"controls","name":"Coming from controls","knows":["linear_algebra","probability","odes","optimization","state_space","linearization","pid","lqr","optimal_control","kalman_filter","mdp","dynamic_programming"],"blurb":"You know feedback. The gaps are perception and learned policies."},{"id":"swe","name":"Coming from software","knows":["linear_algebra","autonomy_software","graph_search","fsm"],"blurb":"You know systems. Pick up probability and dynamics first."}]};
+(function () {
+  const D = PORA, C = {}, kids = {};
+  D.concepts.forEach(c => { C[c.id] = c; kids[c.id] = []; });
+  D.concepts.forEach(c => c.prereqs.forEach(p => kids[p].push(c.id)));
+  const chap = {}; D.chapters.forEach(ch => chap[ch.n] = ch);
+  const laneOrder = ["L", "E", "S", "P", "D", "F"];           // top to bottom
+  const laneName = {}; D.layers.forEach(l => laneName[l.id] = l.name);
+  const laneVar = id => `var(--lane-${id})`;
+  const EMBED = /[?&]embed=bu\b/.test(location.search);
+  const $ = s => document.querySelector(s);
+
+  // depth = longest prerequisite chain
+  const depth = {};
+  const dfs = id => depth[id] ?? (depth[id] = C[id].prereqs.length ? 1 + Math.max(...C[id].prereqs.map(dfs)) : 0);
+  D.concepts.forEach(c => dfs(c.id));
+  const maxDepth = Math.max(...Object.values(depth));
+
+  // geometry
+  const NW = 176, NH = 40, COL = 212, ROW = 50, PADX = 120, LANEPAD = 14;
+  const slots = {}; // lane|depth -> list
+  D.concepts.forEach(c => { const k = c.layer + "|" + depth[c.id]; (slots[k] = slots[k] || []).push(c.id); });
+  const laneRows = {}; laneOrder.forEach(l => { let m = 1; for (let d = 0; d <= maxDepth; d++) m = Math.max(m, (slots[l + "|" + d] || []).length); laneRows[l] = m; });
+  const laneY = {}; let y = 8;
+  laneOrder.forEach(l => { laneY[l] = y; y += laneRows[l] * ROW + LANEPAD * 2; });
+  const H = y + 8, W = PADX + (maxDepth + 1) * COL + 20;
+  const pos = {};
+  Object.entries(slots).forEach(([k, ids]) => {
+    const [l, d] = k.split("|");
+    ids.sort((a, b) => (C[a].ch ?? -1) - (C[b].ch ?? -1));
+    const top = laneY[l] + LANEPAD + (laneRows[l] - ids.length) * ROW / 2;
+    ids.forEach((id, i) => pos[id] = { x: PADX + (+d) * COL, y: top + i * ROW + (ROW - NH) / 2 });
+  });
+
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (t, a = {}, parent) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); parent && parent.appendChild(e); return e; };
+  const svg = $("#g");
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const gl = el("g", {}, svg), ge = el("g", {}, svg), gn = el("g", {}, svg);
+  laneOrder.forEach(l => {
+    const h = laneRows[l] * ROW + LANEPAD * 2;
+    el("rect", { x: 0, y: laneY[l], width: W, height: h - 6, class: "lane-band" }, gl);
+    el("rect", { x: 0, y: laneY[l], width: 4, height: h - 6, fill: laneVar(l) }, gl);
+    const t = el("text", { x: 14, y: laneY[l] + h / 2, class: "lane-label", fill: laneVar(l), "dominant-baseline": "middle" }, gl);
+    const words = laneName[l].split(" & ");
+    words.forEach((w, i) => { const s = el("tspan", { x: 14, dy: i ? 15 : (words.length > 1 ? -7 : 0) }, t); s.textContent = w + (i < words.length - 1 ? " &" : ""); });
+  });
+
+  const edges = [];
+  const curve = (a, b) => { const x1 = pos[a].x + NW, y1 = pos[a].y + NH / 2, x2 = pos[b].x, y2 = pos[b].y + NH / 2, mx = (x1 + x2) / 2; return `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`; };
+  D.concepts.forEach(c => c.prereqs.forEach(p => edges.push({ a: p, b: c.id, e: el("path", { d: curve(p, c.id), class: "edge" }, ge) })));
+  D.concepts.forEach(c => (c.related || []).forEach(r => { if (depth[r] <= depth[c.id] || true) edges.push({ a: c.id, b: r, rel: true, e: el("path", { d: depth[r] >= depth[c.id] ? curve(c.id, r) : curve(r, c.id), class: "edge related" }, ge) }); }));
+
+  const wrapLabel = s => { if (s.length <= 24) return [s]; const w = s.split(" "); let a = ""; const out = []; w.forEach(x => { if ((a + " " + x).trim().length > 24 && a) { out.push(a); a = x; } else a = (a + " " + x).trim(); }); out.push(a); return out.slice(0, 2); };
+  const nodes = {};
+  D.concepts.forEach(c => {
+    const g = el("g", { class: `node ${c.kind}`, transform: `translate(${pos[c.id].x},${pos[c.id].y})`, tabindex: 0, role: "button", "aria-label": c.name }, gn);
+    el("rect", { width: NW, height: NH, rx: c.kind === "learned" ? 18 : 2, stroke: laneVar(c.layer) }, g);
+    const lines = wrapLabel(c.name);
+    lines.forEach((ln, i) => { const t = el("text", { x: 10, y: NH / 2 + (lines.length === 1 ? 4 : (i ? 12 : -2)) }, g); t.textContent = ln; });
+    if (c.ch != null) { const t = el("text", { x: NW - 8, y: 12, class: "chn", "text-anchor": "end" }, g); t.textContent = c.ch === 0 ? "SW" : "Ch " + c.ch; }
+    const sb = el("circle", { cx: 0, cy: 0, r: 10, class: "stepbg hide" }, g);
+    const st = el("text", { x: 0, y: 4, class: "step hide", "text-anchor": "middle" }, g);
+    g.addEventListener("click", () => { select(c.id); showPanel(); });
+    g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(c.id); } });
+    nodes[c.id] = { g, sb, st };
+  });
+
+  // scale to fit wide screens
+  const box = $("#box");
+  const fit = () => { const s = Math.max(0.62, Math.min(1, box.clientWidth / W)); svg.setAttribute("width", Math.round(W * s)); svg.setAttribute("height", Math.round(H * s)); };
+  new ResizeObserver(fit).observe(box); fit();
+
+  // closures
+  const ancestors = id => { const s = new Set(); const go = x => C[x].prereqs.forEach(p => { if (!s.has(p)) { s.add(p); go(p); } }); go(id); return s; };
+  const descendants = id => { const s = new Set(); const go = x => kids[x].forEach(k => { if (!s.has(k)) { s.add(k); go(k); } }); go(id); return s; };
+  const topo = ids => { const set = new Set(ids), out = [], seen = new Set();
+    const order = [...set].sort((a, b) => (C[a].ch ?? -1) - (C[b].ch ?? -1) || depth[a] - depth[b]);
+    const visit = x => { if (seen.has(x)) return; seen.add(x); C[x].prereqs.filter(p => set.has(p)).sort((a, b) => (C[a].ch ?? -1) - (C[b].ch ?? -1)).forEach(visit); out.push(x); };
+    order.forEach(visit); return out; };
+
+  // controls
+  const bgSel = $("#bg"), goalSel = $("#goal");
+  D.backgrounds.forEach(b => bgSel.add(new Option(b.name, b.id)));
+  D.parts.forEach(p => { const og = document.createElement("optgroup"); og.label = p.name;
+    D.concepts.filter(c => p.chapters.includes(c.ch)).forEach(c => og.appendChild(new Option(c.name, c.id))); goalSel.appendChild(og); });
+  goalSel.value = "ekf_slam";
+  try { const s = localStorage.getItem("pora-bg"); if (s) bgSel.value = s; } catch (e) {}
+
+  const nEx = D.concepts.reduce((n, c) => n + (c.exercises || []).length, 0);
+  $("#stats").innerHTML = `<span><b>19</b> chapters</span><span><b>${D.concepts.length}</b> concepts</span><span><b>${nEx}</b> runnable notebooks</span><span><b>${Object.keys(D.lectures).length}</b> lectures</span><span><b>${D.concepts.filter(c => c.kind === "learned").length}</b> learned · <b>${D.concepts.filter(c => c.kind === "classical").length}</b> classical</span>`;
+
+  const hidden = new Set();
+  const lg = $("#legend");
+  laneOrder.slice().reverse().forEach(l => { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.setAttribute("aria-pressed", "true");
+    b.innerHTML = `<i style="background:${laneVar(l)}"></i>${laneName[l]}`;
+    b.onclick = () => { hidden.has(l) ? hidden.delete(l) : hidden.add(l); b.setAttribute("aria-pressed", hidden.has(l) ? "false" : "true"); applyFilter(); };
+    lg.appendChild(b); });
+  lg.insertAdjacentHTML("beforeend", `<span class="shape"><s class="classical"></s>classical</span><span class="shape"><s class="learned"></s>learned</span><span class="shape"><s class="foundation"></s>foundation</span><span class="shape"><s style="border:0;border-top:1.5px dashed var(--ink-3);height:0"></s>related</span>`);
+  const applyFilter = () => { D.concepts.forEach(c => nodes[c.id].g.classList.toggle("hide", hidden.has(c.layer)));
+    edges.forEach(x => x.e.classList.toggle("hide", hidden.has(C[x.a].layer) || hidden.has(C[x.b].layer))); };
+
+  // state
+  let sel = null, route = null;
+  const paint = () => {
+    const on = new Set(); svg.classList.remove("dim");
+    Object.values(nodes).forEach(n => { n.g.classList.remove("on", "sel", "known"); n.sb.classList.add("hide"); n.st.classList.add("hide"); });
+    edges.forEach(x => x.e.classList.remove("on"));
+    if (route) {
+      route.steps.forEach((id, i) => { on.add(id); const n = nodes[id]; n.sb.classList.remove("hide"); n.st.classList.remove("hide"); n.st.textContent = i + 1; });
+      route.known.forEach(id => { on.add(id); nodes[id].g.classList.add("known"); });
+    } else if (sel) {
+      on.add(sel); ancestors(sel).forEach(x => on.add(x)); kids[sel].forEach(x => on.add(x));
+    }
+    if (sel) nodes[sel].g.classList.add("sel");
+    if (on.size) { svg.classList.add("dim"); on.forEach(id => nodes[id].g.classList.add("on"));
+      edges.forEach(x => { if (!x.rel && on.has(x.a) && on.has(x.b)) x.e.classList.add("on"); }); }
+  };
+
+  const linkRow = (href, label, small) => `<li><a href="${href}" target="_blank" rel="noopener"><span>${label}</span><small>${small}</small></a></li>`;
+  const exName = p => p.split("/").pop().replace(".ipynb", "").replace(/_/g, " ").replace(/\b\w/g, m => m.toUpperCase()).replace(/\b(Lqr|Mpc|Pid|Rrt|Prm|Icp|Cnn|Ekf|Ukf|Slam|Tpbvp|Jax|Sift)\b/g, m => m.toUpperCase());
+  const conceptPanel = id => {
+    const c = C[id], ch = c.ch != null ? chap[c.ch] : null;
+    const pre = c.prereqs.map(p => `<button class="tag" data-go="${p}">${C[p].name}</button>`).join("") || `<span class="note">None. A good place to start.</span>`;
+    const nxt = kids[id].map(p => `<button class="tag" data-go="${p}">${C[p].name}</button>`).join("") || `<span class="note">Nothing in the book builds on this directly.</span>`;
+    const rel = (c.related || []).map(p => `<button class="tag" data-go="${p}">${C[p].name}</button>`).join("");
+    const ex = (c.exercises || []).map(p => linkRow(D.exerciseBase.colab + p, exName(p), "Open in Colab")).join("");
+    const lec = (c.lectures || []).map(l => { const L = D.lectures[l]; return linkRow(L.url, L.title, `${L.course} · ${L.n}`); }).join("");
+    const bu = EMBED ? `<button class="btn bu-link" data-bu="${id}" type="button">Walk the route here in Brain University</button>` : "";
+    return `<div><div class="meta"><span style="color:${laneVar(c.layer)};font-weight:600">${laneName[c.layer]}</span><span>${c.kind}</span>${ch ? `<span>${c.ch === 0 ? "Getting started" : "Chapter " + c.ch}</span>` : `<span>assumed background</span>`}</div></div>
+      <h2>${c.name}</h2><p>${c.summary}</p>
+      ${ch ? `<div><h3>Read</h3><ul class="links">${linkRow(ch.url, ch.title, c.ch === 0 ? "Software" : "Ch " + c.ch)}</ul></div>` : ""}
+      ${ex ? `<div><h3>Run</h3><ul class="links">${ex}</ul></div>` : ""}
+      ${lec ? `<div><h3>Watch</h3><ul class="links">${lec}</ul></div>` : ""}
+      <div><h3>Needs first</h3><div class="tags">${pre}</div></div>
+      <div><h3>Unlocks</h3><div class="tags">${nxt}</div></div>
+      ${rel ? `<div><h3>Related</h3><div class="tags">${rel}</div></div>` : ""}
+      ${bu}
+      <button class="btn" type="button" data-route="${id}">Plan a route to this</button>`;
+  };
+  const routePanel = () => {
+    const b = D.backgrounds.find(x => x.id === route.bg), g = C[route.goal];
+    const chs = new Set(route.steps.map(id => C[id].ch).filter(x => x != null));
+    const nb = route.steps.reduce((n, id) => n + (C[id].exercises || []).length, 0);
+    return `<div class="meta"><span>${b.name}</span><span>→</span><span>${g.name}</span></div>
+      <h2>${route.steps.length} concepts to ${g.name}</h2>
+      <p>${b.blurb} This route skips ${route.known.length} concept${route.known.length === 1 ? "" : "s"} you already have and covers ${chs.size} chapter${chs.size === 1 ? "" : "s"} with ${nb} notebook${nb === 1 ? "" : "s"} to run.</p>
+      <ol class="route">${route.steps.map(id => `<li><button data-go="${id}">${C[id].name}</button><small>${C[id].ch == null ? "background" : C[id].ch === 0 ? "SW" : "Ch " + C[id].ch}</small></li>`).join("")}</ol>
+      <p class="note">Order follows the prerequisite links, then the book's chapter order. Tap any step for its reading, notebooks, and lectures.</p>
+      ${EMBED ? `<button class="btn bu-link" data-bu="${route.goal}" type="button">Walk this route in Brain University</button>` : ""}`;
+  };
+  const intro = () => `<div class="meta"><span>How to use this</span></div><h2>Pick a concept, or plan a route</h2>
+    <p>Each box is a concept from the book, placed in the part of the autonomy stack it belongs to. Lines run from a prerequisite to what it unlocks. Square boxes are classical methods, rounded ones are learned.</p>
+    <p>Choose your background and a goal above to get an ordered reading list, or tap any concept to see what it needs, what it unlocks, and where to read, run, and watch it.</p>
+    <div class="tags"><button class="tag" data-go="kalman_filter">Kalman filter</button><button class="tag" data-go="mpc">Model predictive control</button><button class="tag" data-go="sampling_planning">RRT and PRM</button><button class="tag" data-go="covariate_shift">Covariate shift</button></div>`;
+
+  const panel = $("#panel");
+  const render = () => { panel.innerHTML = route ? routePanel() : sel ? conceptPanel(sel) : intro(); paint(); };
+  const showPanel = () => { if (innerWidth < 1000) panel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); };
+  panel.addEventListener("click", e => {
+    const t = e.target.closest("[data-go],[data-route],[data-bu]"); if (!t) return;
+    if (t.dataset.go) { select(t.dataset.go); showPanel(); }
+    else if (t.dataset.route) { goalSel.value = t.dataset.route; plan(); }
+    else if (t.dataset.bu) { const r = routeTo(bgSel.value, t.dataset.bu);
+      try { parent.postMessage({ type: "pora:walk", goal: t.dataset.bu, background: bgSel.value, steps: r.steps.map(x => C[x].wiki) }, location.origin); } catch (e) {} }
+  });
+  const scrollTo = id => { const s = svg.clientWidth / W, p = pos[id]; box.scrollTo({ left: p.x * s - box.clientWidth / 2 + NW * s / 2, top: p.y * s - box.clientHeight / 2, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); };
+  function select(id) { route = null; sel = id; render(); scrollTo(id); try { history.replaceState(null, "", "#" + id); } catch (e) {} }
+  function routeTo(bgId, goal) {
+    const b = D.backgrounds.find(x => x.id === bgId);
+    const need = ancestors(goal); need.add(goal);
+    const known = [...need].filter(x => b.knows.includes(x) && x !== goal);
+    const steps = topo([...need].filter(x => !b.knows.includes(x) || x === goal));
+    return { bg: b.id, goal, steps, known };
+  }
+  function plan() {
+    try { localStorage.setItem("pora-bg", bgSel.value); } catch (e) {}
+    sel = null; route = routeTo(bgSel.value, goalSel.value); render(); scrollTo(goalSel.value); showPanel();
+  }
+  $("#go").onclick = plan;
+  $("#clear").onclick = () => { route = null; sel = null; render(); };
+  const q = $("#q");
+  q.addEventListener("keydown", e => { if (e.key !== "Enter") return; const s = q.value.trim().toLowerCase(); if (!s) return;
+    const hit = D.concepts.find(c => c.name.toLowerCase().includes(s)) || D.concepts.find(c => c.summary.toLowerCase().includes(s)); if (hit) select(hit.id); });
+  q.addEventListener("input", () => { const s = q.value.trim().toLowerCase();
+    D.concepts.forEach(c => nodes[c.id].g.style.opacity = !s || (c.name + " " + c.summary).toLowerCase().includes(s) ? "" : "0.2"); });
+
+  const h = location.hash.slice(1);
+  if (C[h]) select(h); else { render(); }
+  window.PORA_ATLAS = { select, plan, setBg: v => bgSel.value = v, setGoal: v => goalSel.value = v };
+})();
+</script>
+
+</body>
+</html>

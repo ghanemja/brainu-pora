@@ -21,3 +21,18 @@ The **Kalman filter** is a recursive Bayesian estimator that produces optimal es
 - [[PID_control]]
 - [[Sensor_fusion]]
 - [[Observability]]
+
+<!-- pora:begin -->
+## In Principles of Robot Autonomy
+
+- Read: [Chapter 12: Approximate Filters for State Estimation](https://porabook.com/book/approximate-filters/)
+- Stack layer: Estimation & mapping · classical
+- Run: [Kalman Filter](https://colab.research.google.com/github/StanfordASL/pora-exercises/blob/main/ch12/exercises/kalman_filter.ipynb) ([source](https://github.com/StanfordASL/pora-exercises/blob/main/ch12/exercises/kalman_filter.ipynb))
+- Watch: [AA174A lecture 13: Parametric Filtering](https://youtu.be/pSBhRF6j-Zc)
+
+Needs first: [[Recursive_Bayes_filter]], [[Linear_algebra]], [[Measurement_noise_models]]
+
+Unlocks: [[EKF_and_UKF]], [[Sensor_fusion]], [[Object_tracking_and_data_association]]
+
+Part of [[Principles_of_Robot_Autonomy]]. Summary and links from the unofficial PoRA Atlas; the book is the authoritative reference.
+<!-- pora:end -->

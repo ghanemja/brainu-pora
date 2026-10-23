@@ -1692,7 +1692,7 @@ def build_seed() -> dict:
          "resultAgentId": None},
 
         {"id": "req-003", "ts": "2026-06-28", "major": "2", "specialty": "Controls & robotics",
-         "badgeIds": [], "packId": None, "layers": [2, 3], "corpora": ["OCW 2.003", "OCW 2.004"],
+         "badgeIds": [], "packId": None, "layers": [2, 3], "corpora": ["OCW 2.003", "OCW 2.004", "Principles of Robot Autonomy (porabook.com)"],
          "status": "training", "matchedAgentId": None, "gap": None,
          "pipeline": [{"stage": "requested", "ts": "2026-06-28", "done": True},
                       {"stage": "corpus-mapped", "ts": "2026-06-29", "done": True},
@@ -1806,6 +1806,11 @@ def build_seed() -> dict:
                  {"code": "6.7900", "name": "Machine Learning (grad)", "competency": "Research-level ML"},
                  {"code": "18.335", "name": "Numerical Methods", "competency": "Numerical analysis depth"},
                  {"code": "2.29", "name": "Numerical Fluid Mechanics", "competency": "Computational physics"}]},
+             {"track": "Robot autonomy · PoRA (Stanford AA174A / AA203)", "items": [
+                 {"code": "PORA-I", "name": "Motion planning & control", "competency": "Dynamics, trajectory optimization, LQR/MPC, motion planning"},
+                 {"code": "PORA-II", "name": "Robot perception", "competency": "Camera geometry, stereo/SfM, classical and learned detection"},
+                 {"code": "PORA-III", "name": "Localization & mapping", "competency": "Bayes/Kalman/particle filters, localization, SLAM, sensor fusion"},
+                 {"code": "PORA-IV", "name": "Robot decision making", "competency": "FSMs, dynamic programming, reinforcement and imitation learning"}]},
              {"track": "Research artifact", "items": [
                  {"code": "RES-ARTIFACT", "name": "Novel research artifact", "competency": "Original, replicable contribution"}]},
          ],

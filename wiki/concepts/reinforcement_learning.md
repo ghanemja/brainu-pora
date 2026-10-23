@@ -110,3 +110,19 @@ Training time (∼400 seconds for 100 streams in Wang et al. [6]) is acceptable 
 ### 4. **Ignoring Offline vs. Online**
 - **Mistake**: Counting training time in the total cost when online speed is the priority
 - **Reality**: If scheduling is done offline (e.g., monthly), 400 seconds of training is acceptable;
+
+<!-- pora:begin -->
+## In Principles of Robot Autonomy
+
+- Read: [Chapter 18: Reinforcement Learning](https://porabook.com/book/reinforcement-learning/)
+- Stack layer: Decisions & learning · learned
+- Run: [Widget Sales](https://colab.research.google.com/github/StanfordASL/pora-exercises/blob/main/ch18/exercises/widget_sales.ipynb) ([source](https://github.com/StanfordASL/pora-exercises/blob/main/ch18/exercises/widget_sales.ipynb))
+- Watch: [AA203 lecture 14: Intro to Imitation Learning and Reinforcement Learning](https://youtu.be/7YdOx-ih0II)
+- Watch: [AA203 lecture 16: Fundamentals of Reinforcement Learning](https://youtu.be/cqPbt3OfRK4)
+
+Needs first: [[Markov_decision_processes]], [[Neural_network]]
+
+Unlocks: [[Monte_Carlo_and_TD_learning]], [[Policy_gradients_and_actor-critic]], [[Model-based_RL_and_system_ID]], [[Inverse_reinforcement_learning]]
+
+Part of [[Principles_of_Robot_Autonomy]]. Summary and links from the unofficial PoRA Atlas; the book is the authoritative reference.
+<!-- pora:end -->
