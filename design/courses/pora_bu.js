@@ -17,20 +17,16 @@
   B.NODES.forEach(function (n) { have[n.id] = n; });
   P.nodes.forEach(function (n) { if (!have[n.id]) B.NODES.push({ id: n.id, name: n.name, degree: n.degree, cluster: n.bg ? bgid : cid }); });
   var clusterOf = {};
-  P.nodes.forEach(function (n) { clusterOf[n.id] = have[n.id] ? have[n.id].cluster : n.bg ? bgid : cid; });
+  // On a course walk every stop shows the course (or its background), even for pages that
+  // also live in another Brain University topic.
+  P.nodes.forEach(function (n) { clusterOf[n.id] = n.bg ? bgid : cid; });
   P.edges.forEach(function (e) { B.EDGES.push(e); });
   var names = {};
   Object.keys(P.lessons).forEach(function (k) {
-    var L = P.lessons[k];
-    var cur = B.LESSONS[k] || (have[k] ? B.lessonFor(k) : null);
-    // An existing Brain University lesson keeps its own text; the course's key ideas,
-    // concept check, and materials are added to it.
-    B.LESSONS[k] = cur ? Object.assign({}, cur, {
-      key_ideas: (cur.key_ideas || []).concat(L.key_ideas),
-      quiz: L.quiz.concat(cur.quiz || []),
-      pora: L.pora
-    }) : L;
-    names[k] = B.LESSONS[k].title || L.title;
+    // The course lesson replaces any older Brain University lesson for the same page:
+    // it is written for this concept, has materials, and has a checked quiz.
+    B.LESSONS[k] = P.lessons[k];
+    names[k] = P.lessons[k].title;
   });
   B.PORA = { clusterId: cid, backgroundClusterId: bgid, lessons: P.lessons, names: names,
     // Shares progress with the Atlas (same origin, same localStorage key).
@@ -47,13 +43,12 @@
       if (!P.lessons[s] || seen[s]) return false; seen[s] = 1; return true;
     }).map(function (s, i, arr) {
       var prev = arr[i - 1], ch = P.chapters[s];
-      var where = ch === null || ch === undefined ? "assumed background" : ch === 0 ? "the software chapter" : "chapter " + ch;
       return {
         node: s, cluster: clusterOf[s],
         kind: arr.length === 1 ? "capstone" : i === 0 ? "start" : i === arr.length - 1 ? "capstone" : "deepen",
         rationale: i === 0
-          ? "Start with " + names[s] + " (" + where + ")." + (arr.length > 1 ? " Everything later on this route builds on it." : "")
-          : "Next is " + names[s] + " (" + where + "), which builds on " + names[prev] + " and the stops before it."
+          ? (arr.length > 1 ? "First stop. Everything later on this walk builds on it." : "A single lesson.")
+          : "Builds on " + names[prev] + (ch === null || ch === undefined ? ". Part of the math the book assumes." : ".")
       };
     });
     if (!stops.length) return null;

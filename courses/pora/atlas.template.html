@@ -37,7 +37,7 @@
   color-scheme: dark;
 }
 :root[data-tone="dark"] {
-  --accent: #fb923c; --accent-ink: #1c0d03; --good: #4ade80; --bad: #f87171; --link: #7dd3fc;
+  --good: #4ade80; --bad: #f87171;
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.4);
   color-scheme: dark;
 }
@@ -211,11 +211,12 @@ const PORA = /*PORA_DATA*/null;
     if (!src) return;
     root.setAttribute("data-embedded", "");
     const cs = parent.getComputedStyle(src);
-    const map = { bg: "--c-bg", "bg-elev": "--c-bg-elev", "bg-elev-2": "--c-bg-elev-2", ink: "--c-ink", "ink-muted": "--c-ink-muted", "ink-dim": "--c-ink-dim", line: "--c-line", "line-strong": "--c-line-strong" };
+    const map = { bg: "--c-bg", "bg-elev": "--c-bg-elev", "bg-elev-2": "--c-bg-elev-2", ink: "--c-ink", "ink-muted": "--c-ink-muted", "ink-dim": "--c-ink-dim", line: "--c-line", "line-strong": "--c-line-strong", accent: "--c-here", link: "--c-bridge" };
     let bg = "";
     for (const k in map) { const v = cs.getPropertyValue(map[k]).trim(); if (v) { root.style.setProperty("--" + k, v); if (k === "bg") bg = v; } }
     const m = bg.match(/^#([0-9a-f]{6})$/i);
     if (m) { const n = parseInt(m[1], 16), L = (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255; root.setAttribute("data-tone", L < 0.5 ? "dark" : "light"); }
+    root.style.setProperty("--accent-ink", "#ffffff");
   };
   syncTheme();
   try { if (EMBED && parent !== window) new parent.MutationObserver(syncTheme).observe(parent.document.documentElement, { attributes: true, attributeFilter: ["data-palette", "style", "class"] }); } catch (e) {}

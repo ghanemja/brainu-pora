@@ -59,73 +59,63 @@ function LecturePlayer({ lec }) {
   useEffect(() => setPlaying(false), [lec.yt]);
   const label = `${lec.course} lecture ${lec.n}: ${lec.title}`;
   return (
-    <div style={{ border: "1px solid var(--c-line)", borderRadius: "var(--r-md)", overflow: "hidden", background: "var(--c-bg-elev)" }}>
-      <div style={{ position: "relative", aspectRatio: "16 / 9", background: "#000" }}>
+    <figure className="walk-video">
+      <div className="walk-video-frame">
         {playing ? (
           <iframe title={label}
             src={`https://www.youtube-nocookie.com/embed/${lec.yt}?autoplay=1&rel=0&modestbranding=1`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }} />
+            allowFullScreen />
         ) : (
-          <button type="button" onClick={() => setPlaying(true)} aria-label={`Play ${label}`}
-            style={{ all: "unset", cursor: "pointer", position: "absolute", inset: 0,
-                     background: `#000 url(https://i.ytimg.com/vi/${lec.yt}/hqdefault.jpg) center / cover no-repeat`,
-                     display: "grid", placeItems: "center" }}>
-            <span style={{ width: 58, height: 58, borderRadius: "50%", background: "rgba(0,0,0,.62)",
-                           display: "grid", placeItems: "center", color: "#fff", fontSize: 22, paddingLeft: 4 }}>▶</span>
+          <button type="button" className="walk-play" onClick={() => setPlaying(true)} aria-label={`Play ${label}`}
+            style={{ backgroundImage: `url(https://i.ytimg.com/vi/${lec.yt}/hqdefault.jpg)` }}>
+            <span className="walk-play-btn" aria-hidden="true" />
           </button>
         )}
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", gap: 12, padding: "9px 12px", alignItems: "baseline" }}>
-        <span style={{ fontSize: 13.5, fontWeight: 500 }}>{lec.title}</span>
-        <a href={lec.url} target="_blank" rel="noopener noreferrer" className="t-mono"
-           style={{ fontSize: 11, color: "var(--c-ink-dim)", whiteSpace: "nowrap" }}>
-          {lec.course} · {lec.n} ↗
-        </a>
-      </div>
-    </div>
+      <figcaption>
+        <span>{lec.title}</span>
+        <a href={lec.url} target="_blank" rel="noopener noreferrer">Stanford {lec.course} · lecture {lec.n} ↗</a>
+      </figcaption>
+    </figure>
   );
 }
 
 function CourseMaterials({ pora }) {
   if (!pora) return null;
   const { chapter, lectures = [], notebooks = [] } = pora;
-  if (!chapter && !lectures.length && !notebooks.length) return null;
-  const row = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap",
-                padding: "10px 12px", border: "1px solid var(--c-line)", borderRadius: "var(--r-md)",
-                background: "var(--c-bg-elev)" };
   return (
-    <div style={{ margin: "8px 0 4px" }}>
-      <div className="topo-rule" style={{ margin: "24px 0" }} />
-      <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 12 }}>COURSE MATERIALS · PRINCIPLES OF ROBOT AUTONOMY</div>
-      <div style={{ display: "grid", gap: 10 }}>
-        {lectures.map(l => <LecturePlayer key={l.yt} lec={l} />)}
-        {notebooks.map(n => (
-          <div key={n.path} style={row}>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontWeight: 600, fontSize: 14 }}>{n.title}</div>
-              <div className="t-mono" style={{ fontSize: 11, color: "var(--c-ink-dim)" }}>
-                {n.exercise ? "Exercise notebook" : "Demo notebook"} · {n.path}
+    <>
+      {lectures.length > 0 && (
+        <section className="walk-sec">
+          <h2 className="walk-h">Watch</h2>
+          {lectures.map(l => <LecturePlayer key={l.yt} lec={l} />)}
+        </section>
+      )}
+      {notebooks.length > 0 && (
+        <section className="walk-sec">
+          <h2 className="walk-h">Build it</h2>
+          {notebooks.map(n => (
+            <div key={n.path} className="walk-row">
+              <div>
+                <b>{n.title}</b>
+                <small>{n.exercise ? "Exercise notebook: you fill in the code" : "Demo notebook: a worked implementation"}</small>
               </div>
+              <a className="btn primary sm" href={n.colab} target="_blank" rel="noopener noreferrer">Open in Colab ↗</a>
             </div>
-            <div style={{ display: "flex", gap: 6 }}>
-              <a className="btn primary" href={n.colab} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>Run in Colab ↗</a>
-              <a className="btn ghost" href={n.github} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>Code ↗</a>
-            </div>
+          ))}
+        </section>
+      )}
+      {chapter && (
+        <section className="walk-sec">
+          <h2 className="walk-h">Read</h2>
+          <div className="walk-row">
+            <div><b>{chapter.label}</b><small>Free online at porabook.com</small></div>
+            <a className="btn sm" href={chapter.url} target="_blank" rel="noopener noreferrer">Read the chapter ↗</a>
           </div>
-        ))}
-        {chapter && (
-          <div style={row}>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontWeight: 600, fontSize: 14 }}>{chapter.label}</div>
-              <div className="t-mono" style={{ fontSize: 11, color: "var(--c-ink-dim)" }}>Free online at porabook.com</div>
-            </div>
-            <a className="btn" href={chapter.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>Read the chapter ↗</a>
-          </div>
-        )}
-      </div>
-    </div>
+        </section>
+      )}
+    </>
   );
 }
 
@@ -146,6 +136,7 @@ function Walk({ tour, idx, onAdvance, onJumpTo, onBranch, onSummit, layout = "po
   useEffect(() => {
     setQuizPicked(null);
     setQuizChecked(false);
+    window.scrollTo({ top: 0 });
   }, [stop?.node]);
 
   if (!stop || !lesson) {
@@ -156,63 +147,38 @@ function Walk({ tour, idx, onAdvance, onJumpTo, onBranch, onSummit, layout = "po
 
   const cluster = BU_DATA.CLUSTERS[stop.cluster];
   const isCapstone = stop.kind === "capstone";
-
-  // Trigger summit on capstone "Continue"
-  const handleNext = () => {
-    if (isCapstone) onSummit?.();
-    else onAdvance?.(1);
-  };
+  const handleNext = () => { if (isCapstone || !next) onSummit?.(); else onAdvance?.(1); };
 
   return (
-    <div style={{ position: "relative", minHeight: "calc(100vh - 56px)" }}>
-      {/* TOP STRIP — altitude, course, kind */}
-      <div style={{
-        position: "sticky", top: 56, zIndex: 5,
-        background: "color-mix(in oklch, var(--c-bg) 85%, transparent)",
-        backdropFilter: "blur(12px)",
-        borderBottom: "1px solid var(--c-line)",
-        padding: "12px 28px",
-        display: "grid",
-        gridTemplateColumns: "auto 1fr auto",
-        alignItems: "center",
-        gap: 20,
-      }}>
-        <KindGlyph kind={stop.kind} />
-        <Altitude idx={idx} total={tour.length} />
-        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          <CourseChip clusterId={stop.cluster} />
-          <span className="t-mono" style={{ color: "var(--c-ink-dim)", fontSize: 11 }}>
-            {tourStopName(stop.node).toLowerCase()}
-          </span>
-        </div>
-      </div>
-
-      {/* RATIONALE BAR — "why we go here next" */}
-      <div style={{
-        padding: "16px 28px",
-        background: `linear-gradient(180deg, ${cluster.color}10, transparent)`,
-        borderBottom: "1px solid var(--c-line)",
-      }}>
-        <div style={{ maxWidth: 920, margin: "0 auto", display: "flex", gap: 16, alignItems: "flex-start" }}>
-          <div style={{
-            flexShrink: 0, marginTop: 2,
-            padding: "3px 9px", borderRadius: 4,
-            background: cluster.color + "22",
-            border: `1px solid ${cluster.color}55`,
-            fontFamily: "var(--f-mono)", fontSize: 10.5,
-            color: cluster.color, letterSpacing: "0.08em", textTransform: "uppercase",
-          }}>
-            TRAIL MARKER
+    <div className="walk">
+      {/* PROGRESS — one row: where you are, every stop as a step, tools */}
+      <div className="walk-head">
+        <div className="walk-head-in">
+          <div className="walk-where">
+            <CourseChip clusterId={stop.cluster} />
+            <span className="walk-count">Lesson {idx + 1} of {tour.length}</span>
           </div>
-          <p className="t-body" style={{ margin: 0, color: "var(--c-ink)", maxWidth: 700 }}>
-            {stop.rationale}
-          </p>
+          <ol className="walk-steps" aria-label="Lessons on this walk">
+            {tour.map((s, i) => (
+              <li key={s.node + i}>
+                <button type="button"
+                  className={i === idx ? "on" : i < idx ? "past" : ""}
+                  aria-current={i === idx ? "step" : undefined}
+                  aria-label={`Lesson ${i + 1}: ${tourStopName(s.node)}`}
+                  title={`${i + 1}. ${tourStopName(s.node)}`}
+                  onClick={() => onJumpTo?.(i)} />
+              </li>
+            ))}
+          </ol>
+          <div className="walk-tools">
+            <button className="btn ghost sm" onClick={() => onBranch(stop.node)} title="Bridge to another course">≈ Bridge</button>
+            <button className="btn ghost sm" onClick={onShow3D} title="See this lesson in the 3D graph">◳ 3D</button>
+          </div>
         </div>
       </div>
 
-      {/* LESSON BODY — variant-driven */}
       {layout === "postcard" && (
-        <PostcardLayout lesson={lesson} stop={stop}
+        <PostcardLayout lesson={lesson} stop={stop} cluster={cluster}
                         quizPicked={quizPicked} quizChecked={quizChecked}
                         setQuizPicked={setQuizPicked} setQuizChecked={setQuizChecked} />
       )}
@@ -228,130 +194,65 @@ function Walk({ tour, idx, onAdvance, onJumpTo, onBranch, onSummit, layout = "po
                          setQuizPicked={setQuizPicked} setQuizChecked={setQuizChecked} />
       )}
 
-      {/* BOTTOM — nav strip with prev/next + bridge */}
-      <div style={{
-        position: "sticky", bottom: 0, zIndex: 6,
-        background: "color-mix(in oklch, var(--c-bg) 90%, transparent)",
-        backdropFilter: "blur(14px)",
-        borderTop: "1px solid var(--c-line)",
-        padding: "14px 28px",
-        display: "grid", gridTemplateColumns: "1fr auto 1fr",
-        gap: 16, alignItems: "center",
-      }}>
-        <div>
-          {prev && (
-            <button className="btn ghost" onClick={() => onAdvance(-1)}>
-              ‹ {tourStopName(prev.node)}
-            </button>
-          )}
-        </div>
-        <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
-          <button className="btn" onClick={() => onBranch(stop.node)}>
-            <span style={{ color: "var(--c-bridge)" }}>≈</span> Bridge to another course
-          </button>
-          <button className="btn ghost" onClick={onShow3D}>
-            ◳ Open 3D
-          </button>
-        </div>
-        <div style={{ textAlign: "right" }}>
-          <button className="btn primary" onClick={handleNext}>
-            {isCapstone ? "Reach the summit ★" : (next ? <>{tourStopName(next.node)} ›</> : "Finish ›")}
+      {/* NAV — previous on the left, the one obvious next step on the right */}
+      <div className="walk-nav">
+        <div className="walk-nav-in">
+          {prev
+            ? <button className="btn ghost" onClick={() => onAdvance(-1)}>‹ <span className="walk-nav-name">{tourStopName(prev.node)}</span></button>
+            : <span />}
+          <button className="btn primary lg" onClick={handleNext}>
+            {isCapstone || !next
+              ? "Finish the walk ★"
+              : <>Next: <span className="walk-nav-name">{tourStopName(next.node)}</span> ›</>}
           </button>
         </div>
       </div>
-
-      {/* MINI-MAP — locked bottom-right */}
-      <div style={{
-        position: "fixed", bottom: 80, right: 22, zIndex: 5,
-      }}>
-        <MiniMap tour={tour} idx={idx} onJump={onJumpTo} />
-      </div>
-
-      {/* NEXT-STOP PREVIEW — locked top-right */}
-      {next && (
-        <div style={{
-          position: "fixed", top: 130, right: 22, zIndex: 5,
-          width: 220,
-          background: "color-mix(in oklch, var(--c-bg-elev) 92%, transparent)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid var(--c-line)",
-          borderRadius: "var(--r-md)",
-          padding: 12,
-        }}>
-          <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 6 }}>
-            NEXT STOP
-          </div>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 4 }}>
-            <KindGlyph kind={next.kind} />
-          </div>
-          <div className="t-h3" style={{ marginBottom: 4 }}>{tourStopName(next.node)}</div>
-          <div className="t-cap" style={{ color: "var(--c-ink-muted)", fontSize: 11.5, lineHeight: 1.4 }}>
-            {next.rationale.slice(0, 110)}{next.rationale.length > 110 ? "…" : ""}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
 
 // ─── Postcard layout — single column, deliberately spare ─────────────
-function PostcardLayout({ lesson, stop, quizPicked, quizChecked, setQuizPicked, setQuizChecked }) {
+function PostcardLayout({ lesson, stop, cluster, quizPicked, quizChecked, setQuizPicked, setQuizChecked }) {
+  const ch = lesson.pora && lesson.pora.chapter;
   return (
-    <div style={{
-      maxWidth: 720, margin: "0 auto",
-      padding: "48px 28px 80px", paddingRight: 280, paddingLeft: 28,
-    }}>
-      <div className="reading-col fade-in">
-        <h2 style={{ margin: "0 0 4px" }}>{lesson.title}</h2>
-        <Evidence items={lesson.evidence} />
-        <div style={{ height: 24 }} />
-        <p style={{ fontSize: 17, lineHeight: 1.6, color: "var(--c-ink)" }}>
-          {lesson.summary}
-        </p>
-
-        <div className="topo-rule" style={{ margin: "24px 0" }} />
-        <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 12 }}>KEY IDEAS</div>
-        {lesson.key_ideas.map((k, i) => (
-          <div key={i} style={{
-            display: "grid", gridTemplateColumns: "auto 1fr",
-            gap: 16, marginBottom: 18,
-          }}>
-            <div style={{
-              fontFamily: "var(--f-mono)", fontSize: 11,
-              color: "var(--c-bridge)",
-              borderRight: "1px solid var(--c-line-strong)",
-              paddingRight: 16, paddingTop: 4,
-              textAlign: "right", minWidth: 28,
-            }}>{String(i + 1).padStart(2, "0")}</div>
-            <div>
-              {k.h && <div style={{ fontWeight: 600, fontSize: 15.5, marginBottom: 4, letterSpacing: "-0.01em" }}>
-                {k.h}
-              </div>}
-              <div style={{ color: k.h ? "var(--c-ink-muted)" : "var(--c-ink)", lineHeight: 1.55 }}>{k.b}</div>
-            </div>
-          </div>
-        ))}
-
-        <CourseMaterials pora={lesson.pora} />
-
-        {lesson.worked_example && <>
-          <div className="topo-rule" style={{ margin: "24px 0" }} />
-          <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 12 }}>{lesson.pora ? "TRY IT" : "WORKED EXAMPLE"}</div>
-          <div className="card recessed" style={{
-            fontFamily: "var(--f-mono)", fontSize: 13, lineHeight: 1.6,
-            padding: 18,
-          }}>
-            {lesson.worked_example}
-          </div>
-        </>}
-
-        {lesson.quiz?.[0] && <Quiz q={lesson.quiz[0]} node={stop.node}
-          picked={quizPicked} checked={quizChecked}
-          setPicked={setQuizPicked} setChecked={setQuizChecked} />}
-
-        {renderExercise(stop.node, lesson)}
+    <article className="walk-body fade-in">
+      <div className="walk-kicker">
+        {lesson.pora
+          ? <span>Principles of Robot Autonomy · {ch ? ch.label.replace(/^Chapter (\d+): .*/, "Chapter $1") : "Assumed background"}</span>
+          : <span>{cluster?.name}</span>}
       </div>
-    </div>
+      <h1 className="walk-title">{lesson.title}</h1>
+      <p className="walk-why">{stop.rationale}</p>
+      <p className="walk-summary">{lesson.summary}</p>
+      {!lesson.pora && <Evidence items={lesson.evidence} />}
+
+      <section className="walk-sec">
+        <h2 className="walk-h">Key ideas</h2>
+        <ol className="walk-ideas">
+          {lesson.key_ideas.map((k, i) => (
+            <li key={i}>
+              {k.h && <strong>{k.h} </strong>}
+              <span>{k.b}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <CourseMaterials pora={lesson.pora} />
+
+      {lesson.worked_example && (
+        <section className="walk-sec">
+          <h2 className="walk-h">{lesson.pora ? "Try it" : "Worked example"}</h2>
+          <div className="walk-try">{lesson.worked_example}</div>
+        </section>
+      )}
+
+      {lesson.quiz?.[0] && <Quiz q={lesson.quiz[0]} node={stop.node}
+        picked={quizPicked} checked={quizChecked}
+        setPicked={setQuizPicked} setChecked={setQuizChecked} />}
+
+      {renderExercise(stop.node, lesson)}
+    </article>
   );
 }
 
@@ -487,11 +388,10 @@ function Quiz({ q, node, picked, checked, setPicked, setChecked }) {
     if (checked && correct && BU_DATA.PORA && BU_DATA.PORA.markLearned) BU_DATA.PORA.markLearned(node);
   }, [checked, correct, node]);
   return (
-    <div style={{ marginTop: 28 }}>
-      <div className="topo-rule" style={{ margin: "0 0 16px" }} />
-      <div className="t-tag" style={{ color: "var(--c-ink-muted)", marginBottom: 8 }}>COMPREHENSION CHECK</div>
-      <div style={{ fontWeight: 500, fontSize: 14.5, marginBottom: 12 }}>{q.q}</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+    <section className="walk-sec">
+      <h2 className="walk-h">Quick check</h2>
+      <p className="walk-q">{q.q}</p>
+      <div className="walk-opts">
         {q.choices.map((c, i) => {
           const isPicked = picked === c;
           const isRight = checked && i === q.correct;
@@ -499,33 +399,23 @@ function Quiz({ q, node, picked, checked, setPicked, setChecked }) {
           const cls = "quiz-opt" + (isPicked && !checked ? " picked" : "")
                       + (isRight ? " right" : "") + (isWrong ? " wrong" : "");
           return (
-            <button key={i} className={cls}
-              disabled={checked}
-              onClick={() => setPicked(c)}>
+            <button key={i} className={cls} disabled={checked} onClick={() => setPicked(c)}>
               <span className="marker">{String.fromCharCode(65 + i)}</span>
               <span>{c}</span>
             </button>
           );
         })}
       </div>
-      {!checked && picked && (
-        <button className="btn" style={{ marginTop: 10 }}
-          onClick={() => setChecked(true)}>Check answer</button>
+      {!checked && (
+        <button className="btn" disabled={!picked} onClick={() => setChecked(true)}>Check answer</button>
       )}
       {checked && (
-        <div style={{
-          marginTop: 12, padding: 12, borderRadius: 6,
-          background: correct ? "color-mix(in oklch, var(--c-cs) 12%, transparent)"
-                              : "color-mix(in oklch, var(--c-here) 12%, transparent)",
-          border: `1px solid ${correct ? "var(--c-cs)" : "var(--c-here)"}55`,
-          fontSize: 13, lineHeight: 1.5,
-        }}>
-          <strong style={{ color: correct ? "var(--c-cs)" : "var(--c-here)" }}>
-            {correct ? "✓ Correct." : "✗ Not quite."}
-          </strong> {q.why}
+        <div className={"walk-feedback " + (correct ? "ok" : "no")} role="status">
+          <strong>{correct ? "Correct." : "Not quite."}</strong> {q.why}
+          {!correct && <button className="btn ghost sm" onClick={() => { setChecked(false); setPicked(null); }}>Try again</button>}
         </div>
       )}
-    </div>
+    </section>
   );
 }
 
