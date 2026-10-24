@@ -189,7 +189,7 @@ button { font: inherit; color: inherit; }
 
 /* ───────────── High-fidelity materials (textures.js paints these) ───────────── */
 /* Slate: stone, eraser swipes, ghost writing, dust at the tray. */
-.slate { position: relative; color: #f1efe6; background-color: #22302a; background-image: var(--tex-slate, none); background-size: 100% 100%; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.55), inset 0 2px 14px rgba(0,0,0,.55), inset 0 0 70px rgba(0,0,0,.35); font-family: "Kalam", "Caveat", cursive; }
+.slate { position: relative; color: #f1efe6; background-color: #25312c; background-image: var(--tex-slate, none); background-size: cover; background-position: center; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.55), inset 0 2px 14px rgba(0,0,0,.55), inset 0 0 70px rgba(0,0,0,.35); font-family: "Kalam", "Caveat", cursive; }
 .board.slate { padding: 30px 34px 26px !important; }
 /* Chalk: grainy broken strokes (SVG filter #chalk), soft dust halo. */
 .slate .ch-t, .slate .ch-h, .slate .ch-big, .slate .idea, .slate .quiz p, .slate .qopt, .slate .box, .slate .arrow, .slate h2 { filter: url(#chalk); }

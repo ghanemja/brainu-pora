@@ -24,47 +24,66 @@
   }
   const canvas = (w, h) => { const c = document.createElement("canvas"); c.width = w; c.height = h; return [c, c.getContext("2d")]; };
 
-  // ── Slate chalkboard: green-black stone, grain, eraser swipes, ghost writing, dust ──
+  // ── Slate chalkboard ──
+  // Real boards read as: fine stone tooth, soft cloudiness, streaky felt-eraser
+  // smears (parallel streaks, ragged ends), half-erased old writing, and dust.
+  // Low-frequency layers are painted small and scaled up; grain is per pixel.
   function slate() {
-    const W = 1600, H = 820, [c, x] = canvas(W, H), r = rng(7);
-    const img = x.createImageData(W, H), d = img.data, n = fbm(W, H, 6, 5, 11), m = fbm(W, H, 2, 3, 23);
-    for (let y = 0; y < H; y++) for (let i = 0; i < W; i++) {
-      const k = (y * W + i) * 4, v = (n(i, y) - 0.5) * 22 + (m(i, y) - 0.5) * 16 + (r() - 0.5) * 9;
-      d[k] = 34 + v; d[k + 1] = 47 + v; d[k + 2] = 41 + v * 0.9; d[k + 3] = 255;
+    const W = 2048, H = 1024, [c, x] = canvas(W, H), r = rng(7);
+    x.fillStyle = "#25312c"; x.fillRect(0, 0, W, H);
+    // soft cloudiness
+    { const w = 256, h = 128, [m, mx] = canvas(w, h), n = fbm(w, h, 3, 4, 11), img = mx.createImageData(w, h), d = img.data;
+      for (let y = 0; y < h; y++) for (let i = 0; i < w; i++) { const k = (y * w + i) * 4, v = n(i, y);
+        d[k] = d[k + 1] = d[k + 2] = v > 0.5 ? 235 : 0; d[k + 3] = Math.abs(v - 0.5) * 70; }
+      mx.putImageData(img, 0, 0); x.imageSmoothingQuality = "high"; x.drawImage(m, 0, 0, W, H); }
+    const chalk = (a) => `rgba(226,232,226,${a})`;
+    // old writing, then mostly wiped away
+    const ghost = (() => {
+      const [g, gx] = canvas(W, H), lines = ["x_dot = A x + B u", "P(x | z) ∝ P(z | x) P(x)", "K = P Hᵀ (H P Hᵀ + R)⁻¹", "q = (x, y, θ)", "min Σ xᵀQx + uᵀRu", "v = r ω", "J(θ) = E[Σ γᵗ r]", "∇f = 0", "SE(2)", "x_{k+1} = f(x_k, u_k)", "ẋ = v cos θ"];
+      gx.fillStyle = chalk(1); gx.strokeStyle = chalk(1); gx.lineCap = "round";
+      for (let s = 0; s < 26; s++) {
+        gx.globalAlpha = 0.05 + r() * 0.09; gx.save(); gx.translate(r() * W * 0.9, 60 + r() * (H - 120)); gx.rotate((r() - 0.5) * 0.06);
+        if (s % 5 === 4) { // a little diagram: axes with a curve, or a robot circle and heading
+          gx.lineWidth = 3; gx.beginPath();
+          if (r() < 0.5) { gx.moveTo(0, 0); gx.lineTo(0, -120); gx.moveTo(0, 0); gx.lineTo(180, 0); gx.moveTo(6, -10); gx.bezierCurveTo(60, -140, 110, -20, 170, -70); }
+          else { gx.arc(60, -50, 44, 0, Math.PI * 2); gx.moveTo(60, -50); gx.lineTo(130, -80); }
+          gx.stroke();
+        } else { gx.font = `${38 + r() * 34}px Kalam, Caveat, cursive`; gx.fillText(lines[s % lines.length], 0, 0); }
+        gx.restore();
+      }
+      gx.globalAlpha = 1; gx.globalCompositeOperation = "destination-out"; // the eraser took most of it
+      for (let y = 0; y < H; y += 2) { gx.fillStyle = `rgba(0,0,0,${0.35 + r() * 0.6})`; gx.fillRect(0, y, W, 2 + r() * 3); }
+      return g;
+    })();
+    x.filter = "blur(1.2px)"; x.drawImage(ghost, 0, 0); x.filter = "none";
+    // felt-eraser smears: bands of thin parallel streaks with ragged ends
+    for (let s = 0; s < 34; s++) {
+      const bw = 260 + r() * 700, bh = 50 + r() * 120, strength = 0.014 + r() * 0.026;
+      x.save(); x.translate(r() * W, r() * H); x.rotate((r() - 0.5) * 0.22 + (r() < 0.15 ? (r() - 0.5) * 1.2 : 0));
+      for (let y = -bh / 2; y < bh / 2; y += 1.3) {
+        const env = Math.sin(Math.PI * (y / bh + 0.5)), a = strength * env * (0.4 + r() * 1.2);
+        const x0 = -bw / 2 + (r() - 0.5) * 80, x1 = bw / 2 + (r() - 0.5) * 80;
+        x.fillStyle = chalk(a); x.fillRect(x0, y, x1 - x0, 1.1 + r());
+      }
+      x.restore();
+    }
+    // chalk dust settles toward the tray
+    const g = x.createLinearGradient(0, H * 0.78, 0, H); g.addColorStop(0, chalk(0)); g.addColorStop(1, chalk(0.08));
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    // stone tooth and dust specks, per pixel (also breaks up any banding)
+    const img = x.getImageData(0, 0, W, H), d = img.data;
+    for (let k = 0; k < d.length; k += 4) {
+      const p = k / 4, yy = (p / W) | 0, q = r();
+      let v = (q - 0.5) * 11;
+      if (q > 0.9985 - (yy > H * 0.85 ? 0.004 : 0)) v += 40 + r() * 60; // a speck of chalk
+      else if (q < 0.0015) v -= 18; // a pit in the slate
+      d[k] += v; d[k + 1] += v; d[k + 2] += v * 0.95;
     }
     x.putImageData(img, 0, 0);
-    // eraser swipes: broad, soft, mostly horizontal strokes of old chalk
-    x.filter = "blur(14px)"; x.lineCap = "round";
-    for (let s = 0; s < 46; s++) {
-      x.strokeStyle = `rgba(222,230,224,${0.018 + r() * 0.035})`; x.lineWidth = 50 + r() * 110;
-      const y0 = r() * H, x0 = r() * W * 0.8, len = 200 + r() * 700;
-      x.beginPath(); x.moveTo(x0, y0);
-      x.bezierCurveTo(x0 + len * 0.3, y0 + (r() - 0.5) * 90, x0 + len * 0.7, y0 + (r() - 0.5) * 90, x0 + len, y0 + (r() - 0.5) * 60); x.stroke();
-    }
-    for (let s = 0; s < 10; s++) { // a few circular wipes
-      x.strokeStyle = `rgba(222,230,224,${0.02 + r() * 0.03})`; x.lineWidth = 60 + r() * 60;
-      x.beginPath(); x.arc(r() * W, r() * H, 60 + r() * 120, r() * 6, r() * 6 + 3 + r() * 3); x.stroke();
-    }
-    // ghost writing: faint scribbles left after erasing
-    x.filter = "blur(1.6px)";
-    for (let s = 0; s < 90; s++) {
-      x.strokeStyle = `rgba(235,240,235,${0.035 + r() * 0.05})`; x.lineWidth = 2 + r() * 2.5;
-      let px = r() * W, py = r() * H; x.beginPath(); x.moveTo(px, py);
-      const steps = 6 + (r() * 14) | 0;
-      for (let k = 0; k < steps; k++) { const nx = px + 8 + r() * 22, ny = py + (r() - 0.5) * 26; x.quadraticCurveTo(px + (nx - px) / 2, py - 14 + r() * 28, nx, ny); px = nx; py = ny; }
-      x.stroke();
-    }
-    x.filter = "none";
-    // chalk dust settles toward the tray
-    const g = x.createLinearGradient(0, H * 0.72, 0, H); g.addColorStop(0, "rgba(230,232,226,0)"); g.addColorStop(1, "rgba(230,232,226,0.10)");
-    x.fillStyle = g; x.fillRect(0, 0, W, H);
-    for (let s = 0; s < 5000; s++) { const yy = H - Math.pow(r(), 2.2) * H * 0.35; x.fillStyle = `rgba(240,240,232,${0.05 + r() * 0.16})`; x.fillRect(r() * W, yy, 1 + r() * 1.6, 1 + r() * 1.6); }
-    // fine dust everywhere
-    for (let s = 0; s < 9000; s++) { x.fillStyle = `rgba(240,240,232,${r() * 0.06})`; x.fillRect(r() * W, r() * H, 1, 1); }
-    // darker toward the frame
-    const v = x.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, W * 0.62); v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,0.38)");
+    // a touch darker toward the frame
+    const v = x.createRadialGradient(W / 2, H * 0.45, H * 0.4, W / 2, H / 2, W * 0.6); v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,0.3)");
     x.fillStyle = v; x.fillRect(0, 0, W, H);
-    return c.toDataURL("image/jpeg", 0.88);
+    return c;
   }
 
   // ── Wood: warped grain bands with pores and growth rings ──
@@ -120,8 +139,11 @@
     put("--tex-frame", wood(700, 140, 41, [[146, 94, 54], [104, 62, 30], [70, 38, 16]], 3));
     put("--tex-desk", wood(1200, 600, 53, [[176, 124, 80], [134, 88, 52], [96, 60, 32]], 5));
     put("--tex-wall", wall());
-    put("--tex-slate", slate());
     document.documentElement.classList.add("tex-ready");
+    // The slate writes old chalk in Kalam, so wait (briefly) for the font.
+    const paintSlate = () => slate().toBlob((b) => b && put("--tex-slate", URL.createObjectURL(b)), "image/jpeg", 0.9);
+    const fonts = document.fonts ? document.fonts.load("48px Kalam") : Promise.resolve();
+    Promise.race([fonts, new Promise((ok) => setTimeout(ok, 1500))]).then(paintSlate, paintSlate);
   } catch (e) { /* canvas unavailable: the stylesheet's flat colors still apply */ }
 
   // Chalk: grainy, broken strokes with a slightly uneven edge.
