@@ -8,16 +8,16 @@
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; min-height: 100vh; color: var(--ink); font-family: "Work Sans", system-ui, sans-serif; }
+body { margin: 0; min-height: 100vh; color: var(--ink); font: 400 17px/1.55 "Newsreader", Georgia, serif; font-optical-sizing: auto; --am-font-body: "Bricolage Grotesque", sans-serif; }
 a { color: inherit; }
 button { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid #1d6fd8; outline-offset: 3px; border-radius: 4px; }
 .loading { padding: 120px 20px; text-align: center; font: 400 28px "Caveat", cursive; }
 h1, h2 { text-wrap: balance; }
 .row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
-.kicker { font: 600 12px "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.kicker { font: 600 12px "Bricolage Grotesque", sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .hint { margin: 0; font-size: 14px; color: var(--muted); }
-.linkish { border: 0; background: none; padding: 4px 0; cursor: pointer; font: 500 15px "Work Sans", sans-serif; color: var(--ink); text-decoration: underline; text-decoration-color: rgba(34,32,28,.35); text-underline-offset: 3px; }
+.linkish { border: 0; background: none; padding: 4px 0; cursor: pointer; font: 500 15px "Bricolage Grotesque", sans-serif; color: var(--ink); text-decoration: underline; text-decoration-color: rgba(34,32,28,.35); text-underline-offset: 3px; }
 .linkish:hover { text-decoration-color: currentColor; }
 .am-button { text-decoration: none; }
 .am-button[disabled] { opacity: .45; cursor: not-allowed; }
@@ -41,7 +41,7 @@ h1, h2 { text-wrap: balance; }
 .qcard { display: flex; flex-direction: column; gap: 12px; }
 .qcard h2 { font-size: 30px; margin: 0; }
 .qsteps { display: flex; gap: 6px; flex-wrap: wrap; }
-.qsteps button { border: 1px solid var(--line); background: rgba(255,255,255,.6); border-radius: 99px; padding: 5px 12px; font: 600 12.5px "Work Sans", sans-serif; color: var(--muted); cursor: pointer; }
+.qsteps button { border: 1px solid var(--line); background: rgba(255,255,255,.6); border-radius: 99px; padding: 5px 12px; font: 600 12.5px "Bricolage Grotesque", sans-serif; color: var(--muted); cursor: pointer; }
 .qsteps button.on { background: var(--ink); border-color: var(--ink); color: #fff; }
 .qsteps button[disabled] { opacity: .5; cursor: default; }
 .picks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -49,9 +49,9 @@ h1, h2 { text-wrap: balance; }
 .pick { display: flex; gap: 12px; align-items: flex-start; text-align: left; width: 100%; padding: 12px; border: 1.5px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.55); cursor: pointer; transition: border-color .15s, background .15s; }
 .pick:hover { border-color: rgba(34,32,28,.4); }
 .pick-on { border-color: var(--red); background: #fff6f3; }
-.pick b { display: block; font: 600 16px/1.25 "Work Sans", sans-serif; }
+.pick b { display: block; font: 600 16px/1.25 "Bricolage Grotesque", sans-serif; }
 .pick .d { display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.45; color: var(--muted); }
-.circ { flex: none; width: 22px; height: 22px; margin-top: 1px; border: 2px solid rgba(34,32,28,.5); border-radius: 50%; display: grid; place-items: center; font: 700 13px/1 "Work Sans", sans-serif; }
+.circ { flex: none; width: 22px; height: 22px; margin-top: 1px; border: 2px solid rgba(34,32,28,.5); border-radius: 50%; display: grid; place-items: center; font: 700 13px/1 "Bricolage Grotesque", sans-serif; }
 .circ.sq { border-radius: 5px; }
 .pick-on .circ { background: var(--red); border-color: var(--red); color: #fff; }
 .qfoot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 6px; }
@@ -63,14 +63,14 @@ h1, h2 { text-wrap: balance; }
 .cork-sm { padding: 10px; }
 .cork-xs { padding: 4px; margin: 6px 6px 10px; box-shadow: 0 0 0 5px var(--wood), inset 0 0 16px rgba(60,30,10,.4); }
 .cmap { display: block; width: 100%; height: auto; }
-.gl { font: 700 11px "Work Sans", sans-serif; fill: var(--ink); }
+.gl { font: 700 11px "Bricolage Grotesque", sans-serif; fill: var(--ink); }
 .cmap-compact .gl { font-size: 14px; }
 .ge { stroke: #3b2a1a; stroke-opacity: .12; stroke-width: .8; }
 .ge-known { stroke-opacity: .35; }
 .gs { stroke: var(--red); stroke-width: 1.6; stroke-dasharray: 4 3; opacity: .75; }
 .gs-done { stroke-dasharray: none; opacity: 1; stroke-width: 2.2; }
 .cmap-compact .gs { stroke-width: 2.4; }
-.gn text { font: 700 7px "Work Sans", sans-serif; fill: #8a1d16; pointer-events: none; }
+.gn text { font: 700 7px "Bricolage Grotesque", sans-serif; fill: #8a1d16; pointer-events: none; }
 .gn text.gn-num-big { font-size: 10px; fill: #3a2a00; }
 .gn-dot { transition: fill .3s, stroke .3s; }
 .gn-dim .gn-dot { fill: #e9dcc0; stroke: rgba(60,35,15,.35); stroke-width: .8; }
@@ -95,7 +95,7 @@ h1, h2 { text-wrap: balance; }
 .gn-click { cursor: pointer; }
 .gn-click:hover .gn-dot { stroke: #000; stroke-width: 2.4; }
 .spark { fill: #fff3a0; filter: drop-shadow(0 0 5px var(--sun)); }
-.glegend { display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: center; font: 500 12.5px "Work Sans", sans-serif; color: var(--muted); }
+.glegend { display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: center; font: 500 12.5px "Bricolage Grotesque", sans-serif; color: var(--muted); }
 .glegend span { display: flex; align-items: center; gap: 6px; }
 .glegend i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
 .gl-k { background: #8fd08a; box-shadow: 0 0 0 1px var(--green); }
@@ -123,7 +123,7 @@ h1, h2 { text-wrap: balance; }
 .pathlist ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
 .step { display: flex; gap: 12px; align-items: flex-start; padding: 8px 6px; border-radius: 8px; text-decoration: none; }
 .step:hover { background: rgba(34,32,28,.05); }
-.sn { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid var(--red); color: var(--red); font: 600 12px "Work Sans", sans-serif; }
+.sn { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid var(--red); color: var(--red); font: 600 12px "Bricolage Grotesque", sans-serif; }
 .step-done .sn { background: var(--red); color: #fff; }
 .step-now { background: #fff8d6; }
 .step-now .sn { background: var(--sun); border-color: #7a5a00; color: #3a2a00; }
@@ -131,7 +131,7 @@ h1, h2 { text-wrap: balance; }
 .smeta { display: block; font-size: 12.5px; color: var(--muted); }
 .cork-board { padding: 18px; display: flex; flex-direction: column; gap: 12px; margin: 8px; }
 .cork-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
-.paper-label { margin: 0; padding: 4px 14px; background: #fbf9f1; font: 400 22px "Archivo Black", sans-serif; box-shadow: 0 3px 5px rgba(0,0,0,.3); rotate: -1deg; }
+.paper-label { margin: 0; padding: 4px 14px; background: #fbf9f1; font: 400 22px "Permanent Marker", cursive; box-shadow: 0 3px 5px rgba(0,0,0,.3); rotate: -1deg; }
 .cork-head .glegend { padding: 6px 10px; background: rgba(251,249,241,.92); box-shadow: 0 2px 4px rgba(0,0,0,.25); color: var(--ink); }
 .lg-path { background: #fdfbf4; border-radius: 2px !important; box-shadow: inset 0 2px 0 var(--red), 0 1px 2px rgba(0,0,0,.35); }
 .lg-goal { background: var(--red); border-radius: 2px !important; }
@@ -145,12 +145,12 @@ h1, h2 { text-wrap: balance; }
 .col { flex: 1 1 170px; min-width: 160px; display: flex; flex-direction: column; gap: 4px; }
 .col-closed { flex: 0 1 140px; min-width: 120px; }
 .colsub, .coltitle { align-self: flex-start; padding: 2px 8px; background: #e9dcc0; box-shadow: 0 2px 3px rgba(0,0,0,.25); }
-.colsub { font: 500 10px "JetBrains Mono", monospace; letter-spacing: .05em; }
-.coltitle { font: 400 14px/1.15 "Archivo Black", sans-serif; margin-bottom: 6px; }
+.colsub { font: 500 10px "Bricolage Grotesque", sans-serif; letter-spacing: .05em; }
+.coltitle { font: 400 14px/1.15 "Permanent Marker", cursive; margin-bottom: 6px; }
 .chgroup { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
-.chl { padding: 4px 2px 0; font: 600 9.5px "JetBrains Mono", monospace; color: #2b1a0c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.showcol { text-align: left; padding: 8px 10px; border: 0; border-radius: 4px; background: rgba(255,252,244,.8); font: 500 12.5px "Work Sans", sans-serif; cursor: pointer; }
-.chip { position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; width: 100%; height: 28px; padding: 0 8px; border: 0; border-radius: 1px; cursor: pointer; text-align: left; font: 500 11.5px "Work Sans", sans-serif; white-space: nowrap; overflow: hidden; background: #fdfbf4 linear-gradient(transparent 6px, rgba(214,64,64,.35) 6px 7px, transparent 7px); box-shadow: 0 2px 3px rgba(0,0,0,.3); }
+.chl { padding: 4px 2px 0; font: 600 9.5px "Bricolage Grotesque", sans-serif; color: #2b1a0c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.showcol { text-align: left; padding: 8px 10px; border: 0; border-radius: 4px; background: rgba(255,252,244,.8); font: 500 12.5px "Bricolage Grotesque", sans-serif; cursor: pointer; }
+.chip { position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; width: 100%; height: 28px; padding: 0 8px; border: 0; border-radius: 1px; cursor: pointer; text-align: left; font: 500 11.5px "Bricolage Grotesque", sans-serif; white-space: nowrap; overflow: hidden; background: #fdfbf4 linear-gradient(transparent 6px, rgba(214,64,64,.35) 6px 7px, transparent 7px); box-shadow: 0 2px 3px rgba(0,0,0,.3); }
 .chip:nth-of-type(3n) { rotate: -1.2deg; }
 .chip:nth-of-type(3n+1) { rotate: .8deg; }
 .chip:hover { box-shadow: 0 0 0 2px var(--ink), 0 4px 6px rgba(0,0,0,.3); }
@@ -159,7 +159,7 @@ h1, h2 { text-wrap: balance; }
 .chip-dim { opacity: .55; }
 .chip-known { background: var(--green-soft); color: var(--green); }
 .chip-path { height: 32px; padding-left: 46px; font-weight: 700; font-size: 12.5px; }
-.chip-path .num { display: block; position: absolute; left: 31px; color: var(--red); font: 600 11px "JetBrains Mono", monospace; }
+.chip-path .num { display: block; position: absolute; left: 31px; color: var(--red); font: 600 11px "Bricolage Grotesque", sans-serif; }
 .chip-done { background-color: #fff1ee; }
 .chip-goal { height: 34px; padding-left: 46px; background: var(--red); color: #fff; font-weight: 700; font-size: 12.5px; }
 .string { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 3; overflow: visible; }
@@ -219,7 +219,7 @@ h1, h2 { text-wrap: balance; }
 .qopt { display: flex; gap: 12px; align-items: flex-start; text-align: left; width: 100%; padding: 11px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.6); cursor: pointer; font-size: 15.5px; line-height: 1.4; transition: border-color .15s, background .15s; }
 .qopt:hover:not([disabled]) { border-color: rgba(34,32,28,.45); }
 .qopt[disabled] { cursor: default; }
-.qm { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid rgba(34,32,28,.4); display: grid; place-items: center; font: 600 13px "Work Sans", sans-serif; }
+.qm { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid rgba(34,32,28,.4); display: grid; place-items: center; font: 600 13px "Bricolage Grotesque", sans-serif; }
 .qopt-on { border-color: var(--ink); background: #fff; }
 .qopt-on .qm { background: var(--ink); color: #fff; border-color: var(--ink); }
 .qopt-right { border-color: var(--green); background: var(--green-soft); }
@@ -243,7 +243,7 @@ h1, h2 { text-wrap: balance; }
 .stickies { display: flex; flex-wrap: wrap; gap: 10px; }
 .sticky { width: 132px; min-height: 76px; padding: 8px 10px; text-decoration: none; background: #fdf0a6; font: 400 18px/1.05 "Caveat", cursive; box-shadow: 0 8px 8px -6px rgba(0,0,0,.4); transition: translate .15s; }
 .sticky:hover { translate: 0 -2px; }
-.sticky span { display: block; margin-bottom: 4px; font: 700 10.5px "Work Sans", sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.sticky span { display: block; margin-bottom: 4px; font: 700 10.5px "Bricolage Grotesque", sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
 .sticky-due { background: #ffd36b; }
 .sticky-due span { color: var(--red); }
 .research ul { margin: 8px 0 10px; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.4; }
@@ -337,29 +337,29 @@ body.am-canvas::before, body.am-canvas::after { display: none !important; }
 .gp-head h1 { margin: 2px 0 6px; font: 400 40px/1.05 "Permanent Marker", cursive; }
 .gp-head p { margin: 0; max-width: 70ch; color: var(--muted); line-height: 1.5; }
 .seg3 { display: flex; border: 1px solid var(--line); border-radius: 99px; overflow: hidden; background: #fff; }
-.seg3 button { border: 0; background: none; padding: 8px 16px; cursor: pointer; font: 600 13.5px "Work Sans", sans-serif; }
+.seg3 button { border: 0; background: none; padding: 8px 16px; cursor: pointer; font: 600 13.5px "Bricolage Grotesque", sans-serif; }
 .seg3 button.on { background: var(--ink); color: #fff; }
 .g3d-wrap { position: relative; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); background: #0b1020; }
 .g3d { width: 100%; cursor: grab; }
 .g3d-fail { display: grid; place-items: center; color: #c7d2fe; background: #0b1020; border-radius: 14px; }
-.g3tip { font: 500 12.5px "Work Sans", sans-serif; padding: 4px 6px; }
+.g3tip { font: 500 12.5px "Bricolage Grotesque", sans-serif; padding: 4px 6px; }
 .g3d-card { position: absolute; top: 14px; right: 14px; width: min(320px, calc(100% - 28px)); display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: 12px; background: rgba(253,251,244,.97); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
 .g3d-card b { font-size: 18px; }
 .g3d-card p { margin: 0; font-size: 14px; line-height: 1.5; }
-.clegend { display: flex; gap: 6px 14px; flex-wrap: wrap; padding: 10px 14px; background: #121836; color: #c7d2fe; font: 500 12px "Work Sans", sans-serif; }
+.clegend { display: flex; gap: 6px 14px; flex-wrap: wrap; padding: 10px 14px; background: #121836; color: #c7d2fe; font: 500 12px "Bricolage Grotesque", sans-serif; }
 .clegend span { display: flex; align-items: center; gap: 6px; }
 .clegend i { width: 9px; height: 9px; border-radius: 50%; }
 .gp-sec h2 { margin: 0 0 4px; font: 400 28px "Permanent Marker", cursive; }
 .gp-sec > .hint { margin-bottom: 14px; }
 .gp-sec > .linkish { display: inline-block; margin-top: 10px; }
 .tabs2 { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
-.tabs2 button { border: 1px solid var(--line); background: #fff; border-radius: 99px; padding: 7px 14px; cursor: pointer; font: 600 13px "Work Sans", sans-serif; }
+.tabs2 button { border: 1px solid var(--line); background: #fff; border-radius: 99px; padding: 7px 14px; cursor: pointer; font: 600 13px "Bricolage Grotesque", sans-serif; }
 .tabs2 button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
 .gapgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
 .gap { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; }
 .gap h3 { margin: 0; font: 700 22px/1.15 "Caveat", cursive; }
 .gap p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
-.gk { align-self: flex-start; padding: 2px 8px; border-radius: 99px; font: 700 10.5px "Work Sans", sans-serif; letter-spacing: .05em; text-transform: uppercase; }
+.gk { align-self: flex-start; padding: 2px 8px; border-radius: 99px; font: 700 10.5px "Bricolage Grotesque", sans-serif; letter-spacing: .05em; text-transform: uppercase; }
 .gk-b { background: #e0e7ff; color: #3730a3; }
 .gk-q { background: #fef3c7; color: #92400e; }
 .chips { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -369,14 +369,14 @@ body.am-canvas::before, body.am-canvas::after { display: none !important; }
 .mini-play { flex: none; display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 6px; padding: 0 0 0 2px; border: 0; border-radius: 50%; background: var(--red); color: #fff; font-size: 9px; cursor: pointer; vertical-align: -5px; }
 .mini-play:hover { background: #8f150f; }
 .mini-play.off { background: none; color: var(--muted); }
-.xk { font: 700 10.5px "Work Sans", sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.xk { font: 700 10.5px "Bricolage Grotesque", sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
 .xgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
 .xcard { display: flex; gap: 14px; align-items: center; text-align: left; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #0f1530; color: #e0e7ff; cursor: pointer; transition: translate .15s; }
 .xcard:hover { translate: 0 -3px; }
 .xplay { flex: none; display: grid; place-items: center; width: 46px; height: 46px; padding-left: 4px; border-radius: 50%; background: var(--sun); color: #2a1f00; font-size: 16px; }
 .xmeta { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .xcard .xk { color: #93a0d8; }
-.xt { font: 600 14px/1.3 "Work Sans", sans-serif; }
+.xt { font: 600 14px/1.3 "Bricolage Grotesque", sans-serif; }
 .xf { font-size: 12px; color: #a5b4fc; }
 .vmodal-scrim { position: fixed; inset: 0; z-index: 90; background: rgba(5,8,20,.72); }
 .vmodal { position: fixed; z-index: 91; left: 50%; top: 50%; translate: -50% -50%; width: min(960px, 94vw); display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 14px; background: #fdfbf4; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
@@ -391,3 +391,35 @@ body.am-canvas::before, body.am-canvas::after { display: none !important; }
 .stats b { font: 700 30px/1 "Caveat", cursive; color: var(--red); }
 .stats span { font-size: 12px; color: var(--muted); text-align: center; }
 .research ul li { list-style: none; margin-left: -18px; }
+
+
+/* ───── Type: chosen per job, never a default UI face ─────
+   Permanent Marker: headings (Splatform marker) · Caveat / Kalam: handwriting and chalk ·
+   Newsreader: anything you read (summaries, questions, explanations) · Bricolage Grotesque:
+   interface (nav, buttons, labels, meta). */
+.kicker, .xk, .gk, .sticky span { font-family: "Bricolage Grotesque", sans-serif !important; font-weight: 700; letter-spacing: .09em; }
+.am-nav__link, .am-button, .linkish, .qsteps button, .seg3 button, .tabs2 button, .lb-t, .smeta, .side-head span, .glegend, .clegend, .hint, small { font-family: "Bricolage Grotesque", sans-serif; }
+.homecard p, .done-card p, .quiz .qq, .qopt, .feedback, .practice p, .pick .d, .gp-head p, .gap p, .research ul, .hero p, .notecard span { font-family: "Newsreader", Georgia, serif !important; }
+.quiz .qq { font-size: 18.5px; font-weight: 500; }
+.qopt { font-size: 17px; }
+.hero p { font-size: 19px; }
+.sname { font-family: "Newsreader", Georgia, serif; font-size: 17px; font-weight: 600; }
+
+/* ───── Light only: the graph, explainers and modals sit on paper, not dark panels ───── */
+.g3d-wrap { background: #f6f1e4 url(tex/paper.jpg); background-size: 384px; border: 1px solid var(--line); }
+.g3d-fail { color: var(--muted); background: #f6f1e4; }
+.clegend { background: rgba(255,253,247,.92); color: var(--ink); border-top: 1px solid var(--line); }
+.g3d-card { background: #fffdf7; box-shadow: 0 10px 30px rgba(40,25,10,.18); border: 1px solid var(--line); }
+.xcard { background: var(--paper) url(tex/paper.jpg); background-size: 384px; color: var(--ink); box-shadow: var(--shadow); }
+.xcard .xk { color: var(--muted); }
+.xf { color: var(--red); }
+.xplay { background: var(--red); color: #fff; }
+.vmodal-scrim { background: rgba(60,45,25,.38); backdrop-filter: blur(3px); }
+.vmodal video { background: #f6f1e4; }
+.screen, .play { background-color: #e9e3d3; }
+.g3tip { background: #fffdf7; color: var(--ink); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 4px 12px rgba(40,25,10,.18); }
+/* Splatform's marker medium sets Varela Round on the canvas; win on the same selector. */
+body.am-canvas[data-medium], .am-card[data-medium="marker"] { --am-font-body: "Bricolage Grotesque", sans-serif; }
+body.am-canvas[data-medium] { font-family: "Newsreader", Georgia, serif; }
+.cchip, .mini-play, .cp, .closest { font-family: "Bricolage Grotesque", sans-serif; }
+.cp span { font-family: "Newsreader", Georgia, serif; font-size: 14.5px; }

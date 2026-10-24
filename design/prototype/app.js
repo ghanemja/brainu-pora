@@ -383,16 +383,16 @@ function Graph3D({ B, path = [], current = null, mode = "all", height = 520, onP
       const color = {}; B.CLUSTERS.forEach((c) => (color[c.id] = c.color));
       const cname = {}; B.CLUSTERS.forEach((c) => (cname[c.id] = c.name));
       try {
-        const G = window.ForceGraph3D({ controlType: "orbit" })(el.current)
-          .width(el.current.clientWidth).height(height).backgroundColor("#0b1020")
+        const G = window.ForceGraph3D({ controlType: "orbit", rendererConfig: { alpha: true, antialias: true } })(el.current)
+          .width(el.current.clientWidth).height(height).backgroundColor("rgba(0,0,0,0)")
           .graphData({ nodes, links })
           .nodeLabel((n) => `<div class="g3tip"><b>${n.name}</b><br>${cname[n.cluster] || ""}${pathSet.has(n.id) ? "<br>★ on your path" : ""}</div>`)
-          .nodeColor((n) => (n.id === current ? "#fff3a0" : pathSet.has(n.id) ? "#f5c518" : color[n.cluster] || "#8899cc"))
+          .nodeColor((n) => (n.id === current ? "#c4221c" : pathSet.has(n.id) ? "#e0a100" : color[n.cluster] || "#8a7f6a"))
           .nodeVal((n) => (pathSet.has(n.id) ? 9 : 1.5 + Math.min(6, (n.degree || 1) / 3)))
           .nodeOpacity(0.95)
-          .linkColor((l) => (l.route ? "#f5c518" : "rgba(125,211,252,0.35)"))
+          .linkColor((l) => (l.route ? "#c4221c" : "rgba(70,55,35,0.28)"))
           .linkWidth((l) => (l.route ? 2.2 : 0.4))
-          .linkDirectionalParticles((l) => (l.route ? 3 : 0)).linkDirectionalParticleWidth(2.6).linkDirectionalParticleColor(() => "#fff3a0")
+          .linkDirectionalParticles((l) => (l.route ? 3 : 0)).linkDirectionalParticleWidth(2.6).linkDirectionalParticleColor(() => "#e0a100")
           .onNodeClick((n) => onPick && onPick(n));
         G.nodeRelSize(5);
         // weaker repulsion keeps small, separate topics from drifting off and shrinking the view
@@ -449,7 +449,7 @@ function GraphPage({ D, S, P }) {
   const pc = pick && W[pick.id] ? D.C[W[pick.id]] : null, pk = pc && P ? P.steps.indexOf(W[pick.id]) : -1;
   return html`<main class="graphpage">
     <header class="gp-head"><div><span class="kicker">Brain University</span><h1>The knowledge graph</h1>
-      <p>Principles of Robot Autonomy inside Brain University's research graph: ${R.B.NODES.length} concepts across ${R.B.CLUSTERS.length} topics.${P ? " Your path glows gold." : ""} Drag to orbit, scroll to zoom, click a concept.</p></div>
+      <p>Principles of Robot Autonomy inside Brain University's research graph: ${R.B.NODES.length} concepts across ${R.B.CLUSTERS.length} topics.${P ? " Your path is gold, strung in red." : ""} Drag to orbit, scroll to zoom, click a concept.</p></div>
       <div class="seg3" role="group" aria-label="What to show">${[["all", "Everything"], ["pora", "Robot autonomy"], ...(P ? [["path", "My path"]] : [])].map(([k, t]) => html`<button key=${k} aria-pressed=${mode === k} class=${mode === k ? "on" : ""} onClick=${() => setMode(k)}>${t}</button>`)}</div></header>
     <div class="g3d-wrap">
       <${Graph3D} B=${R.B} path=${path} current=${i >= 0 ? path[i] : null} mode=${mode} height=${560} onPick=${setPick} />
@@ -489,7 +489,7 @@ function Done({ D, S, P }) {
       <div class="cork cork-sm"><${CourseMap} D=${D} known=${P.known} goals=${S.goal} steps=${P.steps} current=${-1} done=${Object.fromEntries(P.steps.map((id) => [id, true]))} /></div>
     </section>
     <section class="gp-sec"><h2>Your path inside the knowledge graph</h2>
-      <p class="hint">Your ${n} lessons glow gold. Everything they connect to in Brain University sits around them. Drag to orbit.</p>
+      <p class="hint">Your ${n} lessons are gold, strung in red. Everything they connect to in Brain University sits around them. Drag to orbit.</p>
       ${R ? html`<${Graph3D} B=${R.B} path=${P.steps.map((id) => D.C[id].w)} mode="path" height=${420} />` : html`<p class="loading">Loading the graph…</p>`}
       <a class="linkish" href="#/graph">Open the full graph →</a></section>
     ${papers.length ? html`<section class="gp-sec"><h2>Watch what's next</h2><p class="hint">30-second explainers of recent papers built on what you just learned.</p>
