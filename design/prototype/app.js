@@ -17,6 +17,9 @@
   // Progress survives a reload (this browser only).
   const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes"];
   try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s) SAVED.forEach((k) => { if (k in s) S[k] = s[k]; }); } catch (e) {}
+  // Goals are a list (you can want several things at once); older saves held one id.
+  if (typeof S.goal === "string") S.goal = [S.goal];
+  if (S.goal && !S.goal.length) S.goal = null;
   if (S.started && S.goal) S.screen = "home"; else if (S.goal) S.screen = "path";
   const save = () => { try { const o = {}; SAVED.forEach((k) => (o[k] = S[k])); localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} };
 
@@ -43,10 +46,11 @@
 
   // ── course logic ──────────────────────────────────────────────────
   const ancestors = (id) => { const out = new Set(), st = [...D.C[id].p]; while (st.length) { const x = st.pop(); if (!out.has(x)) { out.add(x); st.push(...D.C[x].p); } } return out; };
-  function pathFor(bgId, goal) {
-    const C = D.C, bg = D.BG.find((b) => b.id === bgId) || D.BG[0];
-    const need = new Set([goal, ...ancestors(goal)]);
-    const keep = [...need].filter((x) => x === goal || bg.k.indexOf(x) < 0);
+  // One path that covers every goal: the union of what each goal needs, in a valid order.
+  function pathFor(bgId, goals) {
+    const C = D.C, bg = D.BG.find((b) => b.id === bgId) || D.BG[0], gs = [].concat(goals);
+    const need = new Set(); gs.forEach((g) => { need.add(g); ancestors(g).forEach((a) => need.add(a)); });
+    const keep = [...need].filter((x) => gs.indexOf(x) >= 0 || bg.k.indexOf(x) < 0);
     const chk = (x) => (C[x].c == null ? -1 : C[x].c);
     const depth = {}, dep = (x) => depth[x] ?? (depth[x] = C[x].p.length ? 1 + Math.max(...C[x].p.map(dep)) : 0);
     const keepSet = new Set(keep), out = [], seen = new Set();
@@ -57,7 +61,9 @@
     return { steps: out, known: [...need].filter((x) => !keepSet.has(x)) };
   }
   const chName = (c) => (c == null ? "Assumed background" : c === 0 ? "Getting started" : "Chapter " + c + ": " + D.CH[c].title);
-  const goalLabel = () => { const g = D.G.find((x) => x.id === S.goal); return g ? g.n : S.goal && D.C[S.goal] ? D.C[S.goal].n : ""; };
+  const goals = () => S.goal || [];
+  const nameOf = (id) => { const g = D.G.find((x) => x.id === id); return g ? g.n : D.C[id] ? D.C[id].n : ""; };
+  const goalLabel = () => { const n = goals().map(nameOf); return n.length <= 2 ? n.join(" + ") : n[0] + " + " + (n.length - 1) + " more"; };
   const bgName = () => { const b = D.BG.find((x) => x.id === (S.bg || S.pickBg)); return b ? b.n : ""; };
   const path = () => (S.bg && S.goal ? pathFor(S.bg, S.goal) : { steps: [], known: [] });
 
@@ -85,13 +91,16 @@
           <button class="navb hand link" style="font-size:21px;" data-act="${act(() => go("path"))}">see my path</button>
         </div>
       </section>
-      <button class="navb hand link" style="align-self:flex-start;font-size:21px;" data-act="${act(() => go("q1", { pickBg: S.bg, pickGoal: null }))}">start a different goal</button>
+      <button class="navb hand link" style="align-self:flex-start;font-size:21px;" data-act="${act(() => go("q1", { pickBg: S.bg, pickGoal: S.goal }))}">change my goals</button>
     </main>`;
   }
 
   function questions() {
-    const q2 = S.screen === "q2", list = q2 ? D.G : D.BG, sel = q2 ? S.pickGoal : S.pickBg;
-    const choices = list.map((o) => `<button class="pick ${o.id === sel ? "pick-on" : ""}" role="radio" aria-checked="${o.id === sel}" data-act="${act(() => set(q2 ? { pickGoal: o.id } : { pickBg: o.id }))}"><span class="circ">${o.id === sel ? "✓" : ""}</span><span><b>${esc(o.n)}</b><span class="d">${esc(o.b)}</span></span></button>`).join("");
+    const q2 = S.screen === "q2", list = q2 ? D.G : D.BG, picked = S.pickGoal || [];
+    const sel = q2 ? picked.length > 0 : S.pickBg, isOn = (id) => (q2 ? picked.indexOf(id) >= 0 : id === S.pickBg);
+    const toggle = (id) => set({ pickGoal: isOn(id) ? picked.filter((x) => x !== id) : picked.concat(id) });
+    const choices = list.map((o) => `<button class="pick ${isOn(o.id) ? "pick-on" : ""}" role="${q2 ? "checkbox" : "radio"}" aria-checked="${isOn(o.id)}" data-act="${act(() => (q2 ? toggle(o.id) : set({ pickBg: o.id })))}"><span class="circ${q2 ? " sq" : ""}">${isOn(o.id) ? "✓" : ""}</span><span><b>${esc(o.n)}</b><span class="d">${esc(o.b)}</span></span></button>`).join("");
+    const lessons = q2 && picked.length ? pathFor(S.pickBg, picked).steps.length : 0;
     const nextAct = act(() => (q2 ? go("path", { bg: S.pickBg, goal: S.pickGoal, i: 0, started: false, done: {}, passed: 0, picked: null, checked: false, openCols: {} }) : go("q2")));
     return `<main style="max-width:1240px;margin:0 auto;padding:32px 24px 56px;display:flex;flex-direction:column;gap:24px;">
       <header style="display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;">
@@ -104,10 +113,10 @@
           <span class="lbl">Question ${q2 ? 2 : 1} of 2</span>
           ${q2 ? `<div class="hand" style="font-size:20px;display:flex;gap:10px;align-items:baseline;"><span>starting from: <b>${esc(bgName())}</b></span><button class="navb hand link" style="font-size:20px;" data-act="${act(() => go("q1"))}">change</button></div>` : ""}
           <h2 id="qh" class="am-card__title" style="margin:0 0 6px;font-size:32px;">${q2 ? "What do you want to be able to do?" : "Where are you starting from?"}</h2>
-          <div class="picks" role="radiogroup" aria-labelledby="qh">${choices}</div>
+          ${q2 ? `<span class="hand" style="font-size:20px;opacity:.8;margin-top:-6px;">pick as many as you like</span>` : ""}<div class="picks" role="${q2 ? "group" : "radiogroup"}" aria-labelledby="qh">${choices}</div>
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:10px;">
             <button class="am-button" ${sel ? "" : "disabled"} data-act="${nextAct}">${q2 ? "Show my path →" : "Next question →"}</button>
-            <span class="hand" style="font-size:19px;opacity:.75;">${sel ? (q2 ? "next: your lessons, in order" : "one more question after this") : "pick one to continue"}</span>
+            <span class="hand" style="font-size:19px;opacity:.75;">${q2 ? (sel ? picked.length + " goal" + (picked.length > 1 ? "s" : "") + " · " + lessons + " lessons, in order" : "pick at least one to continue") : sel ? "one more question after this" : "pick one to continue"}</span>
           </div>
         </section>
         ${courseNotebook()}
@@ -164,7 +173,7 @@
         const items = Object.entries(C).filter(([, c]) => c.c === n);
         if (!items.length) return "";
         return `<div style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px;"><div class="chl">${n == null ? "" : n === 0 ? "GETTING STARTED" : esc(trunc("CH " + n + " · " + D.CH[n].title.toUpperCase(), 32))}</div>
-          ${items.map(([id, c]) => `<button class="chip ${id === S.goal ? "chip-goal" : id in pos ? "chip-path" : known.has(id) ? "chip-known" : "chip-dim"}" title="${esc(c.n)}" data-act="${act(() => set({ note: id }))}"><span class="num">${id in pos ? pos[id] + 1 : ""}</span><span>${esc(trunc(c.n, 26))}</span></button>`).join("")}</div>`;
+          ${items.map(([id, c]) => `<button class="chip ${goals().indexOf(id) >= 0 ? "chip-goal" : id in pos ? "chip-path" : known.has(id) ? "chip-known" : "chip-dim"}" title="${esc(c.n)}" data-act="${act(() => set({ note: id }))}"><span class="num">${id in pos ? pos[id] + 1 : ""}</span><span>${esc(trunc(c.n, 26))}</span></button>`).join("")}</div>`;
       }).join("");
       const ids = Object.keys(C).filter((id) => p.chs.indexOf(C[id].c) >= 0), onPath = ids.some((id) => id in pos), open = onPath || S.openCols[ci];
       const sub = ci === 0 ? "MATH THE BOOK ASSUMES" : "PART " + ["I", "II", "III", "IV"][ci - 1];
@@ -176,12 +185,12 @@
       const c = C[S.note], far = pathFor(S.bg, S.note).steps.length;
       note = `<div class="am-card" data-medium="marker" style="padding:16px 18px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;">
         <div style="display:flex;flex-direction:column;gap:2px;"><b style="font:400 22px var(--am-font-display);">${esc(c.n)}</b><span class="hand" style="font-size:19px;">${esc(chName(c.c))} · ${S.note in pos ? "lesson " + (pos[S.note] + 1) + " on your path" : far + " lessons from where you are"}</span></div>
-        <div style="display:flex;align-items:center;gap:14px;">${S.note !== S.goal ? `<button class="am-button" data-act="${act(() => go("path", { goal: S.note, i: 0, started: false, done: {}, passed: 0, picked: null, checked: false, openCols: {} }))}">Make this my goal</button>` : ""}
+        <div style="display:flex;align-items:center;gap:14px;">${goals().indexOf(S.note) < 0 ? `<button class="am-button" data-act="${act(() => go("path", { goal: goals().concat(S.note), i: 0, started: false, picked: null, checked: false, openCols: {} }))}">Add as a goal</button>` : goals().length > 1 ? `<button class="am-button am--secondary" data-act="${act(() => go("path", { goal: goals().filter((g) => g !== S.note), i: 0, started: false, picked: null, checked: false, openCols: {} }))}">Remove this goal</button>` : ""}
         <button class="navb hand link" style="font-size:20px;" data-act="${act(() => set({ note: null }))}">close</button></div></div>`;
     }
     return `<main style="max-width:1400px;margin:0 auto;padding:28px 24px 56px;display:flex;flex-wrap:wrap;gap:26px;align-items:flex-start;">
       <section class="am-card" aria-labelledby="ph" style="flex:1 1 340px;max-width:420px;min-width:0;display:flex;flex-direction:column;gap:6px;">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;"><span class="lbl">Your path</span><button class="navb hand link" style="font-size:20px;" data-act="${act(() => go("q1", { pickBg: S.bg, pickGoal: null }))}">change answers</button></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;"><span class="lbl">Your path</span><button class="navb hand link" style="font-size:20px;" data-act="${act(() => go("q1", { pickBg: S.bg, pickGoal: S.goal }))}">change answers</button></div>
         <h1 id="ph" class="am-card__title" style="margin:0;font-size:32px;">${esc(goalLabel())}</h1>
         <span class="hand" style="font-size:20px;opacity:.8;">from: ${esc(bgName())} · ${steps.length} lessons · ${lec} lectures · ${nb} notebooks</span>
         <ol style="list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;">${list}</ol>
@@ -367,7 +376,7 @@ import matplotlib.pyplot as plt
     return `<main style="max-width:680px;margin:0 auto;padding:90px 24px;display:flex;flex-direction:column;gap:18px;align-items:center;text-align:center;">
       <span class="hand" style="font-size:26px;">path complete</span><h1 style="margin:0;font:400 52px/1.05 var(--am-font-display);">${esc(goalLabel())}</h1>
       <p style="margin:0;font-size:17px;">You worked through ${path().steps.length} lessons and passed ${S.passed} pop quizzes.</p>
-      <button class="am-button" data-act="${act(() => go("q2", { pickBg: S.bg, pickGoal: null, started: false }))}">Pick another goal</button></main>`;
+      <button class="am-button" data-act="${act(() => go("q2", { pickBg: S.bg, pickGoal: null, started: false }))}">Pick new goals</button></main>`;
   }
 
   function explore() {
@@ -397,6 +406,6 @@ import matplotlib.pyplot as plt
   }
 
   fetch("prototype/course.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then((data) => { D = data; if (S.goal && !D.C[S.goal]) { S.goal = null; S.screen = "q1"; } render(); })
+    .then((data) => { D = data; if (S.goal) { S.goal = S.goal.filter((g) => D.C[g]); if (!S.goal.length) { S.goal = null; S.screen = "q1"; } } render(); })
     .catch(() => { app.innerHTML = `<p class="loading">The course didn't load. Run a local server in the design folder (python3 -m http.server 8000) and reload.</p>`; });
 })();
