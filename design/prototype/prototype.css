@@ -261,3 +261,136 @@ body[data-room] .top .am-nav__brand { display: inline-block; padding: 4px 14px 5
 .bu-bar span { display: block; height: 100%; background: linear-gradient(90deg, #5eead4, #fde047); border-radius: 3px; }
 @media (max-width: 520px) { .base { margin: 0 -8px; } }
 .circ.sq { border-radius: 5px 7px 4px 6px; }
+
+/* ───────────── The room's props ───────────── */
+/* Board layout: plan runs across the top so the desk is in view sooner. */
+.board { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 14px 32px; }
+.board.slate { padding: 20px 30px 22px !important; }
+.bhead { grid-column: 1 / -1; display: flex !important; flex-direction: row !important; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 24px !important; }
+.plan { display: flex; flex-wrap: wrap; gap: 2px 18px; }
+.plan .ch-t { font-size: 19px; }
+.board .ch-big { font-size: clamp(36px, 4vw, 50px); }
+.board .screen { max-width: 440px; }
+.board > .quiz { background: none !important; padding-top: 0 !important; }
+.board.slate .quiz p { font-size: 16.5px; }
+.board .qopt { padding: 5px 8px; }
+@media (max-width: 1100px) { .board { grid-template-columns: minmax(0, 1fr); } }
+
+/* Wall: window and clock hang above the board; stickies cling to its frame. */
+.wall-top { position: relative; max-width: 1360px; height: 104px; margin: -44px auto 0; pointer-events: none; }
+.wall-top > * { pointer-events: auto; }
+.window { position: absolute; left: 13%; top: 0; width: 150px; height: 100px; padding: 6px; border-radius: 3px; background: var(--tex-frame, none) center / cover, #8b5a32; box-shadow: inset 0 0 0 1px rgba(0,0,0,.3), 0 6px 14px rgba(40,25,10,.35); }
+.window svg { display: block; width: 100%; height: 100%; box-shadow: inset 0 0 8px rgba(0,0,0,.4); }
+.window::after { content: ""; position: absolute; left: -8px; right: -8px; bottom: -7px; height: 8px; border-radius: 2px; background: var(--tex-frame, none) center / cover, #7a4a26; box-shadow: 0 3px 5px rgba(40,25,10,.35); }
+.clockwrap { position: absolute; left: 50%; top: 4px; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; }
+.clock { width: 92px; height: 92px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; filter: drop-shadow(0 6px 8px rgba(40,25,10,.4)); }
+.clock svg { display: block; width: 100%; height: 100%; }
+.clock-lbl { position: absolute; left: 104px; white-space: nowrap; font: 400 19px "Caveat", cursive; color: #3a3328; }
+.stickies { position: absolute; top: -78px; right: 34px; display: flex; gap: 10px; z-index: 6; align-items: flex-start; }
+.sticky { width: 122px; min-height: 88px; padding: 8px 9px 10px; border: 0; text-align: left; cursor: pointer; background: #fdf0a6 var(--tex-paper, none); background-blend-mode: multiply; font: 400 18px/1.05 "Caveat", cursive; color: #2b2620; box-shadow: 0 10px 8px -8px rgba(0,0,0,.45), 0 1px 1px rgba(0,0,0,.2); clip-path: polygon(0 0, 100% 0, 100% 88%, 90% 100%, 0 100%); }
+.sticky::after { content: ""; position: absolute; }
+.sticky-k { display: block; margin-bottom: 4px; font: 700 12px "Work Sans", sans-serif; letter-spacing: .04em; text-transform: uppercase; opacity: .65; }
+.sticky-due { background-color: #ffd36b; }
+.sticky-due .sticky-k { color: #b3261e; opacity: 1; }
+.sticky:hover { transform: translateY(-3px); }
+.sticky-more { align-self: center; font: 400 18px "Caveat", cursive; color: #3a3328; }
+@media (max-width: 900px) {
+  .wall-top { position: static; height: auto; margin: 0 0 14px; display: flex; gap: 18px; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .window, .clockwrap { position: relative; left: auto; top: auto; transform: none; }
+  .clock-lbl { position: static; }
+  .stickies { position: static; flex-wrap: wrap; margin: 0 0 14px; }
+}
+
+/* Erase, then write: the eraser zigzags across; the next lesson is chalked in. */
+.board.erasing > :not(.wiper) { animation: rubout .9s ease-in forwards; }
+.board.erasing > :nth-child(2) { animation-delay: .1s; }
+.board.erasing > :nth-child(3) { animation-delay: .3s; }
+.board.erasing > :nth-child(4) { animation-delay: .5s; }
+@keyframes rubout { 60% { opacity: .35; filter: blur(2px); } 100% { opacity: 0; filter: blur(5px); transform: translateX(10px); } }
+.board.erasing::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(176deg, rgba(230,232,226,.06) 0 3px, transparent 3px 9px); animation: dust 1s ease forwards; }
+@keyframes dust { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: .6; } }
+.wiper { position: absolute; z-index: 10; width: 120px; height: 44px; border-radius: 5px; background: linear-gradient(#efe4c4 0 40%, #b9ab88 40% 46%, #3d3e44 46%); box-shadow: 0 8px 12px rgba(0,0,0,.5); animation: wipe 1s ease-in-out forwards; }
+@keyframes wipe { 0% { left: -4%; top: 12%; transform: rotate(-8deg); } 25% { left: 26%; top: 62%; transform: rotate(6deg); } 50% { left: 50%; top: 14%; transform: rotate(-6deg); } 75% { left: 74%; top: 64%; transform: rotate(8deg); } 100% { left: 100%; top: 30%; transform: rotate(0); } }
+.board.writein > div { animation: writein .7s ease-out both; }
+.board.writein > :nth-child(2) { animation-delay: .12s; }
+.board.writein > :nth-child(3) { animation-delay: .24s; }
+.board.writein > :nth-child(4) { animation-delay: .24s; }
+@keyframes writein { from { clip-path: inset(-30px 100% -30px -30px); } to { clip-path: inset(-30px -30px -30px -30px); } }
+
+/* Brain pulse */
+.bu-brain .lit { filter: drop-shadow(0 0 3px #5eead4); }
+.spark { filter: drop-shadow(0 0 5px #fde047); }
+.neuron-arrive circle { animation: arrive .6s 1s ease-out both; }
+@keyframes arrive { 0% { stroke-width: 1.6; } 40% { stroke: #fde047; stroke-width: 6; } 100% { stroke-width: 1.6; } }
+
+/* Coffee mug */
+.mugwrap { display: flex; flex-direction: column; align-items: center; align-self: flex-end; }
+.mug { width: 104px; padding: 0; border: 0; background: none; cursor: pointer; }
+.mug svg { display: block; width: 100%; }
+.steam path { animation: steam 3s ease-in-out infinite; opacity: 0; }
+.steam path:nth-child(2) { animation-delay: 1s; }
+.steam path:nth-child(3) { animation-delay: 2s; }
+@keyframes steam { 0% { opacity: 0; transform: translateY(6px); } 40% { opacity: .8; } 100% { opacity: 0; transform: translateY(-8px); } }
+
+/* Desk drawer and the torn pages inside it */
+.desk { padding-bottom: 0; }
+.apron { position: relative; margin: 34px calc(-1 * max(16px, 2vw)) 0; padding: 14px 16px 96px; background: var(--tex-desk, none) 0 -300px / 1200px 600px, #7d5130; box-shadow: inset 0 3px 0 rgba(255,255,255,.12), inset 0 10px 14px -6px rgba(0,0,0,.45); display: flex; justify-content: center; }
+.drawer-front { position: relative; width: min(560px, 100%); height: 66px; border: 0; border-radius: 4px; cursor: pointer; background: var(--tex-desk, none) 200px 0 / 1200px 600px, #8a5a36; box-shadow: inset 0 0 0 2px rgba(0,0,0,.25), inset 0 2px 0 rgba(255,255,255,.18), 0 4px 8px rgba(30,15,5,.45); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.drawer-front:hover { transform: translateY(2px); }
+.knob { width: 70px; height: 12px; border-radius: 6px; background: linear-gradient(#e2d4b0, #9c8a62); box-shadow: 0 2px 3px rgba(0,0,0,.5); }
+.plate { padding: 1px 10px; border-radius: 2px; background: #efe6cf; font: 400 17px "Caveat", cursive; color: #3a2a1a; box-shadow: inset 0 0 0 1px rgba(0,0,0,.25); }
+.drawer-scrim { position: fixed; inset: 0; z-index: 80; background: rgba(20,12,6,.5); }
+.drawer { position: fixed; left: 50%; bottom: 0; z-index: 81; width: min(1100px, 100vw); max-height: 82vh; transform: translateX(-50%); display: flex; flex-direction: column; border-radius: 10px 10px 0 0; background: var(--tex-desk, none) 0 0 / 1200px 600px, #6d4527; box-shadow: inset 0 0 0 10px rgba(0,0,0,.18), inset 0 30px 40px -20px rgba(0,0,0,.55), 0 -10px 40px rgba(0,0,0,.4); animation: slideout .45s cubic-bezier(.2,.8,.2,1); }
+@keyframes slideout { from { transform: translate(-50%, 100%); } }
+.drawer-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 18px 24px 8px; }
+.drawer-head h2 { margin: 0; font: 400 34px "Caveat", cursive; color: #fff6e6; text-shadow: 0 1px 2px rgba(0,0,0,.5); }
+.drawer-pages { overflow: auto; padding: 14px 24px 34px; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; align-items: start; }
+.torn { position: relative; min-height: 220px; box-shadow: 0 10px 18px rgba(0,0,0,.4); -webkit-mask: radial-gradient(circle at 6px 0, transparent 4px, #000 4.5px) 0 0 / 12px 100% repeat-x; mask: radial-gradient(circle at 6px 0, transparent 4px, #000 4.5px) 0 0 / 12px 100% repeat-x; }
+.torn .pgin { padding: 22px 20px 18px 50px; }
+.torn h3 { margin: 2px 0 6px; font: 700 24px/1.1 "Caveat", cursive; }
+.torn p { margin: 0; white-space: pre-wrap; font: 400 20px/30px "Caveat", cursive; }
+
+/* Corkboard: the course map, pinned; red string runs through your path. */
+.cork { flex: 999 1 640px; min-width: 0; padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 12px; border-radius: 6px; background: var(--tex-cork, none) 0 0 / 420px 420px, #b98a57; box-shadow: inset 0 0 0 12px transparent, 0 0 0 12px #7a4a26, 0 14px 30px 12px rgba(40,25,10,.3), inset 0 0 30px rgba(60,30,10,.45); margin: 12px; }
+.cork-title { margin: 0; padding: 4px 14px; background: #fbf9f1 var(--tex-paper, none); font: 400 24px "Archivo Black", sans-serif; color: #22201c; box-shadow: 0 3px 5px rgba(0,0,0,.3); rotate: -1deg; }
+.cork-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 6px 10px; background: rgba(251,249,241,.9); box-shadow: 0 2px 4px rgba(0,0,0,.25); font: 500 12.5px "Work Sans", sans-serif; color: #22201c; rotate: .6deg; }
+.cork-legend > span { display: flex; align-items: center; gap: 6px; }
+.lg { width: 14px; height: 10px; background: #fdfbf4; box-shadow: 0 1px 2px rgba(0,0,0,.35); }
+.lg-path { box-shadow: inset 0 2px 0 #d6332a, 0 1px 2px rgba(0,0,0,.35); }
+.lg-goal { background: #d6332a; }
+.lg-known { background: #dff0dc; }
+.cork-tip { margin: 0; align-self: flex-start; padding: 3px 10px; background: rgba(251,249,241,.9); font: 400 18px "Caveat", cursive; color: #22201c; box-shadow: 0 2px 4px rgba(0,0,0,.25); }
+.cork-scroll { overflow-x: auto; padding: 4px 2px 10px; }
+.cork-in { position: relative; display: flex; gap: 18px; align-items: flex-start; min-width: min-content; }
+.string { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 3; overflow: visible; }
+.cork .colsub, .cork .coltitle { align-self: flex-start; padding: 2px 8px; background: #e9dcc0; box-shadow: 0 2px 3px rgba(0,0,0,.25); color: #2b2620; }
+.cork .coltitle { margin-bottom: 6px; }
+.cork .chl { padding: 4px 2px 0; color: #2b1a0c; opacity: .9; font-weight: 600; }
+.cork .chip { position: relative; z-index: 1; height: 28px; border-radius: 1px; background: #fdfbf4 linear-gradient(transparent 6px, rgba(214,64,64,.35) 6px 7px, transparent 7px); box-shadow: 0 2px 3px rgba(0,0,0,.3); color: #22201c; }
+.cork .chip:nth-of-type(3n) { rotate: -1.2deg; }
+.cork .chip:nth-of-type(3n+1) { rotate: .8deg; }
+.cork .chip:hover { box-shadow: 0 0 0 2px #22201c, 0 4px 6px rgba(0,0,0,.3); }
+.cork .chip-dim { opacity: .55; }
+.cork .chip-known { background: #dff0dc; color: #2f5a35; }
+.cork .chip-path { height: 32px; padding-left: 34px; font-weight: 700; box-shadow: 0 3px 5px rgba(0,0,0,.35); }
+.cork .chip-goal { height: 34px; padding-left: 34px; background: #d6332a; color: #fff; font-weight: 700; box-shadow: 0 3px 6px rgba(0,0,0,.4); }
+.cork .chip-path .num { position: absolute; left: 30px; background: none; color: #c0392b; width: auto; font-size: 11px; }
+.cork .chip-goal .num { display: none; }
+/* fit textbook, laptop, mug and notepad on one row at laptop widths */
+.desk-row { gap: 34px 20px; }
+.book { width: 520px; height: 372px; }
+.laptop { width: 410px; }
+.pad { width: 300px; }
+.mug { width: 84px; }
+.mugwrap .thing-label { max-width: 110px; font-size: 17px; line-height: 1.1; }
+.cork .chip-path, .cork .chip-goal { padding-left: 46px; }
+.cork .chip-path .num { left: 31px; }
+.string { opacity: .9; }
+.board.erasing::after { background: repeating-linear-gradient(174deg, rgba(230,232,226,.035) 0 2px, transparent 2px 11px); }
+@media (max-width: 900px) {
+  .window { width: 116px; height: 78px; padding: 5px; }
+  .clock { width: 66px; height: 66px; }
+  .sticky { width: 110px; min-height: 74px; font-size: 16px; }
+}
+.book { width: 500px; }
+.desk-row { column-gap: 18px; }

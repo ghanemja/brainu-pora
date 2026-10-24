@@ -12,10 +12,11 @@
   let D = null;
   const S = { screen: "q1", pickBg: null, pickGoal: null, bg: null, goal: null, started: false, i: 0,
     done: {}, passed: 0, picked: null, checked: false, note: null, openCols: {}, notes: {},
-    pg: 0, pgFrom: 0, pgDir: "", book: 0, bookDir: "", pad: 0, padDir: "", playing: false, lap: "brain" };
+    pg: 0, pgFrom: 0, pgDir: "", book: 0, bookDir: "", pad: 0, padDir: "", playing: false, lap: "brain",
+    wrong: {}, tick: 0, today: null, focusEnd: 0, drawer: false, fx: "", pulse: null };
 
   // Progress survives a reload (this browser only).
-  const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes"];
+  const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes", "wrong", "tick", "today", "focusEnd"];
   try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s) SAVED.forEach((k) => { if (k in s) S[k] = s[k]; }); } catch (e) {}
   // Goals are a list (you can want several things at once); older saves held one id.
   if (typeof S.goal === "string") S.goal = [S.goal];
@@ -27,12 +28,13 @@
   const act = (fn) => { acts.push(fn); return acts.length - 1; };
   const set = (patch) => { Object.assign(S, patch); save(); render(); };
   const go = (screen, extra) => {
-    set(Object.assign({ screen, note: null, book: 0, bookDir: "", pad: 0, padDir: "", playing: false }, extra || {}));
+    set(Object.assign({ screen, note: null, book: 0, bookDir: "", pad: 0, padDir: "", playing: false, drawer: false, fx: "" }, extra || {}));
     window.scrollTo({ top: 0, behavior: "instant" });
   };
   // After a page-turn animation, settle into the static end state.
   const settle = (key) => setTimeout(() => { if (S[key]) { S[key] = ""; render(); } }, 1000);
 
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && S.drawer) set({ drawer: false }); });
   document.addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches("g[data-act]")) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); } });
   document.addEventListener("click", (e) => {
     const t = e.target.closest("[data-act]");
@@ -66,6 +68,90 @@
   const goalLabel = () => { const n = goals().map(nameOf); return n.length <= 2 ? n.join(" + ") : n[0] + " + " + (n.length - 1) + " more"; };
   const bgName = () => { const b = D.BG.find((x) => x.id === (S.bg || S.pickBg)); return b ? b.n : ""; };
   const path = () => (S.bg && S.goal ? pathFor(S.bg, S.goal) : { steps: [], known: [] });
+  const todayKey = () => new Date().toISOString().slice(0, 10);
+  const CUP = 3; // lessons in one cup of coffee
+  const cupsToday = () => (S.today && S.today.d === todayKey() ? S.today.n : 0);
+  const lerpHex = (a, b, t) => "#" + [0, 2, 4].map((k) => Math.round(parseInt(a.substr(k + 1, 2), 16) * (1 - t) + parseInt(b.substr(k + 1, 2), 16) * t).toString(16).padStart(2, "0")).join("");
+
+  // ── the room's props ──────────────────────────────────────────────
+  // Window: morning when you start the path, night when you finish it.
+  function windowView(i, total) {
+    const p = total > 1 ? i / (total - 1) : 0;
+    const K = [[0, "#8fb8e8", "#ffd2a6", "#6f9a5e"], [0.3, "#3f8fe0", "#bfe3ff", "#5f8f4e"], [0.6, "#5d9ad8", "#ffe7b8", "#5b8549"], [0.82, "#4b3f7d", "#ff9466", "#3c5a3a"], [1, "#0b1030", "#2b3466", "#17242a"]];
+    let a = K[0], b = K[K.length - 1];
+    for (let k = 0; k < K.length - 1; k++) if (p >= K[k][0] && p <= K[k + 1][0]) { a = K[k]; b = K[k + 1]; break; }
+    const t = b[0] === a[0] ? 0 : (p - a[0]) / (b[0] - a[0]), col = (n) => lerpHex(a[n], b[n], t);
+    const night = p > 0.86, sx = 18 + p * 114, sy = 74 - Math.sin(Math.min(p / 0.92, 1) * Math.PI) * 52;
+    const when = p < 0.2 ? "early morning" : p < 0.5 ? "midday" : p < 0.75 ? "afternoon" : p < 0.9 ? "sunset" : "night";
+    const stars = night ? [[20, 14], [44, 26], [70, 10], [96, 22], [122, 12], [136, 30], [60, 36]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r=".9" fill="#fff" opacity=".85"/>`).join("") : "";
+    return `<div class="window" title="It's ${when} on your path: lesson ${i + 1} of ${total}" role="img" aria-label="Window. It's ${when} on your path, lesson ${i + 1} of ${total}.">
+      <svg viewBox="0 0 150 100" preserveAspectRatio="none"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col(1)}"/><stop offset="1" stop-color="${col(2)}"/></linearGradient></defs>
+        <rect width="150" height="100" fill="url(#sky)"/>${stars}
+        ${night ? `<circle cx="112" cy="22" r="8" fill="#f4f1de"/><circle cx="116" cy="19" r="7" fill="${col(1)}"/>` : `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="8" fill="${p > 0.7 ? "#ffb35c" : "#fff2a8"}"/><circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="14" fill="#fff2a8" opacity=".25"/>`}
+        <path d="M0,78 C30,62 52,70 78,64 C104,58 124,66 150,60 L150,100 L0,100 Z" fill="${col(3)}"/>
+        <path d="M0,88 C40,78 80,90 150,80 L150,100 L0,100 Z" fill="${lerpHex(col(3), "#000000", 0.25)}"/>
+        <path d="M75 0 V100 M0 50 H150" stroke="#e9e2d2" stroke-width="5"/></svg></div>`;
+  }
+  // Wall clock: the real time; tap it for a 25-minute focus timer (a red wedge).
+  const clockView = () => `<div class="clockwrap"><button class="clock" aria-label="Wall clock. Tap to ${S.focusEnd > Date.now() ? "stop the" : "start a 25-minute"} focus timer" data-act="${act(() => { set({ focusEnd: S.focusEnd > Date.now() ? 0 : Date.now() + 25 * 60e3 }); tickClock(); })}">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#2b2d33"/><circle cx="50" cy="50" r="43" fill="#fbfaf5"/>
+        <path class="clock-wedge" fill="#e2463b" opacity=".28" d=""/>
+        ${Array.from({ length: 60 }, (_, k) => `<line x1="50" y1="${k % 5 ? 9.5 : 9}" x2="50" y2="${k % 5 ? 11.5 : 15}" stroke="#2b2d33" stroke-width="${k % 5 ? 0.6 : 2}" transform="rotate(${k * 6} 50 50)"/>`).join("")}
+        <line class="h-hour" x1="50" y1="54" x2="50" y2="29" stroke="#1d1e22" stroke-width="3.6" stroke-linecap="round"/>
+        <line class="h-min" x1="50" y1="56" x2="50" y2="15" stroke="#1d1e22" stroke-width="2.4" stroke-linecap="round"/>
+        <line class="h-sec" x1="50" y1="60" x2="50" y2="13" stroke="#e2463b" stroke-width="1"/><circle cx="50" cy="50" r="2.6" fill="#e2463b"/></svg></button>
+      <span class="clock-lbl"></span></div>`;
+  function tickClock() {
+    const el = document.querySelector(".clock"); if (!el) return;
+    const now = new Date(), ms = now.getTime(), sec = now.getSeconds() + now.getMilliseconds() / 1000, min = now.getMinutes() + sec / 60, hr = (now.getHours() % 12) + min / 60;
+    const rot = (q, deg) => el.querySelector(q).setAttribute("transform", `rotate(${deg.toFixed(2)} 50 50)`);
+    rot(".h-hour", hr * 30); rot(".h-min", min * 6); rot(".h-sec", Math.floor(sec) * 6);
+    const wedge = el.querySelector(".clock-wedge"), lbl = document.querySelector(".clock-lbl"), left = S.focusEnd - ms;
+    if (left > 0) {
+      const a0 = min * 6, a1 = a0 + (left / 3600e3) * 360, pt = (a) => [50 + 40 * Math.sin((a * Math.PI) / 180), 50 - 40 * Math.cos((a * Math.PI) / 180)];
+      const [x0, y0] = pt(a0), [x1, y1] = pt(a1);
+      wedge.setAttribute("d", `M50 50 L${x0.toFixed(2)} ${y0.toFixed(2)} A40 40 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`);
+      lbl.textContent = `focus · ${Math.ceil(left / 60e3)} min left`;
+    } else {
+      wedge.setAttribute("d", "");
+      lbl.textContent = S.focusEnd && -left < 10 * 60e3 ? "focus done. take 5 ☕" : "tap for 25 min of focus";
+    }
+  }
+  setInterval(tickClock, 1000);
+
+  // Red string on the corkboard: pin to pin, in path order, with a little sag.
+  function drawString() {
+    const inn = document.querySelector(".cork-in"), svg = inn && inn.querySelector(".string");
+    if (!svg) return;
+    const o = inn.getBoundingClientRect();
+    const pts = [...inn.querySelectorAll(".chip[data-n]")].sort((a, b) => a.dataset.n - b.dataset.n)
+      .map((el) => { const r = el.getBoundingClientRect(); return [r.left - o.left + Math.min(22, r.width / 2), r.top - o.top + r.height / 2]; });
+    svg.setAttribute("width", inn.scrollWidth); svg.setAttribute("height", inn.scrollHeight);
+    let d = "";
+    pts.forEach(([x, y], k) => { if (!k) { d = `M${x.toFixed(1)},${y.toFixed(1)}`; return; } const [px, py] = pts[k - 1], dist = Math.hypot(x - px, y - py);
+      d += ` Q${((px + x) / 2).toFixed(1)},${(Math.max(py, y) + 6 + dist * 0.14).toFixed(1)} ${x.toFixed(1)},${y.toFixed(1)}`; });
+    const pins = pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${(y + 1.5).toFixed(1)}" r="5" fill="rgba(0,0,0,.3)"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.6" fill="#d6332a"/><circle cx="${(x - 1.4).toFixed(1)}" cy="${(y - 1.6).toFixed(1)}" r="1.5" fill="#ff9a8f"/>`).join("");
+    svg.innerHTML = `<path d="${d}" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="2.2" transform="translate(1.5 2.5)"/><path d="${d}" fill="none" stroke="#c4221c" stroke-width="1.8"/>${pins}`;
+  }
+  window.addEventListener("resize", () => requestAnimationFrame(drawString));
+  if (document.fonts) document.fonts.ready.then(() => drawString());
+
+  // On "Next", an eraser sweeps the board before the next lesson is written in.
+  const eraseThen = (fn) => {
+    const b = document.querySelector(".board");
+    if (!b || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return fn();
+    if (b.classList.contains("erasing")) return;
+    if (b.getBoundingClientRect().bottom < 120) window.scrollTo({ top: 0, behavior: "smooth" });
+    b.classList.add("erasing"); b.insertAdjacentHTML("beforeend", '<span class="wiper" aria-hidden="true"></span>');
+    setTimeout(fn, 1000);
+  };
+
+  function exportNotes(steps) {
+    const ids = steps.concat(Object.keys(S.notes || {}).filter((k) => steps.indexOf(k) < 0)).filter((k) => (S.notes[k] || "").trim() && D.C[k]);
+    const md = `# BrainU notes: ${goalLabel()}\n\n` + ids.map((k) => `## ${D.C[k].n}\n\n${S.notes[k].trim()}\n`).join("\n");
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([md], { type: "text/markdown" })); a.download = "brainu-notes.md";
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
 
   // ── views ─────────────────────────────────────────────────────────
   function nav() {
@@ -173,7 +259,7 @@
         const items = Object.entries(C).filter(([, c]) => c.c === n);
         if (!items.length) return "";
         return `<div style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px;"><div class="chl">${n == null ? "" : n === 0 ? "GETTING STARTED" : esc(trunc("CH " + n + " · " + D.CH[n].title.toUpperCase(), 32))}</div>
-          ${items.map(([id, c]) => `<button class="chip ${goals().indexOf(id) >= 0 ? "chip-goal" : id in pos ? "chip-path" : known.has(id) ? "chip-known" : "chip-dim"}" title="${esc(c.n)}" data-act="${act(() => set({ note: id }))}"><span class="num">${id in pos ? pos[id] + 1 : ""}</span><span>${esc(trunc(c.n, 26))}</span></button>`).join("")}</div>`;
+          ${items.map(([id, c]) => `<button ${id in pos ? `data-n="${pos[id]}"` : ""} class="chip ${goals().indexOf(id) >= 0 ? "chip-goal" : id in pos ? "chip-path" : known.has(id) ? "chip-known" : "chip-dim"}" title="${esc(c.n)}" data-act="${act(() => set({ note: id }))}"><span class="num">${id in pos ? pos[id] + 1 : ""}</span><span>${esc(trunc(c.n, 26))}</span></button>`).join("")}</div>`;
       }).join("");
       const ids = Object.keys(C).filter((id) => p.chs.indexOf(C[id].c) >= 0), onPath = ids.some((id) => id in pos), open = onPath || S.openCols[ci];
       const sub = ci === 0 ? "MATH THE BOOK ASSUMES" : "PART " + ["I", "II", "III", "IV"][ci - 1];
@@ -196,15 +282,15 @@
         <ol style="list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;">${list}</ol>
         <button class="am-button" style="align-self:flex-start;margin-top:12px;" data-act="${act(() => go("lesson", { started: true }))}">${S.started ? "Continue lesson " + (i + 1) + " →" : "Start lesson 1 →"}</button>
       </section>
-      <section class="am-card" data-medium="acrylic" data-style="impressionist" data-theme="light" aria-labelledby="mh" style="flex:999 1 640px;min-width:0;padding:22px 22px 18px;display:flex;flex-direction:column;gap:12px;">
-        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;"><h2 id="mh" class="am-card__title" style="margin:0;font-size:24px;">Where your path goes</h2>
-          <div style="display:flex;flex-wrap:wrap;gap:14px;font:500 12.5px 'Work Sans',sans-serif;color:#22201c;">
-            <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#fff3d6;box-shadow:0 0 0 2px #c0392b;"></span>your lessons</span>
-            <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#c0392b;"></span>goal</span>
-            <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:rgba(225,240,226,.92);box-shadow:0 0 0 1px #2f5a35;"></span>you know it</span></div></div>
+      <section class="cork" aria-labelledby="mh">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;"><h2 id="mh" class="cork-title">Where your path goes</h2>
+          <div class="cork-legend">
+            <span style="display:flex;align-items:center;gap:5px;"><span class="lg lg-path"></span>your lessons, pinned in order</span>
+            <span style="display:flex;align-items:center;gap:5px;"><span class="lg lg-goal"></span>goal</span>
+            <span style="display:flex;align-items:center;gap:5px;"><span class="lg lg-known"></span>you know it</span></div></div>
         ${note}
-        <div style="display:flex;gap:14px;align-items:flex-start;overflow-x:auto;">${cols}</div>
-        <p style="margin:0;font:500 13px 'Work Sans',sans-serif;color:#22201c;">Tap any concept to see how far it is from where you are.</p>
+        <div class="cork-scroll"><div class="cork-in">${cols}<svg class="string" aria-hidden="true"></svg></div></div>
+        <p class="cork-tip">Follow the red string. Tap any card to see how far it is from where you are.</p>
       </section></main>`;
   }
 
@@ -251,19 +337,49 @@
     const padBack = act(() => { set({ pad: 0, padDir: "back" }); settle("padDir"); });
 
     // Bottom bar
-    const advance = () => (next ? go("lesson", { i: i + 1, picked: null, checked: false }) : go("done", { started: false }));
+    const advance = () => { if (next) { go("lesson", { i: i + 1, picked: null, checked: false, fx: "write" }); settle("fx"); } else go("done", { started: false }); };
     const mainLabel = !S.checked ? (S.picked === null ? "Answer the pop quiz" : "Check your answer") : next ? "Next: " + trunc(next.n, 28) + " →" : "Finish the path ★";
-    const main = act(() => { if (!S.checked) set({ checked: true, done: ok ? Object.assign({}, S.done, { [id]: true }) : S.done, passed: S.passed + (ok ? 1 : 0) }); else advance(); });
+    const main = act(() => {
+      if (S.checked) return eraseThen(advance);
+      // A miss goes up as a sticky note on the board; it's due again two quizzes later.
+      const wrong = Object.assign({}, S.wrong); if (ok) delete wrong[id]; else wrong[id] = { at: S.tick + 1 };
+      set({ checked: true, done: ok ? Object.assign({}, S.done, { [id]: true }) : S.done, passed: S.passed + (ok ? 1 : 0),
+        wrong, tick: S.tick + 1, today: { d: todayKey(), n: cupsToday() + 1 }, pulse: ok ? i : null });
+      if (ok) setTimeout(() => (S.pulse = null), 1800);
+    });
     const segs = steps.map((sid, k) => `<li><button class="seg ${k < i ? "seg-past" : k === i ? "seg-on" : ""}" aria-label="Lesson ${k + 1}: ${esc(C[sid].n)}" title="${k + 1}. ${esc(C[sid].n)}" data-act="${act(() => go("lesson", { i: k, picked: null, checked: false }))}"></button></li>`).join("");
 
-    return `<div class="wall"><div class="frame">
-      <section class="board slate" aria-label="Chalkboard: ${esc(c.n)}">
-        <div><span class="ch-t" style="opacity:.8;">today · ${chShort} · lesson ${i + 1} of ${total}</span><h1 class="ch-big">${esc(c.n)}</h1>${video}</div>
-        <div><h2 class="ch-h ch-u">key ideas</h2>${c.i.map((t, k) => `<div class="idea"><b>${k + 1}.</b><p>${esc(t)}</p></div>`).join("")}</div>
-        <div><div><h2 class="ch-h ch-u" style="margin-bottom:8px;">lesson plan</h2>${plan}${prev ? `<div class="ch-t" style="opacity:.75;margin-top:6px;">builds on: ${esc(prev.n)}</div>` : ""}</div>
-          <div class="quiz"><h2 class="ch-h" style="margin-bottom:6px;">pop quiz!</h2><p style="margin:0 0 6px;font-size:16px;line-height:1.45;">${esc(qq)}</p>
-            <div role="radiogroup" aria-label="Pop quiz answers" style="display:flex;flex-direction:column;gap:2px;">${opts}</div>
-            ${S.checked ? `<p role="status" style="margin:8px 0 0;font-size:15.5px;line-height:1.5;"><b style="font:700 22px 'Caveat',cursive;">${ok ? "Correct!" : "Not quite."}</b> ${esc(why)}</p>` : ""}</div></div>
+    const wrongIds = Object.keys(S.wrong || {}).filter((w) => steps.indexOf(w) >= 0);
+    const stickies = wrongIds.length ? `<div class="stickies" aria-label="Questions to retry">${wrongIds.slice(0, 4).map((w, k) => {
+      const ago = S.tick - S.wrong[w].at, due = ago >= 2, left = 2 - ago;
+      return `<button class="sticky ${due ? "sticky-due" : ""}" style="rotate:${[-4, 3, -2, 5][k]}deg;" data-act="${act(() => go("lesson", { i: steps.indexOf(w), picked: null, checked: false }))}"><span class="sticky-k">${due ? "retry now!" : "retry in " + left + " lesson" + (left > 1 ? "s" : "")}</span>${esc(trunc(C[w].n, 40))}</button>`;
+    }).join("")}${wrongIds.length > 4 ? `<span class="sticky-more">+${wrongIds.length - 4} more</span>` : ""}</div>` : "";
+    const notedIds = steps.filter((k) => ((S.notes || {})[k] || "").trim());
+    const drawer = S.drawer ? `<div class="drawer-scrim" data-act="${act(() => set({ drawer: false }))}"></div>
+      <section class="drawer" role="dialog" aria-modal="true" aria-labelledby="dh"><div class="drawer-head"><h2 id="dh">Your notes drawer</h2>
+        <div style="display:flex;gap:10px;align-items:center;">${notedIds.length ? `<button class="am-button" data-act="${act(() => exportNotes(steps))}">Export as Markdown</button>` : ""}<button class="am-button am--secondary" data-act="${act(() => set({ drawer: false }))}">Close</button></div></div>
+        <div class="drawer-pages">${notedIds.length ? notedIds.map((k, n) => `<article class="torn ruled" style="rotate:${[-1.5, 1, -0.5, 1.8, -1][n % 5]}deg;"><div class="pgin"><span class="hw" style="opacity:.6;">lesson ${steps.indexOf(k) + 1}</span><h3>${esc(C[k].n)}</h3><p>${esc(S.notes[k])}</p></div></article>`).join("")
+          : `<p class="hand" style="font-size:24px;color:#fff6e6;">Nothing in here yet. Write on your notepad and the page lands here.</p>`}</div></section>` : "";
+    const learnedToday = cupsToday(), level = Math.max(0, 1 - learnedToday / CUP), lvlY = 30 + (1 - level) * 44;
+    const mug = `<div class="mugwrap"><button class="mug" aria-label="Coffee mug, ${learnedToday} of ${CUP} lessons today. ${level ? "" : "Tap to refill."}" data-act="${act(() => set({ today: { d: todayKey(), n: 0 } }))}">
+      <svg viewBox="0 0 96 100" aria-hidden="true"><ellipse cx="44" cy="90" rx="40" ry="7" fill="rgba(0,0,0,.28)"/><ellipse cx="44" cy="86" rx="38" ry="7" fill="#efe9dc"/>
+        ${level ? `<g class="steam" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2.4" stroke-linecap="round"><path d="M32 22 c-6 -6 6 -10 0 -18"/><path d="M46 20 c-6 -6 6 -10 0 -18"/><path d="M58 22 c-6 -6 6 -10 0 -18"/></g>` : ""}
+        <path d="M70 40 c18 0 18 28 0 28" fill="none" stroke="#d9d2c3" stroke-width="7"/>
+        <path d="M14 28 h60 v44 c0 10 -8 14 -16 14 h-28 c-8 0 -16 -4 -16 -14 z" fill="#f4efe4"/>
+        <clipPath id="cup"><path d="M18 30 h52 v42 c0 8 -6 11 -13 11 h-26 c-7 0 -13 -3 -13 -11 z"/></clipPath>
+        <g clip-path="url(#cup)"><rect x="14" y="${lvlY.toFixed(1)}" width="60" height="60" fill="#4a2c17"/><ellipse cx="44" cy="${lvlY.toFixed(1)}" rx="27" ry="3.2" fill="#8a5a33"/></g>
+        <ellipse cx="44" cy="28" rx="30" ry="4.5" fill="none" stroke="#d9d2c3" stroke-width="2"/><path d="M14 46 h60" stroke="#2f6f8f" stroke-width="5" opacity=".8"/></svg></button>
+      <p class="thing-label" style="text-align:center;margin:4px 0 0;">${level ? `coffee · ${learnedToday} of ${CUP} lessons today` : "empty. take a break? tap to refill"}</p></div>`;
+
+    return `<div class="wall"><div class="wall-top">${windowView(i, total)}${clockView()}</div><div class="frame">
+      ${stickies}
+      <section class="board slate ${S.fx === "write" ? "writein" : ""}" aria-label="Chalkboard: ${esc(c.n)}">
+        <div class="bhead"><span class="ch-t" style="opacity:.8;">today · ${chShort} · lesson ${i + 1} of ${total}</span><div class="plan" aria-label="Lesson plan">${plan}</div></div>
+        <div><h1 class="ch-big">${esc(c.n)}</h1>${video}</div>
+        <div><h2 class="ch-h ch-u">key ideas</h2>${c.i.map((t, k) => `<div class="idea"><b>${k + 1}.</b><p>${esc(t)}</p></div>`).join("")}${prev ? `<div class="ch-t" style="opacity:.75;">builds on: ${esc(prev.n)}</div>` : ""}</div>
+        <div class="quiz"><h2 class="ch-h" style="margin-bottom:6px;">pop quiz!</h2><p style="margin:0 0 6px;">${esc(qq)}</p>
+          <div role="radiogroup" aria-label="Pop quiz answers" style="display:flex;flex-direction:column;gap:2px;">${opts}</div>
+          ${S.checked ? `<p role="status" style="margin:8px 0 0;"><b style="font:700 22px 'Caveat',cursive;">${ok ? "Correct!" : "Not quite. It's on a sticky note now."}</b> ${esc(why)}</p>` : ""}</div>
       </section>
       <div class="tray" aria-hidden="true"><span class="stick" style="left:12%;width:48px;"></span><span class="stick" style="left:17%;width:30px;transform:rotate(-5deg);"></span><span class="stick" style="left:64%;width:24px;background:#f6c9c9;"></span><span class="eraser" style="left:78%;"></span></div>
     </div></div>
@@ -303,6 +419,7 @@ import matplotlib.pyplot as plt
             <a class="ipy-run" href="${esc(nbk ? nbk.colab : "https://colab.research.google.com/#create=true")}" target="_blank" rel="noopener">▶ ${nbk ? "Open the course notebook in Colab" : "Open a blank notebook in Colab"}</a>
             <span style="font-size:12px;color:#4b5563;">${nbk ? "The book's " + esc(nbk.title) + " notebook." : "No course notebook for this one."}</span></div></div>
         </div>`}</div></div><div class="base" aria-hidden="true"></div></div></div>
+      ${mug}
 
       <div><p class="thing-label">your notepad</p>
         <div class="pad"><div class="spiral" aria-hidden="true">${"<span></span>".repeat(11)}</div>
@@ -317,7 +434,9 @@ import matplotlib.pyplot as plt
               <span class="hw">remember: ${esc(trunc(c.i[0], 120))}</span>
               <div class="pgfoot"><span></span><button data-act="${padFwd}">flip to my notes ›</button></div></div></section>
           </div></div></div>
-    </div></div>
+    </div>
+    <div class="apron"><button class="drawer-front" data-act="${act(() => set({ drawer: true }))}" aria-haspopup="dialog"><span class="knob" aria-hidden="true"></span><span class="plate">my notes drawer · ${notedIds.length} page${notedIds.length === 1 ? "" : "s"}</span></button></div>
+    </div>${drawer}
 
     <div class="lessonbar"><div class="lessonbar-in">
       <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
@@ -326,7 +445,7 @@ import matplotlib.pyplot as plt
         <button class="navb hand link" style="font-size:20px;" data-act="${act(() => go("path"))}">my path</button>
       </div>
       <div style="display:flex;align-items:center;gap:16px;">
-        ${S.checked ? "" : `<button class="navb hand link" style="font-size:20px;" data-act="${act(advance)}">skip the quiz</button>`}
+        ${S.checked ? "" : `<button class="navb hand link" style="font-size:20px;" data-act="${act(() => eraseThen(advance))}">skip the quiz</button>`}
         <button class="am-button" ${!S.checked && S.picked === null ? "disabled" : ""} data-act="${main}">${esc(mainLabel)}</button>
       </div></div></div>`;
   }
@@ -349,10 +468,13 @@ import matplotlib.pyplot as plt
     const dots = all.map(([a, b]) => `<circle cx="${a.toFixed(1)}" cy="${b.toFixed(1)}" r="1.4" fill="#7c8cff" opacity=".35"/>`).join("");
     const seg = (k) => { const [a, b] = pts[k], [c, d] = pts[k + 1], bend = k % 2 ? 10 : -10;
       return `M${a.toFixed(1)},${b.toFixed(1)} Q${((a + c) / 2 - (d - b) * 0.15).toFixed(1)},${((b + d) / 2 + bend).toFixed(1)} ${c.toFixed(1)},${d.toFixed(1)}`; };
-    const edges = pts.slice(0, -1).map((_, k) => `<path d="${seg(k)}" stroke="${k < i ? "#5eead4" : "#3b4570"}" stroke-width="${k < i ? 2.2 : 1.4}" ${k < i ? "" : 'stroke-dasharray="3 3"'} fill="none"/>`).join("");
+    const passed = S.checked && S.done[steps[i]], lit = (k) => k < i || (k === i && passed);
+    const edges = pts.slice(0, -1).map((_, k) => `<path d="${seg(k)}" class="${lit(k) ? "lit" : ""}" stroke="${lit(k) ? "#5eead4" : "#3b4570"}" stroke-width="${lit(k) ? 2.2 : 1.4}" ${lit(k) ? "" : 'stroke-dasharray="3 3"'} fill="none"/>`).join("");
+    // Passing a quiz sends a pulse down the route into the next lesson.
+    const pulse = S.pulse === i && i < n - 1 ? `<circle r="5" fill="#fde047" class="spark"><animateMotion dur="1.1s" fill="freeze" path="${seg(i)}"/></circle>` : "";
     const nodes = steps.map((id, k) => {
-      const [a, b] = pts[k], dn = !!S.done[id], on = k === i, col = on ? "#fde047" : dn || k < i ? "#5eead4" : "#94a3ff";
-      return `<g class="neuron${on ? " neuron-on" : ""}" role="button" tabindex="0" aria-label="Lesson ${k + 1}: ${esc(C[id].n)}" data-act="${act(() => go("lesson", { i: k, picked: null, checked: false }))}">
+      const [a, b] = pts[k], dn = !!S.done[id], on = k === i, arrive = S.pulse === i && k === i + 1, col = on ? "#fde047" : dn || k < i ? "#5eead4" : "#94a3ff";
+      return `<g class="neuron${on ? " neuron-on" : ""}${arrive ? " neuron-arrive" : ""}" role="button" tabindex="0" aria-label="Lesson ${k + 1}: ${esc(C[id].n)}" data-act="${act(() => go("lesson", { i: k, picked: null, checked: false }))}">
         <title>${k + 1}. ${esc(C[id].n)}</title>${on ? `<circle cx="${a.toFixed(1)}" cy="${b.toFixed(1)}" r="11" fill="#fde047" opacity=".18" class="halo"/>` : ""}
         <circle cx="${a.toFixed(1)}" cy="${b.toFixed(1)}" r="${on ? 6 : 4.5}" fill="${k < i || dn || on ? col : "#141a33"}" stroke="${col}" stroke-width="1.6"/>
         <text x="${a.toFixed(1)}" y="${(b + (on ? 3 : 2.6)).toFixed(1)}" text-anchor="middle" font-size="${on ? 7 : 5.5}" font-weight="700" fill="${k < i || dn || on ? "#0b1020" : "#c7d2fe"}">${k + 1}</text></g>`;
@@ -366,7 +488,7 @@ import matplotlib.pyplot as plt
         <path d="M240,170 C256,190 286,186 290,166" fill="#1a2049" stroke="#6366f1" stroke-opacity=".5" stroke-width="1.2"/>
         <path d="M206,182 C210,196 214,204 220,208" stroke="#6366f1" stroke-opacity=".5" stroke-width="5" fill="none" stroke-linecap="round"/>
         <g fill="none" stroke="#6366f1" stroke-opacity=".22" stroke-width="1.2" stroke-linecap="round"><path d="M100,40 C120,70 110,96 132,118"/><path d="M174,26 C168,60 190,78 182,112"/><path d="M252,44 C230,70 248,98 230,128"/><path d="M60,120 C90,112 120,140 160,132 C200,124 230,150 270,140"/><path d="M48,88 C80,84 92,64 120,62"/></g>
-        ${dots}${edges}${nodes}</svg>
+        ${dots}${edges}${nodes}${pulse}</svg>
       <div class="bu-here"><span class="bu-k">you are here</span><b>${esc(C[steps[i]].n)}</b><span>lesson ${i + 1} of ${n} · goal: ${esc(trunc(goalLabel(), 34))}</span>
         <div class="bu-bar"><span style="width:${pct}%"></span></div></div>
     </div>`;
@@ -402,6 +524,8 @@ import matplotlib.pyplot as plt
     const ta = document.activeElement && document.activeElement.id === "mynotes" ? [document.activeElement.selectionStart] : null;
     document.body.toggleAttribute("data-room", S.screen === "lesson");
     app.innerHTML = nav() + body;
+    if (S.screen === "path") drawString();
+    tickClock();
     if (ta) { const t = document.getElementById("mynotes"); if (t) { t.focus(); t.setSelectionRange(ta[0], ta[0]); } }
   }
 

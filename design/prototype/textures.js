@@ -131,6 +131,20 @@
     return c.toDataURL("image/jpeg", 0.9);
   }
 
+  // ── Cork: warm granules, dark flecks, pin holes ──
+  function cork() {
+    const S = 420, [c, x] = canvas(S, S), r = rng(71), n = fbm(S, S, 6, 3, 73), img = x.createImageData(S, S), d = img.data;
+    for (let y = 0; y < S; y++) for (let i = 0; i < S; i++) {
+      const p = (y * S + i) * 4, v = (n(i, y) - 0.5) * 30 + (r() - 0.5) * 26;
+      d[p] = 184 + v; d[p + 1] = 136 + v * 0.85; d[p + 2] = 86 + v * 0.6; d[p + 3] = 255;
+    }
+    x.putImageData(img, 0, 0);
+    for (let k = 0; k < 2600; k++) { const rad = 0.6 + r() * 2.2; x.fillStyle = r() < 0.55 ? `rgba(90,52,22,${0.25 + r() * 0.4})` : `rgba(235,200,150,${0.2 + r() * 0.35})`;
+      x.beginPath(); x.ellipse(r() * S, r() * S, rad, rad * (0.5 + r() * 0.6), r() * 3, 0, Math.PI * 2); x.fill(); }
+    for (let k = 0; k < 40; k++) { x.fillStyle = "rgba(40,22,8,.55)"; x.beginPath(); x.arc(r() * S, r() * S, 0.9, 0, Math.PI * 2); x.fill(); }
+    return c.toDataURL("image/jpeg", 0.9);
+  }
+
   const root = document.documentElement.style;
   const put = (name, url) => root.setProperty(name, `url("${url}")`);
   try {
@@ -139,6 +153,7 @@
     put("--tex-frame", wood(700, 140, 41, [[146, 94, 54], [104, 62, 30], [70, 38, 16]], 3));
     put("--tex-desk", wood(1200, 600, 53, [[176, 124, 80], [134, 88, 52], [96, 60, 32]], 5));
     put("--tex-wall", wall());
+    put("--tex-cork", cork());
     document.documentElement.classList.add("tex-ready");
     // The slate writes old chalk in Kalam, so wait (briefly) for the font.
     const paintSlate = () => slate().toBlob((b) => b && put("--tex-slate", URL.createObjectURL(b)), "image/jpeg", 0.9);
