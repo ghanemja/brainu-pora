@@ -338,6 +338,26 @@ def atlas(d: dict) -> tuple[str, str]:
     return body, standalone
 
 
+def prototype_data(d: dict) -> str:
+    """Compact course data for the standalone prototype (design/prototype/)."""
+    L = d["lectures"]
+    C = {}
+    for c in d["concepts"]:
+        C[c["id"]] = {"n": c["name"], "c": c["ch"], "p": c["prereqs"], "s": c["summary"], "i": c["points"],
+                      "q": [c["check"]["q"], c["check"]["choices"], c["check"]["correct"], c["check"]["why"]],
+                      "t": c["tryIt"],
+                      "L": [{"title": L[k]["title"], "course": L[k]["course"], "n": L[k]["n"], "url": L[k]["url"]} for k in c["lectures"]],
+                      "N": [{"title": ex_title(e), "colab": d["exerciseBase"]["colab"] + e} for e in c["exercises"]]}
+    out = {"C": C,
+           "CH": {str(ch["n"]): {"title": ch["title"], "url": ch["url"]} for ch in d["chapters"]},
+           "BG": [{"id": b["id"], "n": b["name"], "b": b["blurb"], "k": b["knows"]} for b in d["backgrounds"]],
+           "G": [{"id": g["id"], "n": g["label"], "b": g["blurb"]} for g in d.get("goals", [])],
+           "PARTS": [{"t": "Background", "chs": [None]}] + [
+               {"t": p["name"].split(" · ", 1)[-1], "chs": ([0] if p["id"] == 1 else []) + p["chapters"]}
+               for p in d["parts"] if p["id"] != 0]}
+    return json.dumps(out, ensure_ascii=False, separators=(",", ":")) + "\n"
+
+
 def outputs(d: dict) -> dict[Path, str]:
     C = {c["id"]: c for c in d["concepts"]}
     kids = {c["id"]: [] for c in d["concepts"]}
@@ -346,6 +366,7 @@ def outputs(d: dict) -> dict[Path, str]:
             kids[p].append(c["id"])
     out = wiki_pages(d, C, kids)
     out[DESIGN / "pora_bu.js"] = bu_js(d, C, kids)
+    out[ROOT / "design" / "prototype" / "course.json"] = prototype_data(d)
     _, standalone = atlas(d)
     out[DESIGN / "pora-atlas.html"] = standalone
     return out
