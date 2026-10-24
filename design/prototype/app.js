@@ -32,7 +32,7 @@
     window.scrollTo({ top: 0, behavior: "instant" });
   };
   // After a page-turn animation, settle into the static end state.
-  const settle = (key) => setTimeout(() => { if (S[key]) { S[key] = ""; render(); } }, 1000);
+  const settle = (key, ms) => setTimeout(() => { if (S[key]) { S[key] = ""; render(); } }, ms || 1000);
 
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && S.drawer) set({ drawer: false }); });
   document.addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches("g[data-act]")) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); } });
@@ -131,7 +131,7 @@
     pts.forEach(([x, y], k) => { if (!k) { d = `M${x.toFixed(1)},${y.toFixed(1)}`; return; } const [px, py] = pts[k - 1], dist = Math.hypot(x - px, y - py);
       d += ` Q${((px + x) / 2).toFixed(1)},${(Math.max(py, y) + 6 + dist * 0.14).toFixed(1)} ${x.toFixed(1)},${y.toFixed(1)}`; });
     const pins = pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${(y + 1.5).toFixed(1)}" r="5" fill="rgba(0,0,0,.3)"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.6" fill="#d6332a"/><circle cx="${(x - 1.4).toFixed(1)}" cy="${(y - 1.6).toFixed(1)}" r="1.5" fill="#ff9a8f"/>`).join("");
-    svg.innerHTML = `<path d="${d}" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="2.2" transform="translate(1.5 2.5)"/><path d="${d}" fill="none" stroke="#c4221c" stroke-width="1.8"/>${pins}`;
+    svg.innerHTML = `<path d="${d}" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="2.2" transform="translate(1.5 2.5)" pathLength="1"/><path d="${d}" fill="none" stroke="#c4221c" stroke-width="1.8" pathLength="1"/>${pins}`;
   }
   window.addEventListener("resize", () => requestAnimationFrame(drawString));
   if (document.fonts) document.fonts.ready.then(() => drawString());
@@ -188,7 +188,7 @@
     const toggle = (id) => set({ pickGoal: isOn(id) ? picked.filter((x) => x !== id) : picked.concat(id) });
     const choices = list.map((o) => `<button class="pick ${isOn(o.id) ? "pick-on" : ""}" role="${q2 ? "checkbox" : "radio"}" aria-checked="${isOn(o.id)}" data-act="${act(() => (q2 ? toggle(o.id) : set({ pickBg: o.id })))}"><span class="circ${q2 ? " sq" : ""}">${isOn(o.id) ? "✓" : ""}</span><span><b>${esc(o.n)}</b><span class="d">${esc(o.b)}</span></span></button>`).join("");
     const lessons = q2 && picked.length ? pathFor(S.pickBg, picked).steps.length : 0;
-    const nextAct = act(() => (q2 ? go("path", { bg: S.pickBg, goal: S.pickGoal, i: 0, started: false, done: {}, passed: 0, picked: null, checked: false, openCols: {} }) : go("q2")));
+    const nextAct = act(() => (q2 ? (go("path", { bg: S.pickBg, goal: S.pickGoal, i: 0, started: false, done: {}, passed: 0, picked: null, checked: false, openCols: {}, fx: "pin" }), settle("fx", 2600)) : go("q2")));
     return `<main style="max-width:1240px;margin:0 auto;padding:32px 24px 56px;display:flex;flex-direction:column;gap:24px;">
       <header style="display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;">
         <span class="hand" style="font-size:22px;opacity:.8;">an unofficial study companion to</span>
@@ -206,12 +206,58 @@
             <span class="hand" style="font-size:19px;opacity:.75;">${q2 ? (sel ? picked.length + " goal" + (picked.length > 1 ? "s" : "") + " · " + lessons + " lessons, in order" : "pick at least one to continue") : sel ? "one more question after this" : "pick one to continue"}</span>
           </div>
         </section>
-        ${courseNotebook()}
+        ${graphBoard()}
       </div>
     </main>`;
   }
 
   // The whole course as a clipped notebook: pages flip up over the clip; post-it tabs jump to a part.
+  // The front page's map: every concept pinned on a small corkboard, grouped by
+  // part. Your answers light it up: what you know turns green, your goals go red,
+  // and the lessons between are pinned and strung together. This is the board
+  // you get on the next screen.
+  let graphLayout = null, graphPrev = {};
+  function graphBoard() {
+    const C = D.C, ids = Object.keys(C);
+    if (!graphLayout) {
+      graphLayout = {}; const xs = [52, 172, 300, 428, 556];
+      D.PARTS.forEach((p, pi) => {
+        const mine = ids.filter((id) => p.chs.indexOf(C[id].c) >= 0), half = Math.ceil(mine.length / 2), gap = Math.min(30, 300 / Math.max(1, half));
+        mine.forEach((id, k) => { const sub = mine.length > 6 ? (k < half ? -1 : 1) : 0, row = mine.length > 6 ? k % half : k;
+          graphLayout[id] = [xs[pi] + sub * 26 + Math.sin(k * 2.1) * 5, 92 + row * gap + (sub > 0 ? gap / 2 : 0) + Math.cos(k * 1.3) * 4]; });
+      });
+    }
+    const L = graphLayout, bg = S.screen === "q2" || S.pickBg ? D.BG.find((b) => b.id === S.pickBg) : null;
+    const gs = S.screen === "q2" ? S.pickGoal || [] : [];
+    const P = gs.length ? pathFor(S.pickBg, gs) : { steps: [], known: [] };
+    const known = new Set(bg ? bg.k : []), onPath = {}; P.steps.forEach((id, k) => (onPath[id] = k));
+    const state = (id) => (gs.indexOf(id) >= 0 ? "goal" : id in onPath ? "path" : known.has(id) ? "known" : "dim");
+    // only what changed since the last answer animates
+    const fresh = (id) => graphPrev[id] !== state(id);
+    const xy = (id) => L[id].map((v) => v.toFixed(1)).join(",");
+    const edges = ids.flatMap((id) => C[id].p.filter((q) => L[q]).map((q) => [q, id]));
+    const faint = edges.map(([a, b]) => `<line x1="${L[a][0].toFixed(1)}" y1="${L[a][1].toFixed(1)}" x2="${L[b][0].toFixed(1)}" y2="${L[b][1].toFixed(1)}" stroke="#3b2a1a" stroke-opacity="${known.has(a) && known.has(b) ? 0.35 : 0.12}" stroke-width=".8"/>`).join("");
+    const str = P.steps.length > 1 ? P.steps.map((id, k) => (k ? "L" : "M") + xy(id)).join(" ") : "";
+    const strKey = P.steps.join("|"), strNew = graphPrev.__str !== strKey;
+    const nodes = ids.map((id) => {
+      const st = state(id), [x, y] = L[id], k = onPath[id], d = st === "path" || st === "goal" ? k * 0.07 : st === "known" ? (ids.indexOf(id) % 12) * 0.04 : 0;
+      const r = st === "goal" ? 8 : st === "path" ? 6.5 : st === "known" ? 5 : 3.6;
+      return `<g class="gn gn-${st}${fresh(id) ? " gn-new" : ""}" style="--d:${d.toFixed(2)}s"><title>${esc(C[id].n)}${st === "known" ? " (you know this)" : st === "path" ? " (lesson " + (k + 1) + ")" : st === "goal" ? " (your goal)" : ""}</title>
+        ${st === "goal" ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" class="gn-ring"/>` : ""}<circle cx="${x.toFixed(1)}" cy="${(y + 1.5).toFixed(1)}" r="${r}" fill="rgba(0,0,0,.25)"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" class="gn-dot"/>
+        ${st === "path" ? `<text x="${x.toFixed(1)}" y="${(y + 2.6).toFixed(1)}" text-anchor="middle">${k + 1}</text>` : ""}</g>`;
+    }).join("");
+    const labels = D.PARTS.map((p, pi) => `<g transform="translate(${[52, 172, 300, 428, 556][pi]} 44) rotate(${[-2, 1, -1, 2, -1.5][pi]})"><rect x="-54" y="-14" width="108" height="26" fill="#fbf9f1"/><text y="4" text-anchor="middle" class="gl">${["Background", "Planning & control", "Perception", "Localization", "Decisions"][pi] || esc(trunc(p.t, 18))}</text></g>`).join("");
+    graphPrev = {}; ids.forEach((id) => (graphPrev[id] = state(id))); graphPrev.__str = strKey;
+    const caption = gs.length ? `<b>${P.steps.length} lessons</b> pinned for you, strung in order. Next, this becomes your corkboard.`
+      : bg ? `You already know <b>${P.known.length || bg.k.length}</b> of ${ids.length} concepts. Now pick what you want to do.` : `<b>${ids.length} concepts</b> in five parts. Answer the questions and watch your part of the course light up.`;
+    return `<aside class="gboard-wrap" aria-label="The course map, lighting up as you answer">
+      <div class="gboard"><svg viewBox="0 0 610 420" role="img" aria-label="Course map. ${P.steps.length ? P.steps.length + " lessons on your path." : ""}">
+        ${labels}${faint}
+        ${str ? `<path d="${str}" class="gstring${strNew ? " gstring-new" : ""}" pathLength="1"/>` : ""}${nodes}</svg></div>
+      <div class="glegend"><span><i class="gl-k"></i>you know it</span><span><i class="gl-p"></i>your lessons</span><span><i class="gl-g"></i>your goal</span></div>
+      <p class="gcap hand">${caption}</p></aside>`;
+  }
+
   function courseNotebook() {
     const now = S.pg, flip = (k) => { if (k !== now) { set({ pg: k, pgFrom: now, pgDir: k > now ? "fwd" : "back" }); settle("pgDir"); } };
     const secs = D.PARTS.map((p, ci) => ({
@@ -260,7 +306,7 @@
         const items = Object.entries(C).filter(([, c]) => c.c === n);
         if (!items.length) return "";
         return `<div style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px;"><div class="chl">${n == null ? "" : n === 0 ? "GETTING STARTED" : esc(trunc("CH " + n + " · " + D.CH[n].title.toUpperCase(), 32))}</div>
-          ${items.map(([id, c]) => `<button ${id in pos ? `data-n="${pos[id]}"` : ""} class="chip ${goals().indexOf(id) >= 0 ? "chip-goal" : id in pos ? "chip-path" : known.has(id) ? "chip-known" : "chip-dim"}" title="${esc(c.n)}" data-act="${act(() => set({ note: id }))}"><span class="num">${id in pos ? pos[id] + 1 : ""}</span><span>${esc(trunc(c.n, 26))}</span></button>`).join("")}</div>`;
+          ${items.map(([id, c]) => `<button ${id in pos ? `data-n="${pos[id]}" style="--n:${pos[id]}"` : ""} class="chip ${goals().indexOf(id) >= 0 ? "chip-goal" : id in pos ? "chip-path" : known.has(id) ? "chip-known" : "chip-dim"}" title="${esc(c.n)}" data-act="${act(() => set({ note: id }))}"><span class="num">${id in pos ? pos[id] + 1 : ""}</span><span>${esc(trunc(c.n, 26))}</span></button>`).join("")}</div>`;
       }).join("");
       const ids = Object.keys(C).filter((id) => p.chs.indexOf(C[id].c) >= 0), onPath = ids.some((id) => id in pos), open = onPath || S.openCols[ci];
       const sub = ci === 0 ? "MATH THE BOOK ASSUMES" : "PART " + ["I", "II", "III", "IV"][ci - 1];
@@ -283,7 +329,7 @@
         <ol style="list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;">${list}</ol>
         <button class="am-button" style="align-self:flex-start;margin-top:12px;" data-act="${act(() => go("lesson", { started: true }))}">${S.started ? "Continue lesson " + (i + 1) + " →" : "Start lesson 1 →"}</button>
       </section>
-      <section class="cork" aria-labelledby="mh">
+      <section class="cork${S.fx === "pin" ? " pinning" : ""}" aria-labelledby="mh">
         <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;"><h2 id="mh" class="cork-title">Where your path goes</h2>
           <div class="cork-legend">
             <span style="display:flex;align-items:center;gap:5px;"><span class="lg lg-path"></span>your lessons, pinned in order</span>
