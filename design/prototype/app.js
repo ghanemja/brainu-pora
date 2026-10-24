@@ -115,6 +115,7 @@ function TopNav({ page, hasPath }) {
       ${link("#/", "⌂ Home", page === "" || page === "start" || page === "done")}
       ${hasPath ? link("#/path", "My path", page === "path") : null}
       ${hasPath ? link("#/lesson", "Lesson", page === "lesson") : null}
+      ${link("#/graph", "Knowledge graph", page === "graph")}
       ${link("#/explore", "Explore", page === "explore")}
     </div></nav>`;
 }
@@ -241,7 +242,7 @@ function PathPage({ D, S, P, set }) {
 function Lesson({ D, S, P, set, n }) {
   const C = D.C, steps = P.steps, total = steps.length, i = Math.max(0, Math.min(n, total - 1)), id = steps[i], c = C[id];
   const prev = i > 0 ? C[steps[i - 1]] : null, next = i < total - 1 ? C[steps[i + 1]] : null;
-  const [picked, setPicked] = useState(null), [checked, setChecked] = useState(false), [playing, setPlaying] = useState(false), [pulse, setPulse] = useState(null);
+  const [video, setVideo] = useState(null), [picked, setPicked] = useState(null), [checked, setChecked] = useState(false), [playing, setPlaying] = useState(false), [pulse, setPulse] = useState(null);
   useEffect(() => { setPicked(null); setChecked(false); setPlaying(false); if (S.i !== i || !S.started) set({ i, started: true }); window.scrollTo(0, 0); }, [id]);
   const [qq, choices, correct, why] = c.q, ok = picked === correct;
   const check = () => {
@@ -327,12 +328,13 @@ function Lesson({ D, S, P, set, n }) {
         <section class="card research" aria-labelledby="rs">
           <h2 id="rs">Beyond the course</h2>
           ${(c.R || []).length ? html`<p class="hint">Recent papers from Brain University's research feed:</p>
-            <ul>${c.R.map((r) => html`<li key=${r.u}><a href=${r.u} target="_blank" rel="noopener">${r.t}</a>${r.y ? html` <small>${r.y}</small>` : null}</li>`)}</ul>` : null}
+            <ul>${c.R.map((r) => html`<li key=${r.u}>${r.v ? html`<button class="mini-play" aria-label=${"Watch the 30-second explainer for " + r.t} onClick=${() => setVideo({ t: r.t, src: r.v, u: r.u })}>▶</button>` : null}<a href=${r.u} target="_blank" rel="noopener">${r.t}</a>${r.y ? html` <small>${r.y}</small>` : null}</li>`)}</ul>` : null}
           <a class="linkish" href=${arxivSearch(c.n)} target="_blank" rel="noopener">Search arXiv for the newest work on ${c.n} ↗</a>
-          <a class="linkish" href="Brain%20University.html">See ${c.n} in the full Brain University graph →</a>
+          <a class="linkish" href="#/graph">See ${c.n} in the knowledge graph →</a>
         </section>
       </aside>
     </div>
+    ${video ? html`<${VideoModal} v=${video} onClose=${() => setVideo(null)} />` : null}
   </main>`;
 }
 
@@ -344,20 +346,164 @@ function exportNotes(D, S, steps) {
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
 }
 
+// ── Brain University's research graph: loaded only when a page needs it ──
+const loaded = {};
+const loadScript = (src) => loaded[src] || (loaded[src] = new Promise((ok, no) => {
+  const t = document.createElement("script"); t.src = src; t.onload = ok; t.onerror = () => no(new Error(src)); document.head.appendChild(t);
+}));
+let researchP = null;
+const loadResearch = () => researchP || (researchP = (async () => {
+  for (const src of ["data.js", "courses/pora_bu.js", "open_problems.js", "videos/manifest.js"]) await loadScript(src);
+  return { B: window.BU_DATA, OP: (window.OPEN_PROBLEMS || {}).problems || [], V: window.ARXIVIS_VIDEOS || {} };
+})());
+let graphLibP = null;
+const loadGraphLib = () => graphLibP || (graphLibP = loadScript("vendor/three.min.js").then(() => loadScript("vendor/3d-force-graph.min.js")));
+function useResearch() {
+  const [R, setR] = useState(null), [err, setErr] = useState(false);
+  useEffect(() => { loadResearch().then(setR, () => setErr(true)); }, []);
+  return [R, err];
+}
+const vidFor = (V, id) => V[id] || null;
+const norm = (x) => String(x).toLowerCase().replace(/[_\-]+/g, " ").replace(/\s+/g, " ").trim();
+
+// The real 3D graph (3d-force-graph on three.js): every Brain University topic, with the
+// course as its own cluster and your path glowing gold along a lit route.
+function Graph3D({ B, path = [], current = null, mode = "all", height = 520, onPick }) {
+  const el = useRef(), fg = useRef(), [fail, setFail] = useState(false);
+  const pathSet = new Set(path), pora = B.PORA || {};
+  useEffect(() => {
+    let alive = true;
+    loadGraphLib().then(() => {
+      if (!alive || !el.current) return;
+      if (!window.ForceGraph3D) { setFail(true); return; }
+      const keep = (n) => mode === "all" || (mode === "pora" ? n.cluster === pora.clusterId || n.cluster === pora.backgroundClusterId || pathSet.has(n.id) : pathSet.has(n.id) || B.EDGES.some(([a, b]) => (a === n.id && pathSet.has(b)) || (b === n.id && pathSet.has(a))));
+      const nodes = B.NODES.filter(keep).map((n) => ({ ...n })), ids = new Set(nodes.map((n) => n.id));
+      const links = B.EDGES.filter(([a, b]) => ids.has(a) && ids.has(b)).map(([a, b]) => ({ source: a, target: b }));
+      path.slice(1).forEach((id, k) => { if (ids.has(id) && ids.has(path[k])) links.push({ source: path[k], target: id, route: true }); });
+      const color = {}; B.CLUSTERS.forEach((c) => (color[c.id] = c.color));
+      const cname = {}; B.CLUSTERS.forEach((c) => (cname[c.id] = c.name));
+      try {
+        const G = window.ForceGraph3D({ controlType: "orbit" })(el.current)
+          .width(el.current.clientWidth).height(height).backgroundColor("#0b1020")
+          .graphData({ nodes, links })
+          .nodeLabel((n) => `<div class="g3tip"><b>${n.name}</b><br>${cname[n.cluster] || ""}${pathSet.has(n.id) ? "<br>★ on your path" : ""}</div>`)
+          .nodeColor((n) => (n.id === current ? "#fff3a0" : pathSet.has(n.id) ? "#f5c518" : color[n.cluster] || "#8899cc"))
+          .nodeVal((n) => (pathSet.has(n.id) ? 9 : 1.5 + Math.min(6, (n.degree || 1) / 3)))
+          .nodeOpacity(0.95)
+          .linkColor((l) => (l.route ? "#f5c518" : "rgba(125,211,252,0.35)"))
+          .linkWidth((l) => (l.route ? 2.2 : 0.4))
+          .linkDirectionalParticles((l) => (l.route ? 3 : 0)).linkDirectionalParticleWidth(2.6).linkDirectionalParticleColor(() => "#fff3a0")
+          .onNodeClick((n) => onPick && onPick(n));
+        G.nodeRelSize(5);
+        // weaker repulsion keeps small, separate topics from drifting off and shrinking the view
+        const ch = G.d3Force("charge"); if (ch && ch.strength) ch.strength(-14);
+        const fit = () => fg.current === G && G.zoomToFit(800, 30, mode === "pora" && path.length ? (n) => pathSet.has(n.id) || n.cluster === pora.clusterId : undefined);
+        G.cooldownTicks(120).onEngineStop(fit); setTimeout(fit, 1600);
+        fg.current = G;
+        const on = () => el.current && G.width(el.current.clientWidth);
+        addEventListener("resize", on); fg.current.__off = () => removeEventListener("resize", on);
+      } catch (e) { setFail(true); }
+    }, () => setFail(true));
+    return () => { alive = false; if (fg.current) { fg.current.__off && fg.current.__off(); fg.current._destructor && fg.current._destructor(); fg.current = null; } if (el.current) el.current.innerHTML = ""; };
+  }, [B, mode, path.join(), current, height]);
+  return fail ? html`<div class="g3d-fail" style=${{ height: height + "px" }}>The 3D graph needs WebGL, which this browser has turned off.</div>`
+    : html`<div class="g3d" ref=${el} style=${{ height: height + "px" }} aria-label="3D knowledge graph. Drag to orbit, scroll to zoom, hover a node for its name."></div>`;
+}
+
+function VideoModal({ v, onClose }) {
+  useEffect(() => { const k = (e) => e.key === "Escape" && onClose(); addEventListener("keydown", k); return () => removeEventListener("keydown", k); }, []);
+  return html`<div class="vmodal-scrim" onClick=${onClose}></div>
+    <div class="vmodal" role="dialog" aria-modal="true" aria-label=${v.t}>
+      <video src=${v.src} controls autoplay playsinline></video>
+      <div class="row"><b>${v.t}</b><span style=${{ flex: 1 }}></span>${v.u ? html`<a class="linkish" href=${v.u} target="_blank" rel="noopener">Read on arXiv ↗</a>` : null}<button class="am-button am--secondary" onClick=${onClose}>Close</button></div></div>`;
+}
+const ExplainerCard = ({ p, onPlay }) => html`<button class="xcard" onClick=${() => onPlay(p)}>
+  <span class="xplay" aria-hidden="true">▶</span><span class="xmeta"><span class="xk">30-second explainer${p.y ? " · " + p.y : ""}</span><span class="xt">${p.t}</span>${p.from ? html`<span class="xf">near ${p.from}</span>` : null}</span></button>`;
+
+// Missing bridges and quiet clusters from Brain University's research graph.
+function Gaps({ OP, V, only, onPlay, limit }) {
+  const [kind, setKind] = useState("missing_bridge");
+  const list = (only || OP).filter((p) => !only ? p.kind === kind : true).slice(0, limit || 999);
+  const count = (k) => OP.filter((p) => p.kind === k).length;
+  return html`<div class="gaps">
+    ${only ? null : html`<div class="tabs2" role="tablist"><button role="tab" aria-selected=${kind === "missing_bridge"} class=${kind === "missing_bridge" ? "on" : ""} onClick=${() => setKind("missing_bridge")}>Missing bridges · ${count("missing_bridge")}</button>
+      <button role="tab" aria-selected=${kind === "stale_cluster"} class=${kind === "stale_cluster" ? "on" : ""} onClick=${() => setKind("stale_cluster")}>Quiet clusters · ${count("stale_cluster")}</button></div>`}
+    <div class="gapgrid">${list.map((g) => html`<article key=${g.title} class="card gap">
+      <span class=${"gk " + (g.kind === "missing_bridge" ? "gk-b" : "gk-q")}>${g.kind === "missing_bridge" ? "Missing bridge" : "Quiet cluster"} · score ${Math.round(g.score)}</span>
+      <h3>${g.title}</h3><p>${g.why}</p>
+      <div class="chips">${g.concepts.map((c) => html`<span key=${c} class="cchip">${norm(c)}</span>`)}</div>
+      ${(g.closest_papers || []).length ? html`<div class="closest"><span class="xk">Closest papers</span>${g.closest_papers.slice(0, 3).map((cp) => {
+        const src = vidFor(V, cp.id), u = cp.id.startsWith("arx:") ? "https://arxiv.org/abs/" + cp.id.slice(4) : null;
+        return html`<div key=${cp.id} class="cp">${src ? html`<button class="mini-play" aria-label=${"Watch the explainer for " + cp.title} onClick=${() => onPlay({ t: cp.title, src, u })}>▶</button>` : html`<span class="mini-play off">·</span>`}<span>${cp.title}</span></div>`; })}</div>` : null}
+    </article>`)}</div></div>`;
+}
+
+function GraphPage({ D, S, P }) {
+  const [R, err] = useResearch(), [mode, setMode] = useState(P ? "pora" : "all"), [pick, setPick] = useState(null), [video, setVideo] = useState(null);
+  if (err) return html`<p class="loading">Brain University's graph data didn't load.</p>`;
+  if (!R) return html`<p class="loading">Loading the knowledge graph…</p>`;
+  const W = {}; Object.entries(D.C).forEach(([id, c]) => (W[c.w] = id));
+  const path = P ? P.steps.map((id) => D.C[id].w) : [], i = P ? Math.min(S.i, P.steps.length - 1) : -1;
+  const cl = {}; R.B.CLUSTERS.forEach((c) => (cl[c.id] = c));
+  const papers = [...new Map((P ? P.steps : Object.keys(D.C)).flatMap((id) => (D.C[id].R || []).map((r) => ({ ...r, src: r.v, from: D.C[id].n }))).map((r) => [r.u, r])).values()];
+  const pc = pick && W[pick.id] ? D.C[W[pick.id]] : null, pk = pc && P ? P.steps.indexOf(W[pick.id]) : -1;
+  return html`<main class="graphpage">
+    <header class="gp-head"><div><span class="kicker">Brain University</span><h1>The knowledge graph</h1>
+      <p>Principles of Robot Autonomy inside Brain University's research graph: ${R.B.NODES.length} concepts across ${R.B.CLUSTERS.length} topics.${P ? " Your path glows gold." : ""} Drag to orbit, scroll to zoom, click a concept.</p></div>
+      <div class="seg3" role="group" aria-label="What to show">${[["all", "Everything"], ["pora", "Robot autonomy"], ...(P ? [["path", "My path"]] : [])].map(([k, t]) => html`<button key=${k} aria-pressed=${mode === k} class=${mode === k ? "on" : ""} onClick=${() => setMode(k)}>${t}</button>`)}</div></header>
+    <div class="g3d-wrap">
+      <${Graph3D} B=${R.B} path=${path} current=${i >= 0 ? path[i] : null} mode=${mode} height=${560} onPick=${setPick} />
+      ${pick ? html`<aside class="g3d-card"><span class="kicker" style=${{ color: (cl[pick.cluster] || {}).color }}>${(cl[pick.cluster] || {}).name}</span><b>${pick.name}</b>
+        ${pc ? html`<p>${pc.s}</p>${pk >= 0 ? html`<a class="am-button" href=${"#/lesson/" + (pk + 1)}>Open lesson ${pk + 1}</a>` : html`<span class="hint">Part of the course, not on your current path.</span>`}` : html`<p>${(cl[pick.cluster] || {}).blurb || ""}</p><a class="linkish" href="Brain%20University.html">Explore it in the full Brain University app →</a>`}
+        <button class="linkish" onClick=${() => setPick(null)}>Close</button></aside>` : null}
+      <div class="clegend">${R.B.CLUSTERS.map((c) => html`<span key=${c.id}><i style=${{ background: c.color }}></i>${c.name}</span>`)}</div>
+    </div>
+    <section class="gp-sec"><h2>Gaps the graph found</h2><p class="hint">From arXivis: pairs of busy topics no paper has connected yet, and clusters that have gone quiet. Each is open territory for new work.</p>
+      <${Gaps} OP=${R.OP} V=${R.V} onPlay=${setVideo} /></section>
+    <section class="gp-sec"><h2>30-second explainers</h2><p class="hint">Animated explainers for recent papers ${P ? "near the lessons on your path" : "near the course"}.</p>
+      <div class="xgrid">${papers.map((p) => html`<${ExplainerCard} key=${p.u} p=${p} onPlay=${setVideo} />`)}</div></section>
+    ${video ? html`<${VideoModal} v=${video} onClose=${() => setVideo(null)} />` : null}
+  </main>`;
+}
+
 function Done({ D, S, P }) {
-  const learned = P.steps.filter((id) => S.done[id]).length;
-  const papers = [...new Map(P.steps.flatMap((id) => D.C[id].R || []).map((r) => [r.u, r])).values()].slice(0, 5);
-  return html`<main class="home">
-    <section class="card homecard">
-      <span class="kicker">Path complete</span><h1>${goalsLabel(D, S.goal)}</h1>
-      <p>You worked through ${P.steps.length} lessons and passed ${learned} checks first time or on retry.</p>
-      ${papers.length ? html`<h2>Where the research is now</h2><ul class="plist">${papers.map((r) => html`<li key=${r.u}><a href=${r.u} target="_blank" rel="noopener">${r.t}</a></li>`)}</ul>` : null}
-      <div class="row"><a class="am-button" href="#/start">Pick new goals</a><a class="linkish" href="#/path">Back to my path</a></div>
-    </section></main>`;
+  const [R] = useResearch(), [video, setVideo] = useState(null);
+  const n = P.steps.length, learned = P.steps.filter((id) => S.done[id]).length, notes = P.steps.filter((k) => ((S.notes || {})[k] || "").trim()).length;
+  const retry = Object.keys(S.wrong || {}).filter((w) => P.steps.includes(w)).length;
+  const papers = [...new Map(P.steps.flatMap((id) => (D.C[id].R || []).map((r) => ({ ...r, src: r.v, from: D.C[id].n }))).map((r) => [r.u, r])).values()].slice(0, 6);
+  const names = new Set(P.steps.flatMap((id) => [norm(D.C[id].n), norm(D.C[id].w)]));
+  const near = R ? R.OP.filter((g) => g.concepts.some((c) => names.has(norm(c)) || [...names].some((x) => x.length > 5 && (norm(c).includes(x) || x.includes(norm(c)))))) : [];
+  const gaps = R ? (near.length ? near : [...R.OP].sort((a, b) => b.score - a.score)).slice(0, 3) : [];
+  return html`<main class="done">
+    <section class="done-hero">
+      <div class="card done-card">
+        <span class="kicker">Path complete ★</span>
+        <h1>${goalsLabel(D, S.goal)}</h1>
+        <div class="stats">
+          <div><b>${n}</b><span>lessons</span></div><div><b>${learned}/${n}</b><span>checks passed</span></div>
+          <div><b>${notes}</b><span>pages of notes</span></div><div><b>${retry}</b><span>to retry</span></div></div>
+        <p>You can now work through ${goalsLabel(D, S.goal).toLowerCase()} with the course's own lectures and notebooks behind you. Next: see where it sits in the bigger graph, and where the open questions are.</p>
+        <div class="row"><a class="am-button" href="#/graph">Explore the knowledge graph →</a><a class="linkish" href="#/start">Pick new goals</a>
+          ${retry ? html`<a class="linkish" href=${"#/lesson/" + (P.steps.indexOf(Object.keys(S.wrong).find((w) => P.steps.includes(w))) + 1)}>Retry the ${retry} you missed</a>` : null}</div>
+      </div>
+      <div class="cork cork-sm"><${CourseMap} D=${D} known=${P.known} goals=${S.goal} steps=${P.steps} current=${-1} done=${Object.fromEntries(P.steps.map((id) => [id, true]))} /></div>
+    </section>
+    <section class="gp-sec"><h2>Your path inside the knowledge graph</h2>
+      <p class="hint">Your ${n} lessons glow gold. Everything they connect to in Brain University sits around them. Drag to orbit.</p>
+      ${R ? html`<${Graph3D} B=${R.B} path=${P.steps.map((id) => D.C[id].w)} mode="path" height=${420} />` : html`<p class="loading">Loading the graph…</p>`}
+      <a class="linkish" href="#/graph">Open the full graph →</a></section>
+    ${papers.length ? html`<section class="gp-sec"><h2>Watch what's next</h2><p class="hint">30-second explainers of recent papers built on what you just learned.</p>
+      <div class="xgrid">${papers.map((p) => html`<${ExplainerCard} key=${p.u} p=${p} onPlay=${setVideo} />`)}</div></section>` : null}
+    ${gaps.length ? html`<section class="gp-sec"><h2>${near.length ? "Open problems near your path" : "Open problems in the research graph"}</h2>
+      <p class="hint">${near.length ? "Gaps arXivis found that touch the concepts you just learned." : "None touch your path directly yet; these are the strongest gaps overall."}</p>
+      ${R ? html`<${Gaps} OP=${R.OP} V=${R.V} only=${gaps} onPlay=${setVideo} />` : null}<a class="linkish" href="#/graph">See all the gaps →</a></section>` : null}
+    ${video ? html`<${VideoModal} v=${video} onClose=${() => setVideo(null)} />` : null}
+  </main>`;
 }
 
 function Explore() {
-  const items = [["The full Brain University app", "The knowledge graph, arXivis papers, open problems and podcasts.", "Brain%20University.html"],
+  const items = [["The knowledge graph", "The course inside Brain University's graph in 3D, with research gaps and paper explainers.", "#/graph"],
+    ["The full Brain University app", "Tours, podcasts, the arXivis feed and everything else.", "Brain%20University.html"],
     ["The course atlas", "Every PoRA concept and how they connect, on one page.", "courses/pora-atlas.html"],
     ["Principles of Robot Autonomy", "The book, lectures and exercises, free from Stanford.", "https://porabook.com"],
     ["The classroom prototype", "The earlier chalkboard-and-desk version of this companion.", "classroom.html"]];
@@ -388,6 +534,7 @@ function App() {
   const P = hasPath ? pathFor(D, S.bg, goals) : null, s = { ...S, goal: goals };
   let page = route.page, body;
   if (page === "explore") body = html`<${Explore} />`;
+  else if (page === "graph") body = html`<${GraphPage} D=${D} S=${s} P=${P} />`;
   else if (page === "start" || !hasPath) { page = page === "start" ? "start" : ""; body = html`<${Start} D=${D} S=${s} set=${set} />`; }
   else if (page === "path") body = html`<${PathPage} D=${D} S=${s} P=${P} set=${set} />`;
   else if (page === "lesson") body = html`<${Lesson} D=${D} S=${s} P=${P} set=${set} n=${route.arg ? parseInt(route.arg, 10) - 1 || 0 : Math.min(S.i, P.steps.length - 1)} />`;

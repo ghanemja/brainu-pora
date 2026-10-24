@@ -365,6 +365,12 @@ def research_links(concept_ids) -> dict:
     text = src.read_text()
     papers = json.loads(text[text.index("=") + 1:].strip().rstrip(";"))["papers"]
     papers = [p for p in papers if p.get("category_hint") in RESEARCH_CATEGORIES]
+    # Each arXivis paper has a 30-second animated explainer in design/videos/.
+    vids = {}
+    man = DESIGN.parent / "videos" / "manifest.js"
+    if man.exists():
+        t = man.read_text()
+        vids = json.loads(t[t.index("=") + 1:].strip().rstrip(";"))
     out = {}
     for cid in concept_ids:
         terms = RESEARCH_TERMS.get(cid, [])
@@ -373,7 +379,10 @@ def research_links(concept_ids) -> dict:
             top = " ".join(c["name"] for c in sorted(p.get("concepts", []), key=lambda c: -c["weight"])[:8])
             hay = (p["title"] + " " + top).lower()
             if any(t in hay for t in terms) and p["url"] not in [h["u"] for h in hits]:
-                hits.append({"t": p["title"], "u": p["url"], "y": p.get("year")})
+                hit = {"t": p["title"], "u": p["url"], "y": p.get("year")}
+                if p["id"] in vids and (DESIGN.parent / vids[p["id"]]).exists():
+                    hit["v"] = vids[p["id"]]
+                hits.append(hit)
         if hits:
             out[cid] = hits[:3]
     return out
@@ -384,7 +393,7 @@ def prototype_data(d: dict) -> str:
     L = d["lectures"]
     C = {}
     for c in d["concepts"]:
-        C[c["id"]] = {"n": c["name"], "c": c["ch"], "p": c["prereqs"], "s": c["summary"], "i": c["points"],
+        C[c["id"]] = {"n": c["name"], "w": c["wiki"], "c": c["ch"], "p": c["prereqs"], "s": c["summary"], "i": c["points"],
                       "q": [c["check"]["q"], c["check"]["choices"], c["check"]["correct"], c["check"]["why"]],
                       "t": c["tryIt"],
                       "L": [{"title": L[k]["title"], "course": L[k]["course"], "n": L[k]["n"], "url": L[k]["url"]} for k in c["lectures"]],
