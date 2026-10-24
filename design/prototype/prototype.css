@@ -394,3 +394,4 @@ body[data-room] .top .am-nav__brand { display: inline-block; padding: 4px 14px 5
 }
 .book { width: 500px; }
 .desk-row { column-gap: 18px; }
+.brandb { cursor: pointer; padding: 0; }

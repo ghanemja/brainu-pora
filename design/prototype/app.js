@@ -156,9 +156,10 @@
   // ── views ─────────────────────────────────────────────────────────
   function nav() {
     const cur = (on) => (on ? ' aria-current="page"' : "");
-    const learn = ["home", "q1", "q2", "path", "done"].includes(S.screen);
-    return `<nav class="am-nav top" aria-label="Main"><span class="am-nav__brand">BrainU</span><div class="am-nav__links">
-      <button class="am-nav__link navb"${cur(learn)} data-act="${act(() => go(S.started ? "home" : S.goal ? "path" : "q1"))}">Learn</button>
+    const home = act(() => go(S.goal ? "home" : "q1"));
+    return `<nav class="am-nav top" aria-label="Main"><button class="am-nav__brand navb brandb" aria-label="BrainU home" data-act="${home}">BrainU</button><div class="am-nav__links">
+      <button class="am-nav__link navb"${cur(["home", "q1", "q2", "done"].includes(S.screen))} data-act="${home}">⌂ Home</button>
+      <button class="am-nav__link navb"${cur(S.screen === "path")} data-act="${act(() => go(S.goal ? "path" : "q1"))}">My path</button>
       <button class="am-nav__link navb"${cur(S.screen === "lesson")} data-act="${act(() => (S.goal ? go("lesson", { started: true }) : go("q1")))}">My lesson</button>
       <button class="am-nav__link navb"${cur(S.screen === "explore")} data-act="${act(() => go("explore"))}">Explore</button>
     </div></nav>`;
@@ -167,13 +168,13 @@
   function home() {
     const { steps } = path(), i = Math.min(S.i, steps.length - 1), c = D.C[steps[i]];
     return `<main style="max-width:760px;margin:0 auto;padding:64px 24px;display:flex;flex-direction:column;gap:22px;">
-      <span class="hand" style="font-size:24px;opacity:.8;">welcome back</span>
+      <span class="hand" style="font-size:24px;opacity:.8;">${S.started ? "welcome back" : "your path is ready"}</span>
       <section class="am-card" style="display:flex;flex-direction:column;gap:12px;">
         <span class="lbl">${esc(goalLabel())} · lesson ${i + 1} of ${steps.length}</span>
         <h1 class="am-card__title" style="margin:0;font-size:40px;">${esc(c.n)}</h1>
         <p style="margin:0;font-size:16px;line-height:1.5;">${esc(c.s)}</p>
         <div style="display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;margin-top:6px;">
-          <button class="am-button" data-act="${act(() => go("lesson", { started: true }))}">Continue lesson ${i + 1} →</button>
+          <button class="am-button" data-act="${act(() => go("lesson", { started: true }))}">${S.started ? "Continue" : "Start"} lesson ${i + 1} →</button>
           <button class="navb hand link" style="font-size:21px;" data-act="${act(() => go("path"))}">see my path</button>
         </div>
       </section>
