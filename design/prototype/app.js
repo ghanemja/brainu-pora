@@ -13,7 +13,7 @@
   const S = { screen: "q1", pickBg: null, pickGoal: null, bg: null, goal: null, started: false, i: 0,
     done: {}, passed: 0, picked: null, checked: false, note: null, openCols: {}, notes: {},
     pg: 0, pgFrom: 0, pgDir: "", book: 0, bookDir: "", pad: 0, padDir: "", playing: false, lap: "brain",
-    wrong: {}, tick: 0, today: null, focusEnd: 0, drawer: false, fx: "", pulse: null };
+    wrong: {}, tick: 0, today: null, focusEnd: 0, drawer: false, fx: "", pulse: null, focus: null };
 
   // Progress survives a reload (this browser only).
   const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes", "wrong", "tick", "today", "focusEnd"];
@@ -28,14 +28,14 @@
   const act = (fn) => { acts.push(fn); return acts.length - 1; };
   const set = (patch) => { Object.assign(S, patch); save(); render(); };
   const go = (screen, extra) => {
-    set(Object.assign({ screen, note: null, book: 0, bookDir: "", pad: 0, padDir: "", playing: false, drawer: false, fx: "" }, extra || {}));
+    set(Object.assign({ screen, note: null, book: 0, bookDir: "", pad: 0, padDir: "", playing: false, drawer: false, fx: "", focus: null }, extra || {}));
     window.scrollTo({ top: 0, behavior: "instant" });
   };
   // After a page-turn animation, settle into the static end state.
   const settle = (key, ms) => setTimeout(() => { if (S[key]) { S[key] = ""; render(); } }, ms || 1000);
 
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && S.drawer) set({ drawer: false }); });
-  document.addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches("g[data-act]")) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); } });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && (S.drawer || S.focus)) set({ drawer: false, focus: null }); });
+  document.addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches('g[data-act], [role="button"][data-act]')) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); } });
   document.addEventListener("click", (e) => {
     const t = e.target.closest("[data-act]");
     if (!t || t.disabled) return;
@@ -133,7 +133,22 @@
     const pins = pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${(y + 1.5).toFixed(1)}" r="5" fill="rgba(0,0,0,.3)"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.6" fill="#d6332a"/><circle cx="${(x - 1.4).toFixed(1)}" cy="${(y - 1.6).toFixed(1)}" r="1.5" fill="#ff9a8f"/>`).join("");
     svg.innerHTML = `<path d="${d}" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="2.2" transform="translate(1.5 2.5)" pathLength="1"/><path d="${d}" fill="none" stroke="#c4221c" stroke-width="1.8" pathLength="1"/>${pins}`;
   }
-  window.addEventListener("resize", () => requestAnimationFrame(drawString));
+  window.addEventListener("resize", () => requestAnimationFrame(() => { drawString(); fitRoom(); }));
+
+  // The lesson fits one screen on a laptop or bigger: the board takes what the
+  // desk strip leaves. Desk things are drawn small; a picked-up thing fills the view.
+  function fitRoom() {
+    const room = document.querySelector(".room"); if (!room) return;
+    const wide = innerWidth > 900 && innerHeight >= 600;
+    room.style.height = wide ? Math.max(560, innerHeight - (room.getBoundingClientRect().top + scrollY)) + "px" : "";
+    document.querySelectorAll(".mini").forEach((m) => {
+      const inner = m.firstElementChild, w = inner.offsetWidth, h = inner.offsetHeight; if (!h) return;
+      const H = innerHeight < 760 ? 92 : 116, k = H / h;
+      inner.style.transform = `scale(${k.toFixed(4)})`; m.style.width = (w * k).toFixed(1) + "px"; m.style.height = H + "px";
+    });
+    const f = document.querySelector(".focus-obj");
+    if (f) { const box = f.parentElement, z = Math.min(1.5, (box.clientWidth - 24) / f.offsetWidth, (box.clientHeight - 24) / f.offsetHeight); f.style.transform = `scale(${z.toFixed(3)})`; }
+  }
   if (document.fonts) document.fonts.ready.then(() => drawString());
 
   // On "Next", an eraser sweeps the board before the next lesson is written in.
@@ -357,7 +372,7 @@
     const video = L ? `<div style="position:relative;">
         <div class="screen"><span class="tape" style="top:-10px;left:14px;transform:rotate(-8deg);"></span><span class="tape" style="top:-10px;right:14px;transform:rotate(7deg);"></span><div class="screen-in">${screenInner}</div></div>
         <svg class="arrow" aria-hidden="true" viewBox="0 0 120 60"><path d="M110 50 C 80 52, 50 40, 20 12 M20 12 l 3 14 M20 12 l 13 4" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="3" stroke-linecap="round"/></svg></div>
-      <span class="ch-t" style="margin-top:14px;">watch: <b>${esc(L.title)}</b> (Stanford ${esc(L.course)} · lecture ${L.n}) <a href="${esc(L.url)}" target="_blank" rel="noopener" style="opacity:.8;">↗</a></span>`
+      <span class="ch-t" style="margin-top:10px;">watch: <b>${esc(L.title)}</b> (Stanford ${esc(L.course)} · lecture ${L.n}) <a href="${esc(L.url)}" target="_blank" rel="noopener" style="opacity:.8;">↗</a></span>`
       : `<p class="ch-t" style="margin:8px 0 0;">No lecture for this one. Start with the key ideas, then read the chapter in the textbook below.</p>`;
     const planItems = (L ? ["watch the lecture"] : []).concat(["read the key ideas", "try the experiment", "pop quiz"]);
     const plan = planItems.map((t, k) => { const d = k === planItems.length - 1 && S.checked; return `<div class="ch-t ${d ? "plan-done" : ""}"><span class="box">${d ? "✓" : ""}</span>${t}</div>`; }).join("");
@@ -372,7 +387,7 @@
     const chapKick = c.c == null ? "BEFORE YOU START" : c.c === 0 ? "GETTING STARTED" : "CHAPTER " + c.c;
     const chapTitle = c.c == null ? "The math the book assumes" : ch.title;
     const chapUrl = ch ? ch.url : "https://porabook.com/book/";
-    const exercise = `<span class="bkick">EXERCISE</span><div class="exbox"><b>Try it</b><br>${esc(c.t)}</div><p style="font-style:italic;opacity:.8;">Run it on the laptop (experiment tab), or work it by hand first.</p>`;
+    const exercise = `<span class="bkick">EXERCISE</span><div class="exbox"><b>Try it</b><br>${esc(c.t)}</div><p style="font-style:italic;opacity:.8;">Run it on the laptop, or work it by hand first.</p>`;
     const leafCls = S.book === 1 ? (S.bookDir === "fwd" ? "leafb-fwd" : "leafb-turned") : S.bookDir === "back" ? "leafb-back" : "";
     const turnFwd = act(() => { set({ book: 1, bookDir: "fwd" }); settle("bookDir"); });
     const turnBack = act(() => { set({ book: 0, bookDir: "back" }); settle("bookDir"); });
@@ -418,22 +433,23 @@
         <ellipse cx="44" cy="28" rx="30" ry="4.5" fill="none" stroke="#d9d2c3" stroke-width="2"/><path d="M14 46 h60" stroke="#2f6f8f" stroke-width="5" opacity=".8"/></svg></button>
       <p class="thing-label" style="text-align:center;margin:4px 0 0;">${level ? `coffee · ${learnedToday} of ${CUP} lessons today` : "empty. take a break? tap to refill"}</p></div>`;
 
-    return `<div class="wall"><div class="wall-top">${windowView(i, total)}${clockView()}</div><div class="frame">
+    const wallHtml = `<div class="wall"><div class="wall-top">${windowView(i, total)}${clockView()}</div><div class="frame">
       ${stickies}
       <section class="board slate ${S.fx === "write" ? "writein" : ""}" aria-label="Chalkboard: ${esc(c.n)}">
         <div class="bhead"><span class="ch-t" style="opacity:.8;">today · ${chShort} · lesson ${i + 1} of ${total}</span><div class="plan" aria-label="Lesson plan">${plan}</div></div>
-        <div><h1 class="ch-big">${esc(c.n)}</h1>${video}</div>
+        <div class="lead"><h1 class="ch-big">${esc(c.n)}</h1>${video}
+        ${S.focus === "brain" ? `<figure class="magnet-sheet sheet-away"><span class="magnet" aria-hidden="true"></span><span class="hand">looking at it</span></figure>`
+          : `<figure class="magnet-sheet" role="button" tabindex="0" aria-label="Your brain map. Tap to look closer." data-act="${act(() => set({ focus: "brain" }))}"><span class="magnet" aria-hidden="true"></span>${brainScreen(steps, i)}<span class="sheet-tip">your brain map · tap to look closer</span></figure>`}</div>
         <div><h2 class="ch-h ch-u">key ideas</h2>${c.i.map((t, k) => `<div class="idea"><b>${k + 1}.</b><p>${esc(t)}</p></div>`).join("")}${prev ? `<div class="ch-t" style="opacity:.75;">builds on: ${esc(prev.n)}</div>` : ""}</div>
         <div class="quiz"><h2 class="ch-h" style="margin-bottom:6px;">pop quiz!</h2><p style="margin:0 0 6px;">${esc(qq)}</p>
           <div role="radiogroup" aria-label="Pop quiz answers" style="display:flex;flex-direction:column;gap:2px;">${opts}</div>
           ${S.checked ? `<p role="status" style="margin:8px 0 0;"><b style="font:700 22px 'Caveat',cursive;">${ok ? "Correct!" : "Not quite. It's on a sticky note now."}</b> ${esc(why)}</p>` : ""}</div>
       </section>
       <div class="tray" aria-hidden="true"><span class="stick" style="left:12%;width:48px;"></span><span class="stick" style="left:17%;width:30px;transform:rotate(-5deg);"></span><span class="stick" style="left:64%;width:24px;background:#f6c9c9;"></span><span class="eraser" style="left:78%;"></span></div>
-    </div></div>
-
-    <div class="desk"><div class="desk-row">
-      <div><p class="thing-label">the textbook</p>
-        <div class="book" aria-label="Textbook, ${esc(chName(c.c))}">
+    </div></div>`;
+    // The desk: small versions of each thing; tap one to pick it up full size.
+    const OBJ = {
+      book: ["the textbook", `<div class="book" aria-label="Textbook, ${esc(chName(c.c))}">
           <div class="cover" aria-hidden="true"></div>
           <div class="bpage bpage-l"><div class="bin">
             ${S.book === 1 ? exercise : `<span class="bkick">${chapKick}</span><h4 style="font-size:26px;">${esc(chapTitle)}</h4><p style="font-style:italic;opacity:.8;">Principles of Robot Autonomy</p>`}
@@ -448,14 +464,9 @@
             <div class="face face-back"><div class="bin">${exercise}<div class="bfolio"><span>${folio + 2}</span></div></div></div>
           </div>
           <div class="spine" aria-hidden="true"></div>
-        </div></div>
-
-      <div><p class="thing-label">your laptop</p>
-        <div class="laptop"><div class="lid"><span class="cam" aria-hidden="true"></span><div class="lapscreen">
-          <div class="lap-tabs" role="tablist" aria-label="Laptop">
-            <button role="tab" aria-selected="${S.lap === "brain"}" class="lap-tab ${S.lap === "brain" ? "lap-on" : ""}" data-act="${act(() => set({ lap: "brain" }))}">◉ BrainU · my brain</button>
-            <button role="tab" aria-selected="${S.lap === "nb"}" class="lap-tab ${S.lap === "nb" ? "lap-on" : ""}" data-act="${act(() => set({ lap: "nb" }))}">▤ experiment.ipynb</button></div>
-          ${S.lap === "brain" ? brainScreen(steps, i) : `<div class="ipy">
+        </div>`],
+      laptop: ["your laptop", `<div class="laptop"><div class="lid"><span class="cam" aria-hidden="true"></span><div class="lapscreen">
+${`<div class="ipy">
           <div class="ipy-bar"><span class="ipy-file">${esc((nbk ? nbk.title.toLowerCase().replace(/[^a-z0-9*]+/g, "_") : "scratch") + ".ipynb")}</span><span class="ipy-kernel"><span class="ipy-dot"></span>Python 3</span></div>
           <div class="ipy-cell"><span class="ipy-p">md</span><div class="ipy-md"><b>Experiment.</b> ${esc(c.t)}</div></div>
           <div class="ipy-cell"><span class="ipy-p in">In [ ]:</span><pre class="ipy-code">import numpy as np
@@ -465,11 +476,9 @@ import matplotlib.pyplot as plt
           <div class="ipy-cell" style="align-items:center;"><span></span><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;">
             <a class="ipy-run" href="${esc(nbk ? nbk.colab : "https://colab.research.google.com/#create=true")}" target="_blank" rel="noopener">▶ ${nbk ? "Open the course notebook in Colab" : "Open a blank notebook in Colab"}</a>
             <span style="font-size:12px;color:#4b5563;">${nbk ? "The book's " + esc(nbk.title) + " notebook." : "No course notebook for this one."}</span></div></div>
-        </div>`}</div></div><div class="base" aria-hidden="true"></div></div></div>
-      ${mug}
-
-      <div><p class="thing-label">your notepad</p>
-        <div class="pad"><div class="spiral" aria-hidden="true">${"<span></span>".repeat(11)}</div>
+        </div>`}</div></div><div class="base" aria-hidden="true"></div></div>`],
+      brain: ["your brain map", `<div class="brain-big">${S.focus === "brain" ? brainScreen(steps, i) : ""}</div>`],
+      pad: ["your notepad", `<div class="pad"><div class="spiral" aria-hidden="true">${"<span></span>".repeat(11)}</div>
           <div class="flipstack" style="height:400px;"><div class="padback" aria-hidden="true"></div>
             <section class="leafv ruled ${pad1}" style="z-index:5;" aria-label="Your notes" aria-hidden="${S.pad !== 1}"><div class="pgin">
               <h3 style="font-size:26px;">my notes</h3><label for="mynotes" class="hw" style="opacity:.7;">write what clicked, or what didn't</label>
@@ -480,11 +489,19 @@ import matplotlib.pyplot as plt
               ${prev ? `<span class="hw">builds on → <b>${esc(prev.n)}</b></span>` : ""}
               <span class="hw">remember: ${esc(trunc(c.i[0], 120))}</span>
               <div class="pgfoot"><span></span><button data-act="${padFwd}">flip to my notes ›</button></div></div></section>
-          </div></div></div>
-    </div>
-    <div class="apron"><button class="drawer-front" data-act="${act(() => set({ drawer: true }))}" aria-haspopup="dialog"><span class="knob" aria-hidden="true"></span><span class="plate">my notes drawer · ${notedIds.length} page${notedIds.length === 1 ? "" : "s"}</span></button></div>
-    </div>${drawer}
-
+          </div></div>`],
+    };
+    const thing = (k) => S.focus === k
+      ? `<div class="thing thing-away"><span class="thing-label">${OBJ[k][0]}</span><span class="away hand">in your hands</span></div>`
+      : `<div class="thing" role="button" tabindex="0" aria-label="Pick up ${OBJ[k][0]}" data-act="${act(() => set({ focus: k }))}"><span class="thing-label">${OBJ[k][0]}</span><span class="mini" inert aria-hidden="true"><span class="mini-in">${OBJ[k][1]}</span></span><span class="pickup">pick up</span></div>`;
+    const focusView = S.focus && OBJ[S.focus] ? `<div class="focus-scrim" data-act="${act(() => set({ focus: null }))}"></div>
+      <div class="focus" role="dialog" aria-modal="true" aria-label="${OBJ[S.focus][0]}">
+        <div class="focus-top"><div class="focus-swap">${Object.keys(OBJ).map((k) => `<button class="navb hand ${k === S.focus ? "swap-on" : ""}" data-act="${act(() => set({ focus: k }))}">${OBJ[k][0]}</button>`).join("")}</div>
+          <button class="am-button am--secondary" data-act="${act(() => set({ focus: null }))}">Put it down ✕</button></div>
+        <div class="focus-fit"><div class="focus-obj">${OBJ[S.focus][1]}</div></div></div>` : "";
+    const drawerThing = `<div class="thing" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open your notes drawer" data-act="${act(() => set({ drawer: true }))}"><span class="thing-label">notes drawer</span><span class="mini-drawer"><span class="knob" aria-hidden="true"></span><span class="plate">${notedIds.length} page${notedIds.length === 1 ? "" : "s"}</span></span><span class="pickup">open</span></div>`;
+    return `<div class="room">${wallHtml}
+    <div class="desk"><div class="desk-row">${thing("book")}${thing("laptop")}${mug}${thing("pad")}${drawerThing}</div></div>
     <div class="lessonbar"><div class="lessonbar-in">
       <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
         <button class="navb hand" style="font-size:22px;" ${prev ? "" : "disabled"} data-act="${act(() => prev && go("lesson", { i: i - 1, picked: null, checked: false }))}">‹ ${esc(prev ? trunc(prev.n, 22) : "")}</button>
@@ -494,7 +511,7 @@ import matplotlib.pyplot as plt
       <div style="display:flex;align-items:center;gap:16px;">
         ${S.checked ? "" : `<button class="navb hand link" style="font-size:20px;" data-act="${act(() => eraseThen(advance))}">skip the quiz</button>`}
         <button class="am-button" ${!S.checked && S.picked === null ? "disabled" : ""} data-act="${main}">${esc(mainLabel)}</button>
-      </div></div></div>`;
+      </div></div></div></div>${drawer}${focusView}`;;
   }
 
   // The laptop's BrainU screen: the whole course as faint neurons in a brain,
@@ -572,7 +589,7 @@ import matplotlib.pyplot as plt
     document.body.toggleAttribute("data-room", S.screen === "lesson");
     app.innerHTML = nav() + body;
     if (S.screen === "path") drawString();
-    tickClock();
+    tickClock(); fitRoom();
     if (ta) { const t = document.getElementById("mynotes"); if (t) { t.focus(); t.setSelectionRange(ta[0], ta[0]); } }
   }
 
