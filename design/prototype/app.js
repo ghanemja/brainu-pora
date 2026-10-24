@@ -141,10 +141,10 @@ function Start({ D, S, set }) {
       <p>Tell us what you know and what you want to build. You get the lessons you need, in order, each linked to the course's own lectures, chapters and notebooks.</p>
     </header>
     <div class="start-grid">
-      <section class="card qcard" aria-labelledby="qh">
-        <div class="qsteps"><button class=${q === 1 ? "on" : ""} onClick=${() => setQ(1)}>1 · Where you're starting</button><button class=${q === 2 ? "on" : ""} disabled=${!bg} onClick=${() => setQ(2)}>2 · What you want to do</button></div>
+      <section class="am-card qcard" data-medium="marker" data-style="notebook" data-theme="light" aria-labelledby="qh">
+        <div class="qsteps"><button class=${q === 1 ? "on" : ""} onClick=${() => setQ(1)}>① where you're starting</button><button class=${q === 2 ? "on" : ""} disabled=${!bg} onClick=${() => setQ(2)}>② what you want to do</button></div>
         <h2 id="qh">${q === 2 ? "What do you want to be able to do?" : "Where are you starting from?"}</h2>
-        ${q === 2 ? html`<p class="hint">Pick as many as you like.</p>` : null}
+        <p class="qhint">${q === 2 ? "tick as many as you like" : "pick one"}</p>
         <div class="picks" role=${q === 2 ? "group" : "radiogroup"} aria-labelledby="qh">
           ${list.map((o) => html`<button key=${o.id} class=${"pick" + (isOn(o.id) ? " pick-on" : "")} role=${q === 2 ? "checkbox" : "radio"} aria-checked=${isOn(o.id)} onClick=${() => pick(o.id)}>
             <span class=${"circ" + (q === 2 ? " sq" : "")} aria-hidden="true">${isOn(o.id) ? "✓" : ""}</span><span><b>${o.n}</b><span class="d">${o.b}</span></span></button>`)}
@@ -266,17 +266,17 @@ function Lesson({ D, S, P, set, n }) {
     </div>
     <div class="lesson-grid" key=${id}>
       <div class="lesson-main">
-        <section class="board" aria-labelledby="lt">
-          <span class="ch-kick">${kicker}</span>
+        <section class="board" data-medium="charcoal" data-theme="dark" aria-labelledby="lt">
+          <div class="chalk"><span class="ch-kick">${kicker}</span>
           <h1 id="lt" class="ch-title">${c.n}</h1>
-          <p class="ch-sum">${c.s}</p>
+          <p class="ch-sum">${c.s}</p></div>
           ${L ? html`<figure class="video">
               <div class="screen">${playing && yt ? html`<iframe src=${`https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&rel=0&modestbranding=1`} title=${L.title} allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
                 : html`<button class="play" onClick=${() => setPlaying(true)} aria-label=${"Play " + L.title} style=${yt ? { backgroundImage: `url(https://i.ytimg.com/vi/${yt}/hqdefault.jpg)` } : null}><span>▶</span></button>`}</div>
-              <figcaption>Stanford ${L.course} · lecture ${L.n}: ${L.title} <a href=${L.url} target="_blank" rel="noopener">open on YouTube ↗</a></figcaption></figure>`
+              <figcaption class="chalk">Stanford ${L.course} · lecture ${L.n}: ${L.title} <a href=${L.url} target="_blank" rel="noopener">open on YouTube ↗</a></figcaption></figure>`
             : html`<p class="ch-note">No lecture covers this one. The key ideas and the chapter below have it.</p>`}
-          <h2 class="ch-h">Key ideas</h2>
-          <ol class="ideas">${c.i.map((t, k) => html`<li key=${k}>${t}</li>`)}</ol>
+          <div class="chalk"><h2 class="ch-h">Key ideas</h2>
+          <ol class="ideas">${c.i.map((t, k) => html`<li key=${k}>${t}</li>`)}</ol></div>
         </section>
 
         <section class="card quiz" aria-labelledby="qz">
