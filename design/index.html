@@ -3,19 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BrainU · Principles of Robot Autonomy (prototype)</title>
-<meta name="description" content="Prototype of the Brain University learning flow for Principles of Robot Autonomy: two questions, a lesson path, and a classroom with a chalkboard, textbook, laptop and notepad.">
+<title>BrainU · Principles of Robot Autonomy</title>
+<meta name="description" content="An unofficial study companion to Stanford's Principles of Robot Autonomy: two questions build your path of lessons, each linked to the course's own lectures, chapters and notebooks.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Varela+Round&family=Caveat:wght@500;700&family=Kalam:wght@400;700&family=Archivo+Black&family=Work+Sans:wght@400;500;700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@500;700&family=Kalam:wght@400;700&family=Archivo+Black&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
 <!-- Splatform (ghanemja/art-asset v0.2.0, MIT): painted mediums for the UI -->
 <link rel="stylesheet" href="prototype/vendor/splatform.css">
-<link rel="stylesheet" href="prototype/prototype.css">
+<link rel="stylesheet" href="prototype/app.css">
+<link rel="preload" as="image" href="prototype/tex/slate.jpg">
+<script type="importmap">{ "imports": { "preact": "./prototype/vendor/preact/preact.module.js", "preact/hooks": "./prototype/vendor/preact/hooks.module.js" } }</script>
 <script type="module" src="prototype/vendor/splatform.js"></script>
 </head>
 <body class="am-canvas" data-medium="marker" data-style="notebook" data-theme="light">
-<div id="app" aria-live="polite"><p class="loading">Opening your notebook…</p></div>
-<script src="prototype/textures.js"></script>
-<script src="prototype/app.js"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <filter id="chalk" x="-4%" y="-8%" width="108%" height="116%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="1.35" numOctaves="2" seed="4" result="grain"/>
+    <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.4 0 0 0 -0.62" result="holes"/>
+    <feComposite in="SourceGraphic" in2="holes" operator="in" result="grainy"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="9" result="wob"/>
+    <feDisplacementMap in="grainy" in2="wob" scale="1.6" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+    <feGaussianBlur in="rough" stdDeviation="0.35" result="soft"/>
+    <feMerge><feMergeNode in="soft"/><feMergeNode in="rough"/></feMerge>
+  </filter></defs></svg>
+<div id="app" aria-live="polite"><p class="loading">Loading the course…</p></div>
+<script type="module" src="prototype/app.js"></script>
 </body>
 </html>

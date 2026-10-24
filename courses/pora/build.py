@@ -338,6 +338,47 @@ def atlas(d: dict) -> tuple[str, str]:
     return body, standalone
 
 
+# Research links for a lesson come from Brain University's arXivis corpus. It is broad
+# (aerospace, theory, systems), so only its robotics, controls and vision papers are
+# used, and a paper must name the concept in its title or top tagged concepts.
+RESEARCH_CATEGORIES = {"cs_RO", "eess_SY", "cs_CV", "math_OC"}
+RESEARCH_TERMS = {
+    "kalman_filter": ["kalman", "state estimation", "moving horizon estimat", "gaussian approximation filter"],
+    "ekf_ukf": ["extended kalman", "unscented", "gaussian approximation filter", "lie group"],
+    "bayes_filter": ["bayes filter", "state estimation", "moving horizon estimat"],
+    "lqr": ["lqr", "linear quadratic"],
+    "optimal_control": ["optimal control", "invariant set", "reachability"],
+    "mpc": ["model predictive", "receding horizon", "multiparametric"],
+    "pose_graph_slam": ["slam"], "ekf_slam": ["slam"], "slam_front_end": ["slam", "odometry"],
+    "visual_odometry": ["odometry", "slam"], "sensor_fusion": ["lidar-inertial", "sensor fusion"],
+    "point_cloud_registration": ["lidar", "point cloud"], "kinodynamic_planning": ["motion planning"],
+    "behavior_cloning": ["distillation"], "rl_fundamentals": ["reinforcement learning", "sim-to-real"],
+    "policy_gradient": ["policy optimization", "sim-to-real"], "segmentation": ["semantic"],
+    "sampling_planning": ["motion planning"], "graph_search": ["graphs of convex sets"],
+}
+
+
+def research_links(concept_ids) -> dict:
+    src = DESIGN.parent / "arxivis_data.js"
+    if not src.exists():
+        return {}
+    text = src.read_text()
+    papers = json.loads(text[text.index("=") + 1:].strip().rstrip(";"))["papers"]
+    papers = [p for p in papers if p.get("category_hint") in RESEARCH_CATEGORIES]
+    out = {}
+    for cid in concept_ids:
+        terms = RESEARCH_TERMS.get(cid, [])
+        hits = []
+        for p in papers:
+            top = " ".join(c["name"] for c in sorted(p.get("concepts", []), key=lambda c: -c["weight"])[:8])
+            hay = (p["title"] + " " + top).lower()
+            if any(t in hay for t in terms) and p["url"] not in [h["u"] for h in hits]:
+                hits.append({"t": p["title"], "u": p["url"], "y": p.get("year")})
+        if hits:
+            out[cid] = hits[:3]
+    return out
+
+
 def prototype_data(d: dict) -> str:
     """Compact course data for the standalone prototype (design/prototype/)."""
     L = d["lectures"]
@@ -348,6 +389,8 @@ def prototype_data(d: dict) -> str:
                       "t": c["tryIt"],
                       "L": [{"title": L[k]["title"], "course": L[k]["course"], "n": L[k]["n"], "url": L[k]["url"]} for k in c["lectures"]],
                       "N": [{"title": ex_title(e), "colab": d["exerciseBase"]["colab"] + e} for e in c["exercises"]]}
+    for cid, links in research_links(C).items():
+        C[cid]["R"] = links
     out = {"C": C,
            "CH": {str(ch["n"]): {"title": ch["title"], "url": ch["url"]} for ch in d["chapters"]},
            "BG": [{"id": b["id"], "n": b["name"], "b": b["blurb"], "k": b["knows"]} for b in d["backgrounds"]],
