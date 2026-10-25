@@ -522,3 +522,128 @@ body.am-canvas[data-medium] { font-family: "Newsreader", Georgia, serif; }
 .read-end { display: block; height: 1px; }
 .qcard .qfoot { margin: 6px 0 -18px; padding: 10px 0 14px; background: linear-gradient(rgba(253,253,247,0), #fdfdf7 40%); }
 @media (max-width: 560px) { .qcard .qfoot { margin: 6px 0 -18px; padding: 10px 0 14px; } }
+
+/* ═════════════════ Notebook & chalkboard, everywhere ═════════════════
+   Pages you work on are notebook sheets: ruled at 32px, red margin, punched holes, a sheet
+   underneath. Small side things are index cards and sticky notes. Choices are drawn in pen
+   (circled, ticked, struck through) and highlighted. Only the lesson itself is chalk. */
+:root { --rule: 32px; --ruleC: rgba(108,156,222,.30); --marginC: rgba(214,64,64,.45); --desk: #f3eee2; --pen: #2b2b33; --redpen: #c0392b;
+  --circle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 50' preserveAspectRatio='none'%3E%3Cpath d='M8 27 C 6 10, 40 4, 66 5 C 98 6, 116 14, 112 28 C 108 43, 70 47, 46 45 C 20 43, 4 36, 10 21 C 13 14, 22 9, 31 7' fill='none' stroke='%23c0392b' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  --tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 13 C 6 15, 8 18, 9 20 C 12 13, 16 7, 22 3' fill='none' stroke='%232f6b35' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --box: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3.5 4 C 9 3.2, 15 3.6, 20.5 3.4 C 20.9 9, 20.6 15, 20.8 20.4 C 15 20.9, 9 20.5, 3.4 20.7 C 3.1 15, 3.6 9, 3.5 4 Z' fill='none' stroke='%232b2b33' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+body.am-canvas[data-medium] { background: var(--desk) url(tex/paper.jpg) !important; background-size: 384px !important; background-blend-mode: multiply !important; }
+
+/* a notebook sheet */
+.card { position: relative; border: 0 !important; border-radius: 2px 3px 3px 2px; padding: 22px 28px 24px 74px !important;
+  background-color: #fffef8 !important;
+  background-image: linear-gradient(90deg, transparent 0 50px, var(--marginC) 50px 51.5px, transparent 51.5px), repeating-linear-gradient(180deg, transparent 0 calc(var(--rule) - 1px), var(--ruleC) calc(var(--rule) - 1px) var(--rule)), url(tex/paper.jpg) !important;
+  background-size: auto, auto, 384px !important; background-position: 0 0, 0 22px, 0 0 !important;
+  box-shadow: 0 1px 1px rgba(40,25,10,.10), 0 10px 22px -8px rgba(40,25,10,.22), 4px 4px 0 -1px #faf6ea, 4px 4px 1px 0 rgba(40,25,10,.10) !important; }
+/* punched holes down the left */
+.card::before { content: ""; position: absolute; left: 16px; top: 18px; bottom: 18px; width: 16px; pointer-events: none;
+  background: radial-gradient(circle at 8px 8px, var(--desk) 0 6px, rgba(40,25,10,.18) 6.5px 7.5px, transparent 8px) 0 0 / 16px 112px repeat-y; }
+.card h2 { font: 400 25px/var(--rule) "Permanent Marker", cursive !important; margin: 0 0 0 !important; }
+.card h2::after { content: ""; display: block; width: 3.2em; height: 6px; margin-top: -9px; margin-bottom: 3px; border-radius: 3px; background: rgba(245,197,24,.55); }
+.card p, .card li, .card .hint, .card small { line-height: var(--rule); }
+.card .hint { font: 400 19px/var(--rule) "Caveat", cursive !important; color: #6b5f4d; }
+.card .kicker { font: 400 20px/var(--rule) "Caveat", cursive !important; letter-spacing: 0 !important; text-transform: none; color: var(--redpen); font-weight: 700; }
+
+/* small side things: index cards (red header rule, blue lines, no holes), slightly askew */
+.lesson-side .card, .home-side .card, .gap.card { padding: 14px 18px 16px !important; --rule: 28px;
+  background-image: linear-gradient(180deg, transparent 0 41px, rgba(214,64,64,.55) 41px 42.5px, transparent 42.5px), repeating-linear-gradient(180deg, transparent 0 69px, var(--ruleC) 69px 70px, transparent 70px 70px), repeating-linear-gradient(180deg, transparent 0 27px, var(--ruleC) 27px 28px), url(tex/paper.jpg) !important;
+  background-position: 0 0, 0 0, 0 14px, 0 0 !important; background-size: auto, 100% 70px, auto, 384px !important; background-repeat: no-repeat, no-repeat, repeat, repeat !important;
+  box-shadow: 0 1px 1px rgba(40,25,10,.12), 0 8px 16px -6px rgba(40,25,10,.25) !important; }
+.lesson-side .card::before, .home-side .card::before, .gap.card::before { display: none; }
+.lesson-side .card:nth-child(odd), .home-side .card:nth-child(odd) { rotate: -.4deg; }
+.lesson-side .card:nth-child(even), .home-side .card:nth-child(even) { rotate: .5deg; }
+.lesson-side .card h2, .home-side .card h2, .gap h3 { font-size: 21px !important; line-height: 28px !important; }
+.lesson-side .card h2::after, .home-side .card h2::after { display: none; }
+
+/* nav: notebook divider tabs along the top */
+.top.am-nav { background: transparent !important; box-shadow: none !important; border: 0 !important; padding: 6px 4px 0 !important; align-items: flex-end; }
+.top.am-nav::before, .top.am-nav::after { display: none !important; }
+.top .am-nav__links { gap: 6px !important; align-items: flex-end; }
+.top .am-nav__link { padding: 8px 16px 10px !important; border-radius: 6px 6px 0 0; font: 700 21px/1 "Caveat", cursive !important; color: var(--ink) !important; box-shadow: 0 -1px 2px rgba(40,25,10,.12) inset, 0 2px 3px rgba(40,25,10,.12); translate: 0 6px; transition: translate .15s; }
+.top .am-nav__link::after { display: none !important; }
+.top .am-nav__link:nth-child(1) { background: #fff3a8; } .top .am-nav__link:nth-child(2) { background: #ffc8d6; } .top .am-nav__link:nth-child(3) { background: #bfe3ff; }
+.top .am-nav__link:nth-child(4) { background: #c9f2c7; } .top .am-nav__link:nth-child(5) { background: #ffd9a8; }
+.top .am-nav__link:hover, .top .am-nav__link[aria-current="page"] { translate: 0 0; }
+.top .am-nav__link[aria-current="page"] { box-shadow: 0 -2px 4px rgba(40,25,10,.18); text-decoration: underline wavy rgba(34,32,28,.45) 1.5px; text-underline-offset: 5px; }
+.brand { font-size: 30px; }
+
+/* choices are written, not boxed: a pen-drawn letter, highlighter when picked, ticks and strikes */
+.qopt { border: 0 !important; border-radius: 0 !important; background: none !important; padding: 0 4px !important; min-height: var(--rule); line-height: var(--rule) !important; align-items: flex-start; font-family: "Newsreader", Georgia, serif !important; }
+.qopt .qm { width: 26px; height: 26px; margin-top: 3px; border: 0 !important; border-radius: 0; background: var(--box) center / 100% no-repeat !important; color: var(--pen) !important; font: 700 17px/26px "Caveat", cursive !important; }
+.qopt:hover:not([disabled]) > :last-child { text-decoration: underline rgba(34,32,28,.3) 1.5px; text-underline-offset: 6px; }
+.qopt-on > :last-child, .qopt-right > :last-child { background: linear-gradient(transparent 55%, rgba(245,197,24,.55) 55% 92%, transparent 92%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.qopt-on .qm { background: var(--circle) center / 140% 120% no-repeat !important; color: var(--redpen) !important; }
+.qopt-right .qm { background: var(--tick) center / 100% no-repeat !important; color: transparent !important; }
+.qopt-right > :last-child { background: linear-gradient(transparent 55%, rgba(143,208,138,.6) 55% 92%, transparent 92%); }
+.qopt-wrong > :last-child { text-decoration: line-through var(--redpen) 2px; color: #7a6f66; }
+.qopt-wrong .qm { color: var(--redpen) !important; }
+.qopts { gap: 0 !important; }
+.feedback { border-radius: 0 !important; background: none !important; padding: 0 0 0 14px !important; border-left: 3px solid var(--sun); font: 400 18px/var(--rule) "Caveat", cursive !important; font-size: 20px !important; }
+.feedback.fb-no { border-left-color: var(--redpen); }
+.feedback .katex { font-size: .9em; }
+
+/* toggles: the chosen word is circled in red pen */
+.seg3, .tabs2 { border: 0 !important; background: none !important; gap: 6px; flex-wrap: wrap; }
+.seg3 button, .tabs2 button { border: 0 !important; background: none !important; color: var(--ink) !important; padding: 4px 14px !important; font: 700 22px/1.2 "Caveat", cursive !important; border-radius: 0 !important; }
+.seg3 button.on, .tabs2 button.on { background: var(--circle) center / 100% 100% no-repeat !important; color: var(--redpen) !important; }
+
+/* today's plan: a to-do list on the rules, minutes in red pen */
+.plan { gap: 0 !important; margin: 4px 0 6px !important; }
+.plan a { border: 0 !important; background: none !important; border-radius: 0 !important; padding: 0 4px !important; min-height: calc(var(--rule) * 2); grid-template-columns: 26px minmax(0, 1fr) auto !important; align-content: center; }
+.plan a:hover .pl-t { text-decoration: underline wavy rgba(34,32,28,.35) 1.5px; text-underline-offset: 5px; }
+.pi { background: var(--box) center / 100% no-repeat !important; border-radius: 0 !important; }
+.pi::after { color: var(--pen) !important; font-size: 11px !important; }
+.pl-t { font: 700 22px/var(--rule) "Caveat", cursive !important; }
+.pl-n { font: 400 16px/var(--rule) "Newsreader", Georgia, serif !important; }
+.pl-m { font: 700 22px "Caveat", cursive !important; color: var(--redpen) !important; }
+.homecard h1, .done-card h1, .pathlist h1 { font: 400 32px/calc(var(--rule) * 1.25) "Permanent Marker", cursive !important; margin: 4px 0 !important; }
+.homecard .mins { margin: 0 0 4px -10px; }
+
+/* progress: a highlighter stroke, study days as circled ticks */
+.bar { height: 14px !important; border-radius: 2px !important; background: transparent !important; border: 1.5px solid var(--pen); overflow: hidden; }
+.bar span { border-radius: 0 !important; background: repeating-linear-gradient(-55deg, rgba(192,57,43,.85) 0 3px, rgba(192,57,43,.55) 3px 6px) !important; }
+.week span { border: 2px dashed rgba(34,32,28,.35) !important; }
+.week span.on { border: 0 !important; background: var(--tick) center / 70% no-repeat, var(--circle) center / 120% 110% no-repeat !important; }
+
+/* the lesson bar is a strip of paper; segments are pencil marks */
+.lessonbar { background: #fffef8 url(tex/paper.jpg) !important; backdrop-filter: none !important; border-bottom: 0 !important; box-shadow: 0 6px 10px -6px rgba(40,25,10,.25); border-radius: 0 0 4px 4px; }
+.lb-t { font: 400 19px "Caveat", cursive !important; }
+.seg { height: 6px !important; border-radius: 2px !important; background: rgba(43,43,51,.18) !important; }
+.seg-done { background: var(--redpen) !important; }
+.seg-on { background: rgba(245,197,24,.9) !important; box-shadow: none !important; height: 10px !important; }
+.navarrow { border: 0 !important; background: none !important; font: 700 34px/1 "Caveat", cursive !important; }
+.planstrip { background: #fff6b8 !important; border: 0 !important; border-radius: 0 !important; box-shadow: 0 6px 8px -6px rgba(40,25,10,.3); font: 400 18px "Caveat", cursive !important; rotate: -.2deg; }
+.planstrip-done { background: #d8f0cf !important; }
+.ps-k { font: 700 18px "Caveat", cursive !important; letter-spacing: 0 !important; text-transform: none !important; }
+
+/* the lesson text and other reading sit on the rules */
+.prose { font: 400 18px/var(--rule) "Newsreader", Georgia, serif !important; }
+.prose h3 { margin: var(--rule) 0 0 !important; font: 700 26px/var(--rule) "Caveat", cursive !important; }
+.prose h3:first-child { margin-top: 0 !important; }
+.prose p, .prose ul { margin: 0 0 var(--rule) !important; }
+.prose li { margin: 0 !important; }
+.prose .dmath { margin: 0 0 var(--rule) !important; padding: 8px 10px !important; background: none !important; border-left: 3px solid rgba(245,197,24,.8) !important; border-radius: 0 !important; }
+.prose .callout { background: #fff3a8 !important; border-radius: 0 !important; rotate: -.4deg; padding: 6px 16px !important; box-shadow: 0 8px 10px -8px rgba(40,25,10,.35); font: 400 21px/var(--rule) "Caveat", cursive !important; }
+.prose .callout .katex { font-size: .85em; }
+.quiz .qq, .practice p, .review .qq { font: 500 18px/var(--rule) "Newsreader", Georgia, serif !important; margin: 0 0 4px !important; }
+.lessontext .hint { margin-top: 0 !important; }
+
+/* path list: a numbered list in pen */
+.step { border-radius: 0 !important; padding: 0 4px !important; min-height: calc(var(--rule) * 2); align-items: center !important; }
+.step:hover { background: none !important; } .step:hover .sname { text-decoration: underline wavy rgba(34,32,28,.35) 1.5px; text-underline-offset: 5px; }
+.sn { border: 0 !important; background: none !important; color: var(--redpen) !important; font: 700 22px "Caveat", cursive !important; }
+.step-done .sn { background: var(--tick) center / 80% no-repeat !important; color: transparent !important; }
+.step-now { background: none !important; } .step-now .sname { background: linear-gradient(transparent 55%, rgba(245,197,24,.55) 55% 92%, transparent 92%); }
+.step-now .sn { background: var(--circle) center / 130% 120% no-repeat !important; color: var(--redpen) !important; }
+.sname { font: 600 17px/var(--rule) "Newsreader", Georgia, serif !important; } .smeta { font: 400 16px/1 "Caveat", cursive !important; }
+
+/* stickies and explainers keep their paper; explainer cards become polaroid-ish index cards */
+.xcard { border: 0 !important; border-radius: 2px !important; background: #fffef8 url(tex/paper.jpg) !important; box-shadow: 0 8px 14px -6px rgba(40,25,10,.3) !important; }
+.xcard:nth-child(odd) { rotate: -.6deg; } .xcard:nth-child(even) { rotate: .5deg; }
+.xt { font: 600 16px/1.3 "Newsreader", Georgia, serif !important; } .xf { font: 400 17px "Caveat", cursive !important; }
+.g3d-wrap { border-radius: 2px !important; border: 10px solid #fffef8 !important; box-shadow: 0 12px 24px -8px rgba(40,25,10,.35) !important; rotate: -.2deg; }
+.gp-head h1, .explore h1 { font-family: "Permanent Marker", cursive; }
