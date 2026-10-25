@@ -21,6 +21,7 @@ Run:    python3 courses/pora/build.py           validate, then write every outpu
 
 from __future__ import annotations
 
+import html
 import json
 import re
 import sys
@@ -45,6 +46,89 @@ def page_id(name: str) -> str:
     return s[0].upper() + s[1:]
 
 
+# ── Math and full lessons ──────────────────────────────────────────────
+# study.json writes math as TeX between $...$. The prototype renders it with KaTeX;
+# the wiki, the atlas and the Brain University app show plain text, so detex() turns
+# the TeX back into readable Unicode for them.
+TEX_SYMBOLS = {"\\theta": "θ", "\\omega": "ω", "\\delta": "δ", "\\tau": "τ", "\\pi": "π", "\\partial": "∂", "\\int": "∫",
+               "\\times": "×", "\\approx": "≈", "\\neq": "≠", "\\in": "∈", "\\top": "T", "\\|": "‖",
+               "\\sin": "sin", "\\cos": "cos", "\\operatorname{atan2}": "atan2", "\\,": " ", "\\ ": " "}
+
+
+def detex(t: str) -> str:
+    def one(m):
+        x = m.group(1)
+        x = re.sub(r"\\frac\{([^{}]*)\}\{([^{}]*)\}", r"(\1)/(\2)", x)
+        x = re.sub(r"\\sqrt\{([^{}]*)\}", r"√(\1)", x)
+        # \dot x, \dot{x}, \ddot\theta: the letter with a combining dot (or two) above it
+        for cmd, mark in (("ddot", "\u0308"), ("dot", "\u0307")):
+            x = re.sub(r"\\" + cmd + r"\s*\{?\s*(\\?[A-Za-z]+)(?:\s*\})?",
+                       lambda k: TEX_SYMBOLS.get(k.group(1), k.group(1)) + mark, x)
+        for k, v in sorted(TEX_SYMBOLS.items(), key=lambda kv: -len(kv[0])):
+            x = x.replace(k, v)
+        x = re.sub(r"\\(sin|cos)(?=[^\sA-Za-z])", r"\\\1 ", x)
+        x = x.replace("{", "").replace("}", "")
+        return re.sub(r"\s+", " ", x).strip()
+    return re.sub(r"\$([^$]+)\$", one, t).replace("`", "")
+
+
+LESSONS = HERE / "lessons"
+YT_ID = re.compile(r"^[\w-]{11}$")
+
+
+def inline_md(t: str) -> str:
+    """Escape text and apply **bold**, *em* and `code`, leaving $...$ math untouched for KaTeX."""
+    out = []
+    for k, part in enumerate(re.split(r"(\$\$.+?\$\$|\$[^$]+\$)", t)):
+        if k % 2:
+            out.append(part)
+            continue
+        part = html.escape(part, quote=False)
+        part = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", part)
+        part = re.sub(r"(?<![*\w])\*(?!\s)(.+?)(?<!\s)\*(?![*\w])", r"<em>\1</em>", part)
+        part = re.sub(r"`([^`]+)`", r"<code>\1</code>", part)
+        out.append(part)
+    return "".join(out)
+
+
+def md_html(src: str) -> str:
+    """The small Markdown the lessons use: ## headings, paragraphs, lists, > callouts, $$ display math."""
+    blocks, out = re.split(r"\n\s*\n", src.strip()), []
+    for b in blocks:
+        b = b.strip()
+        if b.startswith("## "):
+            out.append(f"<h3>{inline_md(b[3:].strip())}</h3>")
+        elif b.startswith("$$") and b.endswith("$$"):
+            out.append(f'<div class="dmath">{b}</div>')
+        elif b.startswith("> "):
+            out.append(f'<aside class="callout">{inline_md(" ".join(l[2:] if l.startswith("> ") else l for l in b.splitlines()))}</aside>')
+        elif all(l.startswith("- ") for l in b.splitlines()):
+            out.append("<ul>" + "".join(f"<li>{inline_md(l[2:])}</li>" for l in b.splitlines()) + "</ul>")
+        else:
+            out.append(f"<p>{inline_md(' '.join(b.splitlines()))}</p>")
+    return "\n".join(out)
+
+
+def lesson_file(cid: str):
+    """courses/pora/lessons/<id>.md: a front matter of short videos, then the lesson in Markdown."""
+    f = LESSONS / f"{cid}.md"
+    if not f.exists():
+        return None
+    text = f.read_text()
+    m = re.match(r"---\n(.*?)\n---\n(.*)", text, re.S)
+    if not m:
+        fail([f"{f.relative_to(ROOT)}: needs a --- front matter block listing its videos"])
+    videos = []
+    for line in m.group(1).splitlines():
+        if not line.startswith("video:"):
+            continue
+        bits = [x.strip() for x in line[6:].split("|")]
+        if len(bits) < 4 or not YT_ID.match(bits[0]) or not re.match(r"^\d+:\d\d(:\d\d)?$", bits[-1]):
+            fail([f"{f.relative_to(ROOT)}: video lines are 'id | title | channel | m:ss', got {line!r}"])
+        videos.append({"id": bits[0], "t": " | ".join(bits[1:-2]), "ch": bits[-2], "len": bits[-1]})
+    return {"videos": videos, "html": md_html(m.group(2))}
+
+
 def load() -> dict:
     d = json.loads((HERE / "pora.json").read_text())
     study = json.loads((HERE / "study.json").read_text())
@@ -54,6 +138,13 @@ def load() -> dict:
         c.setdefault("lectures", [])
         c.setdefault("related", [])
         c.update(study.get(c["id"], {}))
+        if "points" in c:
+            # keep the TeX for the prototype; everything else gets readable plain text
+            c["tex"] = {"points": c["points"], "check": dict(c["check"]), "tryIt": c["tryIt"]}
+            c["points"] = [detex(p) for p in c["points"]]
+            c["check"] = {**c["check"], "q": detex(c["check"]["q"]), "choices": [detex(x) for x in c["check"]["choices"]], "why": detex(c["check"]["why"])}
+            c["tryIt"] = detex(c["tryIt"])
+        c["lesson"] = lesson_file(c["id"])
     extra = set(study) - {c["id"] for c in d["concepts"]}
     if extra:
         fail([f"study.json has entries for unknown concepts: {sorted(extra)}"])
@@ -393,11 +484,16 @@ def prototype_data(d: dict) -> str:
     L = d["lectures"]
     C = {}
     for c in d["concepts"]:
-        C[c["id"]] = {"n": c["name"], "w": c["wiki"], "c": c["ch"], "p": c["prereqs"], "s": c["summary"], "i": c["points"],
-                      "q": [c["check"]["q"], c["check"]["choices"], c["check"]["correct"], c["check"]["why"]],
-                      "t": c["tryIt"],
+        T = c["tex"]
+        C[c["id"]] = {"n": c["name"], "w": c["wiki"], "c": c["ch"], "p": c["prereqs"], "s": c["summary"], "i": T["points"],
+                      "q": [T["check"]["q"], T["check"]["choices"], T["check"]["correct"], T["check"]["why"]],
+                      "t": T["tryIt"],
                       "L": [{"title": L[k]["title"], "course": L[k]["course"], "n": L[k]["n"], "url": L[k]["url"]} for k in c["lectures"]],
                       "N": [{"title": ex_title(e), "colab": d["exerciseBase"]["colab"] + e} for e in c["exercises"]]}
+    for c in d["concepts"]:
+        if c["lesson"]:
+            C[c["id"]]["T"] = c["lesson"]["html"]
+            C[c["id"]]["V"] = c["lesson"]["videos"]
     for cid, links in research_links(C).items():
         C[cid]["R"] = links
     out = {"C": C,

@@ -11,6 +11,19 @@ const html = htm.bind(h);
 const KEY = "brainu-prototype-v1";
 const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes", "wrong", "tick"];
 const trunc = (t, n) => (t.length > n ? t.slice(0, n - 1) + "…" : t);
+// Math: course text writes TeX between $...$; KaTeX (vendored, loaded before this module)
+// turns it into typeset math. Plain parts are escaped; `code` becomes <code>.
+const escHtml = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function tex(s, isHtml) {
+  const K = window.katex;
+  return String(s ?? "").split(/(\$\$[\s\S]+?\$\$|\$[^$]+\$)/).map((part, k) => {
+    if (!(k % 2)) return isHtml ? part : escHtml(part).replace(/`([^`]+)`/g, "<code>$1</code>");
+    const disp = part.startsWith("$$"), src = disp ? part.slice(2, -2) : part.slice(1, -1);
+    if (!K) return escHtml(src);
+    try { return K.renderToString(src, { displayMode: disp, throwOnError: false, output: "html" }); } catch (e) { return escHtml(src); }
+  }).join("");
+}
+const M = ({ t, as = "span", cls }) => h(as, { class: cls, dangerouslySetInnerHTML: { __html: tex(t) } });
 const reduceMotion = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // ── course logic ────────────────────────────────────────────────────
@@ -69,7 +82,7 @@ function Spark({ from, to }) {
 function CourseMap({ D, known = [], goals = [], steps = [], current = -1, done = {}, compact = false, pulse = null, onPick }) {
   const L = useMemo(() => layoutFor(D), [D]), ids = Object.keys(D.C), K = new Set(known), at = {};
   steps.forEach((id, k) => (at[id] = k));
-  const state = (id) => goals.includes(id) ? "goal" : id in at ? (at[id] === current ? "now" : done[id] ? "done" : "path") : K.has(id) ? "known" : "dim";
+  const state = (id) => id in at && at[id] === current ? "now" : goals.includes(id) ? "goal" : id in at ? (done[id] ? "done" : "path") : K.has(id) ? "known" : "dim";
   const f = (v) => v.toFixed(1), grow = compact ? 1.45 : 1;
   // Beside a lesson the map zooms to your path so the pins are big enough to read and tap.
   let vb = "0 0 610 420";
@@ -242,8 +255,8 @@ function PathPage({ D, S, P, set }) {
 function Lesson({ D, S, P, set, n }) {
   const C = D.C, steps = P.steps, total = steps.length, i = Math.max(0, Math.min(n, total - 1)), id = steps[i], c = C[id];
   const prev = i > 0 ? C[steps[i - 1]] : null, next = i < total - 1 ? C[steps[i + 1]] : null;
-  const [video, setVideo] = useState(null), [picked, setPicked] = useState(null), [checked, setChecked] = useState(false), [playing, setPlaying] = useState(false), [pulse, setPulse] = useState(null);
-  useEffect(() => { setPicked(null); setChecked(false); setPlaying(false); if (S.i !== i || !S.started) set({ i, started: true }); window.scrollTo(0, 0); }, [id]);
+  const [sel, setSel] = useState(0), [video, setVideo] = useState(null), [picked, setPicked] = useState(null), [checked, setChecked] = useState(false), [playing, setPlaying] = useState(false), [pulse, setPulse] = useState(null);
+  useEffect(() => { setSel(0); setPicked(null); setChecked(false); setPlaying(false); if (S.i !== i || !S.started) set({ i, started: true }); window.scrollTo(0, 0); }, [id]);
   const [qq, choices, correct, why] = c.q, ok = picked === correct;
   const check = () => {
     setChecked(true);
@@ -252,7 +265,11 @@ function Lesson({ D, S, P, set, n }) {
     if (ok && next) setPulse({ from: i, key: Date.now() });
   };
   const L = c.L[0], nbk = c.N[0], ch = c.c == null ? null : D.CH[c.c];
-  const yt = L && (String(L.url).match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/) || [])[1];
+  // Short explainers first; the full Stanford class recording stays one tap away.
+  const ytOf = (u) => (String(u).match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/) || [])[1];
+  const vids = [...(c.V || []).map((v) => ({ yt: v.id, title: v.t, by: v.ch, len: v.len })),
+    ...c.L.map((l) => ({ yt: ytOf(l.url), title: l.title, by: "Stanford " + l.course + " · lecture " + l.n, len: "full class", url: l.url, full: true }))];
+  const vi = Math.min(sel, Math.max(0, vids.length - 1)), V = vids[vi], yt = V && V.yt;
   const kicker = c.c == null ? "Background the book assumes" : c.c === 0 ? "Getting started" : "Chapter " + c.c + " · " + ch.title;
   const retry = Object.keys(S.wrong || {}).filter((w) => steps.includes(w));
   const noted = steps.filter((k) => ((S.notes || {})[k] || "").trim()).length;
@@ -270,24 +287,30 @@ function Lesson({ D, S, P, set, n }) {
         <section class="board" data-medium="charcoal" data-theme="dark" aria-labelledby="lt">
           <div class="chalk"><span class="ch-kick">${kicker}</span>
           <h1 id="lt" class="ch-title">${c.n}</h1>
-          <p class="ch-sum">${c.s}</p></div>
-          ${L ? html`<figure class="video">
-              <div class="screen">${playing && yt ? html`<iframe src=${`https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&rel=0&modestbranding=1`} title=${L.title} allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
-                : html`<button class="play" onClick=${() => setPlaying(true)} aria-label=${"Play " + L.title} style=${yt ? { backgroundImage: `url(https://i.ytimg.com/vi/${yt}/hqdefault.jpg)` } : null}><span>▶</span></button>`}</div>
-              <figcaption class="chalk">Stanford ${L.course} · lecture ${L.n}: ${L.title} <a href=${L.url} target="_blank" rel="noopener">open on YouTube ↗</a></figcaption></figure>`
-            : html`<p class="ch-note">No lecture covers this one. The key ideas and the chapter below have it.</p>`}
+          <${M} as="p" cls="ch-sum" t=${c.s} /></div>
+          ${V ? html`<figure class="video">
+              <div class="screen">${playing && yt ? html`<iframe key=${yt} src=${`https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&rel=0&modestbranding=1`} title=${V.title} allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
+                : html`<button class="play" onClick=${() => setPlaying(true)} aria-label=${"Play " + V.title} style=${yt ? { backgroundImage: `url(https://i.ytimg.com/vi/${yt}/hqdefault.jpg)` } : null}><span>▶</span></button>`}</div>
+              <figcaption class="chalk">${V.title} · ${V.by} · ${V.len} <a href=${V.url || "https://youtu.be/" + yt} target="_blank" rel="noopener">YouTube ↗</a></figcaption>
+              ${vids.length > 1 ? html`<div class="vpick" role="group" aria-label="Videos for this lesson">${vids.map((v, k) => html`<button key=${v.yt + k} aria-pressed=${k === vi} class=${k === vi ? "on" : ""} onClick=${() => { setSel(k); setPlaying(true); }}>
+                <span class="vp-k">${v.full ? "Full Stanford class" : (k === 0 ? "Start here" : "Also good") + " · " + v.len}</span><span class="vp-t">${v.title}</span><span class="vp-b">${v.by}</span></button>`)}</div>` : null}</figure>`
+            : html`<p class="ch-note">No video for this one yet. The lesson below and the book chapter have it.</p>`}
           <div class="chalk"><h2 class="ch-h">Key ideas</h2>
-          <ol class="ideas">${c.i.map((t, k) => html`<li key=${k}>${t}</li>`)}</ol></div>
+          <ol class="ideas">${c.i.map((t, k) => html`<li key=${k}><${M} t=${t} /></li>`)}</ol></div>
         </section>
+
+        ${c.T ? html`<article class="card lessontext" aria-labelledby="lx"><h2 id="lx">The lesson</h2>
+          <div class="prose" dangerouslySetInnerHTML=${{ __html: tex(c.T, true) }}></div>
+          <p class="hint">Written for this companion from Principles of Robot Autonomy${ch ? ", chapter " + c.c : ""}. Read the chapter for the full treatment.</p></article>` : null}
 
         <section class="card quiz" aria-labelledby="qz">
           <h2 id="qz">Check yourself</h2>
-          <p class="qq">${qq}</p>
+          <${M} as="p" cls="qq" t=${qq} />
           <div role="radiogroup" aria-labelledby="qz" class="qopts">${choices.map((t, k) => {
             const cls = checked ? (k === correct ? " qopt-right" : k === picked ? " qopt-wrong" : "") : picked === k ? " qopt-on" : "";
             return html`<button key=${k} class=${"qopt" + cls} role="radio" aria-checked=${picked === k} disabled=${checked} onClick=${() => setPicked(k)}>
-              <span class="qm">${checked && k === correct ? "✓" : checked && k === picked ? "✗" : "ABCD"[k]}</span><span>${t}</span></button>`; })}</div>
-          ${checked ? html`<div class=${"feedback " + (ok ? "fb-ok" : "fb-no")} role="status"><b>${ok ? "Right." : "Not quite."}</b> ${why}${ok ? "" : html` <em>It's on your retry list for later.</em>`}</div>` : null}
+              <span class="qm">${checked && k === correct ? "✓" : checked && k === picked ? "✗" : "ABCD"[k]}</span><${M} t=${t} /></button>`; })}</div>
+          ${checked ? html`<div class=${"feedback " + (ok ? "fb-ok" : "fb-no")} role="status"><b>${ok ? "Right." : "Not quite."}</b> <${M} t=${why} />${ok ? "" : html` <em>It's on your retry list for later.</em>`}</div>` : null}
           <div class="row">
             ${!checked ? html`<button class="am-button" disabled=${picked === null} onClick=${check}>Check answer</button>`
               : html`<a class="am-button" href=${next ? "#/lesson/" + (i + 2) : "#/done"}>${next ? "Next: " + trunc(next.n, 32) + " →" : "Finish the path ★"}</a>
@@ -298,7 +321,7 @@ function Lesson({ D, S, P, set, n }) {
 
         <section class="card practice" aria-labelledby="pr">
           <h2 id="pr">Practice</h2>
-          <p>${c.t}</p>
+          <${M} as="p" t=${c.t} />
           <div class="row">
             ${nbk ? html`<a class="am-button am--secondary" href=${nbk.colab} target="_blank" rel="noopener">Open the ${nbk.title} notebook in Colab ↗</a>` : null}
             <a class="linkish" href=${ch ? ch.url : "https://porabook.com/book/"} target="_blank" rel="noopener">Read ${c.c == null ? "the book" : "chapter " + c.c} on porabook.com ↗</a>
@@ -311,6 +334,7 @@ function Lesson({ D, S, P, set, n }) {
           <div class="side-head"><h2 id="ym">Your map</h2><span>${P.steps.filter((x) => S.done[x]).length} of ${total} passed</span></div>
           <div class="cork cork-xs"><${CourseMap} D=${D} known=${P.known} goals=${S.goal} steps=${steps} current=${i} done=${S.done} compact pulse=${pulse} onPick=${go} /></div>
           <${Legend} items=${[["gl-now", "you're here"], ["gl-d", "passed"], ["gl-p", "to do"], ["gl-g", "goal"]]} />
+          <p class="nextup">${next ? html`Next up: <a href=${"#/lesson/" + (i + 2)}>${next.n}</a>` : html`Last lesson. <a href="#/done">Finish the path ★</a>`}</p>
         </section>
 
         <section class="card notes" aria-labelledby="nt">

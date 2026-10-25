@@ -23,7 +23,7 @@ Kinematic models relate velocities to motion and ignore forces; dynamic models i
 2. A dynamic model takes forces or torques as inputs and includes mass and inertia, so velocities become states that cannot change instantly.
 3. Kinematic models suffice at low speeds and accelerations where actuators track commanded velocities well; at high speed, tire slip and inertia make dynamic models necessary.
 
-Try it: Simulate a 1D cart both as x_dot = v (kinematic) and as x_ddot = (u - b x_dot)/m (dynamic) for a step command, and plot how the dynamic one lags.
+Try it: Simulate a 1D cart both as ẋ = v (kinematic) and as ẍ = (u - bẋ)/m (dynamic) for a step command, and plot how the dynamic one lags.
 
 Needs first: [[State_space_model]]
 

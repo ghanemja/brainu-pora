@@ -1,22 +1,22 @@
 {
  "linear_algebra": {
   "points": [
-   "A matrix is a linear map: A x mixes the columns of A weighted by the entries of x, so rank tells you how many independent directions the map can reach.",
-   "Eigenvalues of A govern repeated application: x_{k+1} = A x_k decays to zero exactly when every eigenvalue has magnitude less than 1.",
-   "When A x = b has no exact solution (more equations than unknowns), least squares picks x minimizing ||A x - b||^2, given by the normal equations A^T A x = A^T b."
+   "A matrix is a linear map: $Ax$ mixes the columns of $A$ weighted by the entries of $x$, so rank tells you how many independent directions the map can reach.",
+   "Eigenvalues of $A$ govern repeated application: $x_{k+1} = A x_k$ decays to zero exactly when every eigenvalue has magnitude less than 1.",
+   "When $Ax = b$ has no exact solution (more equations than unknowns), least squares picks $x$ minimizing $\\|Ax - b\\|^2$, given by the normal equations $A^\\top A x = A^\\top b$."
   ],
   "check": {
-   "q": "You fit a line to 50 noisy measurements by solving A x = b with A of size 50×2. Why can't you just invert A?",
+   "q": "You fit a line to 50 noisy measurements by solving $Ax = b$ with $A$ of size $50 \\times 2$. Why can't you just invert $A$?",
    "choices": [
-    "A is not square, so it has no inverse; least squares finds the x that best fits all rows",
-    "A is singular because the noise makes its columns linearly dependent on each other",
+    "$A$ is not square, so it has no inverse; least squares finds the $x$ that best fits all rows",
+    "$A$ is singular because the noise makes its columns linearly dependent on each other",
     "Inversion works but is slower than least squares, which gives the same exact solution",
     "The inverse exists but amplifies noise, so least squares discards half of the rows"
    ],
    "correct": 0,
-   "why": "A tall 50×2 matrix has no inverse and the overdetermined system generally has no exact solution; least squares minimizes the residual. Noise does not make the columns dependent."
+   "why": "A tall $50 \\times 2$ matrix has no inverse and the overdetermined system generally has no exact solution; least squares minimizes the residual. Noise does not make the columns dependent."
   },
-  "tryIt": "In NumPy, generate y = 2t + 1 plus noise for 50 points, build A = [t, 1], and compare np.linalg.lstsq(A, y) with solving A^T A x = A^T y directly."
+  "tryIt": "In NumPy, generate $y = 2t + 1$ plus noise for 50 points, build $A = [t,\\ 1]$, and compare `np.linalg.lstsq(A, y)` with solving $A^\\top A x = A^\\top y$ directly."
  },
  "probability": {
   "points": [
@@ -39,22 +39,22 @@
  },
  "odes": {
   "points": [
-   "An ODE x_dot = f(x, u) specifies how the state changes at each instant; given an initial condition and input history, it determines the whole future trajectory (under mild smoothness conditions).",
-   "The Jacobian ∂f/∂x is the matrix of partial derivatives; it gives the best linear approximation f(x + δx) ≈ f(x) + (∂f/∂x) δx near a point.",
-   "Equilibria satisfy f(x*, u*) = 0; for the scalar ODE x_dot = a x the solution is x(t) = e^{a t} x(0), which decays if a < 0 and grows if a > 0."
+   "An ODE $\\dot x = f(x, u)$ specifies how the state changes at each instant; given an initial condition and input history, it determines the whole future trajectory (under mild smoothness conditions).",
+   "The Jacobian $\\partial f/\\partial x$ is the matrix of partial derivatives; it gives the best linear approximation $f(x + \\delta x) \\approx f(x) + \\frac{\\partial f}{\\partial x}\\,\\delta x$ near a point.",
+   "Equilibria satisfy $f(x^*, u^*) = 0$; for the scalar ODE $\\dot x = a x$ the solution is $x(t) = e^{a t} x(0)$, which decays if $a < 0$ and grows if $a > 0$."
   ],
   "check": {
-   "q": "For x_dot = -2x + u with u = 0 and x(0) = 3, what happens to x(t)?",
+   "q": "For $\\dot x = -2x + u$ with $u = 0$ and $x(0) = 3$, what happens to $x(t)$?",
    "choices": [
-    "It grows exponentially as 3 e^{2t}",
-    "It oscillates around 0 with period π",
-    "It decays exponentially to 0 as 3 e^{-2t}",
-    "It decreases linearly and reaches 0 at t = 1.5"
+    "It grows exponentially as $3e^{2t}$",
+    "It oscillates around 0 with period $\\pi$",
+    "It decays exponentially to 0 as $3e^{-2t}$",
+    "It decreases linearly and reaches 0 at $t = 1.5$"
    ],
    "correct": 2,
-   "why": "The solution of x_dot = a x is x(0) e^{a t}; with a = -2 it decays exponentially. Linear decrease would require a constant rate, not one proportional to x."
+   "why": "The solution of $\\dot x = a x$ is $x(0)e^{a t}$; with $a = -2$ it decays exponentially. Linear decrease would require a constant rate, not one proportional to x."
   },
-  "tryIt": "Compute the Jacobian of f(x) = [x2, -sin(x1)] (a pendulum) by hand, then check it at x = (0, 0) against finite differences in NumPy."
+  "tryIt": "Compute the Jacobian of $f(x) = (x_2,\\ -\\sin x_1)$ (a pendulum) by hand, then check it at $x = (0, 0)$ against finite differences in NumPy."
  },
  "optimization": {
   "points": [
@@ -115,12 +115,12 @@
  },
  "state_space": {
   "points": [
-   "The state x is the smallest set of variables that, together with future inputs u, determines the future evolution; dynamics are written x_dot = f(x, u) or x_{k+1} = f(x_k, u_k).",
-   "A higher-order ODE becomes first-order state-space form by stacking derivatives: m q_ddot = u becomes x = (q, q_dot) with x_dot = (q_dot, u/m).",
-   "Linear time-invariant models x_dot = A x + B u, y = C x are the special case where controllability, stability, and estimation have clean matrix tests."
+   "The state $x$ is the smallest set of variables that, together with future inputs $u$, determines the future evolution; dynamics are written $\\dot x = f(x, u)$ or $x_{k+1} = f(x_k, u_k)$.",
+   "A higher-order ODE becomes first-order state-space form by stacking derivatives: $m\\ddot q = u$ becomes $x = (q, \\dot q)$ with $\\dot x = (\\dot q,\\ u/m)$.",
+   "Linear time-invariant models $\\dot x = Ax + Bu$, $y = Cx$ are the special case where controllability, stability, and estimation have clean matrix tests."
   ],
   "check": {
-   "q": "For a mass on a frictionless track pushed by force u, why is position alone not a valid state?",
+   "q": "For a mass on a frictionless track pushed by force $u$, why is position alone not a valid state?",
    "choices": [
     "Because force must always be included in the state vector",
     "Because position is not measurable, so it cannot be a state",
@@ -128,9 +128,9 @@
     "Because state vectors must have at least three components"
    ],
    "correct": 2,
-   "why": "Knowing position and the future force does not determine motion unless velocity is known, so the state is (q, q_dot). Inputs like force are not part of the state."
+   "why": "Knowing position and the future force does not determine motion unless velocity is known, so the state is $(q, \\dot q)$. Inputs like force are not part of the state."
   },
-  "tryIt": "Write the pendulum m l^2 θ_ddot = -m g l sin θ + u in the form x_dot = f(x, u) with x = (θ, θ_dot)."
+  "tryIt": "Write the pendulum $m l^2 \\ddot\\theta = -m g l \\sin\\theta + u$ in the form $\\dot x = f(x, u)$ with $x = (\\theta, \\dot\\theta)$."
  },
  "kinematic_models": {
   "points": [
@@ -149,7 +149,7 @@
    "correct": 3,
    "why": "Kinematic models treat velocity as directly commanded, so they assume instant speed changes; the lag comes from mass and limited force. Kinematic car models still include heading and the no-slip constraint."
   },
-  "tryIt": "Simulate a 1D cart both as x_dot = v (kinematic) and as x_ddot = (u - b x_dot)/m (dynamic) for a step command, and plot how the dynamic one lags."
+  "tryIt": "Simulate a 1D cart both as $\\dot x = v$ (kinematic) and as $\\ddot x = (u - b\\dot x)/m$ (dynamic) for a step command, and plot how the dynamic one lags."
  },
  "nonholonomic": {
   "points": [
@@ -248,46 +248,46 @@
  },
  "differential_flatness": {
   "points": [
-   "A system is differentially flat if there exist outputs z (the flat outputs) such that every state and input can be written as a function of z and finitely many of its derivatives.",
-   "For the unicycle, z = (x, y) is flat: v = sqrt(x_dot^2 + y_dot^2), θ = atan2(y_dot, x_dot), and ω follows from second derivatives, valid while v ≠ 0.",
-   "Planning becomes curve fitting: choose smooth z(t) (e.g. polynomials) meeting boundary conditions, and the dynamics are satisfied automatically."
+   "A system is differentially flat if there exist outputs $z$ (the flat outputs) such that every state and input can be written as a function of $z$ and finitely many of its derivatives.",
+   "For the unicycle, $z = (x, y)$ is flat: $v = \\sqrt{\\dot x^2 + \\dot y^2}$, $\\theta = \\operatorname{atan2}(\\dot y, \\dot x)$, and $\\omega$ follows from second derivatives, valid while $v \\neq 0$.",
+   "Planning becomes curve fitting: choose smooth $z(t)$ (e.g. polynomials) meeting boundary conditions, and the dynamics are satisfied automatically."
   ],
   "check": {
-   "q": "Using flatness for a unicycle, you fit a polynomial path that stops partway with x_dot = y_dot = 0. What goes wrong at that instant?",
+   "q": "Using flatness for a unicycle, you fit a polynomial path that stops partway with $\\dot x = \\dot y = 0$. What goes wrong at that instant?",
    "choices": [
     "Nothing, since flatness guarantees all states are defined everywhere",
-    "The heading θ = atan2(y_dot, x_dot) becomes undefined, so the map breaks down",
+    "The heading $\\theta = \\operatorname{atan2}(\\dot y, \\dot x)$ becomes undefined, so the map breaks down",
     "The position becomes discontinuous because the polynomial has zero slope",
     "The robot must slide sideways to keep following the planned path"
    ],
    "correct": 1,
-   "why": "The flat map for the unicycle is singular at zero speed, where heading cannot be recovered from velocity. Position stays continuous; the problem is recovering θ and ω."
+   "why": "The flat map for the unicycle is singular at zero speed, where heading cannot be recovered from velocity. Position stays continuous; the problem is recovering $\\theta$ and $\\omega$."
   },
-  "tryIt": "Pick x(t) = t, y(t) = t^2 for t in [0, 1] and compute the unicycle's v(t), θ(t), and ω(t) from the flat outputs."
+  "tryIt": "Pick $x(t) = t$, $y(t) = t^2$ for $t \\in [0, 1]$ and compute the unicycle's $v(t)$, $\\theta(t)$ and $\\omega(t)$ from the flat outputs."
  },
  "pid": {
   "points": [
-   "PID control sets u = Kp e + Ki ∫ e dt + Kd de/dt, where e is the tracking error; each term handles present, past, and predicted error.",
+   "PID control sets $u = K_p e + K_i \\int e\\,dt + K_d\\,\\dot e$, where $e$ is the tracking error; each term handles present, past, and predicted error.",
    "The integral term removes steady-state error from constant disturbances, but with actuator saturation it can wind up and cause overshoot, so anti-windup is used.",
    "The derivative term adds damping but amplifies sensor noise, so it is usually filtered or computed on the measurement rather than the error."
   ],
   "check": {
    "q": "A P-only controller holds a drone near but always slightly below its target altitude because gravity is not fully compensated. Which change fixes this steady offset?",
    "choices": [
-    "Increasing Kd to add more damping",
-    "Reducing Kp so the controller is less aggressive",
+    "Increasing $K_d$ to add more damping",
+    "Reducing $K_p$ so the controller is less aggressive",
     "Adding an integral term so accumulated error builds up thrust",
     "Filtering the altitude measurement more heavily"
    ],
    "correct": 2,
    "why": "A constant disturbance needs a nonzero steady input at zero error, which only integral action provides. Derivative gain affects transients, not steady-state offset."
   },
-  "tryIt": "Simulate x_dot = u - 1 (constant disturbance) with P control u = 2(1 - x) and then with PI, and compare the final value of x."
+  "tryIt": "Simulate $\\dot x = u - 1$ (constant disturbance) with P control $u = 2(1 - x)$ and then with PI, and compare the final value of $x$."
  },
  "linearization": {
   "points": [
-   "Around an equilibrium (x*, u*) with f(x*, u*) = 0, dynamics are approximated as δx_dot ≈ A δx + B δu, with A = ∂f/∂x and B = ∂f/∂u evaluated there.",
-   "Linearizing about a trajectory instead of a point gives time-varying A(t), B(t), which is what trajectory tracking and iLQR use.",
+   "Around an equilibrium $(x^*, u^*)$ with $f(x^*, u^*) = 0$, dynamics are approximated as $\\dot{\\delta x} \\approx A\\,\\delta x + B\\,\\delta u$, with $A = \\partial f/\\partial x$ and $B = \\partial f/\\partial u$ evaluated there.",
+   "Linearizing about a trajectory instead of a point gives time-varying $A(t)$, $B(t)$, which is what trajectory tracking and iLQR use.",
    "The approximation is only local: a controller designed on the linear model is guaranteed only near the linearization point, and automatic differentiation computes the Jacobians exactly to machine precision."
   ],
   "check": {
@@ -299,9 +299,9 @@
     "The linear model is only accurate near the linearization point, so large deviations break its assumptions"
    ],
    "correct": 3,
-   "why": "sin θ ≈ θ holds only for small deviations, so the design's guarantees are local. Autodiff Jacobians are exact; the issue is the linear model, not how it was computed."
+   "why": "$\\sin\\theta \\approx \\theta$ holds only for small deviations, so the design's guarantees are local. Autodiff Jacobians are exact; the issue is the linear model, not how it was computed."
   },
-  "tryIt": "Linearize the pendulum θ_ddot = -(g/l) sin θ + u about θ = 0 and θ = π, and compare the eigenvalues of A in each case."
+  "tryIt": "Linearize the pendulum $\\ddot\\theta = -(g/l)\\sin\\theta + u$ about $\\theta = 0$ and $\\theta = \\pi$, and compare the eigenvalues of $A$ in each case."
  },
  "lqr": {
   "points": [
@@ -324,12 +324,12 @@
  },
  "trajectory_tracking": {
   "points": [
-   "Tracking controllers combine a feedforward input u_d(t) from the plan with feedback on the error: u = u_d(t) + K(x_d(t) - x).",
+   "Tracking controllers combine a feedforward input $u_d(t)$ from the plan with feedback on the error: $u = u_d(t) + K(x_d(t) - x)$.",
    "Feedforward provides the input the model needs to follow the path; feedback corrects disturbances and model error, so neither alone suffices on a real robot.",
-   "For the unicycle, flatness supplies nominal (x_d, y_d) and their derivatives, and a tracking law can set virtual accelerations from position and velocity errors and map them back to v and ω."
+   "For the unicycle, flatness supplies nominal $(x_d, y_d)$ and their derivatives, and a tracking law can set virtual accelerations from position and velocity errors and map them back to $(a, \\omega)$."
   ],
   "check": {
-   "q": "A tracking controller uses only feedback u = K(x_d - x) with no feedforward. On a curved path, what do you typically see?",
+   "q": "A tracking controller uses only feedback $u = K(x_d - x)$ with no feedforward. On a curved path, what do you typically see?",
    "choices": [
     "Perfect tracking, since high-gain feedback removes all error",
     "A persistent lag behind the reference, since some error is needed to generate the required input",
@@ -339,7 +339,7 @@
    "correct": 1,
    "why": "Without feedforward the needed input must come from error, so the robot lags the moving reference. Pure feedback is not inherently unstable; it just tracks poorly."
   },
-  "tryIt": "Simulate a 1D double integrator tracking x_d = sin t with u = Kp e + Kd e_dot, with and without the feedforward term x_d_ddot = -sin t, and compare errors."
+  "tryIt": "Simulate a 1D double integrator tracking $x_d = \\sin t$ with $u = K_p e + K_d \\dot e$, with and without the feedforward term $\\ddot x_d = -\\sin t$, and compare errors."
  },
  "ilqr": {
   "points": [

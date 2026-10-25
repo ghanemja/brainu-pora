@@ -32,11 +32,11 @@ Linear assumption breaks for nonlinear plants. [[Lyapunov_stability]] analysis r
 
 ### Key ideas
 
-1. PID control sets u = Kp e + Ki ∫ e dt + Kd de/dt, where e is the tracking error; each term handles present, past, and predicted error.
+1. PID control sets u = K_p e + K_i ∫ e dt + K_d ė, where e is the tracking error; each term handles present, past, and predicted error.
 2. The integral term removes steady-state error from constant disturbances, but with actuator saturation it can wind up and cause overshoot, so anti-windup is used.
 3. The derivative term adds damping but amplifies sensor noise, so it is usually filtered or computed on the measurement rather than the error.
 
-Try it: Simulate x_dot = u - 1 (constant disturbance) with P control u = 2(1 - x) and then with PI, and compare the final value of x.
+Try it: Simulate ẋ = u - 1 (constant disturbance) with P control u = 2(1 - x) and then with PI, and compare the final value of x.
 
 Needs first: [[State_space_model]]
 

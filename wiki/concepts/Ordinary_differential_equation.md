@@ -17,11 +17,11 @@ Derivatives, Jacobians, and ordinary differential equations, used to describe ho
 
 ### Key ideas
 
-1. An ODE x_dot = f(x, u) specifies how the state changes at each instant; given an initial condition and input history, it determines the whole future trajectory (under mild smoothness conditions).
-2. The Jacobian ∂f/∂x is the matrix of partial derivatives; it gives the best linear approximation f(x + δx) ≈ f(x) + (∂f/∂x) δx near a point.
-3. Equilibria satisfy f(x*, u*) = 0; for the scalar ODE x_dot = a x the solution is x(t) = e^{a t} x(0), which decays if a < 0 and grows if a > 0.
+1. An ODE ẋ = f(x, u) specifies how the state changes at each instant; given an initial condition and input history, it determines the whole future trajectory (under mild smoothness conditions).
+2. The Jacobian ∂ f/∂ x is the matrix of partial derivatives; it gives the best linear approximation f(x + δ x) ≈ f(x) + (∂ f)/(∂ x) δ x near a point.
+3. Equilibria satisfy f(x^*, u^*) = 0; for the scalar ODE ẋ = a x the solution is x(t) = e^a t x(0), which decays if a < 0 and grows if a > 0.
 
-Try it: Compute the Jacobian of f(x) = [x2, -sin(x1)] (a pendulum) by hand, then check it at x = (0, 0) against finite differences in NumPy.
+Try it: Compute the Jacobian of f(x) = (x_2, -sin x_1) (a pendulum) by hand, then check it at x = (0, 0) against finite differences in NumPy.
 
 Unlocks: [[Numerical_optimization]], [[State_space_model]], [[Linearization]]
 

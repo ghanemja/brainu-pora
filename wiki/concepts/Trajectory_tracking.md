@@ -21,9 +21,9 @@ Close the loop around a planned trajectory so the robot follows it despite distu
 
 1. Tracking controllers combine a feedforward input u_d(t) from the plan with feedback on the error: u = u_d(t) + K(x_d(t) - x).
 2. Feedforward provides the input the model needs to follow the path; feedback corrects disturbances and model error, so neither alone suffices on a real robot.
-3. For the unicycle, flatness supplies nominal (x_d, y_d) and their derivatives, and a tracking law can set virtual accelerations from position and velocity errors and map them back to v and ω.
+3. For the unicycle, flatness supplies nominal (x_d, y_d) and their derivatives, and a tracking law can set virtual accelerations from position and velocity errors and map them back to (a, ω).
 
-Try it: Simulate a 1D double integrator tracking x_d = sin t with u = Kp e + Kd e_dot, with and without the feedforward term x_d_ddot = -sin t, and compare errors.
+Try it: Simulate a 1D double integrator tracking x_d = sin t with u = K_p e + K_d ė, with and without the feedforward term ẍ_d = -sin t, and compare errors.
 
 Needs first: [[PID_control]], [[Linearization]], [[Differential_flatness]]
 

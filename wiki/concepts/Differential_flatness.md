@@ -20,10 +20,10 @@ For some systems, all states and inputs follow from a few flat outputs and their
 ### Key ideas
 
 1. A system is differentially flat if there exist outputs z (the flat outputs) such that every state and input can be written as a function of z and finitely many of its derivatives.
-2. For the unicycle, z = (x, y) is flat: v = sqrt(x_dot^2 + y_dot^2), θ = atan2(y_dot, x_dot), and ω follows from second derivatives, valid while v ≠ 0.
+2. For the unicycle, z = (x, y) is flat: v = √(ẋ^2 + ẏ^2), θ = atan2(ẏ, ẋ), and ω follows from second derivatives, valid while v ≠ 0.
 3. Planning becomes curve fitting: choose smooth z(t) (e.g. polynomials) meeting boundary conditions, and the dynamics are satisfied automatically.
 
-Try it: Pick x(t) = t, y(t) = t^2 for t in [0, 1] and compute the unicycle's v(t), θ(t), and ω(t) from the flat outputs.
+Try it: Pick x(t) = t, y(t) = t^2 for t ∈ [0, 1] and compute the unicycle's v(t), θ(t) and ω(t) from the flat outputs.
 
 Needs first: [[Kinematic_vs_dynamic_models]]
 

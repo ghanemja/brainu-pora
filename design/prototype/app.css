@@ -423,3 +423,34 @@ body.am-canvas[data-medium], .am-card[data-medium="marker"] { --am-font-body: "B
 body.am-canvas[data-medium] { font-family: "Newsreader", Georgia, serif; }
 .cchip, .mini-play, .cp, .closest { font-family: "Bricolage Grotesque", sans-serif; }
 .cp span { font-family: "Newsreader", Georgia, serif; font-size: 14.5px; }
+
+/* ── the lesson text: a readable page, math typeset by KaTeX ── */
+.lessontext { padding: 26px 32px 22px; }
+.lessontext > h2 { margin-bottom: 6px; }
+.prose { max-width: 68ch; font: 400 18px/1.68 "Newsreader", Georgia, serif; }
+.prose h3 { margin: 22px 0 6px; font: 700 25px/1.15 "Caveat", cursive; color: var(--red); }
+.prose h3:first-child { margin-top: 4px; }
+.prose p { margin: 0 0 12px; }
+.prose ul { margin: 0 0 12px; padding-left: 22px; }
+.prose li { margin-bottom: 6px; }
+.prose .dmath { margin: 10px 0 16px; padding: 12px 14px; overflow-x: auto; border-radius: 8px; background: rgba(245,197,24,.12); border-left: 3px solid var(--sun); }
+.prose .callout { margin: 16px 0 6px; padding: 12px 16px; border-radius: 8px; background: var(--red-soft); font-size: 17px; }
+.prose code, .card code { font: 500 .88em ui-monospace, "SF Mono", Menlo, monospace; padding: 1px 5px; border-radius: 4px; background: rgba(34,32,28,.07); }
+.katex { font-size: 1.06em; }
+.board .katex { font-size: 1.02em; }
+.lessontext .hint { margin-top: 14px; }
+
+/* videos: short explainer first, the full class one tap away */
+.vpick { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-top: 12px; }
+.vpick button { display: flex; flex-direction: column; gap: 2px; text-align: left; padding: 8px 10px; border: 1.5px solid rgba(235,231,222,.28); border-radius: 8px; background: rgba(235,231,222,.06); color: #ebe7de; cursor: pointer; font-family: "Bricolage Grotesque", sans-serif; }
+.vpick button:hover { border-color: rgba(235,231,222,.6); }
+.vpick button.on { border-color: #f1d98a; background: rgba(241,217,138,.14); }
+.vp-k { font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #f1d98a; }
+.vp-t { font-size: 13.5px; font-weight: 600; line-height: 1.25; }
+.vp-b { font-size: 12px; opacity: .75; }
+.nextup { margin: 8px 0 0; font-size: 14.5px; text-align: center; }
+.nextup a { font-weight: 600; }
+
+/* question 2: keep the button in reach while you scroll the goals */
+.qcard .qfoot { position: sticky; bottom: 0; z-index: 2; margin: 6px -26px -18px -82px; padding: 10px 26px 14px 82px; background: linear-gradient(transparent, #fdfdf7 30%); }
+@media (max-width: 560px) { .qcard .qfoot { margin: 6px -16px -18px -76px; padding: 10px 16px 14px 76px; } }

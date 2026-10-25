@@ -31,11 +31,11 @@ y = Cx + Du
 
 ### Key ideas
 
-1. The state x is the smallest set of variables that, together with future inputs u, determines the future evolution; dynamics are written x_dot = f(x, u) or x_{k+1} = f(x_k, u_k).
-2. A higher-order ODE becomes first-order state-space form by stacking derivatives: m q_ddot = u becomes x = (q, q_dot) with x_dot = (q_dot, u/m).
-3. Linear time-invariant models x_dot = A x + B u, y = C x are the special case where controllability, stability, and estimation have clean matrix tests.
+1. The state x is the smallest set of variables that, together with future inputs u, determines the future evolution; dynamics are written ẋ = f(x, u) or x_k+1 = f(x_k, u_k).
+2. A higher-order ODE becomes first-order state-space form by stacking derivatives: mq̈ = u becomes x = (q, q̇) with ẋ = (q̇, u/m).
+3. Linear time-invariant models ẋ = Ax + Bu, y = Cx are the special case where controllability, stability, and estimation have clean matrix tests.
 
-Try it: Write the pendulum m l^2 θ_ddot = -m g l sin θ + u in the form x_dot = f(x, u) with x = (θ, θ_dot).
+Try it: Write the pendulum m l^2 θ̈ = -m g l sinθ + u in the form ẋ = f(x, u) with x = (θ, θ̇).
 
 Needs first: [[Linear_algebra]], [[Ordinary_differential_equation]]
 
