@@ -552,21 +552,24 @@ function Lesson({ D, S, P, set, n, part }) {
           <div class="chalk"><span class="ch-kick">${kicker}</span>
           <h1 id="lt" class="ch-title">${c.n}</h1>
           <${M} as="p" cls="ch-sum" t=${c.s} /></div>
-          ${V ? html`<figure class="video" id="part-watch">
-              <div class="screen">${playing && yt ? html`<iframe key=${yt} src=${`https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&rel=0&modestbranding=1`} title=${V.title} allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
-                : html`<button class="play" onClick=${() => { setPlaying(true); seen("watch"); }} aria-label=${"Play " + V.title} style=${yt ? { backgroundImage: `url(https://i.ytimg.com/vi/${yt}/hqdefault.jpg)` } : null}><span>▶</span></button>`}</div>
-              <figcaption class="chalk">${V.title} · ${V.by} · ${V.len} <a href=${V.url || "https://youtu.be/" + yt} target="_blank" rel="noopener">YouTube ↗</a></figcaption>
-              ${vids.length > 1 ? html`<div class="vpick" role="group" aria-label="Videos for this lesson">${vids.map((v, k) => html`<button key=${v.yt + k} aria-pressed=${k === vi} class=${k === vi ? "on" : ""} onClick=${() => { setSel(k); setPlaying(true); seen("watch"); }}>
-                <span class="vp-k">${v.full ? "Full Stanford class" : (k === 0 ? "Start here" : "Also good") + " · " + v.len}</span><span class="vp-t">${v.title}</span><span class="vp-b">${v.by}</span></button>`)}</div>` : null}</figure>`
-            : html`<p class="ch-note">No video for this one yet. The lesson below and the book chapter have it.</p>`}
-          <div class="chalk" id=${c.T ? null : "part-read"}><h2 class="ch-h">Key ideas</h2>
-          <ol class="ideas">${c.i.map((t, k) => html`<li key=${k}><${M} t=${t} /></li>`)}</ol></div>
-          ${c.T ? null : html`<span ref=${readEnd} class="read-end"></span>`}
+          ${c.T ? null : html`<div class="chalk" id="part-read"><h2 class="ch-h">Key ideas</h2>
+          <ol class="ideas">${c.i.map((t, k) => html`<li key=${k}><${M} t=${t} /></li>`)}</ol></div><span ref=${readEnd} class="read-end"></span>`}
         </section>
 
         ${c.T ? html`<article class="card lessontext" id="part-read" aria-labelledby="lx"><div class="lt-head"><h2 id="lx">The lesson</h2><${Listen} c=${c} onEnd=${() => seen("read")} /></div>
-          <div class="prose" dangerouslySetInnerHTML=${{ __html: tex(c.T, true) }}></div><span ref=${readEnd} class="read-end"></span>
-          <p class="hint">Written for this companion from Principles of Robot Autonomy${ch ? ", chapter " + c.c : ""}. Read the chapter for the full treatment.</p></article>` : null}
+          <div class="prose" dangerouslySetInnerHTML=${{ __html: tex(c.T, true) }}></div>
+          <div class="board recap" data-medium="charcoal" data-theme="dark"><div class="chalk"><h2 class="ch-h">Recap</h2>
+            <ol class="ideas">${c.i.map((t, k) => html`<li key=${k}><${M} t=${t} /></li>`)}</ol></div></div><span ref=${readEnd} class="read-end"></span>
+          <p class="hint">Written for this companion from Principles of Robot Autonomy${ch ? ", chapter " + c.c : ""}. Read the chapter for the full treatment.</p></article>`
+          : html`<article class="card lessontext" aria-labelledby="lx"><h2 id="lx">The lesson</h2>
+            <p>The full written lesson for ${c.n} isn't ready yet. The key ideas above are the core; for the full explanation, read <a href=${ch ? ch.url : "https://porabook.com/book/"} target="_blank" rel="noopener">${c.c == null ? "the book" : "chapter " + c.c + " on porabook.com"} ↗</a>${V ? " or watch the video below" : ""}.</p></article>`}
+
+          ${V ? html`<section class="card watch" id="part-watch" aria-labelledby="wt"><h2 id="wt">Watch${c.T ? " (optional)" : ""}</h2><figure class="video">
+              <div class="screen">${playing && yt ? html`<iframe key=${yt} src=${`https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&rel=0&modestbranding=1`} title=${V.title} allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
+                : html`<button class="play" onClick=${() => { setPlaying(true); seen("watch"); }} aria-label=${"Play " + V.title} style=${yt ? { backgroundImage: `url(https://i.ytimg.com/vi/${yt}/hqdefault.jpg)` } : null}><span>▶</span></button>`}</div>
+              <figcaption>${V.title} · ${V.by} · ${V.len} <a href=${V.url || "https://youtu.be/" + yt} target="_blank" rel="noopener">YouTube ↗</a></figcaption>
+              ${vids.length > 1 ? html`<div class="vpick" role="group" aria-label="Videos for this lesson">${vids.map((v, k) => html`<button key=${v.yt + k} aria-pressed=${k === vi} class=${k === vi ? "on" : ""} onClick=${() => { setSel(k); setPlaying(true); seen("watch"); }}>
+                <span class="vp-k">${v.full ? "Full Stanford class" : (k === 0 ? "Start here" : "Also good") + " · " + v.len}</span><span class="vp-t">${v.title}</span><span class="vp-b">${v.by}</span></button>`)}</div>` : null}</figure></section>` : null}
 
         <section class="card quiz" id="part-check" aria-labelledby="qz">
           <h2 id="qz">Check yourself</h2>
@@ -595,6 +598,11 @@ function Lesson({ D, S, P, set, n, part }) {
       </div>
 
       <aside class="lesson-side">
+        <nav class="card lesson-list" aria-labelledby="ll">
+          <div class="side-head"><h2 id="ll">Your lessons</h2><span>${steps.filter((x) => S.done[x]).length} of ${total} done</span></div>
+          <ol>${steps.map((sid, k) => html`<li key=${sid}><a href=${"#/lesson/" + (k + 1)} aria-current=${k === i ? "page" : null}
+            class=${"ll" + (k === i ? " ll-now" : S.done[sid] ? " ll-done" : "")}><span class="ll-n">${S.done[sid] && k !== i ? "" : k + 1}</span><span class="ll-t">${C[sid].n}</span>${C[sid].T ? null : html`<span class="ll-s" title="Summary only for now">·</span>`}</a></li>`)}</ol>
+        </nav>
         <section class="card side-map" aria-labelledby="ym">
           <div class="side-head"><h2 id="ym">Your map</h2><span>${P.steps.filter((x) => S.done[x]).length} of ${total} passed</span></div>
           <div class="cork cork-xs"><${CourseMap} D=${D} known=${P.known} goals=${S.goal} steps=${steps} current=${i} done=${S.done} compact pulse=${pulse} onPick=${go} /></div>
