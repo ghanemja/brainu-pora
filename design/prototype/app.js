@@ -9,7 +9,7 @@ import htm from "./vendor/preact/htm.module.js";
 
 const html = htm.bind(h);
 const KEY = "brainu-prototype-v1";
-const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes", "wrong", "tick",
+const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes", "wrong", "tick", "miniOff",
   "placed", "seen", "rev", "last", "days", "weekGoal", "mins", "plan"];
 const DAY = 864e5, now = () => Date.now();
 // Analytics (GoatCounter, set up in index.html). Pages are hash routes, so count them by
@@ -557,6 +557,12 @@ function Lesson({ D, S, P, set, n, part }) {
       <a class="navarrow" href=${next ? "#/lesson/" + (i + 2) : "#/done"} aria-label=${next ? "Next lesson" : "Finish"}>›</a>
     </div>
     ${planStrip(D, S, P)}
+    <aside class=${"minimap" + (S.miniOff ? " minimap-off" : "")} aria-label="Map of your path">
+      <div class="mm-head"><b>Map</b><span>${P.steps.filter((x) => S.done[x]).length}/${total} · lesson ${i + 1}</span>
+        <button class="mm-tog" aria-expanded=${!S.miniOff} aria-label=${S.miniOff ? "Show the map" : "Hide the map"} onClick=${() => set({ miniOff: !S.miniOff })}>${S.miniOff ? "▢" : "–"}</button></div>
+      ${S.miniOff ? null : html`<div class="cork mm-cork"><${CourseMap} D=${D} known=${P.known} goals=${S.goal} steps=${steps} current=${i} done=${S.done} compact pulse=${pulse} onPick=${go} /></div>
+        <p class="mm-next">${next ? html`next: <a href=${"#/lesson/" + (i + 2)}>${trunc(next.n, 26)}</a>` : html`<a href="#/done">finish the path ★</a>`}</p>`}
+    </aside>
     <div class="lesson-grid" key=${id}>
       <div class="lesson-main">
         <section class="board" data-medium="charcoal" data-theme="dark" aria-labelledby="lt">
@@ -614,12 +620,6 @@ function Lesson({ D, S, P, set, n, part }) {
           <ol>${steps.map((sid, k) => html`<li key=${sid}><a href=${"#/lesson/" + (k + 1)} aria-current=${k === i ? "page" : null}
             class=${"ll" + (k === i ? " ll-now" : S.done[sid] ? " ll-done" : "")}><span class="ll-n">${S.done[sid] && k !== i ? "" : k + 1}</span><span class="ll-t">${C[sid].n}</span>${C[sid].T ? null : html`<span class="ll-s" title="Summary only for now">·</span>`}</a></li>`)}</ol>
         </nav>
-        <section class="card side-map" aria-labelledby="ym">
-          <div class="side-head"><h2 id="ym">Your map</h2><span>${P.steps.filter((x) => S.done[x]).length} of ${total} passed</span></div>
-          <div class="cork cork-xs"><${CourseMap} D=${D} known=${P.known} goals=${S.goal} steps=${steps} current=${i} done=${S.done} compact pulse=${pulse} onPick=${go} /></div>
-          <${Legend} items=${[["gl-now", "you're here"], ["gl-d", "passed"], ["gl-p", "to do"], ["gl-g", "goal"]]} />
-          <p class="nextup">${next ? html`Next up: <a href=${"#/lesson/" + (i + 2)}>${next.n}</a>` : html`Last lesson. <a href="#/done">Finish the path ★</a>`}</p>
-        </section>
 
         <section class="card notes" aria-labelledby="nt">
           <div class="side-head"><h2 id="nt"><label for="mynotes">Your notes</label></h2>${noted ? html`<button class="linkish" onClick=${() => exportNotes(D, S, steps)}>Export all (${noted}) ↓</button>` : null}</div>

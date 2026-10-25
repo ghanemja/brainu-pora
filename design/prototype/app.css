@@ -679,3 +679,32 @@ body.am-canvas[data-medium] { background: var(--desk) url(tex/paper.jpg) !import
 .recap .ideas { font-size: 16.5px !important; line-height: 1.55 !important; }
 /* question footer sits on the page itself: no backdrop over the rules, inside the card's edge */
 .qcard .qfoot { position: static !important; margin: 6px 0 0 !important; padding: 0 !important; background: none !important; min-height: calc(var(--rule) * 2); align-items: center; }
+
+/* Minimap: pinned top-right like a game's, a framed cork square with a pulsing "you are here".
+   It floats over the page corner; the sidebar leaves room for it at the top. */
+.minimap { position: fixed; top: 78px; right: 14px; z-index: 30; width: 236px; padding: 6px 8px 8px; border-radius: 6px;
+  background: #fffef8 url(tex/paper.jpg); background-size: 384px; box-shadow: 0 0 0 2px var(--wood), 0 12px 24px -6px rgba(40,25,10,.45); rotate: .6deg; }
+.mm-head { display: flex; align-items: center; gap: 8px; font: 700 19px/1.1 "Caveat", cursive; }
+.mm-head b { font: 400 17px "Permanent Marker", cursive; }
+.mm-head span { flex: 1; color: var(--muted); font-size: 17px; }
+.mm-tog { border: 0; background: none; cursor: pointer; font: 700 20px/1 "Bricolage Grotesque", sans-serif; padding: 0 4px; color: var(--ink); }
+.mm-cork { margin: 6px 2px 4px !important; padding: 3px !important; box-shadow: 0 0 0 4px var(--wood), inset 0 0 14px rgba(60,30,10,.45) !important; }
+.mm-cork .cmap { aspect-ratio: 1 / 1; height: auto; }
+.mm-cork .gn-now .gn-ring { stroke-width: 3; }
+.mm-next { margin: 4px 0 0; font: 400 16px/1.2 "Caveat", cursive; text-align: center; }
+.mm-next a { font-weight: 700; }
+.minimap-off { width: auto; padding: 4px 8px; }
+.minimap-off .mm-head span { flex: none; }
+/* room for it: the sidebar starts below the minimap */
+.lesson-side { padding-top: 300px !important; top: 84px; }
+.minimap-off ~ .lesson-grid .lesson-side { padding-top: 40px !important; }
+@media (max-width: 1020px) {
+  .minimap { top: auto; bottom: 14px; right: 10px; width: 170px; }
+  .minimap .mm-next { display: none; }
+  .lesson-side, .minimap-off ~ .lesson-grid .lesson-side { padding-top: 4px !important; }
+}
+@media (max-width: 600px) { .minimap { width: 140px; } .mm-head span { display: none; } }
+/* the lesson bar stops short of the minimap's corner */
+@media (min-width: 1021px) { .lesson:has(.minimap:not(.minimap-off)) .lessonbar, .lesson:has(.minimap:not(.minimap-off)) .planstrip { margin-right: 250px; } }
+/* very wide screens: the sidebar sits left of the minimap, so it needn't leave room */
+@media (min-width: 1780px) { .lesson-side { padding-top: 4px !important; } }
