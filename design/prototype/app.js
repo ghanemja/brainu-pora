@@ -9,19 +9,26 @@ import htm from "./vendor/preact/htm.module.js";
 
 const html = htm.bind(h);
 const KEY = "brainu-prototype-v1";
-const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes", "wrong", "tick"];
+const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes", "wrong", "tick",
+  "placed", "seen", "rev", "last", "days", "weekGoal", "mins", "plan"];
+const DAY = 864e5, now = () => Date.now();
+const today = () => new Date().toISOString().slice(0, 10);
 const trunc = (t, n) => (t.length > n ? t.slice(0, n - 1) + "…" : t);
 // Math: course text writes TeX between $...$; KaTeX (vendored, loaded before this module)
 // turns it into typeset math. Plain parts are escaped; `code` becomes <code>.
 const escHtml = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const texCache = new Map();
 function tex(s, isHtml) {
-  const K = window.katex;
-  return String(s ?? "").split(/(\$\$[\s\S]+?\$\$|\$[^$]+\$)/).map((part, k) => {
+  const K = window.katex, key = (isHtml ? "h" : "t") + s;
+  if (K && texCache.has(key)) return texCache.get(key);
+  const out = String(s ?? "").split(/(\$\$[\s\S]+?\$\$|\$[^$]+\$)/).map((part, k) => {
     if (!(k % 2)) return isHtml ? part : escHtml(part).replace(/`([^`]+)`/g, "<code>$1</code>");
     const disp = part.startsWith("$$"), src = disp ? part.slice(2, -2) : part.slice(1, -1);
     if (!K) return escHtml(src);
     try { return K.renderToString(src, { displayMode: disp, throwOnError: false, output: "html" }); } catch (e) { return escHtml(src); }
   }).join("");
+  if (K) texCache.set(key, out); // typesetting is the slow part; each string is typeset once
+  return out;
 }
 const M = ({ t, as = "span", cls }) => h(as, { class: cls, dangerouslySetInnerHTML: { __html: tex(t) } });
 const reduceMotion = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -33,11 +40,14 @@ function ancestors(C, id) {
   return out;
 }
 // One path covering every goal: what the goals need, minus what you know, in a valid order.
-function pathFor(D, bgId, goals) {
+// `placed` is the placement check's verdict: concepts it showed you know, and ones you don't
+// (even if your background said you would). Untested concepts fall back to the background.
+function pathFor(D, bgId, goals, placed) {
   const C = D.C, bg = D.BG.find((b) => b.id === bgId) || D.BG[0], gs = [].concat(goals || []);
+  const K = new Set(bg.k); (placed?.unknown || []).forEach((x) => K.delete(x)); (placed?.known || []).forEach((x) => K.add(x));
   const need = new Set();
   gs.forEach((g) => { need.add(g); ancestors(C, g).forEach((a) => need.add(a)); });
-  const keepSet = new Set([...need].filter((x) => gs.includes(x) || !bg.k.includes(x)));
+  const keepSet = new Set([...need].filter((x) => gs.includes(x) || !K.has(x)));
   const chk = (x) => (C[x].c == null ? -1 : C[x].c), order = {}, depth = {};
   Object.keys(C).forEach((k, n) => (order[k] = n));
   const dep = (x) => depth[x] ?? (depth[x] = C[x].p.length ? 1 + Math.max(...C[x].p.map(dep)) : 0);
@@ -52,7 +62,7 @@ const goalsLabel = (D, gs) => { const n = gs.map((g) => goalName(D, g)); return 
 const arxivSearch = (name) => "https://arxiv.org/search/?searchtype=all&order=-announced_date_first&query=" + encodeURIComponent(name.replace(/\(.*?\)/g, "").replace(/&/g, " ").trim() + " robot");
 
 // ── routing: the hash is the page, so Back works ────────────────────
-const parse = () => { const [, a = "", b] = location.hash.split("/"); return { page: a, arg: b }; };
+const parse = () => { const [, a = "", b, c] = location.hash.split("/"); return { page: a, arg: b, part: c }; };
 const nav = (to) => { if (location.hash !== to) location.hash = to; };
 
 // ── the course map ──────────────────────────────────────────────────
@@ -119,6 +129,103 @@ function CourseMap({ D, known = [], goals = [], steps = [], current = -1, done =
 
 const Legend = ({ items }) => html`<div class="glegend">${items.map(([cls, t]) => html`<span key=${cls}><i class=${cls}></i>${t}</span>`)}</div>`;
 
+// ── meeting you where you are ───────────────────────────────────────
+// Placement: the graph picks the most informative question next. A right answer means you
+// know that concept and everything under it; a wrong one means you'll learn it and
+// everything built on it. Up to 8 questions.
+function descendantsIn(C, id, pool) {
+  const out = new Set(), st = [id];
+  while (st.length) { const x = st.pop(); for (const y of pool) if (!out.has(y) && C[y].p.includes(x)) { out.add(y); st.push(y); } }
+  return out;
+}
+function nextPlacement(D, pool, status, bgK) {
+  const C = D.C, open = pool.filter((x) => !status[x]);
+  let best = null, bestScore = -1;
+  for (const x of open) {
+    const up = [...ancestors(C, x)].filter((a) => open.includes(a)).length, down = [...descendantsIn(C, x, open)].length;
+    const score = Math.min(up + 1, down + 1) * 10 + (bgK.has(x) ? 3 : 0) - ancestors(C, x).size * 0.01;
+    if (score > bestScore) { best = x; bestScore = score; }
+  }
+  return best;
+}
+
+// Each lesson has parts you can do in one sitting, with honest minute estimates.
+const words = (h) => String(h || "").replace(/<[^>]+>/g, " ").replace(/\$[^$]*\$/g, " x ").split(/\s+/).filter(Boolean).length;
+const mmss = (t) => { const p = String(t).split(":").map(Number); return p.length === 3 ? p[0] * 60 + p[1] + p[2] / 60 : p[0] + (p[1] || 0) / 60; };
+function partsOf(c) {
+  const out = [];
+  if ((c.V || []).length) out.push({ part: "watch", label: "Watch: " + c.V[0].t.split(" | ")[0], min: Math.max(2, Math.round(mmss(c.V[0].len))) });
+  out.push({ part: "read", label: c.T ? "Read the lesson" : "Read the key ideas", min: c.T ? Math.max(3, Math.round(words(c.T) / 200) + 1) : 2 });
+  out.push({ part: "check", label: "Check yourself", min: 2 });
+  out.push({ part: "practice", label: "Practice", min: 15, optional: true });
+  return out;
+}
+const isSeen = (S, id, part) => !!(S.seen && S.seen[id] && S.seen[id][part]) || (part === "check" && S.done[id]);
+// Plan a session of about `mins` minutes from where you left off: unseen parts, in order.
+function sessionPlan(D, S, P, mins) {
+  const out = []; let total = 0;
+  for (let k = Math.min(S.i, P.steps.length - 1); k < P.steps.length && total < mins; k++) {
+    const id = P.steps[k];
+    for (const pt of partsOf(D.C[id])) {
+      if (isSeen(S, id, pt.part) || (pt.optional && mins < 45)) continue;
+      if (total >= mins) break;
+      // short on time: the written lesson covers what the video does, so the video waits
+      if (pt.part === "watch" && D.C[id].T && pt.min > mins - total) continue;
+      out.push({ ...pt, id, k, name: D.C[id].n }); total += pt.min;
+    }
+  }
+  return { parts: out, total };
+}
+
+// Spaced review: a passed lesson comes back after 2 days, then 3, 7, 21 and 60.
+const GAPS = [2, 3, 7, 21, 60];
+const dueReviews = (S, P) => P.steps.filter((id) => S.done[id] && S.rev && S.rev[id] && S.rev[id].due <= now())
+  .sort((a, b) => S.rev[a].due - S.rev[b].due);
+
+// Listening: math is read out in words so a lesson works on a commute.
+function sayMath(src) {
+  if (/\\begin\{/.test(src)) return " (the matrix is on screen) ";
+  let x = src;
+  for (const [re, to] of [[/\\ddot\s*\{?\\?([A-Za-z]+)\}?/g, "$1 double dot"], [/\\dot\s*\{?\\?([A-Za-z]+)\}?/g, "$1 dot"],
+    [/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, "$1 over $2"], [/\\sqrt\{([^{}]*)\}/g, "the square root of $1"], [/\^\{?2\}?/g, " squared"],
+    [/\^\{?\\top\}?/g, " transpose"], [/\^\{?-1\}?/g, " inverse"], [/_\{([^{}]*)\}/g, " sub $1"], [/_([A-Za-z0-9])/g, " sub $1"],
+    [/\\operatorname\{([a-z0-9]+)\}/g, "$1"], [/\\(theta|omega|delta|lambda|tau|pi|alpha|beta|gamma|zeta)/g, "$1"], [/\\int/g, "the integral of"],
+    [/\\approx/g, " is about "], [/\\neq/g, " is not "], [/\\in/g, " in "], [/\\times/g, " by "], [/\\partial/g, "partial "],
+    [/\\Longrightarrow/g, ", so "], [/=/g, " equals "], [/\+/g, " plus "], [/(\s)-(\s)/g, "$1minus$2"], [/</g, " is less than "], [/>/g, " is greater than "],
+    [/\\[a-zA-Z]+/g, " "], [/[{}\\|&]/g, " "]]) x = x.replace(re, to);
+  return " " + x.replace(/\s+/g, " ").trim() + " ";
+}
+function speakable(c) {
+  const doc = document.createElement("div");
+  doc.innerHTML = String(c.T || c.i.map((t) => "<p>" + t + "</p>").join("")).replace(/\$\$([\s\S]+?)\$\$|\$([^$]+)\$/g, (m, a, b) => sayMath(a || b));
+  return [c.n + ".", c.s.replace(/\$([^$]+)\$/g, (m, a) => sayMath(a)), ...[...doc.querySelectorAll("h3,p,li,aside")].map((n) => n.textContent.trim()).filter(Boolean)];
+}
+
+// Bring your problem: match your words against the course's own concept text.
+const STOP = new Set("a an the and or of to in on for with my our is are be it its i we you that this how what want need make get my robot robots".split(" "));
+const SYN = { drift: "localization odometry kalman", lost: "localization", where: "localization", map: "slam mapping", camera: "camera vision image",
+  see: "camera vision detection", recognize: "detection recognition", obstacle: "planning obstacle collision", avoid: "planning obstacle",
+  path: "path planning trajectory", follow: "tracking trajectory", steer: "control tracking", wobble: "pid control damping", oscillate: "pid control damping",
+  balance: "lqr control stabilizing", arm: "kinematic", learn: "learning reinforcement imitation", demonstration: "imitation behavior cloning",
+  noisy: "noise filter kalman", sensor: "sensor measurement fusion", lidar: "point cloud lidar", gps: "localization fusion", drone: "quadrotor control" };
+const stem = (w) => w.replace(/(ing|ed|es|s)$/, "");
+function suggestGoals(D, text) {
+  let toks = text.toLowerCase().match(/[a-z0-9]+/g) || [];
+  toks = toks.filter((t) => !STOP.has(t) && t.length > 2);
+  toks = toks.concat(...toks.map((t) => (SYN[t] || SYN[stem(t)] || "").split(" ").filter(Boolean)));
+  const T = new Set(toks.map(stem));
+  if (!T.size) return [];
+  const score = (id) => { const c = D.C[id]; let s = 0;
+    for (const w of (c.n.toLowerCase().match(/[a-z0-9]+/g) || [])) if (T.has(stem(w))) s += 3;
+    for (const w of (c.s.toLowerCase().match(/[a-z0-9]+/g) || [])) if (T.has(stem(w))) s += 1;
+    return s + (D.G.some((g) => g.id === id) ? 1.5 : 0); };
+  return Object.keys(D.C).filter((id) => D.C[id].c != null).map((id) => [id, score(id)]).filter(([, v]) => v >= 3).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([id]) => id);
+}
+
+// Weekly rhythm, not a streak: count the days you studied this week.
+const weekStart = () => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d.getTime(); };
+const daysThisWeek = (S) => (S.days || []).filter((d) => new Date(d + "T12:00:00").getTime() >= weekStart()).length;
+
 // ── pages ───────────────────────────────────────────────────────────
 function TopNav({ page, hasPath }) {
   const link = (to, label, on) => html`<a class="am-nav__link" href=${to} aria-current=${on ? "page" : null}>${label}</a>`;
@@ -137,39 +244,86 @@ function Start({ D, S, set }) {
   const [q, setQ] = useState(S.bg ? 2 : 1);
   const [bg, setBg] = useState(S.bg);
   const [goals, setGoals] = useState(S.goal || []);
-  const list = q === 2 ? D.G : D.BG, isOn = (id) => (q === 2 ? goals.includes(id) : bg === id);
-  const P = goals.length && bg ? pathFor(D, bg, goals) : { steps: [], known: [] };
-  const bgObj = D.BG.find((b) => b.id === bg), nIds = Object.keys(D.C).length;
-  const pick = (id) => (q === 2 ? setGoals(isOn(id) ? goals.filter((g) => g !== id) : goals.concat(id)) : setBg(id));
-  const go = () => {
-    if (q === 1) return setQ(2);
-    set({ bg, goal: goals, i: 0, started: false, done: {}, passed: 0, wrong: {}, justBuilt: Date.now() });
+  const [problem, setProblem] = useState(""), [sugg, setSugg] = useState(null);
+  // placement state: verdicts so far, the question on screen, the answer picked
+  const [status, setStatus] = useState({}), [asked, setAsked] = useState(0), [pick, setPick] = useState(null);
+  const bgObj = D.BG.find((b) => b.id === bg), nIds = Object.keys(D.C).length, C = D.C;
+  const placed = { known: Object.keys(status).filter((x) => status[x] === "k"), unknown: Object.keys(status).filter((x) => status[x] === "u") };
+  const P = goals.length && bg ? pathFor(D, bg, goals, q === 3 ? placed : null) : { steps: [], known: [] };
+  const P0 = goals.length && bg ? pathFor(D, bg, goals) : { steps: [] };
+  const pool = useMemo(() => { if (!goals.length) return []; const need = new Set(); goals.forEach((g) => ancestors(C, g).forEach((a) => need.add(a))); return [...need].filter((x) => !goals.includes(x)); }, [goals.join()]);
+  const bgK = new Set(bgObj ? bgObj.k : []);
+  const cur = q === 3 && asked < 8 ? nextPlacement(D, pool, status, bgK) : null;
+  const answer = (right) => {
+    const st = { ...status };
+    if (right) { st[cur] = "k"; ancestors(C, cur).forEach((x) => { if (pool.includes(x)) st[x] = st[x] || "k"; }); }
+    else { st[cur] = "u"; descendantsIn(C, cur, pool).forEach((x) => (st[x] = st[x] || "u")); }
+    setStatus(st); setAsked(asked + 1); setPick(null);
+  };
+  const isOn = (id) => (q === 2 ? goals.includes(id) : bg === id), list = q === 2 ? D.G : D.BG;
+  const toggle = (id) => setGoals(goals.includes(id) ? goals.filter((g) => g !== id) : goals.concat(id));
+  const choose = (id) => (q === 2 ? toggle(id) : setBg(id));
+  const finish = (withPlacement) => {
+    set({ bg, goal: goals, i: 0, started: false, done: {}, passed: 0, wrong: {}, seen: {}, rev: {}, plan: null,
+      placed: withPlacement ? placed : null, justBuilt: Date.now() });
     nav("#/path");
   };
-  const caption = q === 2 && goals.length ? html`<b>${P.steps.length} lessons</b> pinned for you, strung in order. Next, this becomes your path.`
-    : bgObj ? html`You already know <b>${bgObj.k.length}</b> of ${nIds} concepts. ${q === 1 ? "Next: what do you want to do?" : "Now pick what you want to do."}`
-    : html`<b>${nIds} concepts</b> in five parts. Answer two questions and watch your part of the course light up.`;
+  const startCheck = () => { setStatus({}); setAsked(0); setPick(null); setQ(3); };
+  const tested = Object.keys(status).length, done3 = q === 3 && !cur;
+  const knownNow = q === 3 ? [...new Set([...(bgObj ? bgObj.k : []).filter((x) => status[x] !== "u"), ...placed.known])] : bgObj ? bgObj.k : [];
+  const caption = q === 3 ? html`<b>${P.steps.length} lessons</b> for you${P0.steps.length !== P.steps.length ? html` (was ${P0.steps.length})` : ""}. Green is what you've shown you know.`
+    : q === 2 && goals.length ? html`<b>${P.steps.length} lessons</b> pinned for you, strung in order. A 2-minute check can make it shorter.`
+    : bgObj ? html`You probably know <b>${bgObj.k.length}</b> of ${nIds} concepts. ${q === 1 ? "Next: what do you want to do?" : "Now pick what you want to do."}`
+    : html`<b>${nIds} concepts</b> in five parts. Answer and watch your part of the course light up.`;
+  const cq = cur && C[cur].q;
   return html`<main class="start">
     <header class="hero">
       <h1>Your path through <span>Principles of Robot Autonomy</span></h1>
-      <p>Tell us what you know and what you want to build. You get the lessons you need, in order, each linked to the course's own lectures, chapters and notebooks.</p>
+      <p>For people learning around a job. Tell us what you know and what you want to build, check yourself in two minutes, and get only the lessons you need, sized to the time you have.</p>
     </header>
     <div class="start-grid">
       <section class="am-card qcard" data-medium="marker" data-style="notebook" data-theme="light" aria-labelledby="qh">
-        <div class="qsteps"><button class=${q === 1 ? "on" : ""} onClick=${() => setQ(1)}>① where you're starting</button><button class=${q === 2 ? "on" : ""} disabled=${!bg} onClick=${() => setQ(2)}>② what you want to do</button></div>
+        <div class="qsteps"><button class=${q === 1 ? "on" : ""} onClick=${() => setQ(1)}>① starting point</button><button class=${q === 2 ? "on" : ""} disabled=${!bg} onClick=${() => setQ(2)}>② goal</button><button class=${q === 3 ? "on" : ""} disabled=${!goals.length} onClick=${startCheck}>③ quick check</button></div>
+        ${q < 3 ? html`
         <h2 id="qh">${q === 2 ? "What do you want to be able to do?" : "Where are you starting from?"}</h2>
-        <p class="qhint">${q === 2 ? "tick as many as you like" : "pick one"}</p>
+        <p class="qhint">${q === 2 ? "tick as many as you like" : "pick one; the quick check will fine-tune it"}</p>
         <div class="picks" role=${q === 2 ? "group" : "radiogroup"} aria-labelledby="qh">
-          ${list.map((o) => html`<button key=${o.id} class=${"pick" + (isOn(o.id) ? " pick-on" : "")} role=${q === 2 ? "checkbox" : "radio"} aria-checked=${isOn(o.id)} onClick=${() => pick(o.id)}>
+          ${list.map((o) => html`<button key=${o.id} class=${"pick" + (isOn(o.id) ? " pick-on" : "")} role=${q === 2 ? "checkbox" : "radio"} aria-checked=${isOn(o.id)} onClick=${() => choose(o.id)}>
             <span class=${"circ" + (q === 2 ? " sq" : "")} aria-hidden="true">${isOn(o.id) ? "✓" : ""}</span><span><b>${o.n}</b><span class="d">${o.b}</span></span></button>`)}
         </div>
+        ${q === 2 ? html`<div class="problem">
+          <label for="prob" class="qhint">or say what you're building, in your words</label>
+          <div class="prob-row"><input id="prob" value=${problem} placeholder="e.g. my warehouse robot drifts when it turns" onInput=${(e) => setProblem(e.currentTarget.value)}
+            onKeyDown=${(e) => e.key === "Enter" && setSugg(suggestGoals(D, problem))} /><button class="linkish" onClick=${() => setSugg(suggestGoals(D, problem))}>Suggest</button></div>
+          ${sugg ? sugg.length ? html`<div class="sugg"><span class="qhint">these parts of the course fit; tick what's right:</span>
+              ${sugg.map((id) => html`<button key=${id} class=${"schip" + (goals.includes(id) ? " on" : "")} aria-pressed=${goals.includes(id)} onClick=${() => toggle(id)}>${goals.includes(id) ? "✓ " : "+ "}${C[id].n}</button>`)}</div>`
+            : html`<p class="qhint">Nothing in the course matched those words. Try naming the problem: drift, obstacles, camera, balance…</p>` : null}
+        </div>` : null}
         <div class="qfoot">
           ${q === 2 ? html`<button class="linkish" onClick=${() => setQ(1)}>‹ Back</button>` : html`<span></span>`}
-          <button class="am-button" disabled=${q === 1 ? !bg : !goals.length} onClick=${go}>${q === 1 ? "Next question →" : goals.length ? `Show my ${P.steps.length} lessons →` : "Pick at least one"}</button>
+          ${q === 1 ? html`<button class="am-button" disabled=${!bg} onClick=${() => setQ(2)}>Next question →</button>`
+            : html`<span class="qf-r">${goals.length ? html`<button class="linkish" onClick=${() => finish(false)}>Skip, show my ${P.steps.length} lessons</button>` : null}
+              <button class="am-button" disabled=${!goals.length} onClick=${startCheck}>${goals.length ? "Quick check, 2 min →" : "Pick at least one"}</button></span>`}
+        </div>` : done3 ? html`
+        <h2 id="qh">Here's where you are</h2>
+        <p class="qhint">${tested} concepts checked from ${asked} questions</p>
+        <div class="placed">
+          <p><b>${placed.known.length}</b> you already know${placed.known.length ? html`: <span class="dim">${placed.known.map((x) => C[x].n).slice(0, 6).join(", ")}${placed.known.length > 6 ? "…" : ""}</span>` : ""}</p>
+          <p><b>${placed.unknown.length}</b> to learn${placed.unknown.length ? html`: <span class="dim">${placed.unknown.map((x) => C[x].n).slice(0, 6).join(", ")}${placed.unknown.length > 6 ? "…" : ""}</span>` : ""}</p>
+          <p class="big">Your path: <b>${P.steps.length} lessons</b>${P0.steps.length !== P.steps.length ? html`, down from ${P0.steps.length}` : P.steps.length ? ", as planned" : ""}. You start with <b>${P.steps.length ? C[P.steps[0]].n : "-"}</b>.</p>
         </div>
+        <div class="qfoot"><button class="linkish" onClick=${startCheck}>Redo the check</button><button class="am-button" onClick=${() => finish(true)}>Show my ${P.steps.length} lessons →</button></div>`
+        : html`
+        <h2 id="qh">Quick check</h2>
+        <p class="qhint">question ${asked + 1} of up to 8 · about <b>${C[cur].n}</b> · it's fine not to know</p>
+        <${M} as="p" cls="pq" t=${cq[0]} />
+        <div class="pq-opts" role="radiogroup" aria-label="Answers">${cq[1].map((t, k) => html`<button key=${k} role="radio" aria-checked=${pick === k} class=${"pick pq-opt" + (pick === k ? " pick-on" : "")} onClick=${() => setPick(k)}>
+          <span class="circ" aria-hidden="true">${pick === k ? "✓" : "ABCD"[k]}</span><${M} t=${t} /></button>`)}</div>
+        <div class="qfoot"><button class="linkish" onClick=${() => answer(false)}>I don't know this yet</button>
+          <span class="qf-r"><button class="linkish" onClick=${() => setAsked(8)}>Stop here</button><button class="am-button" disabled=${pick === null} onClick=${() => answer(pick === cq[2])}>Next →</button></span></div>`}
       </section>
       <aside class="mapwrap" aria-label="The course map, lighting up as you answer">
-        <div class="cork cork-sm"><${CourseMap} D=${D} known=${bgObj ? bgObj.k : []} goals=${q === 2 ? goals : []} steps=${q === 2 ? P.steps : []} /></div>
+        <div class="cork cork-sm"><${CourseMap} D=${D} known=${knownNow} goals=${q >= 2 ? goals : []} steps=${q >= 2 ? P.steps : []} /></div>
         <${Legend} items=${[["gl-k", "you know it"], ["gl-p", "your lessons"], ["gl-g", "your goal"]]} />
         <p class="gcap">${caption}</p>
       </aside>
@@ -177,19 +331,82 @@ function Start({ D, S, set }) {
   </main>`;
 }
 
-function Home({ D, S, P }) {
+// Spaced review: a few questions from lessons you've passed, one at a time.
+function Review({ D, S, set, ids: given, onDone, title }) {
+  // freeze the questions when the review starts; answering re-sorts what's due
+  const [ids] = useState(given), [k, setK] = useState(0), [pick, setPick] = useState(null), [checked, setChecked] = useState(false), [score, setScore] = useState(0);
+  if (k >= ids.length) return html`<div class="review-done"><b>${score} of ${ids.length}</b> right. ${score === ids.length ? "It stuck." : "Misses are on your retry list."}
+    <button class="am-button" onClick=${onDone}>Carry on →</button></div>`;
+  const id = ids[k], c = D.C[id], [q, ch, correct, why] = c.q, ok = pick === correct;
+  const check = () => {
+    setChecked(true); if (ok) setScore(score + 1);
+    const r = (S.rev || {})[id] || { n: 0 }, rev = { ...S.rev };
+    if (ok) rev[id] = { n: r.n + 1, due: now() + GAPS[Math.min(r.n + 1, GAPS.length - 1)] * DAY };
+    else rev[id] = { n: 0, due: now() + DAY };
+    set(ok ? { rev } : { rev, wrong: { ...S.wrong, [id]: { at: S.tick } } });
+  };
+  return html`<div class="review">
+    <span class="kicker">${title} · ${k + 1} of ${ids.length} · from “${c.n}”</span>
+    <${M} as="p" cls="qq" t=${q} />
+    <div class="qopts">${ch.map((t, j) => html`<button key=${j} disabled=${checked} class=${"qopt" + (checked ? (j === correct ? " qopt-right" : j === pick ? " qopt-wrong" : "") : pick === j ? " qopt-on" : "")} onClick=${() => setPick(j)}>
+      <span class="qm">${"ABCD"[j]}</span><${M} t=${t} /></button>`)}</div>
+    ${checked ? html`<div class=${"feedback " + (ok ? "fb-ok" : "fb-no")}><b>${ok ? "Right." : "Not quite."}</b> <${M} t=${why} /></div>` : null}
+    <div class="row">${checked ? html`<button class="am-button" onClick=${() => { setK(k + 1); setPick(null); setChecked(false); }}>${k + 1 < ids.length ? "Next question →" : "Done"}</button>`
+      : html`<button class="am-button" disabled=${pick === null} onClick=${check}>Check</button><button class="linkish" onClick=${onDone}>Skip the review</button>`}</div>
+  </div>`;
+}
+
+function Home({ D, S, P, set }) {
   const i = Math.min(S.i, P.steps.length - 1), c = D.C[P.steps[i]], learned = P.steps.filter((id) => S.done[id]).length;
-  return html`<main class="home">
+  const away = S.prevLast ? Math.floor((now() - S.prevLast) / DAY) : 0;
+  const due = dueReviews(S, P);
+  const [warm, setWarm] = useState(away >= 3 && P.steps.some((id) => S.done[id]) ? "offer" : null), [rev, setRev] = useState(false);
+  const mins = S.mins || 20, plan = sessionPlan(D, S, P, mins);
+  const first = plan.parts[0], wk = daysThisWeek(S), goal = S.weekGoal || 3;
+  const startPlan = () => { set({ plan: { mins, at: now(), parts: plan.parts.map((x) => x.id + ":" + x.part) } }); nav("#/lesson/" + (first.k + 1) + "/" + first.part); };
+  // the warm-up: what you were doing, then three questions from passed lessons (oldest first)
+  const warmIds = [...due, ...P.steps.filter((id) => S.done[id] && !due.includes(id)).reverse()].slice(0, 3);
+  const lastDone = [...P.steps].reverse().find((id) => S.done[id]);
+  return html`<main class="home2">
+    ${warm === "offer" ? html`<section class="card welcome">
+      <span class="kicker">Welcome back · it's been ${away} days</span>
+      <h2>Here's where you were</h2>
+      <p>You last passed <b>${lastDone ? D.C[lastDone].n : "your first lesson"}</b>${lastDone ? html`: <${M} t=${D.C[lastDone].i[0]} />` : ""}</p>
+      <p>Next up is <b>${c.n}</b>. A 90-second warm-up brings the last lessons back before you go on.</p>
+      <div class="row"><button class="am-button" onClick=${() => setWarm("on")}>Warm up, 3 questions</button><button class="linkish" onClick=${() => setWarm(null)}>Skip it</button></div>
+    </section>` : warm === "on" ? html`<section class="card welcome"><${Review} D=${D} S=${S} set=${set} ids=${warmIds} title="Warm-up" onDone=${() => setWarm(null)} /></section>` : null}
+
     <section class="card homecard">
-      <span class="kicker">${S.started ? "Welcome back" : "Your path is ready"} · ${goalsLabel(D, S.goal)}</span>
-      <h1>${c.n}</h1>
-      <p>${c.s}</p>
-      <div class="row"><a class="am-button" href=${"#/lesson/" + (i + 1)}>${S.started ? "Continue" : "Start"} lesson ${i + 1} of ${P.steps.length} →</a>
-        <a class="linkish" href="#/path">See the whole path</a><a class="linkish" href="#/start">Change goals</a></div>
-      <div class="bar" aria-label=${learned + " of " + P.steps.length + " lessons passed"}><span style=${{ width: (100 * learned) / P.steps.length + "%" }}></span></div>
-      <small>${learned} of ${P.steps.length} lessons passed</small>
+      <span class="kicker">${S.started ? "Your path" : "Your path is ready"} · ${goalsLabel(D, S.goal)}</span>
+      <h1>How much time do you have?</h1>
+      <div class="seg3 mins" role="radiogroup" aria-label="Time for this session">${[10, 20, 45].map((m) => html`<button key=${m} role="radio" aria-checked=${mins === m} class=${mins === m ? "on" : ""} onClick=${() => set({ mins: m })}>${m} min</button>`)}</div>
+      ${plan.parts.length ? html`<ol class="plan">${plan.parts.map((x) => html`<li key=${x.id + x.part}><a href=${"#/lesson/" + (x.k + 1) + "/" + x.part}>
+          <span class=${"pi pi-" + x.part} aria-hidden="true"></span><span class="pl-t">${x.label}</span><span class="pl-n">${x.name}</span><span class="pl-m">${x.min} min</span></a></li>`)}</ol>
+        <div class="row"><button class="am-button" onClick=${startPlan}>Start my ${mins} minutes →</button>
+          <span class="hint">about ${plan.total} min · you can stop after any step; it picks up where you left off</span></div>`
+        : html`<p>Everything on your path is done. <a href="#/done">See where to go next →</a></p>`}
     </section>
-    <div class="cork cork-sm home-map"><${CourseMap} D=${D} known=${P.known} goals=${S.goal} steps=${P.steps} current=${i} done=${S.done} onPick=${(k) => nav("#/lesson/" + (k + 1))} /></div>
+
+    <aside class="home-side">
+      ${due.length && warm !== "on" ? html`<section class="card">
+        <h2>${due.length} quick review${due.length > 1 ? "s" : ""} due</h2>
+        ${rev ? html`<${Review} D=${D} S=${S} set=${set} ids=${due.slice(0, 5)} title="Review" onDone=${() => setRev(false)} />`
+          : html`<p class="hint">Lessons you passed come back after 2, 3, 7, 21 and 60 days, so they stick. About ${Math.min(5, due.length)} min.</p>
+            <button class="am-button am--secondary" onClick=${() => setRev(true)}>Review now</button>`}
+      </section>` : null}
+      <section class="card">
+        <h2>This week</h2>
+        <div class="week" aria-label=${wk + " of " + goal + " study days this week"}>${Array.from({ length: Math.max(goal, wk) }, (_, k) => html`<span key=${k} class=${k < wk ? "on" : ""}></span>`)}</div>
+        <p class="hint">${wk >= goal ? "Goal met. Anything more is a bonus." : wk + " of " + goal + " study days. Any day you learn something counts; there's no streak to break."}</p>
+        <div class="row tiny">Weekly goal: ${[2, 3, 5].map((g) => html`<button key=${g} class=${"linkish" + (goal === g ? " strong" : "")} aria-pressed=${goal === g} onClick=${() => set({ weekGoal: g })}>${g} days</button>`)}</div>
+      </section>
+      <section class="card">
+        <h2>Progress</h2>
+        <div class="bar" aria-label=${learned + " of " + P.steps.length + " lessons passed"}><span style=${{ width: (100 * learned) / P.steps.length + "%" }}></span></div>
+        <p class="hint">${learned} of ${P.steps.length} lessons passed · now on lesson ${i + 1}, ${c.n}</p>
+        <div class="row tiny"><a class="linkish" href="#/path">See the whole path</a><a class="linkish" href="#/start">Change goals</a></div>
+      </section>
+    </aside>
   </main>`;
 }
 
@@ -239,7 +456,7 @@ function PathPage({ D, S, P, set }) {
     <section class=${"cork cork-board" + (pinning ? " pinning" : "")} aria-labelledby="mh">
       <div class="cork-head"><h2 id="mh" class="paper-label">Where your path goes</h2>
         <${Legend} items=${[["lg-path", "your lessons, pinned in order"], ["lg-goal", "goal"], ["lg-known", "you know it"]]} /></div>
-      ${nc ? html`<div class="notecard"><div><b>${nc.n}</b><span>${chName(D, nc.c)} · ${note in pos ? "lesson " + (pos[note] + 1) + " on your path" : known.has(note) ? "you already know this" : pathFor(D, S.bg, [note]).steps.length + " lessons from where you are"}</span></div>
+      ${nc ? html`<div class="notecard"><div><b>${nc.n}</b><span>${chName(D, nc.c)} · ${note in pos ? "lesson " + (pos[note] + 1) + " on your path" : known.has(note) ? "you already know this" : pathFor(D, S.bg, [note], S.placed).steps.length + " lessons from where you are"}</span></div>
         <div class="row">${note in pos ? html`<a class="am-button" href=${"#/lesson/" + (pos[note] + 1)}>Open lesson</a>` : !S.goal.includes(note) ? html`<button class="am-button am--secondary" onClick=${() => { setNote(null); set({ goal: S.goal.concat(note), i: 0, started: false }); }}>Add as a goal</button>` : null}
           <button class="linkish" onClick=${() => setNote(null)}>Close</button></div></div>` : null}
       <div class="cork-scroll"><div class="cork-in" ref=${inner}>${cols}
@@ -252,16 +469,62 @@ function PathPage({ D, S, P, set }) {
   </main>`;
 }
 
-function Lesson({ D, S, P, set, n }) {
+// Today's session, shown under the lesson bar: each step ticks off as you do it.
+function planStrip(D, S, P) {
+  if (!S.plan || !S.plan.parts || !S.plan.parts.length) return null;
+  const items = S.plan.parts.map((key) => { const [id, part] = key.split(":"); return { id, part, k: P.steps.indexOf(id), ok: isSeen(S, id, part) }; }).filter((x) => x.k >= 0);
+  if (!items.length) return null;
+  const left = items.filter((x) => !x.ok), name = { watch: "Watch", read: "Read", check: "Check", practice: "Practice" };
+  return html`<div class=${"planstrip" + (left.length ? "" : " planstrip-done")} role="status">
+    <span class="ps-k">Today · ${S.plan.mins} min</span>
+    <ol>${items.map((x) => html`<li key=${x.id + x.part}><a href=${"#/lesson/" + (x.k + 1) + "/" + x.part} class=${x.ok ? "ok" : ""}>${x.ok ? "✓" : "○"} ${name[x.part]}: ${trunc(D.C[x.id].n, 22)}</a></li>`)}</ol>
+    ${left.length ? html`<a class="ps-next" href=${"#/lesson/" + (left[0].k + 1) + "/" + left[0].part}>Next: ${name[left[0].part]} ↓</a>`
+      : html`<span class="ps-next">Session done. <a href="#/">Plan another</a> or stop here; it'll pick up where you left off.</span>`}
+  </div>`;
+}
+
+// Read the lesson aloud with the browser's own voice. Math is spoken in words.
+function Listen({ c, onEnd }) {
+  const ok = typeof window !== "undefined" && "speechSynthesis" in window;
+  const [st, setSt] = useState("idle"), [rate, setRate] = useState(1);
+  useEffect(() => () => ok && speechSynthesis.cancel(), [c.n]);
+  if (!ok) return null;
+  const lines = speakable(c), mins = Math.max(1, Math.round(lines.join(" ").split(/\s+/).length / 150));
+  const play = () => {
+    speechSynthesis.cancel();
+    lines.forEach((t, k) => { const u = new SpeechSynthesisUtterance(t); u.rate = rate; u.lang = "en-US";
+      if (k === lines.length - 1) u.onend = () => { setSt("idle"); onEnd && onEnd(); };
+      speechSynthesis.speak(u); });
+    setSt("on");
+  };
+  return html`<div class="listen" role="group" aria-label="Listen to this lesson">
+    ${st === "idle" ? html`<button class="am-button am--secondary" onClick=${play}>▶ Listen · ${mins} min</button>`
+      : html`<button class="am-button am--secondary" onClick=${() => { if (st === "on") { speechSynthesis.pause(); setSt("paused"); } else { speechSynthesis.resume(); setSt("on"); } }}>${st === "on" ? "❚❚ Pause" : "▶ Resume"}</button>
+        <button class="linkish" onClick=${() => { speechSynthesis.cancel(); setSt("idle"); }}>Stop</button>`}
+    <label class="hint">speed <select value=${rate} onChange=${(e) => setRate(+e.currentTarget.value)}>${[0.9, 1, 1.25, 1.5].map((r) => html`<option key=${r} value=${r}>${r}×</option>`)}</select></label>
+  </div>`;
+}
+
+function Lesson({ D, S, P, set, n, part }) {
   const C = D.C, steps = P.steps, total = steps.length, i = Math.max(0, Math.min(n, total - 1)), id = steps[i], c = C[id];
   const prev = i > 0 ? C[steps[i - 1]] : null, next = i < total - 1 ? C[steps[i + 1]] : null;
   const [sel, setSel] = useState(0), [video, setVideo] = useState(null), [picked, setPicked] = useState(null), [checked, setChecked] = useState(false), [playing, setPlaying] = useState(false), [pulse, setPulse] = useState(null);
-  useEffect(() => { setSel(0); setPicked(null); setChecked(false); setPlaying(false); if (S.i !== i || !S.started) set({ i, started: true }); window.scrollTo(0, 0); }, [id]);
+  useEffect(() => { setSel(0); setPicked(null); setChecked(false); setPlaying(false); if (S.i !== i || !S.started) set({ i, started: true }); }, [id]);
+  // #/lesson/3/check lands on that part; plain #/lesson/3 starts at the top
+  useEffect(() => { const t = setTimeout(() => { const el = part && document.getElementById("part-" + part);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - 92, behavior: "smooth" }); else window.scrollTo(0, 0); }, 60); return () => clearTimeout(t); }, [id, part]);
+  const seen = (pt) => { if (!isSeen(S, id, pt)) set({ seen: { ...S.seen, [id]: { ...((S.seen || {})[id] || {}), [pt]: 1 } } }); };
+  // reading counts once the end of the lesson text scrolls into view
+  const readEnd = useRef();
+  useEffect(() => { const el = readEnd.current; if (!el || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver((es) => es.some((e) => e.isIntersecting) && seen("read"), { threshold: 1 }); io.observe(el); return () => io.disconnect(); }, [id, S.seen]);
   const [qq, choices, correct, why] = c.q, ok = picked === correct;
   const check = () => {
     setChecked(true);
     const wrong = { ...S.wrong }; if (ok) delete wrong[id]; else wrong[id] = { at: S.tick + 1 };
-    set({ done: ok ? { ...S.done, [id]: true } : S.done, passed: S.passed + (ok ? 1 : 0), wrong, tick: S.tick + 1 });
+    const rev = { ...S.rev }; if (ok && !rev[id]) rev[id] = { n: 0, due: now() + GAPS[0] * DAY };
+    set({ done: ok ? { ...S.done, [id]: true } : S.done, passed: S.passed + (ok ? 1 : 0), wrong, tick: S.tick + 1, rev,
+      seen: { ...S.seen, [id]: { ...((S.seen || {})[id] || {}), check: 1 } } });
     if (ok && next) setPulse({ from: i, key: Date.now() });
   };
   const L = c.L[0], nbk = c.N[0], ch = c.c == null ? null : D.CH[c.c];
@@ -282,28 +545,30 @@ function Lesson({ D, S, P, set, n }) {
           class=${"seg" + (k === i ? " seg-on" : S.done[sid] ? " seg-done" : "")} aria-current=${k === i ? "step" : null}></a></li>`)}</ol></div>
       <a class="navarrow" href=${next ? "#/lesson/" + (i + 2) : "#/done"} aria-label=${next ? "Next lesson" : "Finish"}>›</a>
     </div>
+    ${planStrip(D, S, P)}
     <div class="lesson-grid" key=${id}>
       <div class="lesson-main">
         <section class="board" data-medium="charcoal" data-theme="dark" aria-labelledby="lt">
           <div class="chalk"><span class="ch-kick">${kicker}</span>
           <h1 id="lt" class="ch-title">${c.n}</h1>
           <${M} as="p" cls="ch-sum" t=${c.s} /></div>
-          ${V ? html`<figure class="video">
+          ${V ? html`<figure class="video" id="part-watch">
               <div class="screen">${playing && yt ? html`<iframe key=${yt} src=${`https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&rel=0&modestbranding=1`} title=${V.title} allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
-                : html`<button class="play" onClick=${() => setPlaying(true)} aria-label=${"Play " + V.title} style=${yt ? { backgroundImage: `url(https://i.ytimg.com/vi/${yt}/hqdefault.jpg)` } : null}><span>▶</span></button>`}</div>
+                : html`<button class="play" onClick=${() => { setPlaying(true); seen("watch"); }} aria-label=${"Play " + V.title} style=${yt ? { backgroundImage: `url(https://i.ytimg.com/vi/${yt}/hqdefault.jpg)` } : null}><span>▶</span></button>`}</div>
               <figcaption class="chalk">${V.title} · ${V.by} · ${V.len} <a href=${V.url || "https://youtu.be/" + yt} target="_blank" rel="noopener">YouTube ↗</a></figcaption>
-              ${vids.length > 1 ? html`<div class="vpick" role="group" aria-label="Videos for this lesson">${vids.map((v, k) => html`<button key=${v.yt + k} aria-pressed=${k === vi} class=${k === vi ? "on" : ""} onClick=${() => { setSel(k); setPlaying(true); }}>
+              ${vids.length > 1 ? html`<div class="vpick" role="group" aria-label="Videos for this lesson">${vids.map((v, k) => html`<button key=${v.yt + k} aria-pressed=${k === vi} class=${k === vi ? "on" : ""} onClick=${() => { setSel(k); setPlaying(true); seen("watch"); }}>
                 <span class="vp-k">${v.full ? "Full Stanford class" : (k === 0 ? "Start here" : "Also good") + " · " + v.len}</span><span class="vp-t">${v.title}</span><span class="vp-b">${v.by}</span></button>`)}</div>` : null}</figure>`
             : html`<p class="ch-note">No video for this one yet. The lesson below and the book chapter have it.</p>`}
-          <div class="chalk"><h2 class="ch-h">Key ideas</h2>
+          <div class="chalk" id=${c.T ? null : "part-read"}><h2 class="ch-h">Key ideas</h2>
           <ol class="ideas">${c.i.map((t, k) => html`<li key=${k}><${M} t=${t} /></li>`)}</ol></div>
+          ${c.T ? null : html`<span ref=${readEnd} class="read-end"></span>`}
         </section>
 
-        ${c.T ? html`<article class="card lessontext" aria-labelledby="lx"><h2 id="lx">The lesson</h2>
-          <div class="prose" dangerouslySetInnerHTML=${{ __html: tex(c.T, true) }}></div>
+        ${c.T ? html`<article class="card lessontext" id="part-read" aria-labelledby="lx"><div class="lt-head"><h2 id="lx">The lesson</h2><${Listen} c=${c} onEnd=${() => seen("read")} /></div>
+          <div class="prose" dangerouslySetInnerHTML=${{ __html: tex(c.T, true) }}></div><span ref=${readEnd} class="read-end"></span>
           <p class="hint">Written for this companion from Principles of Robot Autonomy${ch ? ", chapter " + c.c : ""}. Read the chapter for the full treatment.</p></article>` : null}
 
-        <section class="card quiz" aria-labelledby="qz">
+        <section class="card quiz" id="part-check" aria-labelledby="qz">
           <h2 id="qz">Check yourself</h2>
           <${M} as="p" cls="qq" t=${qq} />
           <div role="radiogroup" aria-labelledby="qz" class="qopts">${choices.map((t, k) => {
@@ -319,11 +584,11 @@ function Lesson({ D, S, P, set, n }) {
           </div>
         </section>
 
-        <section class="card practice" aria-labelledby="pr">
+        <section class="card practice" id="part-practice" aria-labelledby="pr">
           <h2 id="pr">Practice</h2>
           <${M} as="p" t=${c.t} />
           <div class="row">
-            ${nbk ? html`<a class="am-button am--secondary" href=${nbk.colab} target="_blank" rel="noopener">Open the ${nbk.title} notebook in Colab ↗</a>` : null}
+            ${nbk ? html`<a class="am-button am--secondary" href=${nbk.colab} target="_blank" rel="noopener" onClick=${() => seen("practice")}>Open the ${nbk.title} notebook in Colab ↗</a>` : null}
             <a class="linkish" href=${ch ? ch.url : "https://porabook.com/book/"} target="_blank" rel="noopener">Read ${c.c == null ? "the book" : "chapter " + c.c} on porabook.com ↗</a>
           </div>
         </section>
@@ -537,10 +802,12 @@ function Explore() {
 
 // ── app ─────────────────────────────────────────────────────────────
 function load() {
-  const S = { bg: null, goal: null, started: false, i: 0, done: {}, passed: 0, notes: {}, wrong: {}, tick: 0, justBuilt: 0 };
+  const S = { bg: null, goal: null, started: false, i: 0, done: {}, passed: 0, notes: {}, wrong: {}, tick: 0, justBuilt: 0,
+    placed: null, seen: {}, rev: {}, last: 0, days: [], weekGoal: 3, mins: 20, plan: null };
   try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s) SAVED.forEach((k) => { if (k in s) S[k] = s[k]; }); } catch (e) {}
   if (typeof S.goal === "string") S.goal = [S.goal];
   if (S.goal && !S.goal.length) S.goal = null;
+  S.prevLast = S.last; // when you were last here, for the welcome-back warm-up
   return S;
 }
 
@@ -550,20 +817,20 @@ function App() {
     fetch("prototype/course.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(setD).catch(() => setErr(true));
     const on = () => setRoute(parse()); addEventListener("hashchange", on); return () => removeEventListener("hashchange", on);
   }, []);
-  const set = (patch) => setS((s) => { const n = { ...s, ...patch }; try { const o = {}; SAVED.forEach((k) => (o[k] = n[k])); localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} return n; });
+  const set = (patch) => setS((s) => { const d = today(), n = { ...s, ...patch, last: now(), days: (s.days || []).includes(d) ? s.days : [...(s.days || []).slice(-90), d] }; try { const o = {}; SAVED.forEach((k) => (o[k] = n[k])); localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} return n; });
   useEffect(() => { window.scrollTo(0, 0); }, [route.page]);
   if (err) return html`<p class="loading">The course didn't load. Run a local server in the design folder (python3 -m http.server 8000) and reload.</p>`;
   if (!D) return html`<p class="loading">Loading the course…</p>`;
   const goals = (S.goal || []).filter((g) => D.C[g]), hasPath = !!(S.bg && goals.length);
-  const P = hasPath ? pathFor(D, S.bg, goals) : null, s = { ...S, goal: goals };
+  const P = hasPath ? pathFor(D, S.bg, goals, S.placed) : null, s = { ...S, goal: goals };
   let page = route.page, body;
   if (page === "explore") body = html`<${Explore} />`;
   else if (page === "graph") body = html`<${GraphPage} D=${D} S=${s} P=${P} />`;
   else if (page === "start" || !hasPath) { page = page === "start" ? "start" : ""; body = html`<${Start} D=${D} S=${s} set=${set} />`; }
   else if (page === "path") body = html`<${PathPage} D=${D} S=${s} P=${P} set=${set} />`;
-  else if (page === "lesson") body = html`<${Lesson} D=${D} S=${s} P=${P} set=${set} n=${route.arg ? parseInt(route.arg, 10) - 1 || 0 : Math.min(S.i, P.steps.length - 1)} />`;
+  else if (page === "lesson") body = html`<${Lesson} D=${D} S=${s} P=${P} set=${set} n=${route.arg ? parseInt(route.arg, 10) - 1 || 0 : Math.min(S.i, P.steps.length - 1)} part=${route.part} />`;
   else if (page === "done") body = html`<${Done} D=${D} S=${s} P=${P} />`;
-  else body = html`<${Home} D=${D} S=${s} P=${P} />`;
+  else body = html`<${Home} D=${D} S=${s} P=${P} set=${set} />`;
   return html`<${TopNav} page=${page} hasPath=${hasPath} />${body}`;
 }
 
