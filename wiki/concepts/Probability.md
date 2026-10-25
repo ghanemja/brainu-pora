@@ -17,11 +17,11 @@ Random variables, Bayes' rule, and the multivariate Gaussian. The book reviews t
 
 ### Key ideas
 
-1. Bayes' rule p(x|z) = p(z|x) p(x) / p(z) turns a sensor model p(z|x) and a prior p(x) into a posterior belief; it is the core update step of every Bayes filter.
+1. Bayes' rule p(x | z) = p(z | x) p(x) / p(z) turns a sensor model p(z | x) and a prior p(x) into a posterior belief; it is the core update step of every Bayes filter.
 2. A multivariate Gaussian N(μ, Σ) is fully described by its mean and covariance; Σ is symmetric positive semidefinite and its eigenvectors give the axes of the uncertainty ellipse.
-3. Gaussians are closed under linear maps: if x ~ N(μ, Σ) then A x + b ~ N(A μ + b, A Σ A^T), which is why the Kalman filter can propagate beliefs exactly for linear systems.
+3. Gaussians are closed under linear maps: if x ~ N(μ, Σ) then Ax + b ~ N(Aμ + b, AΣ A^T), which is why the Kalman filter can propagate beliefs exactly for linear systems.
 
-Try it: Draw 10,000 samples from N(0, I) in NumPy, multiply by A = [[2,0],[1,1]], and compare np.cov of the result with A @ A.T.
+Try it: Draw 10,000 samples from N(0, I) in NumPy, multiply by A = [ 2 , 0 ; 1 , 1 ], and compare np.cov of the result with AA^T.
 
 Unlocks: [[Sampling-based_planning_PRM_RRT]], [[Measurement_noise_models]], [[Recursive_Bayes_filter]], [[Markov_decision_processes]]
 

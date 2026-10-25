@@ -20,22 +20,22 @@
  },
  "probability": {
   "points": [
-   "Bayes' rule p(x|z) = p(z|x) p(x) / p(z) turns a sensor model p(z|x) and a prior p(x) into a posterior belief; it is the core update step of every Bayes filter.",
-   "A multivariate Gaussian N(μ, Σ) is fully described by its mean and covariance; Σ is symmetric positive semidefinite and its eigenvectors give the axes of the uncertainty ellipse.",
-   "Gaussians are closed under linear maps: if x ~ N(μ, Σ) then A x + b ~ N(A μ + b, A Σ A^T), which is why the Kalman filter can propagate beliefs exactly for linear systems."
+   "Bayes' rule $p(x \\mid z) = p(z \\mid x)\\, p(x) / p(z)$ turns a sensor model $p(z \\mid x)$ and a prior $p(x)$ into a posterior belief; it is the core update step of every Bayes filter.",
+   "A multivariate Gaussian $\\mathcal{N}(\\mu, \\Sigma)$ is fully described by its mean and covariance; $\\Sigma$ is symmetric positive semidefinite and its eigenvectors give the axes of the uncertainty ellipse.",
+   "Gaussians are closed under linear maps: if $x \\sim \\mathcal{N}(\\mu, \\Sigma)$ then $Ax + b \\sim \\mathcal{N}(A\\mu + b,\\ A\\Sigma A^\\top)$, which is why the Kalman filter can propagate beliefs exactly for linear systems."
   ],
   "check": {
-   "q": "A robot's 2D position belief has covariance Σ = diag(1, 1). It is transformed by y = A x with A = diag(2, 1). What is the new covariance?",
+   "q": "A robot's 2D position belief has covariance $\\Sigma = \\operatorname{diag}(1, 1)$. It is transformed by $y = Ax$ with $A = \\operatorname{diag}(2, 1)$. What is the new covariance?",
    "choices": [
-    "diag(2, 1), because the covariance scales linearly with A",
-    "diag(4, 1), because covariance transforms as A Σ A^T",
-    "diag(1, 1), because a linear map cannot change uncertainty",
-    "diag(0.5, 1), because stretching spreads probability thinner"
+    "$\\operatorname{diag}(2, 1)$, because the covariance scales linearly with $A$",
+    "$\\operatorname{diag}(4, 1)$, because covariance transforms as $A\\Sigma A^\\top$",
+    "$\\operatorname{diag}(1, 1)$, because a linear map cannot change uncertainty",
+    "$\\operatorname{diag}(0.5, 1)$, because stretching spreads probability thinner"
    ],
    "correct": 1,
-   "why": "Covariance transforms as A Σ A^T, so variance along the first axis scales by 2^2 = 4. Scaling by A alone (diag(2,1)) confuses standard deviation with variance."
+   "why": "Covariance transforms as $A\\Sigma A^\\top$, so variance along the first axis scales by $2^2 = 4$. Scaling by $A$ alone ($\\operatorname{diag}(2, 1)$) confuses standard deviation with variance."
   },
-  "tryIt": "Draw 10,000 samples from N(0, I) in NumPy, multiply by A = [[2,0],[1,1]], and compare np.cov of the result with A @ A.T."
+  "tryIt": "Draw 10,000 samples from $\\mathcal{N}(0, I)$ in NumPy, multiply by $A = \\begin{bmatrix} 2 & 0 \\\\ 1 & 1 \\end{bmatrix}$, and compare `np.cov` of the result with $AA^\\top$."
  },
  "odes": {
   "points": [
@@ -153,9 +153,9 @@
  },
  "nonholonomic": {
   "points": [
-   "The unicycle model x_dot = v cos θ, y_dot = v sin θ, θ_dot = ω captures a robot that can drive forward and turn but cannot move sideways.",
-   "The no-slip condition x_dot sin θ - y_dot cos θ = 0 restricts velocity, but it cannot be integrated into a constraint on position, so every pose is still reachable.",
-   "A differential-drive robot maps to the unicycle via v = r(ω_R + ω_L)/2 and ω = r(ω_R - ω_L)/L, with wheel radius r and axle length L."
+   "The unicycle model $\\dot x = v\\cos\\theta$, $\\dot y = v\\sin\\theta$, $\\dot\\theta = \\omega$ captures a robot that can drive forward and turn but cannot move sideways.",
+   "The no-slip condition $\\dot x\\sin\\theta - \\dot y\\cos\\theta = 0$ restricts velocity, but it cannot be integrated into a constraint on position, so every pose is still reachable.",
+   "A differential-drive robot maps to the unicycle via $v = r(\\omega_R + \\omega_L)/2$ and $\\omega = r(\\omega_R - \\omega_L)/L$, with wheel radius $r$ and axle length $L$."
   ],
   "check": {
    "q": "A unicycle robot needs to move 1 m sideways (perpendicular to its heading). Is that possible?",
@@ -168,7 +168,7 @@
    "correct": 0,
    "why": "The constraint limits instantaneous velocity, not reachable positions, so a sequence of feasible motions achieves the shift. Forbidding lateral position change would be a holonomic constraint."
   },
-  "tryIt": "Integrate the unicycle with Euler steps for v = 1, ω = 0.5 for 4 seconds starting at the origin, and check that the path is an arc of radius v/ω = 2."
+  "tryIt": "Integrate the unicycle with Euler steps for $v = 1$, $\\omega = 0.5$ for 4 seconds starting at the origin, and check that the path is an arc of radius $v/\\omega = 2$."
  },
  "simulation": {
   "points": [
@@ -491,16 +491,16 @@
    "correct": 1,
    "why": "Lidar observes the external world, so ranges to static walls stay unchanged when the robot is not really moving. More encoders share the same slip, and a gyro only measures rotation."
   },
-  "tryIt": "Simulate a gyro with constant bias 0.01 rad/s plus noise, integrate it for 10 minutes in NumPy, and plot how the heading error grows."
+  "tryIt": "Simulate a gyro with constant bias $0.01$ rad/s plus noise, integrate it for 10 minutes in NumPy, and plot how the heading error grows."
  },
  "measurement_noise": {
   "points": [
-   "A common model is z = h(x) + b + v with bias b and zero-mean Gaussian noise v ~ N(0, R); bias causes systematic error that averaging cannot remove, while noise averages down.",
-   "Averaging N independent readings shrinks noise standard deviation by √N; integrating a noisy rate signal produces random-walk error whose standard deviation grows like √t.",
-   "The covariance R tells an estimator how much to trust each sensor: in a Kalman-style fusion, a reading with smaller variance gets a larger weight (weight proportional to 1/σ^2)."
+   "A common model is $z = h(x) + b + v$ with bias $b$ and zero-mean Gaussian noise $v \\sim \\mathcal{N}(0, R)$; bias causes systematic error that averaging cannot remove, while noise averages down.",
+   "Averaging $N$ independent readings shrinks noise standard deviation by $\\sqrt N$; integrating a noisy rate signal produces random-walk error whose standard deviation grows like $\\sqrt t$.",
+   "The covariance $R$ tells an estimator how much to trust each sensor: in a Kalman-style fusion, a reading with smaller variance gets a larger weight (weight proportional to $1/\\sigma^2$)."
   ],
   "check": {
-   "q": "You fuse two independent range readings of the same distance: sensor A has σ = 1 cm, sensor B has σ = 2 cm. What weights does the minimum-variance fusion give them?",
+   "q": "You fuse two independent range readings of the same distance: sensor A has $\\sigma = 1$ cm, sensor B has $\\sigma = 2$ cm. What weights does the minimum-variance fusion give them?",
    "choices": [
     "A gets 0.8 and B gets 0.2",
     "A gets 0.5 and B gets 0.5",
@@ -508,9 +508,9 @@
     "A gets 1.0 and B is discarded"
    ],
    "correct": 0,
-   "why": "Weights are proportional to inverse variance: 1/1 versus 1/4, so 4/5 and 1/5. Weighting by 1/σ (giving 2/3 and 1/3) is the tempting but wrong rule."
+   "why": "Weights are proportional to inverse variance: $1/1$ versus $1/4$, so $4/5$ and $1/5$. Weighting by $1/\\sigma$ (giving $2/3$ and $1/3$) is the tempting but wrong rule."
   },
-  "tryIt": "Generate 1000 readings from each sensor in NumPy, fuse them with inverse-variance weights, and check that the empirical variance is about 0.8 cm^2."
+  "tryIt": "Generate 1000 readings from each sensor in NumPy, fuse them with inverse-variance weights, and check that the empirical variance is about $0.8\\ \\text{cm}^2$."
  },
  "pinhole_camera": {
   "points": [
@@ -818,9 +818,9 @@
  },
  "bayes_filter": {
   "points": [
-   "The belief bel(x_t) = p(x_t | z_1:t, u_1:t) is a full probability distribution over the state, not a single guess, so it captures both the estimate and its uncertainty.",
-   "Predict: bel_bar(x_t) = ∫ p(x_t | u_t, x_t-1) bel(x_t-1) dx_t-1 spreads the belief through the motion model, which typically increases uncertainty.",
-   "Correct: bel(x_t) = η p(z_t | x_t) bel_bar(x_t) reweights by the measurement likelihood and renormalizes; recursion works because of the Markov assumption on state and measurements."
+   "The belief $\\mathrm{bel}(x_t) = p(x_t \\mid z_{1:t}, u_{1:t})$ is a full probability distribution over the state, not a single guess, so it captures both the estimate and its uncertainty.",
+   "Predict: $\\overline{\\mathrm{bel}}(x_t) = \\int p(x_t \\mid u_t, x_{t-1})\\, \\mathrm{bel}(x_{t-1})\\, dx_{t-1}$ spreads the belief through the motion model, which typically increases uncertainty.",
+   "Correct: $\\mathrm{bel}(x_t) = \\eta\\, p(z_t \\mid x_t)\\, \\overline{\\mathrm{bel}}(x_t)$ reweights by the measurement likelihood and renormalizes; recursion works because of the Markov assumption on state and measurements."
   ],
   "check": {
    "q": "A robot runs a Bayes filter but its sensor fails, so for many steps it only executes the predict step. What happens to its belief?",
@@ -833,7 +833,7 @@
    "correct": 2,
    "why": "Each prediction convolves the belief with noisy motion, so uncertainty grows without measurements to shrink it. It does not freeze, and it does not jump to uniform in one step; it diffuses gradually."
   },
-  "tryIt": "For a door/no-door world with prior P(door)=0.5, sensor P(z=door|door)=0.6 and P(z=door|no door)=0.2, compute the posterior after one 'door' reading by hand, then after two readings."
+  "tryIt": "For a door/no-door world with prior $P(\\text{door}) = 0.3$, sensor $P(z = \\text{door} \\mid \\text{door}) = 0.6$ and $P(z = \\text{door} \\mid \\text{no door}) = 0.2$, compute the posterior after one 'door' reading by hand, then after two readings."
  },
  "histogram_filter": {
   "points": [
@@ -856,27 +856,27 @@
  },
  "kalman_filter": {
   "points": [
-   "With x_t = A x_t-1 + B u_t + w, w ~ N(0, Q), and z_t = C x_t + v, v ~ N(0, R), a Gaussian belief stays Gaussian, so the filter only tracks a mean μ and covariance Σ.",
-   "Predict: μ = A μ + B u, Σ = A Σ A^T + Q. Update: K = Σ C^T (C Σ C^T + R)^-1, μ = μ + K (z - C μ), Σ = (I - K C) Σ.",
-   "The gain K weighs prediction against measurement: large R (noisy sensor) shrinks K toward trusting the model, small R pushes the estimate toward the measurement."
+   "With $x_t = A x_{t-1} + B u_t + \\epsilon_t$, $\\epsilon_t \\sim \\mathcal{N}(0, Q)$, and $z_t = C x_t + \\delta_t$, $\\delta_t \\sim \\mathcal{N}(0, R)$, a Gaussian belief stays Gaussian, so the filter only tracks a mean $\\mu$ and covariance $\\Sigma$.",
+   "Predict: $\\bar\\mu = A\\mu + Bu$, $\\bar\\Sigma = A\\Sigma A^\\top + Q$. Update: $K = \\bar\\Sigma C^\\top (C\\bar\\Sigma C^\\top + R)^{-1}$, $\\mu = \\bar\\mu + K(z - C\\bar\\mu)$, $\\Sigma = (I - KC)\\bar\\Sigma$.",
+   "The gain $K$ weighs prediction against measurement: large $R$ (noisy sensor) shrinks $K$ toward trusting the model, small $R$ pushes the estimate toward the measurement."
   ],
   "check": {
-   "q": "In a Kalman filter you increase the measurement noise covariance R while keeping Q fixed. What is the effect on the update?",
+   "q": "In a Kalman filter you increase the measurement noise covariance $R$ while keeping $Q$ fixed. What is the effect on the update?",
    "choices": [
     "The gain grows, so the estimate follows measurements more closely",
     "The posterior covariance after the update becomes smaller",
-    "The predicted covariance A Σ A^T + Q becomes larger",
+    "The predicted covariance $A\\Sigma A^\\top + Q$ becomes larger",
     "The gain shrinks, so the estimate relies more on the prediction"
    ],
    "correct": 3,
-   "why": "K = Σ C^T (C Σ C^T + R)^-1 decreases as R grows, so measurements are trusted less and posterior covariance shrinks less. R does not enter the prediction step at all."
+   "why": "$K = \\bar\\Sigma C^\\top (C\\bar\\Sigma C^\\top + R)^{-1}$ decreases as $R$ grows, so measurements are trusted less and posterior covariance shrinks less. $R$ does not enter the prediction step at all."
   },
-  "tryIt": "Write a 1-D Kalman filter for a constant-position model (A=1, C=1) with Q=0.01 and R=1; feed it noisy readings of a constant and plot how K converges to a steady-state value."
+  "tryIt": "Write a 1-D Kalman filter for a constant-position model ($A = 1$, $C = 1$) with $Q = 0.01$ and $R = 1$; feed it noisy readings of a constant and plot how $K$ converges to a steady-state value."
  },
  "ekf_ukf": {
   "points": [
-   "The EKF linearizes nonlinear f and h at the current mean using Jacobians F = ∂f/∂x and H = ∂h/∂x, then applies the standard Kalman covariance equations with those matrices.",
-   "The UKF instead picks 2n+1 sigma points that match the mean and covariance, pushes each through the true nonlinear function, and recomputes a weighted mean and covariance.",
+   "The EKF linearizes nonlinear $f$ and $h$ at the current mean using Jacobians $F = \\partial f/\\partial x$ and $H = \\partial h/\\partial x$, then applies the standard Kalman covariance equations with those matrices.",
+   "The UKF instead picks $2n+1$ sigma points that match the mean and covariance, pushes each through the true nonlinear function, and recomputes a weighted mean and covariance.",
    "Both still assume a unimodal Gaussian belief; the UKF is typically more accurate for strong nonlinearities and needs no Jacobians, but neither can represent multimodal beliefs."
   ],
   "check": {
@@ -890,7 +890,7 @@
    "correct": 1,
    "why": "The UKF propagates sigma points through the actual nonlinear function, capturing mean and covariance more accurately (to second order) than a first-order linearization. It is still Gaussian, not a particle method."
   },
-  "tryIt": "Take x ~ N(1, 0.5^2) and y = x^2. Compare the EKF estimate of E[y] (f(μ)=1) with a Monte Carlo estimate from 100k samples (true value 1.25) and with a 3-point unscented transform."
+  "tryIt": "Take $x \\sim \\mathcal{N}(1, 0.5^2)$ and $y = x^2$. Compare the EKF estimate of $E[y]$ ($f(\\mu) = 1$) with a Monte Carlo estimate from 100k samples (true value $1.25$) and with a 3-point unscented transform."
  },
  "particle_filter": {
   "points": [
@@ -913,12 +913,12 @@
  },
  "motion_measurement_models": {
   "points": [
-   "A probabilistic motion model p(x_t | u_t, x_t-1) gives a distribution over the next pose; the odometry model decomposes motion into rotation, translation, rotation, each corrupted by noise.",
-   "A range-bearing sensor model predicts r = sqrt((m_x - x)^2 + (m_y - y)^2) and φ = atan2(m_y - y, m_x - x) - θ, with additive Gaussian noise, giving p(z | x, m).",
-   "Sampling from the motion model naturally produces the curved 'banana' distribution that a Gaussian over (x, y, θ) cannot capture well, because heading uncertainty bends the position spread."
+   "A probabilistic motion model $p(x_t \\mid u_t, x_{t-1})$ gives a distribution over the next pose; the odometry model decomposes motion into rotation, translation, rotation, each corrupted by noise.",
+   "A range-bearing sensor model predicts $r = \\sqrt{(m_x - x)^2 + (m_y - y)^2}$ and $\\phi = \\operatorname{atan2}(m_y - y,\\ m_x - x) - \\theta$, with additive Gaussian noise, giving $p(z \\mid x, m)$.",
+   "Sampling from the motion model naturally produces the curved 'banana' distribution that a Gaussian over $(x, y, \\theta)$ cannot capture well, because heading uncertainty bends the position spread."
   ],
   "check": {
-   "q": "A robot with noisy heading drives straight 5 m. If you sample many end poses from its odometry motion model, what shape does the (x, y) cloud take?",
+   "q": "A robot with noisy heading drives straight 5 m. If you sample many end poses from its odometry motion model, what shape does the $(x, y)$ cloud take?",
    "choices": [
     "A crescent arc, because heading error maps into sideways displacement",
     "A circle centered on the commanded end point with equal spread",
@@ -932,8 +932,8 @@
  },
  "ekf_localization": {
   "points": [
-   "The state is the pose (x, y, θ) with a known landmark map; prediction uses the motion model with its Jacobian G with respect to the state, and process noise mapped from control space.",
-   "Each landmark observation z = h(x, m_j) + v is linearized with H = ∂h/∂x, and the innovation z - h(μ) updates the pose; bearing innovations must be wrapped to [-π, π].",
+   "The state is the pose $(x, y, \\theta)$ with a known landmark map; prediction uses the motion model with its Jacobian $F$ with respect to the state, and process noise $Q$.",
+   "Each landmark observation $z = h(x, m_j) + \\delta$ is linearized with $H = \\partial h/\\partial x$, and the innovation $z - h(\\bar\\mu)$ updates the pose; bearing innovations must be wrapped to $(-\\pi, \\pi]$.",
    "It requires known data association (which landmark was seen) and a reasonably good initial pose; a wrong association or huge initial error can make it diverge."
   ],
   "check": {
@@ -947,7 +947,7 @@
    "correct": 3,
    "why": "The true difference is only 2 degrees, but the raw subtraction gives 358 degrees, producing a huge, wrong correction. The gain does not know about angle periodicity; you must wrap the innovation."
   },
-  "tryIt": "Write the 2x3 Jacobian H of the range-bearing model with respect to (x, y, θ) for a landmark at (m_x, m_y), then verify it numerically with finite differences at one pose."
+  "tryIt": "Write the $2 \\times 3$ Jacobian $H$ of the range-bearing model with respect to $(x, y, \\theta)$ for a landmark at $(m_x, m_y)$, then verify it numerically with finite differences at one pose."
  },
  "mcl": {
   "points": [

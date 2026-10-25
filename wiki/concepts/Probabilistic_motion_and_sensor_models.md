@@ -18,7 +18,7 @@ Odometry and range-bearing models written as probability distributions, ready to
 ### Key ideas
 
 1. A probabilistic motion model p(x_t | u_t, x_t-1) gives a distribution over the next pose; the odometry model decomposes motion into rotation, translation, rotation, each corrupted by noise.
-2. A range-bearing sensor model predicts r = sqrt((m_x - x)^2 + (m_y - y)^2) and φ = atan2(m_y - y, m_x - x) - θ, with additive Gaussian noise, giving p(z | x, m).
+2. A range-bearing sensor model predicts r = √((m_x - x)^2 + (m_y - y)^2) and φ = atan2(m_y - y, m_x - x) - θ, with additive Gaussian noise, giving p(z | x, m).
 3. Sampling from the motion model naturally produces the curved 'banana' distribution that a Gaussian over (x, y, θ) cannot capture well, because heading uncertainty bends the position spread.
 
 Try it: Sample 1000 end poses for a robot starting at the origin driving 5 m with heading noise of 0.1 rad and distance noise of 0.1 m; scatter-plot x versus y and observe the arc.

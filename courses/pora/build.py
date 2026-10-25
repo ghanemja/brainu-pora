@@ -50,7 +50,10 @@ def page_id(name: str) -> str:
 # study.json writes math as TeX between $...$. The prototype renders it with KaTeX;
 # the wiki, the atlas and the Brain University app show plain text, so detex() turns
 # the TeX back into readable Unicode for them.
-TEX_SYMBOLS = {"\\theta": "θ", "\\omega": "ω", "\\delta": "δ", "\\tau": "τ", "\\pi": "π", "\\partial": "∂", "\\int": "∫",
+TEX_SYMBOLS = {"\\Sigma": "Σ", "\\Delta": "Δ", "\\mu": "μ", "\\sigma": "σ", "\\epsilon": "ε", "\\eta": "η", "\\phi": "φ",
+               "\\lambda": "λ", "\\kappa": "κ", "\\zeta": "ζ", "\\alpha": "α", "\\beta": "β", "\\gamma": "γ", "\\infty": "∞",
+               "\\leftarrow": "←", "\\Longrightarrow": "⇒", "\\mid": "|", "\\le": "≤", "\\ge": "≥", "\\pm": "±", "\\sim": "~", "\\cdot": "·",
+               "\\theta": "θ", "\\omega": "ω", "\\delta": "δ", "\\tau": "τ", "\\pi": "π", "\\partial": "∂", "\\int": "∫",
                "\\times": "×", "\\approx": "≈", "\\neq": "≠", "\\in": "∈", "\\top": "T", "\\|": "‖",
                "\\sin": "sin", "\\cos": "cos", "\\operatorname{atan2}": "atan2", "\\,": " ", "\\ ": " "}
 
@@ -58,8 +61,13 @@ TEX_SYMBOLS = {"\\theta": "θ", "\\omega": "ω", "\\delta": "δ", "\\tau": "τ",
 def detex(t: str) -> str:
     def one(m):
         x = m.group(1)
+        x = re.sub(r"\\(?:operatorname|mathcal|mathrm|text|mathbf)\{([^{}]*)\}", r"\1", x)
+        x = re.sub(r"\\overline\{([^{}]*)\}", lambda k: k.group(1) + "\u0304", x)
+        x = re.sub(r"\\bar\s*\{?\s*(\\?[A-Za-z]+)(?:\s*\})?", lambda k: TEX_SYMBOLS.get(k.group(1), k.group(1)) + "\u0304", x)
+        x = re.sub(r"\\begin\{[bp]matrix\}(.*?)\\end\{[bp]matrix\}", lambda k: "[" + k.group(1).replace("\\\\", "; ").replace("&", ",") + "]", x)
         x = re.sub(r"\\frac\{([^{}]*)\}\{([^{}]*)\}", r"(\1)/(\2)", x)
         x = re.sub(r"\\sqrt\{([^{}]*)\}", r"√(\1)", x)
+        x = re.sub(r"\\sqrt\s+([A-Za-z0-9])", r"√\1", x)
         # \dot x, \dot{x}, \ddot\theta: the letter with a combining dot (or two) above it
         for cmd, mark in (("ddot", "\u0308"), ("dot", "\u0307")):
             x = re.sub(r"\\" + cmd + r"\s*\{?\s*(\\?[A-Za-z]+)(?:\s*\})?",

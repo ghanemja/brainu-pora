@@ -19,11 +19,11 @@ Estimate the robot's pose in a known map by fusing odometry with landmark measur
 
 ### Key ideas
 
-1. The state is the pose (x, y, θ) with a known landmark map; prediction uses the motion model with its Jacobian G with respect to the state, and process noise mapped from control space.
-2. Each landmark observation z = h(x, m_j) + v is linearized with H = ∂h/∂x, and the innovation z - h(μ) updates the pose; bearing innovations must be wrapped to [-π, π].
+1. The state is the pose (x, y, θ) with a known landmark map; prediction uses the motion model with its Jacobian F with respect to the state, and process noise Q.
+2. Each landmark observation z = h(x, m_j) + δ is linearized with H = ∂ h/∂ x, and the innovation z - h(μ̄) updates the pose; bearing innovations must be wrapped to (-π, π].
 3. It requires known data association (which landmark was seen) and a reasonably good initial pose; a wrong association or huge initial error can make it diverge.
 
-Try it: Write the 2x3 Jacobian H of the range-bearing model with respect to (x, y, θ) for a landmark at (m_x, m_y), then verify it numerically with finite differences at one pose.
+Try it: Write the 2 × 3 Jacobian H of the range-bearing model with respect to (x, y, θ) for a landmark at (m_x, m_y), then verify it numerically with finite differences at one pose.
 
 Needs first: [[EKF_and_UKF]], [[Probabilistic_motion_and_sensor_models]]
 

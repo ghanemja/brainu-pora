@@ -19,8 +19,8 @@ Wheels that cannot slide sideways constrain velocity but not position. The unicy
 
 ### Key ideas
 
-1. The unicycle model x_dot = v cos θ, y_dot = v sin θ, θ_dot = ω captures a robot that can drive forward and turn but cannot move sideways.
-2. The no-slip condition x_dot sin θ - y_dot cos θ = 0 restricts velocity, but it cannot be integrated into a constraint on position, so every pose is still reachable.
+1. The unicycle model ẋ = vcosθ, ẏ = vsinθ, θ̇ = ω captures a robot that can drive forward and turn but cannot move sideways.
+2. The no-slip condition ẋsinθ - ẏcosθ = 0 restricts velocity, but it cannot be integrated into a constraint on position, so every pose is still reachable.
 3. A differential-drive robot maps to the unicycle via v = r(ω_R + ω_L)/2 and ω = r(ω_R - ω_L)/L, with wheel radius r and axle length L.
 
 Try it: Integrate the unicycle with Euler steps for v = 1, ω = 0.5 for 4 seconds starting at the origin, and check that the path is an arc of radius v/ω = 2.

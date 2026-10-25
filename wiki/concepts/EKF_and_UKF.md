@@ -19,11 +19,11 @@ Extend the Kalman filter to nonlinear systems, by linearizing (EKF) or by propag
 
 ### Key ideas
 
-1. The EKF linearizes nonlinear f and h at the current mean using Jacobians F = ∂f/∂x and H = ∂h/∂x, then applies the standard Kalman covariance equations with those matrices.
+1. The EKF linearizes nonlinear f and h at the current mean using Jacobians F = ∂ f/∂ x and H = ∂ h/∂ x, then applies the standard Kalman covariance equations with those matrices.
 2. The UKF instead picks 2n+1 sigma points that match the mean and covariance, pushes each through the true nonlinear function, and recomputes a weighted mean and covariance.
 3. Both still assume a unimodal Gaussian belief; the UKF is typically more accurate for strong nonlinearities and needs no Jacobians, but neither can represent multimodal beliefs.
 
-Try it: Take x ~ N(1, 0.5^2) and y = x^2. Compare the EKF estimate of E[y] (f(μ)=1) with a Monte Carlo estimate from 100k samples (true value 1.25) and with a 3-point unscented transform.
+Try it: Take x ~ N(1, 0.5^2) and y = x^2. Compare the EKF estimate of E[y] (f(μ) = 1) with a Monte Carlo estimate from 100k samples (true value 1.25) and with a 3-point unscented transform.
 
 Needs first: [[Kalman_filter]], [[Linearization]]
 

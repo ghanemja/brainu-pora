@@ -32,11 +32,11 @@ The **Kalman filter** is a recursive Bayesian estimator that produces optimal es
 
 ### Key ideas
 
-1. With x_t = A x_t-1 + B u_t + w, w ~ N(0, Q), and z_t = C x_t + v, v ~ N(0, R), a Gaussian belief stays Gaussian, so the filter only tracks a mean μ and covariance Σ.
-2. Predict: μ = A μ + B u, Σ = A Σ A^T + Q. Update: K = Σ C^T (C Σ C^T + R)^-1, μ = μ + K (z - C μ), Σ = (I - K C) Σ.
+1. With x_t = A x_t-1 + B u_t + ε_t, ε_t ~ N(0, Q), and z_t = C x_t + δ_t, δ_t ~ N(0, R), a Gaussian belief stays Gaussian, so the filter only tracks a mean μ and covariance Σ.
+2. Predict: μ̄ = Aμ + Bu, Σ̄ = AΣ A^T + Q. Update: K = Σ̄ C^T (CΣ̄ C^T + R)^-1, μ = μ̄ + K(z - Cμ̄), Σ = (I - KC)Σ̄.
 3. The gain K weighs prediction against measurement: large R (noisy sensor) shrinks K toward trusting the model, small R pushes the estimate toward the measurement.
 
-Try it: Write a 1-D Kalman filter for a constant-position model (A=1, C=1) with Q=0.01 and R=1; feed it noisy readings of a constant and plot how K converges to a steady-state value.
+Try it: Write a 1-D Kalman filter for a constant-position model (A = 1, C = 1) with Q = 0.01 and R = 1; feed it noisy readings of a constant and plot how K converges to a steady-state value.
 
 Needs first: [[Recursive_Bayes_filter]], [[Linear_algebra]], [[Measurement_noise_models]]
 
