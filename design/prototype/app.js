@@ -12,6 +12,14 @@ const KEY = "brainu-prototype-v1";
 const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes", "wrong", "tick",
   "placed", "seen", "rev", "last", "days", "weekGoal", "mins", "plan"];
 const DAY = 864e5, now = () => Date.now();
+// Analytics (GoatCounter, set up in index.html). Pages are hash routes, so count them by
+// hand; events are counted as paths starting with "event/". Nothing personal is sent.
+function track(path, title, event) {
+  const go = () => window.goatcounter && window.goatcounter.count && window.goatcounter.count({ path, title: title || path, event: !!event });
+  if (!window.GOATCOUNTER_CODE) return;
+  if (window.goatcounter && window.goatcounter.count) go(); else setTimeout(go, 1500);
+}
+const trackEvent = (name) => track("event/" + name, name, true);
 const today = () => new Date().toISOString().slice(0, 10);
 const trunc = (t, n) => (t.length > n ? t.slice(0, n - 1) + "…" : t);
 // Math: course text writes TeX between $...$; KaTeX (vendored, loaded before this module)
@@ -264,6 +272,8 @@ function Start({ D, S, set }) {
   const toggle = (id) => setGoals(goals.includes(id) ? goals.filter((g) => g !== id) : goals.concat(id));
   const choose = (id) => (q === 2 ? toggle(id) : setBg(id));
   const finish = (withPlacement) => {
+    trackEvent(withPlacement ? "path-built-after-check" : "path-built-skipped-check");
+    goals.forEach((g) => trackEvent("goal/" + g)); trackEvent("from/" + bg);
     set({ bg, goal: goals, i: 0, started: false, done: {}, passed: 0, wrong: {}, seen: {}, rev: {}, plan: null,
       placed: withPlacement ? placed : null, justBuilt: Date.now() });
     nav("#/path");
@@ -363,7 +373,7 @@ function Home({ D, S, P, set }) {
   const [warm, setWarm] = useState(away >= 3 && P.steps.some((id) => S.done[id]) ? "offer" : null), [rev, setRev] = useState(false);
   const mins = S.mins || 20, plan = sessionPlan(D, S, P, mins);
   const first = plan.parts[0], wk = daysThisWeek(S), goal = S.weekGoal || 3;
-  const startPlan = () => { set({ plan: { mins, at: now(), parts: plan.parts.map((x) => x.id + ":" + x.part) } }); nav("#/lesson/" + (first.k + 1) + "/" + first.part); };
+  const startPlan = () => { trackEvent("session-" + mins + "min"); set({ plan: { mins, at: now(), parts: plan.parts.map((x) => x.id + ":" + x.part) } }); nav("#/lesson/" + (first.k + 1) + "/" + first.part); };
   // the warm-up: what you were doing, then three questions from passed lessons (oldest first)
   const warmIds = [...due, ...P.steps.filter((id) => S.done[id] && !due.includes(id)).reverse()].slice(0, 3);
   const lastDone = [...P.steps].reverse().find((id) => S.done[id]);
@@ -526,6 +536,7 @@ function Lesson({ D, S, P, set, n, part }) {
     set({ done: ok ? { ...S.done, [id]: true } : S.done, passed: S.passed + (ok ? 1 : 0), wrong, tick: S.tick + 1, rev,
       seen: { ...S.seen, [id]: { ...((S.seen || {})[id] || {}), check: 1 } } });
     if (ok && next) setPulse({ from: i, key: Date.now() });
+    trackEvent(ok ? "check-right" : "check-wrong");
   };
   const L = c.L[0], nbk = c.N[0], ch = c.c == null ? null : D.CH[c.c];
   // Short explainers first; the full Stanford class recording stays one tap away.
@@ -764,6 +775,7 @@ function GraphPage({ D, S, P }) {
 }
 
 function Done({ D, S, P }) {
+  useEffect(() => trackEvent("path-finished"), []);
   const [R] = useResearch(), [video, setVideo] = useState(null);
   const n = P.steps.length, learned = P.steps.filter((id) => S.done[id]).length, notes = P.steps.filter((k) => ((S.notes || {})[k] || "").trim()).length;
   const retry = Object.keys(S.wrong || {}).filter((w) => P.steps.includes(w)).length;
@@ -827,6 +839,8 @@ function App() {
   }, []);
   const set = (patch) => setS((s) => { const d = today(), n = { ...s, ...patch, last: now(), days: (s.days || []).includes(d) ? s.days : [...(s.days || []).slice(-90), d] }; try { const o = {}; SAVED.forEach((k) => (o[k] = n[k])); localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} return n; });
   useEffect(() => { window.scrollTo(0, 0); }, [route.page]);
+  // one page view per screen; lessons by number, not by part, so #/lesson/3/check counts as lesson 3
+  useEffect(() => { track("/" + (route.page || "") + (route.page === "lesson" && route.arg ? "/" + route.arg : ""), document.title); }, [route.page, route.arg]);
   if (err) return html`<p class="loading">The course didn't load. Run a local server in the design folder (python3 -m http.server 8000) and reload.</p>`;
   if (!D) return html`<p class="loading">Loading the course…</p>`;
   const goals = (S.goal || []).filter((g) => D.C[g]), hasPath = !!(S.bg && goals.length);
