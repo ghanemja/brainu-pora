@@ -36,6 +36,10 @@ A robot holds still ($A = 1$, $B = 0$, $C = 1$). Its belief is $\mu = 0$, $\Sigm
 
 Prediction and measurement were equally trusted, so the estimate lands halfway, and the uncertainty halves.
 
+## Estimating what you never measure
+
 For moving robots the book uses a constant-velocity model, $x = (p, v)$ with $A = \begin{bmatrix} 1 & \Delta t \\ 0 & 1 \end{bmatrix}$ and $C = \begin{bmatrix} 1 & 0 \end{bmatrix}$: you measure only position, and the filter still estimates velocity.
+
+Prediction makes position and velocity correlated in $\bar\Sigma$, so $K$ gets a velocity entry: a reading ahead of the prediction also raises the velocity estimate.
 
 > **Common mistake:** setting $Q$ to zero because "my model is right". Then $\bar\Sigma$ shrinks every step, $K$ goes to zero, and the filter stops listening to its sensors. A small $Q$ keeps it honest.
