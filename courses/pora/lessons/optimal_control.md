@@ -1,5 +1,5 @@
 ---
-
+video: 26sP4QIXgVA | L3.1 - Introduction to optimal control: motivation, optimal costs, optimization variables | aa4cc | 8:54
 ---
 ## The problem in one line
 

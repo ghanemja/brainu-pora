@@ -1,5 +1,5 @@
 ---
-
+video: PHC2dm4E_VQ | CS 285: Lecture 10, Part 4 | RAIL | 13:23
 ---
 ## LQR for nonlinear systems, one linearization at a time
 

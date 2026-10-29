@@ -1,5 +1,6 @@
 ---
-
+video: GazC3A4OQTE | Dijkstra's Algorithm - Computerphile | Computerphile | 10:43
+video: ySN5Wnu88nE | A* (A Star) Search Algorithm - Computerphile | Computerphile | 14:04
 ---
 ## From space to graph
 

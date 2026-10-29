@@ -1,5 +1,5 @@
 ---
-
+video: Bxc4iy2xUjc | L7.1 Pontryagin's principle of maximum (minimum) and its application to optimal control | aa4cc | 18:32
 ---
 ## Optimality conditions first, numbers second
 

@@ -1,5 +1,5 @@
 ---
-
+video: wlkRYMVUZTs | Introduction to Trajectory Optimization | Matthew Kelly | 46:40
 ---
 ## Discretize first, then optimize
 

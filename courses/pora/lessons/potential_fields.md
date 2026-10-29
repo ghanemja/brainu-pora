@@ -1,5 +1,5 @@
 ---
-
+video: 8Vva0bnMIEI | Modern Robotics, Chapter 10.6: Virtual Potential Fields | Northwestern Robotics | 5:10
 ---
 ## A bowl and some hills
 

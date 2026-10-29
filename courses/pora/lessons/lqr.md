@@ -1,5 +1,6 @@
 ---
-
+video: E_RDCFOlJx4 | What Is Linear Quadratic Regulator (LQR) Optimal Control? | State Space, Part 4 | MATLAB | 17:24
+video: 1_UobILf3cc | Linear Quadratic Regulator (LQR) Control for the Inverted Pendulum on a Cart [Control Bootcamp] | Steve Brunton | 13:04
 ---
 ## The problem LQR solves
 

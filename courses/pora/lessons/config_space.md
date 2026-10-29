@@ -1,5 +1,6 @@
 ---
-
+video: AsfEYu0ym_o | Configuration, and Configuration Space (Topology and Representation) of a Robot | Lesson 2 | Mecharithm - Robotics and Mechatronics | 16:31
+video: FyLNR3edOds | Modern Robotics, Chapter 2.3.1: Configuration Space Topology | Northwestern Robotics | 4:37
 ---
 ## One point per pose
 

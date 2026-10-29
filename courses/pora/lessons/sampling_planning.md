@@ -1,5 +1,6 @@
 ---
-
+video: QR3U1dgc5RE | Path Planning with A* and RRT | Autonomous Navigation, Part 4 | MATLAB | 17:55
+video: rKe6HO8LDu0 | Modern Robotics, Chapter 10.5: Sampling Methods for Motion Planning (Part 1 of 2) | Northwestern Robotics | 3:12
 ---
 ## Why not just use a grid?
 

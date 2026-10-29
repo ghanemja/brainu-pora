@@ -1,5 +1,6 @@
 ---
-
+video: qg4PchTECck | Gradient Descent in 3 minutes | Visually Explained | 3:07
+video: uh1Dk68cfWs | The Karush–Kuhn–Tucker (KKT) Conditions and the Interior Point Method for Convex Optimization | Visually Explained | 21:58
 ---
 ## What an optimizer is looking for
 

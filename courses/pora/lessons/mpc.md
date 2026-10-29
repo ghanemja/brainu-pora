@@ -1,5 +1,6 @@
 ---
-
+video: 8U0xiOkDcmw | Why Use Model Predictive Control? | Understanding MPC, Part 1 | MATLAB | 4:51
+video: YwodGM2eoy4 | Model Predictive Control | Steve Brunton | 12:13
 ---
 ## Plan, take one step, plan again
 
