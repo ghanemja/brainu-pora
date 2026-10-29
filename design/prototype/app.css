@@ -658,21 +658,6 @@ body.am-canvas[data-medium] { background: var(--desk) url(tex/paper.jpg) !import
 .watch .vpick button.on .vp-t { background: linear-gradient(transparent 55%, rgba(245,197,24,.55) 55% 92%, transparent 92%); }
 .watch .vp-k { color: var(--redpen); font: 700 17px "Caveat", cursive; letter-spacing: 0; text-transform: none; }
 .watch .vp-t { font: 600 15px/1.3 "Newsreader", Georgia, serif; } .watch .vp-b { font: 400 16px "Caveat", cursive; }
-/* lesson list in the sidebar */
-.lesson-list ol { list-style: none; margin: 0; padding: 0; }
-.ll { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; align-items: center; gap: 6px; min-height: 28px; text-decoration: none; }
-.ll-n { font: 700 18px/28px "Caveat", cursive; color: var(--redpen); text-align: center; }
-.ll-t { font: 400 15.5px/28px "Newsreader", Georgia, serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ll:hover .ll-t { text-decoration: underline wavy rgba(34,32,28,.35) 1.5px; text-underline-offset: 4px; }
-.ll-done .ll-n { background: var(--tick) center / 70% no-repeat; }
-.ll-done .ll-t { color: var(--muted); }
-.ll-now .ll-n { background: var(--circle) center / 140% 110% no-repeat; }
-.ll-now .ll-t { font-weight: 700; background: linear-gradient(transparent 55%, rgba(245,197,24,.55) 55% 92%, transparent 92%); }
-.ll-s { color: var(--muted); }
-.side-map .cork-xs { max-height: 200px; }
-.ll-n { display: block; height: 28px; background-size: 70% !important; }
-.ll-done .ll-n { background: var(--tick) center / 16px no-repeat; }
-.side-map .cork-xs { max-height: none; }
 .board .ch-sum { margin-bottom: 0; }
 .recap { margin: 8px 0 var(--rule); padding: 18px 24px 16px !important; box-shadow: 0 0 0 7px var(--wood), 0 10px 18px 6px rgba(40,25,10,.2), inset 0 0 40px rgba(0,0,0,.35) !important; }
 .recap .ch-h { margin-top: 0; }
@@ -708,3 +693,67 @@ body.am-canvas[data-medium] { background: var(--desk) url(tex/paper.jpg) !import
 @media (min-width: 1021px) { .lesson:has(.minimap:not(.minimap-off)) .lessonbar, .lesson:has(.minimap:not(.minimap-off)) .planstrip { margin-right: 250px; } }
 /* very wide screens: the sidebar sits left of the minimap, so it needn't leave room */
 @media (min-width: 1780px) { .lesson-side { padding-top: 4px !important; } }
+
+/* ═════════════════ One clear next step ═════════════════
+   The front door is one line, one button and a toy (tap a goal, watch its path pin itself).
+   With a path, "My path" is the hub: what's next, how long, the path below. The nav keeps
+   the next lesson one tap away from anywhere else. */
+.top .am-nav__links { align-items: center !important; }
+.top .am-nav__link:nth-child(1) { background: #fff3a8; } .top .am-nav__link:nth-child(2) { background: #bfe3ff; }
+/* the nav's button is interface, so Bricolage, set a touch smaller than the page's main button */
+.top .nav-go { margin-left: 10px; font: 700 15px "Bricolage Grotesque", sans-serif; padding: 10px 18px; white-space: nowrap; }
+@media (max-width: 640px) { .top .nav-go { font-size: 13.5px; padding: 8px 12px; margin-left: 4px; } .top .am-nav__link { padding: 6px 10px 8px !important; font-size: 19px !important; } }
+
+/* the front door */
+.welcome-page { max-width: 1240px; margin: 0 auto; padding: clamp(20px, 5vw, 56px) 20px 64px; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+@media (max-width: 940px) { .welcome-page { grid-template-columns: minmax(0, 1fr); } }
+.wl-copy { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
+/* kicker in Caveat: a pencilled note above the headline, the way the notebook pages label things */
+.wl-kick { font: 700 22px/1.2 "Caveat", cursive; color: var(--redpen); }
+.wl-copy h1 { margin: 0; font: 400 clamp(38px, 5.2vw, 64px)/1.04 "Permanent Marker", cursive; }
+.wl-copy h1 span { display: inline; background: linear-gradient(transparent 58%, rgba(245,197,24,.6) 58% 90%, transparent 90%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.wl-copy p { margin: 0; max-width: 34em; font: 400 20px/1.55 "Newsreader", Georgia, serif; color: #403a31; }
+.wl-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 6px; }
+.wl-go { font: 700 19px "Bricolage Grotesque", sans-serif !important; padding: 16px 30px !important; }
+.wl-sub { font: 400 21px "Caveat", cursive; color: var(--muted); }
+.wl-alt { font: 500 15px "Bricolage Grotesque", sans-serif; color: var(--muted); text-underline-offset: 3px; }
+.wl-alt:hover { color: var(--ink); }
+.wl-play { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.wl-say { margin: 0; min-height: 2.6em; text-align: center; font: 400 22px/1.25 "Caveat", cursive; }
+.wl-say b { font-weight: 700; color: var(--redpen); }
+/* goals are paper tags pinned under the board, written in Kalam (handwriting) like the cork's cards */
+.wl-goals { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 10px; }
+.wl-goals button { border: 0; cursor: pointer; padding: 5px 12px; background: #fffef8 url(tex/paper.jpg); background-size: 384px; font: 400 16px/1.3 "Kalam", cursive; color: var(--ink); box-shadow: 0 2px 4px rgba(40,25,10,.22); transition: translate .15s, box-shadow .15s; }
+.wl-goals button:nth-child(odd) { rotate: -1deg; } .wl-goals button:nth-child(even) { rotate: .8deg; }
+.wl-goals button:hover { translate: 0 -2px; box-shadow: 0 5px 8px rgba(40,25,10,.25); }
+.wl-goals button.on { background: var(--red); color: #fff; font-weight: 700; }
+
+/* the questions: no hero above them any more, and the page is a sheet in its own right */
+.start { padding-top: clamp(18px, 3vw, 36px); }
+.qcard { border-radius: 2px 3px 3px 2px; box-shadow: 0 1px 1px rgba(40,25,10,.10), 0 10px 22px -8px rgba(40,25,10,.22), 4px 4px 0 -1px #faf6ea, 4px 4px 1px 0 rgba(40,25,10,.10); }
+
+/* the hub */
+.home-main { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.home2 > .home-side { position: sticky; top: 16px; }
+.ready { margin: 0 0 6px; padding: 0 12px; background: #d8f0cf; box-shadow: 0 6px 8px -6px rgba(40,25,10,.3); rotate: -.3deg; font: 400 21px/var(--rule) "Caveat", cursive !important; }
+.ready b { font-weight: 700; }
+.homecard h1 { font-size: clamp(30px, 3.4vw, 40px) !important; }
+.hc-sum { margin: 0 !important; max-width: 60ch; font: 400 18px/var(--rule) "Newsreader", Georgia, serif !important; color: #403a31; }
+.hc-time { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin-top: 6px; }
+.hc-time > span { font: 700 22px/var(--rule) "Caveat", cursive; }
+.hc-time .mins { margin: 0 !important; }
+.hc-go { font-size: 17px !important; padding: 13px 24px !important; }
+.trail h2 { font-size: 22px !important; }
+.trail .side-head { flex-wrap: wrap; }
+.trail-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); column-gap: 18px; }
+.home-fresh .trail-list li { animation: pinin .45s cubic-bezier(.3,1.5,.5,1) both; animation-delay: calc(.15s + var(--k) * 70ms); }
+.home-fresh .homecard { animation: fadein .4s ease both; }
+.homecard .ready { font: 400 21px/var(--rule) "Caveat", cursive !important; }
+/* the session, a lesson to a line: its number in red pen, what you'll do, the minutes */
+.plan .pl-k { grid-row: 1 / 3; font: 700 24px/1 "Caveat", cursive; color: var(--redpen); text-align: center; }
+.plan .pl-n { font: 400 17px/1.3 "Caveat", cursive !important; color: var(--muted); }
+.plan .pl-t { font: 600 17px/1.35 "Newsreader", Georgia, serif !important; }
+.ps-dots { display: flex; flex-wrap: wrap; gap: 5px; }
+.ps-dots i { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid rgba(122,90,0,.55); }
+.ps-dots i.ok { background: var(--green); border-color: var(--green); }
+@media (max-width: 560px) { .hc-time .mins button { padding: 4px 8px !important; font-size: 20px !important; } }

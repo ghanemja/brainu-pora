@@ -161,9 +161,9 @@ function nextPlacement(D, pool, status, bgK) {
 const words = (h) => String(h || "").replace(/<[^>]+>/g, " ").replace(/\$[^$]*\$/g, " x ").split(/\s+/).filter(Boolean).length;
 const mmss = (t) => { const p = String(t).split(":").map(Number); return p.length === 3 ? p[0] * 60 + p[1] + p[2] / 60 : p[0] + (p[1] || 0) / 60; };
 function partsOf(c) {
-  const out = [];
+  // in the order the lesson page shows them, so the session walks straight down it
+  const out = [{ part: "read", label: c.T ? "Read the lesson" : "Read the key ideas", min: c.T ? Math.max(3, Math.round(words(c.T) / 200) + 1) : 2 }];
   if ((c.V || []).length) out.push({ part: "watch", label: "Watch: " + c.V[0].t.split(" | ")[0], min: Math.max(2, Math.round(mmss(c.V[0].len))) });
-  out.push({ part: "read", label: c.T ? "Read the lesson" : "Read the key ideas", min: c.T ? Math.max(3, Math.round(words(c.T) / 200) + 1) : 2 });
   out.push({ part: "check", label: "Check yourself", min: 2 });
   out.push({ part: "practice", label: "Practice", min: 15, optional: true });
   return out;
@@ -184,6 +184,9 @@ function sessionPlan(D, S, P, mins) {
   }
   return { parts: out, total };
 }
+
+// A session's parts, one group per lesson, for listing them a lesson to a line.
+const byLesson = (parts) => parts.reduce((out, x) => { const g = out[out.length - 1]; if (g && g[0].id === x.id) g.push(x); else out.push([x]); return out; }, []);
 
 // Spaced review: a passed lesson comes back after 2 days, then 3, 7, 21 and 60.
 const GAPS = [2, 3, 7, 21, 60];
@@ -235,17 +238,45 @@ const weekStart = () => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDat
 const daysThisWeek = (S) => (S.days || []).filter((d) => new Date(d + "T12:00:00").getTime() >= weekStart()).length;
 
 // ── pages ───────────────────────────────────────────────────────────
-function TopNav({ page, hasPath }) {
+// Two places to be (your path, or exploring) and one thing to do next, always in reach.
+function TopNav({ page, hasPath, next }) {
   const link = (to, label, on) => html`<a class="am-nav__link" href=${to} aria-current=${on ? "page" : null}>${label}</a>`;
   return html`<nav class="am-nav top" aria-label="Main">
     <a class="am-nav__brand brand" href="#/">BrainU<small>unofficial companion to Principles of Robot Autonomy</small></a>
     <div class="am-nav__links">
-      ${link("#/", "⌂ Home", page === "" || page === "start" || page === "done")}
-      ${hasPath ? link("#/path", "My path", page === "path") : null}
-      ${hasPath ? link("#/lesson", "Lesson", page === "lesson") : null}
-      ${link("#/graph", "Knowledge graph", page === "graph")}
-      ${link("#/explore", "Explore", page === "explore")}
+      ${hasPath ? link("#/", "My path", page === "" || page === "path" || page === "lesson" || page === "done") : null}
+      ${link("#/explore", "Explore", page === "explore" || page === "graph")}
+      ${hasPath && next && page !== "lesson" ? html`<a class="am-button nav-go" href=${next.href}>${next.label} →</a>` : null}
     </div></nav>`;
+}
+
+// Minutes to work through a path: the parts a lesson asks of you, practice left out.
+const pathMinutes = (D, steps) => steps.reduce((t, id) => t + partsOf(D.C[id]).filter((p) => !p.optional && p.part !== "watch").reduce((a, p) => a + p.min, 0), 0);
+const roughTime = (m) => (m < 50 ? "under an hour" : m < 90 ? "about an hour" : "about " + Math.round(m / 60) + " hours");
+
+// The front door: what this is in one line, one button, and something to play with.
+// Tap a goal on the cork and watch its path pin itself; left alone, it cycles through them.
+function Welcome({ D, set }) {
+  const G = D.G, [gi, setGi] = useState(0), [touched, setTouched] = useState(false);
+  useEffect(() => { if (touched || reduceMotion()) return; const t = setInterval(() => setGi((k) => (k + 1) % G.length), 3400); return () => clearInterval(t); }, [touched]);
+  const g = G[gi], P = pathFor(D, "new", [g.id]);
+  const go = () => { trackEvent(touched ? "welcome-goal/" + g.id : "welcome-start"); set(touched ? { goal: [g.id] } : {}); nav("#/start"); };
+  return html`<main class="welcome-page">
+    <section class="wl-copy">
+      <span class="wl-kick">Free · built on Stanford's <i>Principles of Robot Autonomy</i></span>
+      <h1>Learn robot autonomy. <span>Only the parts you need.</span></h1>
+      <p>Say what you want a robot to do. BrainU strings together the few lessons that get you there, each with the Stanford lecture, a notebook to run, and a two-minute check.</p>
+      <div class="wl-cta"><button class="am-button wl-go" onClick=${go}>${touched ? "Start with this goal" : "Find my path"} →</button>
+        <span class="wl-sub">two questions · about a minute</span></div>
+      <a class="wl-alt" href="courses/pora-atlas.html">in a hurry? see every concept on one page</a>
+    </section>
+    <section class="wl-play" aria-label="Try it: pick a goal and see its path">
+      <div class="cork cork-sm"><${CourseMap} D=${D} goals=${[g.id]} steps=${P.steps} /></div>
+      <p class="wl-say"><b>${g.n}</b>: ${P.steps.length} lessons from scratch, ${roughTime(pathMinutes(D, P.steps))}. Fewer if you know some already.</p>
+      <div class="wl-goals" role="group" aria-label="Goals">${G.map((x, k) => html`<button key=${x.id} aria-pressed=${k === gi} class=${k === gi ? "on" : ""}
+        onClick=${() => { setTouched(true); setGi(k); }}>${x.n}</button>`)}</div>
+    </section>
+  </main>`;
 }
 
 function Start({ D, S, set }) {
@@ -270,13 +301,14 @@ function Start({ D, S, set }) {
   };
   const isOn = (id) => (q === 2 ? goals.includes(id) : bg === id), list = q === 2 ? D.G : D.BG;
   const toggle = (id) => setGoals(goals.includes(id) ? goals.filter((g) => g !== id) : goals.concat(id));
-  const choose = (id) => (q === 2 ? toggle(id) : setBg(id));
+  // one tap answers question 1 and turns the page; Back is there if it was a slip
+  const choose = (id) => { if (q === 2) return toggle(id); setBg(id); setTimeout(() => setQ(2), reduceMotion() ? 0 : 280); };
   const finish = (withPlacement) => {
     trackEvent(withPlacement ? "path-built-after-check" : "path-built-skipped-check");
     goals.forEach((g) => trackEvent("goal/" + g)); trackEvent("from/" + bg);
     set({ bg, goal: goals, i: 0, started: false, done: {}, passed: 0, wrong: {}, seen: {}, rev: {}, plan: null,
       placed: withPlacement ? placed : null, justBuilt: Date.now() });
-    nav("#/path");
+    nav("#/");
   };
   const startCheck = () => { setStatus({}); setAsked(0); setPick(null); setQ(3); };
   const tested = Object.keys(status).length, done3 = q === 3 && !cur;
@@ -287,12 +319,8 @@ function Start({ D, S, set }) {
     : html`<b>${nIds} concepts</b> in five parts. Answer and watch your part of the course light up.`;
   const cq = cur && C[cur].q;
   return html`<main class="start">
-    <header class="hero">
-      <h1>Your path through <span>Principles of Robot Autonomy</span></h1>
-      <p>For people learning around a job. Tell us what you know and what you want to build, check yourself in two minutes, and get only the lessons you need, sized to the time you have.</p>
-    </header>
     <div class="start-grid">
-      <section class="am-card qcard" data-medium="marker" data-style="notebook" data-theme="light" aria-labelledby="qh">
+      <section class="qcard" aria-labelledby="qh">
         <div class="qsteps"><button class=${q === 1 ? "on" : ""} onClick=${() => setQ(1)}>① starting point</button><button class=${q === 2 ? "on" : ""} disabled=${!bg} onClick=${() => setQ(2)}>② goal</button><button class=${q === 3 ? "on" : ""} disabled=${!goals.length} onClick=${startCheck}>③ quick check</button></div>
         ${q < 3 ? html`
         <h2 id="qh">${q === 2 ? "What do you want to be able to do?" : "Where are you starting from?"}</h2>
@@ -377,7 +405,8 @@ function Home({ D, S, P, set }) {
   // the warm-up: what you were doing, then three questions from passed lessons (oldest first)
   const warmIds = [...due, ...P.steps.filter((id) => S.done[id] && !due.includes(id)).reverse()].slice(0, 3);
   const lastDone = [...P.steps].reverse().find((id) => S.done[id]);
-  return html`<main class="home2">
+  const fresh = !S.started && S.justBuilt, left = P.steps.filter((id) => !S.done[id]);
+  return html`<main class=${"home2" + (fresh ? " home-fresh" : "")}>
     ${warm === "offer" ? html`<section class="card welcome">
       <span class="kicker">Welcome back · it's been ${away} days</span>
       <h2>Here's where you were</h2>
@@ -386,16 +415,30 @@ function Home({ D, S, P, set }) {
       <div class="row"><button class="am-button" onClick=${() => setWarm("on")}>Warm up, 3 questions</button><button class="linkish" onClick=${() => setWarm(null)}>Skip it</button></div>
     </section>` : warm === "on" ? html`<section class="card welcome"><${Review} D=${D} S=${S} set=${set} ids=${warmIds} title="Warm-up" onDone=${() => setWarm(null)} /></section>` : null}
 
+    <div class="home-main">
     <section class="card homecard">
-      <span class="kicker">${S.started ? "Your path" : "Your path is ready"} · ${goalsLabel(D, S.goal)}</span>
-      <h1>How much time do you have?</h1>
-      <div class="seg3 mins" role="radiogroup" aria-label="Time for this session">${[10, 20, 45].map((m) => html`<button key=${m} role="radio" aria-checked=${mins === m} class=${mins === m ? "on" : ""} onClick=${() => set({ mins: m })}>${m} min</button>`)}</div>
-      ${plan.parts.length ? html`<ol class="plan">${plan.parts.map((x) => html`<li key=${x.id + x.part}><a href=${"#/lesson/" + (x.k + 1) + "/" + x.part}>
-          <span class=${"pi pi-" + x.part} aria-hidden="true"></span><span class="pl-t">${x.label}</span><span class="pl-n">${x.name}</span><span class="pl-m">${x.min} min</span></a></li>`)}</ol>
-        <div class="row"><button class="am-button" onClick=${startPlan}>Start my ${mins} minutes →</button>
-          <span class="hint">about ${plan.total} min · you can stop after any step; it picks up where you left off</span></div>`
-        : html`<p>Everything on your path is done. <a href="#/done">See where to go next →</a></p>`}
+      ${fresh ? html`<p class="ready"><b>Your path is ready.</b> ${P.steps.length} lessons, ${roughTime(pathMinutes(D, P.steps))}${P.known.length ? html`, skipping ${P.known.length} concept${P.known.length > 1 ? "s" : ""} you already know` : ""}.</p>` : null}
+      ${plan.parts.length ? html`
+      <span class="kicker">${S.started ? "Pick up where you left off" : "Up first"} · lesson ${i + 1} of ${P.steps.length}</span>
+      <h1>${c.n}</h1>
+      <${M} as="p" cls="hc-sum" t=${c.s} />
+      <div class="hc-time"><span>I have</span><div class="seg3 mins" role="radiogroup" aria-label="Time for this session">${[10, 20, 45].map((m) => html`<button key=${m} role="radio" aria-checked=${mins === m} class=${mins === m ? "on" : ""} onClick=${() => set({ mins: m })}>${m} min</button>`)}</div></div>
+      <ol class="plan">${byLesson(plan.parts).map((g) => html`<li key=${g[0].id}><a href=${"#/lesson/" + (g[0].k + 1) + "/" + g[0].part}>
+          <span class="pl-k" aria-hidden="true">${g[0].k + 1}</span><span class="pl-t">${g[0].name}</span>
+          <span class="pl-n">${g.map((x) => ({ watch: "watch", read: "read", check: "check", practice: "practice" }[x.part])).join(" · ")}</span><span class="pl-m">${g.reduce((t, x) => t + x.min, 0)} min</span></a></li>`)}</ol>
+      <div class="row"><button class="am-button hc-go" onClick=${startPlan}>Start my ${mins} minutes →</button>
+        <span class="hint">stop after any step; it picks up where you left off</span></div>`
+        : html`<span class="kicker">All ${P.steps.length} lessons done</span><h1>You finished the path</h1>
+          <div class="row"><a class="am-button hc-go" href="#/done">See where to go next →</a></div>`}
     </section>
+
+    <section class="card trail" aria-labelledby="trh">
+      <div class="side-head"><h2 id="trh">Your path · ${goalsLabel(D, S.goal)}</h2><span>${learned} of ${P.steps.length} done${left.length && learned ? " · " + roughTime(pathMinutes(D, left)) + " left" : ""}</span></div>
+      <ol class="trail-list">${P.steps.map((id, k) => html`<li key=${id} style=${{ "--k": k }}><a href=${"#/lesson/" + (k + 1)} class=${"step" + (S.done[id] ? " step-done" : "") + (k === i ? " step-now" : "")}>
+        <span class="sn">${S.done[id] ? "✓" : k + 1}</span><span><span class="sname">${D.C[id].n}</span><span class="smeta">${D.C[id].c == null ? "background" : "chapter " + D.C[id].c}${D.C[id].L.length ? " · lecture" : ""}${D.C[id].N.length ? " · notebook" : ""}</span></span></a></li>`)}</ol>
+      <div class="row tiny"><a class="linkish" href="#/path">See it on the course map</a><a class="linkish" href="#/start">Change goals</a></div>
+    </section>
+    </div>
 
     <aside class="home-side">
       ${due.length && warm !== "on" ? html`<section class="card">
@@ -409,12 +452,6 @@ function Home({ D, S, P, set }) {
         <div class="week" aria-label=${wk + " of " + goal + " study days this week"}>${Array.from({ length: Math.max(goal, wk) }, (_, k) => html`<span key=${k} class=${k < wk ? "on" : ""}></span>`)}</div>
         <p class="hint">${wk >= goal ? "Goal met. Anything more is a bonus." : wk + " of " + goal + " study days. Any day you learn something counts; there's no streak to break."}</p>
         <div class="row tiny">Weekly goal: ${[2, 3, 5].map((g) => html`<button key=${g} class=${"linkish" + (goal === g ? " strong" : "")} aria-pressed=${goal === g} onClick=${() => set({ weekGoal: g })}>${g} days</button>`)}</div>
-      </section>
-      <section class="card">
-        <h2>Progress</h2>
-        <div class="bar" aria-label=${learned + " of " + P.steps.length + " lessons passed"}><span style=${{ width: (100 * learned) / P.steps.length + "%" }}></span></div>
-        <p class="hint">${learned} of ${P.steps.length} lessons passed · now on lesson ${i + 1}, ${c.n}</p>
-        <div class="row tiny"><a class="linkish" href="#/path">See the whole path</a><a class="linkish" href="#/start">Change goals</a></div>
       </section>
     </aside>
   </main>`;
@@ -485,10 +522,11 @@ function planStrip(D, S, P) {
   const items = S.plan.parts.map((key) => { const [id, part] = key.split(":"); return { id, part, k: P.steps.indexOf(id), ok: isSeen(S, id, part) }; }).filter((x) => x.k >= 0);
   if (!items.length) return null;
   const left = items.filter((x) => !x.ok), name = { watch: "Watch", read: "Read", check: "Check", practice: "Practice" };
+  // one line: how far through today's session, and the single next thing to do
   return html`<div class=${"planstrip" + (left.length ? "" : " planstrip-done")} role="status">
     <span class="ps-k">Today · ${S.plan.mins} min</span>
-    <ol>${items.map((x) => html`<li key=${x.id + x.part}><a href=${"#/lesson/" + (x.k + 1) + "/" + x.part} class=${x.ok ? "ok" : ""}>${x.ok ? "✓" : "○"} ${name[x.part]}: ${trunc(D.C[x.id].n, 22)}</a></li>`)}</ol>
-    ${left.length ? html`<a class="ps-next" href=${"#/lesson/" + (left[0].k + 1) + "/" + left[0].part}>Next: ${name[left[0].part]} ↓</a>`
+    <span class="ps-dots" aria-label=${items.length - left.length + " of " + items.length + " steps done"}>${items.map((x) => html`<i key=${x.id + x.part} class=${x.ok ? "ok" : ""} title=${name[x.part] + ": " + D.C[x.id].n}></i>`)}</span>
+    ${left.length ? html`<a class="ps-next" href=${"#/lesson/" + (left[0].k + 1) + "/" + left[0].part}>Next: ${name[left[0].part].toLowerCase()} ${trunc(D.C[left[0].id].n, 28)} →</a>`
       : html`<span class="ps-next">Session done. <a href="#/">Plan another</a> or stop here; it'll pick up where you left off.</span>`}
   </div>`;
 }
@@ -521,7 +559,8 @@ function Lesson({ D, S, P, set, n, part }) {
   const [sel, setSel] = useState(0), [video, setVideo] = useState(null), [picked, setPicked] = useState(null), [checked, setChecked] = useState(false), [playing, setPlaying] = useState(false), [pulse, setPulse] = useState(null);
   useEffect(() => { setSel(0); setPicked(null); setChecked(false); setPlaying(false); if (S.i !== i || !S.started) set({ i, started: true }); }, [id]);
   // #/lesson/3/check lands on that part; plain #/lesson/3 starts at the top
-  useEffect(() => { const t = setTimeout(() => { const el = part && document.getElementById("part-" + part);
+  // reading starts at the chalkboard title, so "read" lands on the top like a plain visit
+  useEffect(() => { const t = setTimeout(() => { const el = part && part !== "read" && document.getElementById("part-" + part);
     if (el) window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - 92, behavior: "smooth" }); else window.scrollTo(0, 0); }, 60); return () => clearTimeout(t); }, [id, part]);
   const seen = (pt) => { if (!isSeen(S, id, pt)) set({ seen: { ...S.seen, [id]: { ...((S.seen || {})[id] || {}), [pt]: 1 } } }); };
   // reading counts once the end of the lesson text scrolls into view
@@ -551,7 +590,7 @@ function Lesson({ D, S, P, set, n, part }) {
   return html`<main class="lesson">
     <div class="lessonbar">
       <a class="navarrow" href=${prev ? "#/lesson/" + i : null} aria-disabled=${!prev} aria-label="Previous lesson">‹</a>
-      <div class="lb-mid"><span class="lb-t">Lesson ${i + 1} of ${total} · <a href="#/path">${goalsLabel(D, S.goal)}</a></span>
+      <div class="lb-mid"><span class="lb-t">Lesson ${i + 1} of ${total} · <a href="#/">${goalsLabel(D, S.goal)}</a></span>
         <ol class="segs" aria-label="Lessons on this path">${steps.map((sid, k) => html`<li key=${sid}><a href=${"#/lesson/" + (k + 1)} title=${k + 1 + ". " + C[sid].n} aria-label=${"Lesson " + (k + 1) + ": " + C[sid].n}
           class=${"seg" + (k === i ? " seg-on" : S.done[sid] ? " seg-done" : "")} aria-current=${k === i ? "step" : null}></a></li>`)}</ol></div>
       <a class="navarrow" href=${next ? "#/lesson/" + (i + 2) : "#/done"} aria-label=${next ? "Next lesson" : "Finish"}>›</a>
@@ -615,12 +654,6 @@ function Lesson({ D, S, P, set, n, part }) {
       </div>
 
       <aside class="lesson-side">
-        <nav class="card lesson-list" aria-labelledby="ll">
-          <div class="side-head"><h2 id="ll">Your lessons</h2><span>${steps.filter((x) => S.done[x]).length} of ${total} done</span></div>
-          <ol>${steps.map((sid, k) => html`<li key=${sid}><a href=${"#/lesson/" + (k + 1)} aria-current=${k === i ? "page" : null}
-            class=${"ll" + (k === i ? " ll-now" : S.done[sid] ? " ll-done" : "")}><span class="ll-n">${S.done[sid] && k !== i ? "" : k + 1}</span><span class="ll-t">${C[sid].n}</span>${C[sid].T ? null : html`<span class="ll-s" title="Summary only for now">·</span>`}</a></li>`)}</ol>
-        </nav>
-
         <section class="card notes" aria-labelledby="nt">
           <div class="side-head"><h2 id="nt"><label for="mynotes">Your notes</label></h2>${noted ? html`<button class="linkish" onClick=${() => exportNotes(D, S, steps)}>Export all (${noted}) ↓</button>` : null}</div>
           <textarea id="mynotes" class="ruled" placeholder="What clicked? What didn't? Saved as you type." value=${(S.notes || {})[id] || ""}
@@ -810,8 +843,9 @@ function Done({ D, S, P }) {
   </main>`;
 }
 
-function Explore() {
-  const items = [["The knowledge graph", "The course inside Brain University's graph in 3D, with research gaps and paper explainers.", "#/graph"],
+function Explore({ hasPath }) {
+  const items = [...(hasPath ? [["Your path on the course map", "Every chapter on cork, with your lessons pinned in order and a red string through them.", "#/path"]] : []),
+    ["The knowledge graph", "The course inside Brain University's graph in 3D, with research gaps and paper explainers.", "#/graph"],
     ["The full Brain University app", "Tours, podcasts, the arXivis feed and everything else.", "Brain%20University.html"],
     ["The course atlas", "Every PoRA concept and how they connect, on one page.", "courses/pora-atlas.html"],
     ["Principles of Robot Autonomy", "The book, lectures and exercises, free from Stanford.", "https://porabook.com"],
@@ -846,14 +880,18 @@ function App() {
   const goals = (S.goal || []).filter((g) => D.C[g]), hasPath = !!(S.bg && goals.length);
   const P = hasPath ? pathFor(D, S.bg, goals, S.placed) : null, s = { ...S, goal: goals };
   let page = route.page, body;
-  if (page === "explore") body = html`<${Explore} />`;
+  const at = P ? Math.min(S.i, P.steps.length - 1) : 0;
+  const next = P && P.steps.some((id) => !S.done[id]) ? { href: "#/lesson/" + (at + 1), label: S.started ? "Continue lesson " + (at + 1) : "Start lesson 1" } : null;
+  if (page === "explore") body = html`<${Explore} hasPath=${hasPath} />`;
   else if (page === "graph") body = html`<${GraphPage} D=${D} S=${s} P=${P} />`;
-  else if (page === "start" || !hasPath) { page = page === "start" ? "start" : ""; body = html`<${Start} D=${D} S=${s} set=${set} />`; }
+  else if (page === "start") body = html`<${Start} D=${D} S=${s} set=${set} />`;
+  else if (!hasPath) { page = ""; body = html`<${Welcome} D=${D} set=${set} />`; }
   else if (page === "path") body = html`<${PathPage} D=${D} S=${s} P=${P} set=${set} />`;
   else if (page === "lesson") body = html`<${Lesson} D=${D} S=${s} P=${P} set=${set} n=${route.arg ? parseInt(route.arg, 10) - 1 || 0 : Math.min(S.i, P.steps.length - 1)} part=${route.part} />`;
   else if (page === "done") body = html`<${Done} D=${D} S=${s} P=${P} />`;
   else body = html`<${Home} D=${D} S=${s} P=${P} set=${set} />`;
-  return html`<${TopNav} page=${page} hasPath=${hasPath} />${body}`;
+  // the hub's own button is the next step there, so the nav doesn't repeat it
+  return html`<${TopNav} page=${page} hasPath=${hasPath} next=${page === "" ? null : next} />${body}`;
 }
 
 render(html`<${App} />`, document.getElementById("app"));
