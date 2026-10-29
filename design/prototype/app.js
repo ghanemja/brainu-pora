@@ -9,7 +9,8 @@ import htm from "./vendor/preact/htm.module.js";
 
 const html = htm.bind(h);
 const KEY = "brainu-prototype-v1";
-const SAVED = ["bg", "goal", "started", "i", "done", "passed", "notes", "wrong", "tick", "miniOff",
+// Progress lives in this browser only (there's no account), so nothing typed is kept.
+const SAVED = ["bg", "goal", "started", "i", "done", "passed", "wrong", "tick", "miniOff",
   "placed", "seen", "rev", "last", "days", "weekGoal", "mins", "plan"];
 const DAY = 864e5, now = () => Date.now();
 // Analytics (GoatCounter, set up in index.html). Pages are hash routes, so count them by
@@ -406,6 +407,7 @@ function Home({ D, S, P, set }) {
   const warmIds = [...due, ...P.steps.filter((id) => S.done[id] && !due.includes(id)).reverse()].slice(0, 3);
   const lastDone = [...P.steps].reverse().find((id) => S.done[id]);
   const fresh = !S.started && S.justBuilt, left = P.steps.filter((id) => !S.done[id]);
+  const retry = Object.keys(S.wrong || {}).filter((w) => P.steps.includes(w));
   return html`<main class=${"home2" + (fresh ? " home-fresh" : "")}>
     ${warm === "offer" ? html`<section class="card welcome">
       <span class="kicker">Welcome back · it's been ${away} days</span>
@@ -434,13 +436,17 @@ function Home({ D, S, P, set }) {
 
     <section class="card trail" aria-labelledby="trh">
       <div class="side-head"><h2 id="trh">Your path · ${goalsLabel(D, S.goal)}</h2><span>${learned} of ${P.steps.length} done${left.length && learned ? " · " + roughTime(pathMinutes(D, left)) + " left" : ""}</span></div>
-      <ol class="trail-list">${P.steps.map((id, k) => html`<li key=${id} style=${{ "--k": k }}><a href=${"#/lesson/" + (k + 1)} class=${"step" + (S.done[id] ? " step-done" : "") + (k === i ? " step-now" : "")}>
-        <span class="sn">${S.done[id] ? "✓" : k + 1}</span><span><span class="sname">${D.C[id].n}</span><span class="smeta">${D.C[id].c == null ? "background" : "chapter " + D.C[id].c}${D.C[id].L.length ? " · lecture" : ""}${D.C[id].N.length ? " · notebook" : ""}</span></span></a></li>`)}</ol>
+      <ol class="trail-list">${P.steps.map((id, k) => html`<li key=${id} style=${{ "--k": k }}><a href=${"#/lesson/" + (k + 1)} title=${D.C[id].c == null ? "background" : "chapter " + D.C[id].c}
+        class=${"stop" + (S.done[id] ? " stop-done" : "") + (k === i ? " stop-now" : "")}><span class="sn">${S.done[id] ? "✓" : k + 1}</span>${D.C[id].n}</a></li>`)}</ol>
       <div class="row tiny"><a class="linkish" href="#/path">See it on the course map</a><a class="linkish" href="#/start">Change goals</a></div>
     </section>
     </div>
 
     <aside class="home-side">
+      ${retry.length ? html`<section class="card retry" aria-labelledby="rt"><h2 id="rt">Retry later</h2>
+        <div class="stickies">${retry.map((w, k) => { const ago = S.tick - S.wrong[w].at, due2 = ago >= 2;
+          return html`<a key=${w} href=${"#/lesson/" + (P.steps.indexOf(w) + 1) + "/check"} class=${"sticky" + (due2 ? " sticky-due" : "")} style=${{ rotate: [-3, 2, -1.5, 3][k % 4] + "deg" }}>
+            <span>${due2 ? "retry now" : "in " + (2 - ago) + " lesson" + (2 - ago > 1 ? "s" : "")}</span>${trunc(D.C[w].n, 40)}</a>`; })}</div></section>` : null}
       ${due.length && warm !== "on" ? html`<section class="card">
         <h2>${due.length} quick review${due.length > 1 ? "s" : ""} due</h2>
         ${rev ? html`<${Review} D=${D} S=${S} set=${set} ids=${due.slice(0, 5)} title="Review" onDone=${() => setRev(false)} />`
@@ -553,20 +559,45 @@ function Listen({ c, onEnd }) {
   </div>`;
 }
 
+// A lesson is a short deck, one card on screen at a time: the chalkboard intro, one card per
+// section of the written lesson, a recap, the video, the check, and practice. Each section is
+// one idea, so a card reads in about a minute and nothing needs a long scroll.
+function lessonCards(c, hasVideo) {
+  const out = [{ k: "intro", t: "Intro" }];
+  if (c.T) {
+    String(c.T).split(/(?=<h3)/).filter((s) => s.trim()).forEach((h) => out.push({ k: "read", h, t: (h.match(/<h3>(.*?)<\/h3>/) || [, "Read"])[1].replace(/<[^>]+>|\$[^$]*\$/g, "").trim() }));
+    out.push({ k: "recap", t: "Recap" });
+  }
+  if (hasVideo) out.push({ k: "watch", t: "Watch" });
+  out.push({ k: "check", t: "Check yourself" }, { k: "practice", t: "Practice" });
+  return out;
+}
+
 function Lesson({ D, S, P, set, n, part }) {
   const C = D.C, steps = P.steps, total = steps.length, i = Math.max(0, Math.min(n, total - 1)), id = steps[i], c = C[id];
   const prev = i > 0 ? C[steps[i - 1]] : null, next = i < total - 1 ? C[steps[i + 1]] : null;
   const [sel, setSel] = useState(0), [video, setVideo] = useState(null), [picked, setPicked] = useState(null), [checked, setChecked] = useState(false), [playing, setPlaying] = useState(false), [pulse, setPulse] = useState(null);
+  const ytOf = (u) => (String(u).match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/) || [])[1];
+  // short explainers first; the full Stanford class recording stays one tap away
+  const vids = [...(c.V || []).map((v) => ({ yt: v.id, title: v.t, by: v.ch, len: v.len })),
+    ...c.L.map((l) => ({ yt: ytOf(l.url), title: l.title, by: "Stanford " + l.course + " · lecture " + l.n, len: "full class", url: l.url, full: true }))];
+  const cards = useMemo(() => lessonCards(c, vids.length > 0), [id]);
+  // #/lesson/3/check opens on that card; plain #/lesson/3 (or /read) opens on the intro
+  const cardFor = (pt) => Math.max(0, cards.findIndex((x) => x.k === pt && pt !== "read"));
+  const [card, setCard] = useState(() => cardFor(part));
   useEffect(() => { setSel(0); setPicked(null); setChecked(false); setPlaying(false); if (S.i !== i || !S.started) set({ i, started: true }); }, [id]);
-  // #/lesson/3/check lands on that part; plain #/lesson/3 starts at the top
-  // reading starts at the chalkboard title, so "read" lands on the top like a plain visit
-  useEffect(() => { const t = setTimeout(() => { const el = part && part !== "read" && document.getElementById("part-" + part);
-    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - 92, behavior: "smooth" }); else window.scrollTo(0, 0); }, 60); return () => clearTimeout(t); }, [id, part]);
+  useEffect(() => { setCard(cardFor(part)); }, [id, part]);
+  useEffect(() => { window.scrollTo(0, 0); }, [id, card]);
   const seen = (pt) => { if (!isSeen(S, id, pt)) set({ seen: { ...S.seen, [id]: { ...((S.seen || {})[id] || {}), [pt]: 1 } } }); };
-  // reading counts once the end of the lesson text scrolls into view
-  const readEnd = useRef();
-  useEffect(() => { const el = readEnd.current; if (!el || !("IntersectionObserver" in window)) return;
-    const io = new IntersectionObserver((es) => es.some((e) => e.isIntersecting) && seen("read"), { threshold: 1 }); io.observe(el); return () => io.disconnect(); }, [id, S.seen]);
+  // reading counts once you reach the recap (or move past the intro, when the intro is the lesson)
+  useEffect(() => { const k = cards[card] && cards[card].k; if (k === "recap" || (!c.T && card > 0)) seen("read"); }, [card, id]);
+  const last = card >= cards.length - 1, nextHref = next ? "#/lesson/" + (i + 2) : "#/done";
+  const fwd = () => (last ? nav(nextHref) : setCard(card + 1)), back = () => card > 0 && setCard(card - 1);
+  useEffect(() => {
+    const k = (e) => { if (e.altKey || e.metaKey || e.ctrlKey || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+      if (e.key === "ArrowRight") fwd(); else if (e.key === "ArrowLeft") back(); };
+    addEventListener("keydown", k); return () => removeEventListener("keydown", k);
+  });
   const [qq, choices, correct, why] = c.q, ok = picked === correct;
   const check = () => {
     setChecked(true);
@@ -577,16 +608,14 @@ function Lesson({ D, S, P, set, n, part }) {
     if (ok && next) setPulse({ from: i, key: Date.now() });
     trackEvent(ok ? "check-right" : "check-wrong");
   };
-  const L = c.L[0], nbk = c.N[0], ch = c.c == null ? null : D.CH[c.c];
-  // Short explainers first; the full Stanford class recording stays one tap away.
-  const ytOf = (u) => (String(u).match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/) || [])[1];
-  const vids = [...(c.V || []).map((v) => ({ yt: v.id, title: v.t, by: v.ch, len: v.len })),
-    ...c.L.map((l) => ({ yt: ytOf(l.url), title: l.title, by: "Stanford " + l.course + " · lecture " + l.n, len: "full class", url: l.url, full: true }))];
+  const nbk = c.N[0], ch = c.c == null ? null : D.CH[c.c];
   const vi = Math.min(sel, Math.max(0, vids.length - 1)), V = vids[vi], yt = V && V.yt;
   const kicker = c.c == null ? "Background the book assumes" : c.c === 0 ? "Getting started" : "Chapter " + c.c + " · " + ch.title;
-  const retry = Object.keys(S.wrong || {}).filter((w) => steps.includes(w));
-  const noted = steps.filter((k) => ((S.notes || {})[k] || "").trim()).length;
   const go = (k) => nav("#/lesson/" + (k + 1));
+  const ci = Math.min(card, cards.length - 1), cur = cards[ci], nreads = cards.filter((x) => x.k === "read").length;
+  const readNo = cards.slice(0, ci + 1).filter((x) => x.k === "read").length;
+  const chapterLink = html`<a href=${ch ? ch.url : "https://porabook.com/book/"} target="_blank" rel="noopener">${c.c == null ? "the book" : "chapter " + c.c + " on porabook.com"} ↗</a>`;
+  const ideas = html`<ol class="ideas">${c.i.map((t, k) => html`<li key=${k}><${M} t=${t} /></li>`)}</ol>`;
   return html`<main class="lesson">
     <div class="lessonbar">
       <a class="navarrow" href=${prev ? "#/lesson/" + i : null} aria-disabled=${!prev} aria-label="Previous lesson">‹</a>
@@ -602,32 +631,32 @@ function Lesson({ D, S, P, set, n, part }) {
       ${S.miniOff ? null : html`<div class="cork mm-cork"><${CourseMap} D=${D} known=${P.known} goals=${S.goal} steps=${steps} current=${i} done=${S.done} compact pulse=${pulse} onPick=${go} /></div>
         <p class="mm-next">${next ? html`next: <a href=${"#/lesson/" + (i + 2)}>${trunc(next.n, 26)}</a>` : html`<a href="#/done">finish the path ★</a>`}</p>`}
     </aside>
-    <div class="lesson-grid" key=${id}>
-      <div class="lesson-main">
-        <section class="board" data-medium="charcoal" data-theme="dark" aria-labelledby="lt">
+    <div class="deck" key=${id + ":" + ci}>
+      ${cur.k === "intro" ? html`<section class="board deck-card" data-medium="charcoal" data-theme="dark" aria-labelledby="lt">
           <div class="chalk"><span class="ch-kick">${kicker}</span>
           <h1 id="lt" class="ch-title">${c.n}</h1>
-          <${M} as="p" cls="ch-sum" t=${c.s} /></div>
-          ${c.T ? null : html`<div class="chalk" id="part-read"><h2 class="ch-h">Key ideas</h2>
-          <ol class="ideas">${c.i.map((t, k) => html`<li key=${k}><${M} t=${t} /></li>`)}</ol></div><span ref=${readEnd} class="read-end"></span>`}
-        </section>
+          <${M} as="p" cls="ch-sum" t=${c.s} />
+          ${c.T ? null : html`<h2 class="ch-h">Key ideas</h2>${ideas}`}</div>
+          <div class="intro-meta"><span>${cards.length} short cards · about ${pathMinutes(D, [id])} min</span>${c.T ? html`<${Listen} c=${c} onEnd=${() => seen("read")} />` : null}</div>
+          ${c.T ? null : html`<p class="intro-note">The full written lesson is on its way. For now, these key ideas are the core; ${chapterLink} has the full treatment.</p>`}
+        </section>`
 
-        ${c.T ? html`<article class="card lessontext" id="part-read" aria-labelledby="lx"><div class="lt-head"><h2 id="lx">The lesson</h2><${Listen} c=${c} onEnd=${() => seen("read")} /></div>
-          <div class="prose" dangerouslySetInnerHTML=${{ __html: tex(c.T, true) }}></div>
-          <div class="board recap" data-medium="charcoal" data-theme="dark"><div class="chalk"><h2 class="ch-h">Recap</h2>
-            <ol class="ideas">${c.i.map((t, k) => html`<li key=${k}><${M} t=${t} /></li>`)}</ol></div></div><span ref=${readEnd} class="read-end"></span>
-          <p class="hint">Written for this companion from Principles of Robot Autonomy${ch ? ", chapter " + c.c : ""}. Read the chapter for the full treatment.</p></article>`
-          : html`<article class="card lessontext" aria-labelledby="lx"><h2 id="lx">The lesson</h2>
-            <p>The full written lesson for ${c.n} isn't ready yet. The key ideas above are the core; for the full explanation, read <a href=${ch ? ch.url : "https://porabook.com/book/"} target="_blank" rel="noopener">${c.c == null ? "the book" : "chapter " + c.c + " on porabook.com"} ↗</a>${V ? " or watch the video below" : ""}.</p></article>`}
+      : cur.k === "read" ? html`<article class="card deck-card lessontext" aria-label=${cur.t}>
+          <span class="kicker">${c.n} · ${readNo} of ${nreads}</span>
+          <div class="prose" dangerouslySetInnerHTML=${{ __html: tex(cur.h, true) }}></div></article>`
 
-          ${V ? html`<section class="card watch" id="part-watch" aria-labelledby="wt"><h2 id="wt">Watch${c.T ? " (optional)" : ""}</h2><figure class="video">
+      : cur.k === "recap" ? html`<section class="board deck-card recap" data-medium="charcoal" data-theme="dark" aria-label="Recap">
+          <div class="chalk"><span class="ch-kick">${c.n}</span><h2 class="ch-h">Recap</h2>${ideas}</div>
+          <p class="intro-note">Written for this companion from Principles of Robot Autonomy${ch ? ", chapter " + c.c : ""}. ${chapterLink} has the full treatment.</p></section>`
+
+      : cur.k === "watch" ? html`<section class="card deck-card watch" aria-labelledby="wt"><h2 id="wt">Watch${c.T ? " (optional)" : ""}</h2><figure class="video">
               <div class="screen">${playing && yt ? html`<iframe key=${yt} src=${`https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&rel=0&modestbranding=1`} title=${V.title} allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
                 : html`<button class="play" onClick=${() => { setPlaying(true); seen("watch"); }} aria-label=${"Play " + V.title} style=${yt ? { backgroundImage: `url(https://i.ytimg.com/vi/${yt}/hqdefault.jpg)` } : null}><span>▶</span></button>`}</div>
               <figcaption>${V.title} · ${V.by} · ${V.len} <a href=${V.url || "https://youtu.be/" + yt} target="_blank" rel="noopener">YouTube ↗</a></figcaption>
               ${vids.length > 1 ? html`<div class="vpick" role="group" aria-label="Videos for this lesson">${vids.map((v, k) => html`<button key=${v.yt + k} aria-pressed=${k === vi} class=${k === vi ? "on" : ""} onClick=${() => { setSel(k); setPlaying(true); seen("watch"); }}>
-                <span class="vp-k">${v.full ? "Full Stanford class" : (k === 0 ? "Start here" : "Also good") + " · " + v.len}</span><span class="vp-t">${v.title}</span><span class="vp-b">${v.by}</span></button>`)}</div>` : null}</figure></section>` : null}
+                <span class="vp-k">${v.full ? "Full Stanford class" : (k === 0 ? "Start here" : "Also good") + " · " + v.len}</span><span class="vp-t">${v.title}</span><span class="vp-b">${v.by}</span></button>`)}</div>` : null}</figure></section>`
 
-        <section class="card quiz" id="part-check" aria-labelledby="qz">
+      : cur.k === "check" ? html`<section class="card deck-card quiz" aria-labelledby="qz">
           <h2 id="qz">Check yourself</h2>
           <${M} as="p" cls="qq" t=${qq} />
           <div role="radiogroup" aria-labelledby="qz" class="qopts">${choices.map((t, k) => {
@@ -637,54 +666,31 @@ function Lesson({ D, S, P, set, n, part }) {
           ${checked ? html`<div class=${"feedback " + (ok ? "fb-ok" : "fb-no")} role="status"><b>${ok ? "Right." : "Not quite."}</b> <${M} t=${why} />${ok ? "" : html` <em>It's on your retry list for later.</em>`}</div>` : null}
           <div class="row">
             ${!checked ? html`<button class="am-button" disabled=${picked === null} onClick=${check}>Check answer</button>`
-              : html`<a class="am-button" href=${next ? "#/lesson/" + (i + 2) : "#/done"}>${next ? "Next: " + trunc(next.n, 32) + " →" : "Finish the path ★"}</a>
-                ${!ok ? html`<button class="linkish" onClick=${() => { setChecked(false); setPicked(null); }}>Try again</button>` : null}`}
-            ${!checked && next ? html`<a class="linkish" href=${"#/lesson/" + (i + 2)}>Skip for now</a>` : null}
+              : !ok ? html`<button class="linkish" onClick=${() => { setChecked(false); setPicked(null); }}>Try again</button>` : null}
           </div>
-        </section>
+        </section>`
 
-        <section class="card practice" id="part-practice" aria-labelledby="pr">
+      : html`<section class="card deck-card practice" aria-labelledby="pr">
           <h2 id="pr">Practice</h2>
           <${M} as="p" t=${c.t} />
           <div class="row">
             ${nbk ? html`<a class="am-button am--secondary" href=${nbk.colab} target="_blank" rel="noopener" onClick=${() => seen("practice")}>Open the ${nbk.title} notebook in Colab ↗</a>` : null}
-            <a class="linkish" href=${ch ? ch.url : "https://porabook.com/book/"} target="_blank" rel="noopener">Read ${c.c == null ? "the book" : "chapter " + c.c} on porabook.com ↗</a>
+            <span class="intro-note">or read ${chapterLink}</span>
           </div>
-        </section>
-      </div>
+          <div class="beyond"><span class="kicker">Beyond the course</span>
+            ${(c.R || []).length ? html`<ul>${c.R.slice(0, 3).map((r) => html`<li key=${r.u}>${r.v ? html`<button class="mini-play" aria-label=${"Watch the 30-second explainer for " + r.t} onClick=${() => setVideo({ t: r.t, src: r.v, u: r.u })}>▶</button>` : null}<a href=${r.u} target="_blank" rel="noopener">${r.t}</a>${r.y ? html` <small>${r.y}</small>` : null}</li>`)}</ul>` : null}
+            <a class="linkish" href=${arxivSearch(c.n)} target="_blank" rel="noopener">Newest work on ${c.n} on arXiv ↗</a></div>
+        </section>`}
 
-      <aside class="lesson-side">
-        <section class="card notes" aria-labelledby="nt">
-          <div class="side-head"><h2 id="nt"><label for="mynotes">Your notes</label></h2>${noted ? html`<button class="linkish" onClick=${() => exportNotes(D, S, steps)}>Export all (${noted}) ↓</button>` : null}</div>
-          <textarea id="mynotes" class="ruled" placeholder="What clicked? What didn't? Saved as you type." value=${(S.notes || {})[id] || ""}
-            onInput=${(e) => set({ notes: { ...S.notes, [id]: e.currentTarget.value } })}></textarea>
-        </section>
-
-        ${retry.length ? html`<section class="card retry" aria-labelledby="rt"><h2 id="rt">Retry later</h2>
-          <p class="hint">Questions you missed come back after two more lessons.</p>
-          <div class="stickies">${retry.map((w, k) => { const ago = S.tick - S.wrong[w].at, due = ago >= 2;
-            return html`<a key=${w} href=${"#/lesson/" + (steps.indexOf(w) + 1)} class=${"sticky" + (due ? " sticky-due" : "")} style=${{ rotate: [-3, 2, -1.5, 3][k % 4] + "deg" }}>
-              <span>${due ? "retry now" : "in " + (2 - ago) + " lesson" + (2 - ago > 1 ? "s" : "")}</span>${trunc(C[w].n, 40)}</a>`; })}</div></section>` : null}
-
-        <section class="card research" aria-labelledby="rs">
-          <h2 id="rs">Beyond the course</h2>
-          ${(c.R || []).length ? html`<p class="hint">Recent papers from Brain University's research feed:</p>
-            <ul>${c.R.map((r) => html`<li key=${r.u}>${r.v ? html`<button class="mini-play" aria-label=${"Watch the 30-second explainer for " + r.t} onClick=${() => setVideo({ t: r.t, src: r.v, u: r.u })}>▶</button>` : null}<a href=${r.u} target="_blank" rel="noopener">${r.t}</a>${r.y ? html` <small>${r.y}</small>` : null}</li>`)}</ul>` : null}
-          <a class="linkish" href=${arxivSearch(c.n)} target="_blank" rel="noopener">Search arXiv for the newest work on ${c.n} ↗</a>
-          <a class="linkish" href="#/graph">See ${c.n} in the knowledge graph →</a>
-        </section>
-      </aside>
+      <nav class="deck-foot" aria-label="Cards in this lesson">
+        <button class="linkish deck-back" disabled=${ci === 0} onClick=${back}>‹ Back</button>
+        <ol class="deck-dots">${cards.map((x, k) => html`<li key=${k}><button aria-label=${k + 1 + ". " + x.t} title=${x.t} aria-current=${k === ci ? "step" : null}
+          class=${k === ci ? "on" : k < ci ? "past" : ""} onClick=${() => setCard(k)}></button></li>`)}</ol>
+        <button class="am-button deck-next" onClick=${fwd}>${last ? (next ? "Next lesson →" : "Finish the path ★") : cur.k === "check" && !checked ? "Skip →" : cards[ci + 1].k === "read" ? "Next →" : "Next: " + cards[ci + 1].t.toLowerCase() + " →"}</button>
+      </nav>
     </div>
     ${video ? html`<${VideoModal} v=${video} onClose=${() => setVideo(null)} />` : null}
   </main>`;
-}
-
-function exportNotes(D, S, steps) {
-  const ids = steps.filter((k) => ((S.notes || {})[k] || "").trim());
-  const md = `# BrainU notes: ${goalsLabel(D, S.goal)}\n\n` + ids.map((k) => `## ${D.C[k].n}\n\n${S.notes[k].trim()}\n`).join("\n");
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([md], { type: "text/markdown" })); a.download = "brainu-notes.md";
-  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
 }
 
 // ── Brain University's research graph: loaded only when a page needs it ──
@@ -810,7 +816,7 @@ function GraphPage({ D, S, P }) {
 function Done({ D, S, P }) {
   useEffect(() => trackEvent("path-finished"), []);
   const [R] = useResearch(), [video, setVideo] = useState(null);
-  const n = P.steps.length, learned = P.steps.filter((id) => S.done[id]).length, notes = P.steps.filter((k) => ((S.notes || {})[k] || "").trim()).length;
+  const n = P.steps.length, learned = P.steps.filter((id) => S.done[id]).length;
   const retry = Object.keys(S.wrong || {}).filter((w) => P.steps.includes(w)).length;
   const papers = [...new Map(P.steps.flatMap((id) => (D.C[id].R || []).map((r) => ({ ...r, src: r.v, from: D.C[id].n }))).map((r) => [r.u, r])).values()].slice(0, 6);
   const names = new Set(P.steps.flatMap((id) => [norm(D.C[id].n), norm(D.C[id].w)]));
@@ -823,7 +829,7 @@ function Done({ D, S, P }) {
         <h1>${goalsLabel(D, S.goal)}</h1>
         <div class="stats">
           <div><b>${n}</b><span>lessons</span></div><div><b>${learned}/${n}</b><span>checks passed</span></div>
-          <div><b>${notes}</b><span>pages of notes</span></div><div><b>${retry}</b><span>to retry</span></div></div>
+          <div><b>${retry}</b><span>to retry</span></div></div>
         <p>You can now work through ${goalsLabel(D, S.goal).toLowerCase()} with the course's own lectures and notebooks behind you. Next: see where it sits in the bigger graph, and where the open questions are.</p>
         <div class="row"><a class="am-button" href="#/graph">Explore the knowledge graph →</a><a class="linkish" href="#/start">Pick new goals</a>
           ${retry ? html`<a class="linkish" href=${"#/lesson/" + (P.steps.indexOf(Object.keys(S.wrong).find((w) => P.steps.includes(w))) + 1)}>Retry the ${retry} you missed</a>` : null}</div>
@@ -856,7 +862,7 @@ function Explore({ hasPath }) {
 
 // ── app ─────────────────────────────────────────────────────────────
 function load() {
-  const S = { bg: null, goal: null, started: false, i: 0, done: {}, passed: 0, notes: {}, wrong: {}, tick: 0, justBuilt: 0,
+  const S = { bg: null, goal: null, started: false, i: 0, done: {}, passed: 0, wrong: {}, tick: 0, justBuilt: 0,
     placed: null, seen: {}, rev: {}, last: 0, days: [], weekGoal: 3, mins: 20, plan: null };
   try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s) SAVED.forEach((k) => { if (k in s) S[k] = s[k]; }); } catch (e) {}
   if (typeof S.goal === "string") S.goal = [S.goal];
