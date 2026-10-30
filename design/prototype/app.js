@@ -305,12 +305,13 @@ const weekStart = () => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDat
 const daysThisWeek = (S) => (S.days || []).filter((d) => new Date(d + "T12:00:00").getTime() >= weekStart()).length;
 
 // ── pages ───────────────────────────────────────────────────────────
-// Two places to be (your path, or exploring) and one thing to do next, always in reach.
+// Home, your path, and exploring, plus the one thing to do next, always in reach.
 function TopNav({ page, hasPath, next }) {
   const link = (to, label, on) => html`<a class="am-nav__link" href=${to} aria-current=${on ? "page" : null}>${label}</a>`;
   return html`<nav class="am-nav top" aria-label="Main">
-    <a class="am-nav__brand brand" href="#/">BrainU<small>unofficial companion to Principles of Robot Autonomy</small></a>
+    <a class="am-nav__brand brand" href="#/home">BrainU<small>unofficial companion to Principles of Robot Autonomy</small></a>
     <div class="am-nav__links">
+      ${link("#/home", "Home", page === "home")}
       ${hasPath ? link("#/", "My path", page === "" || page === "path" || page === "lesson" || page === "done") : null}
       ${link("#/explore", "Explore", page === "explore" || page === "graph")}
       ${hasPath && next && page !== "lesson" ? html`<a class="am-button nav-go" href=${next.href}>${next.label} →</a>` : null}
@@ -323,7 +324,7 @@ const roughTime = (m) => (m < 50 ? "under an hour" : m < 90 ? "about an hour" : 
 
 // The front door: what this is in one line, one button, and something to play with.
 // Tap a goal on the cork and watch its path pin itself; left alone, it cycles through them.
-function Welcome({ D, set }) {
+function Welcome({ D, set, next, onReset }) {
   const G = D.G, [gi, setGi] = useState(0), [touched, setTouched] = useState(false);
   useEffect(() => { if (touched || reduceMotion()) return; const t = setInterval(() => setGi((k) => (k + 1) % G.length), 3400); return () => clearInterval(t); }, [touched]);
   const g = G[gi], P = pathFor(D, "new", [g.id]);
@@ -333,8 +334,11 @@ function Welcome({ D, set }) {
       <span class="wl-kick">Free · built on Stanford's <i>Principles of Robot Autonomy</i></span>
       <h1>Learn robot autonomy. <span>Only the parts you need.</span></h1>
       <p>Say what you want a robot to do. BrainU strings together the few lessons that get you there, each with the Stanford lecture, a notebook to run, and a two-minute check.</p>
-      <div class="wl-cta"><button class="am-button wl-go" onClick=${go}>${touched ? "Start with this goal" : "Find my path"} →</button>
-        <span class="wl-sub">two questions · about a minute</span></div>
+      ${next ? html`<div class="wl-cta"><a class="am-button wl-go" href=${next.href}>${next.label} →</a>
+          <span class="wl-sub">your path is saved in this browser</span></div>
+        <button class="linkish wl-reset" onClick=${onReset}>Start over with a new path</button>`
+      : html`<div class="wl-cta"><button class="am-button wl-go" onClick=${go}>${touched ? "Start with this goal" : "Find my path"} →</button>
+        <span class="wl-sub">two questions · about a minute</span></div>`}
       <a class="wl-alt" href="courses/pora-atlas.html">in a hurry? see every concept on one page</a>
     </section>
     <section class="wl-play" aria-label="Try it: pick a goal and see its path">
@@ -461,7 +465,7 @@ function Review({ D, S, set, ids: given, onDone, title }) {
   </div>`;
 }
 
-function Home({ D, S, P, set }) {
+function Home({ D, S, P, set, onReset }) {
   const i = Math.min(S.i, P.steps.length - 1), c = D.C[P.steps[i]], learned = P.steps.filter((id) => S.done[id]).length;
   const away = S.prevLast ? Math.floor((now() - S.prevLast) / DAY) : 0;
   const due = dueReviews(S, P);
@@ -504,7 +508,7 @@ function Home({ D, S, P, set }) {
       <div class="side-head"><h2 id="trh">Your path · ${goalsLabel(D, S.goal)}</h2><span>${learned} of ${P.steps.length} done${left.length && learned ? " · " + roughTime(pathMinutes(D, left)) + " left" : ""}</span></div>
       <ol class="trail-list">${P.steps.map((id, k) => html`<li key=${id} style=${{ "--k": k }}><a href=${"#/lesson/" + (k + 1)} title=${D.C[id].c == null ? "background" : "chapter " + D.C[id].c}
         class=${"stop" + (S.done[id] ? " stop-done" : "") + (k === i ? " stop-now" : "")}><span class="sn">${S.done[id] ? "✓" : k + 1}</span>${D.C[id].n}</a></li>`)}</ol>
-      <div class="row tiny"><a class="linkish" href="#/path">See it on the course map</a><a class="linkish" href="#/start">Change goals</a></div>
+      <div class="row tiny"><a class="linkish" href="#/path">See it on the course map</a><a class="linkish" href="#/start">Change goals</a><button class="linkish" onClick=${onReset}>Start over</button></div>
     </section>
     </div>
 
@@ -944,6 +948,14 @@ function App() {
     const on = () => setRoute(parse()); addEventListener("hashchange", on); return () => removeEventListener("hashchange", on);
   }, []);
   const set = (patch) => setS((s) => { const d = today(), n = { ...s, ...patch, last: now(), days: (s.days || []).includes(d) ? s.days : [...(s.days || []).slice(-90), d] }; try { const o = {}; SAVED.forEach((k) => (o[k] = n[k])); localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} return n; });
+  // Start over: forget the path and all progress in this browser and go back to the front door.
+  // #/reset does it without asking, for testing from scratch.
+  const reset = (ask) => {
+    if (ask && !window.confirm("Start over? This clears your path and progress in this browser.")) return;
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    setS(load()); trackEvent("start-over"); nav("#/home");
+  };
+  useEffect(() => { if (route.page === "reset") reset(false); }, [route.page]);
   useEffect(() => { window.scrollTo(0, 0); }, [route.page]);
   // one page view per screen; lessons by number, not by part, so #/lesson/3/check counts as lesson 3
   useEffect(() => { track("/" + (route.page || "") + (route.page === "lesson" && route.arg ? "/" + route.arg : ""), document.title); }, [route.page, route.arg]);
@@ -957,13 +969,13 @@ function App() {
   if (page === "explore") body = html`<${Explore} hasPath=${hasPath} />`;
   else if (page === "graph") body = html`<${GraphPage} D=${D} S=${s} P=${P} />`;
   else if (page === "start") body = html`<${Start} D=${D} S=${s} set=${set} />`;
-  else if (!hasPath) { page = ""; body = html`<${Welcome} D=${D} set=${set} />`; }
+  else if (page === "home" || page === "reset" || !hasPath) { page = "home"; body = html`<${Welcome} D=${D} set=${set} next=${hasPath ? next : null} onReset=${() => reset(true)} />`; }
   else if (page === "path") body = html`<${PathPage} D=${D} S=${s} P=${P} set=${set} />`;
   else if (page === "lesson") body = html`<${Lesson} D=${D} S=${s} P=${P} set=${set} n=${route.arg ? parseInt(route.arg, 10) - 1 || 0 : Math.min(S.i, P.steps.length - 1)} part=${route.part} />`;
   else if (page === "done") body = html`<${Done} D=${D} S=${s} P=${P} />`;
-  else body = html`<${Home} D=${D} S=${s} P=${P} set=${set} />`;
-  // the hub's own button is the next step there, so the nav doesn't repeat it
-  return html`<${TopNav} page=${page} hasPath=${hasPath} next=${page === "" ? null : next} />${body}`;
+  else body = html`<${Home} D=${D} S=${s} P=${P} set=${set} onReset=${() => reset(true)} />`;
+  // the hub and the front door have their own button for the next step, so the nav doesn't repeat it
+  return html`<${TopNav} page=${page} hasPath=${hasPath} next=${page === "" || page === "home" ? null : next} />${body}`;
 }
 
 render(html`<${App} />`, document.getElementById("app"));
