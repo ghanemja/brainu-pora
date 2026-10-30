@@ -229,8 +229,9 @@ const words = (h) => String(h || "").replace(/<[^>]+>/g, " ").replace(/\$[^$]*\$
 const mmss = (t) => { const p = String(t).split(":").map(Number); return p.length === 3 ? p[0] * 60 + p[1] + p[2] / 60 : p[0] + (p[1] || 0) / 60; };
 function partsOf(c) {
   // in the order the lesson page shows them, so the session walks straight down it
-  const out = [{ part: "read", label: c.T ? "Read the lesson" : "Read the key ideas", min: c.T ? Math.max(3, Math.round(words(c.T) / 200) + 1) : 2 }];
+  const out = [];
   if ((c.V || []).length) out.push({ part: "watch", label: "Watch: " + c.V[0].t.split(" | ")[0], min: Math.max(2, Math.round(mmss(c.V[0].len))) });
+  out.push({ part: "read", label: c.T ? "Read the lesson" : "Read the key ideas", min: c.T ? Math.max(3, Math.round(words(c.T) / 200) + 1) : 2 });
   out.push({ part: "check", label: "Check yourself", min: 2 });
   out.push({ part: "practice", label: "Practice", min: 15, optional: true });
   return out;
@@ -633,12 +634,13 @@ function Listen({ c, onEnd }) {
 // section of the written lesson, a recap, the video, the check, and practice. Each section is
 // one idea, so a card reads in about a minute and nothing needs a long scroll.
 function lessonCards(c, hasVideo) {
+  // the course's own video comes right after the intro, before the written cards
   const out = [{ k: "intro", t: "Intro" }];
+  if (hasVideo) out.push({ k: "watch", t: "Watch" });
   if (c.T) {
     String(c.T).split(/(?=<h3)/).filter((s) => s.trim()).forEach((h) => out.push({ k: "read", h, t: (h.match(/<h3>(.*?)<\/h3>/) || [, "Read"])[1].replace(/<[^>]+>|\$[^$]*\$/g, "").trim() }));
     out.push({ k: "recap", t: "Recap" });
   }
-  if (hasVideo) out.push({ k: "watch", t: "Watch" });
   out.push({ k: "check", t: "Check yourself" }, { k: "practice", t: "Practice" });
   return out;
 }
@@ -685,6 +687,8 @@ function Lesson({ D, S, P, set, n, part }) {
   const ci = Math.min(card, cards.length - 1), cur = cards[ci], nreads = cards.filter((x) => x.k === "read").length;
   const readNo = cards.slice(0, ci + 1).filter((x) => x.k === "read").length;
   const chapterLink = html`<a href=${ch ? ch.url : "https://porabook.com/book/"} target="_blank" rel="noopener">${c.c == null ? "the book" : "chapter " + c.c + " on porabook.com"} ↗</a>`;
+  // jump to the video card with a given video picked (the Stanford lecture, from the intro)
+  const lecK = vids.findIndex((v) => v.full), watchVid = (k) => { setSel(k); setPlaying(false); setCard(cards.findIndex((x) => x.k === "watch")); };
   const ideas = html`<ol class="ideas">${c.i.map((t, k) => html`<li key=${k}><${M} t=${t} /></li>`)}</ol>`;
   return html`<main class="lesson">
     <div class="lessonbar">
@@ -707,24 +711,33 @@ function Lesson({ D, S, P, set, n, part }) {
           <h1 id="lt" class="ch-title">${c.n}</h1>
           <${M} as="p" cls="ch-sum" t=${c.s} />
           ${c.T ? null : html`<h2 class="ch-h">Key ideas</h2>${ideas}`}</div>
+          <div class="intro-src" role="group" aria-label="From the Stanford course">
+            <span class="src-k">From the Stanford course</span>
+            ${lecK >= 0 ? html`<button class="src" onClick=${() => watchVid(lecK)}><b>▶ Lecture</b>${vids[lecK].by.replace("Stanford ", "")}: ${trunc(vids[lecK].title, 34)}</button>` : null}
+            ${nbk ? html`<a class="src" href=${nbk.colab} target="_blank" rel="noopener" onClick=${() => seen("practice")}><b>Notebook ↗</b>${trunc(nbk.title, 34)}, in Colab</a>` : null}
+            <a class="src" href=${ch ? ch.url : "https://porabook.com/book/"} target="_blank" rel="noopener"><b>Book ↗</b>${c.c == null ? "Principles of Robot Autonomy" : "Chapter " + c.c + ": " + trunc(ch.title, 30)}</a>
+            ${lecK < 0 && vids.length ? html`<button class="src" onClick=${() => watchVid(0)}><b>▶ Video</b>${trunc(vids[0].title, 34)} · ${vids[0].by}</button>` : null}
+          </div>
           <div class="intro-meta"><span>${cards.length} short cards · about ${pathMinutes(D, [id])} min</span>${c.T ? html`<${Listen} c=${c} onEnd=${() => seen("read")} />` : null}</div>
           ${c.T ? null : html`<p class="intro-note">The full written lesson is on its way. For now, these key ideas are the core; ${chapterLink} has the full treatment.</p>`}
         </section>`
 
       : cur.k === "read" ? html`<article class="card deck-card lessontext" aria-label=${cur.t}>
-          <span class="kicker">${c.n} · ${readNo} of ${nreads}</span>
+          <span class="kicker">${c.n} · ${readNo} of ${nreads} · written for BrainU</span>
           <div class="prose" dangerouslySetInnerHTML=${{ __html: tex(cur.h, true) }}></div></article>`
 
       : cur.k === "recap" ? html`<section class="board deck-card recap" data-medium="charcoal" data-theme="dark" aria-label="Recap">
           <div class="chalk"><span class="ch-kick">${c.n}</span><h2 class="ch-h">Recap</h2>${ideas}</div>
           <p class="intro-note">Written for this companion from Principles of Robot Autonomy${ch ? ", chapter " + c.c : ""}. ${chapterLink} has the full treatment.</p></section>`
 
-      : cur.k === "watch" ? html`<section class="card deck-card watch" aria-labelledby="wt"><h2 id="wt">Watch${c.T ? " (optional)" : ""}</h2><figure class="video">
+      : cur.k === "watch" ? html`<section class="card deck-card watch" aria-labelledby="wt"><h2 id="wt">Watch</h2>
+              <p class="src-line">${V.full ? html`<b>Official recording</b> from Stanford's ${V.by.replace("Stanford ", "")}, the course this book is written for.` : html`A short explainer by ${V.by}, not part of the Stanford course${lecK >= 0 ? html`; the <button class="linkish" onClick=${() => { setSel(lecK); setPlaying(false); }}>official lecture</button> is below` : ""}.`}</p>
+              <figure class="video">
               <div class="screen">${playing && yt ? html`<iframe key=${yt} src=${`https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&rel=0&modestbranding=1`} title=${V.title} allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
                 : html`<button class="play" onClick=${() => { setPlaying(true); seen("watch"); }} aria-label=${"Play " + V.title} style=${yt ? { backgroundImage: `url(https://i.ytimg.com/vi/${yt}/hqdefault.jpg)` } : null}><span>▶</span></button>`}</div>
               <figcaption>${V.title} · ${V.by} · ${V.len} <a href=${V.url || "https://youtu.be/" + yt} target="_blank" rel="noopener">YouTube ↗</a></figcaption>
               ${vids.length > 1 ? html`<div class="vpick" role="group" aria-label="Videos for this lesson">${vids.map((v, k) => html`<button key=${v.yt + k} aria-pressed=${k === vi} class=${k === vi ? "on" : ""} onClick=${() => { setSel(k); setPlaying(true); seen("watch"); }}>
-                <span class="vp-k">${v.full ? "Full Stanford class" : (k === 0 ? "Start here" : "Also good") + " · " + v.len}</span><span class="vp-t">${v.title}</span><span class="vp-b">${v.by}</span></button>`)}</div>` : null}</figure></section>`
+                <span class="vp-k">${v.full ? "Official Stanford lecture" : (k === 0 ? "Short explainer" : "Also good") + " · " + v.len}</span><span class="vp-t">${v.title}</span><span class="vp-b">${v.by}</span></button>`)}</div>` : null}</figure></section>`
 
       : cur.k === "check" ? html`<section class="card deck-card quiz" aria-labelledby="qz">
           <h2 id="qz">Check yourself</h2>
