@@ -920,3 +920,11 @@ body.am-canvas[data-medium] { background: var(--desk) url(tex/paper.jpg) !import
 .src:hover { border-style: solid; background: rgba(235,231,222,.12); }
 .src-line { margin: 0 0 8px !important; font: 400 16px/1.45 "Newsreader", Georgia, serif !important; color: var(--muted); }
 .src-line .linkish { font-size: 15px; padding: 0; }
+/* the intro lays out the lesson's four steps; each is a chalk-outlined box that jumps there */
+.intro-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.intro-steps .src { width: 100%; max-width: none; height: 100%; }
+.do-lead { margin: 0 !important; font: 400 17px/var(--rule) "Newsreader", Georgia, serif; }
+.practice .row { margin: 4px 0 6px; }
+/* the single credit line: small interface text, set apart by a pencil rule */
+.credit { margin: var(--rule) 0 0 !important; padding-top: 8px; border-top: 1px dashed var(--line); font: 400 13px/1.5 "Bricolage Grotesque", sans-serif !important; color: var(--muted); }
+.practice p.credit { font: 400 13px/1.5 "Bricolage Grotesque", sans-serif !important; margin-top: 18px !important; }
