@@ -14,7 +14,7 @@ Some constraints limit where you can *be*: a bead on a wire can never leave the 
 
 ## The unicycle and the differential drive
 
-The kinematic model that respects the constraint is the unicycle from lesson 2:
+The kinematic model that respects the constraint is the unicycle from the kinematic models lesson:
 
 $$\dot x = v\cos\theta, \qquad \dot y = v\sin\theta, \qquad \dot\theta = \omega$$
 

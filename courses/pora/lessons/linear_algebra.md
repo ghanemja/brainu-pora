@@ -20,11 +20,11 @@ Asking "which $x$ produces $b$?" is solving $A x = b$. If $A$ is square and inve
 
 ## 3. Eigenvalues tell you what repeated steps do
 
-Many robot models step forward in time as $x_{k+1} = A x_k$, so $x_k = A^k x_0$. An **eigenvector** $v$ is a direction that $A$ only stretches: $A v = \lambda v$. Along it, $k$ steps multiply by $\lambda^k$. If every eigenvalue has $|\lambda| < 1$, every state shrinks to zero; one eigenvalue with $|\lambda| > 1$ and some state blows up. That is the whole idea of **stability** for linear systems.
+Many robot models step forward in time as $x_{k+1} = A x_k$, so $x_k = A^k x_0$. An **eigenvector** $v$ is a direction that $A$ only stretches: $A v = \lambda v$. Along it, $k$ steps multiply by $\lambda^k$. If every eigenvalue has $|\lambda| < 1$, every state shrinks to zero; one eigenvalue with $|\lambda| > 1$ and some state blows up. That is the whole idea of **stability** for discrete-time linear systems. (For continuous time, $\dot x = A x$, the test is instead that every eigenvalue has negative real part.)
 
 ## 4. When there's no exact answer: least squares
 
-With more equations than unknowns (say 100 noisy sensor readings, 3 unknowns), $A x = b$ usually has no solution. Least squares picks the $x$ that makes the error $\|A x - b\|^2$ smallest, given by the normal equations $A^\top A\, x = A^\top b$. Every estimator in Part III builds on this.
+With more equations than unknowns (say 100 noisy sensor readings, 3 unknowns), $A x = b$ usually has no solution. Least squares picks the $x$ that makes the error $\|A x - b\|^2$ smallest, given by the normal equations $A^\top A\, x = A^\top b$. Many estimators in Part III build on this.
 
 ## Worked example
 

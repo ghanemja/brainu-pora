@@ -30,6 +30,6 @@ Squared error prefers $0°$, the one action no expert ever took. The loss isn't 
 
 ## What BC doesn't handle
 
-BC learns only from states the expert visited. Once the policy makes a small mistake, it reaches a state the expert never showed, makes a bigger mistake there, and drifts further. That's **covariate shift**, the subject of the next lesson, and the main reason BC policies that look good on held-out data can fail when run on the robot.
+BC learns only from states the expert visited. Once the policy makes a small mistake, it reaches a state the expert never showed, makes a bigger mistake there, and drifts further. That's **covariate shift**, the subject of its own lesson, and the main reason BC policies that look good on held-out data can fail when run on the robot.
 
 > **Common mistake:** the expert seeing more than the robot. If the teleoperator watched the whole room but the robot only has a wrist camera, the right action may not be predictable from the robot's input at all. Record demonstrations using only what the robot will observe.

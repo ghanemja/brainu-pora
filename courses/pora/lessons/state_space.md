@@ -33,6 +33,6 @@ A pendulum of length $l$ and mass $m$ with torque $u$ obeys $m l^2\, \ddot\theta
 
 $$\dot x = \begin{bmatrix} \dot\theta \\ -\dfrac{g}{l}\sin\theta + \dfrac{u}{m l^2} \end{bmatrix}$$
 
-That's nonlinear because of $\sin\theta$. Lesson 7 shows how to approximate it with $A$ and $B$ near a point.
+That's nonlinear because of $\sin\theta$. The linearization lesson shows how to approximate it with $A$ and $B$ near a point.
 
 > **Common mistake:** putting the input in the state. Force $u$ is something you choose at each moment, so it's not part of $x$.

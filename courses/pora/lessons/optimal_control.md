@@ -40,4 +40,4 @@ So in practice an optimal trajectory is paired with feedback: a tracking control
 - **Indirect methods** first derive optimality conditions (Pontryagin's principle), then solve those equations numerically.
 - **Direct methods** first chop the trajectory into time steps, then hand the resulting finite problem to a numerical optimizer.
 
-Indirect methods can be very accurate; direct methods handle constraints easily and are what most robotics software uses. The next two lessons cover each.
+Indirect methods can be very accurate; direct methods handle constraints easily and are what most robotics software uses. The indirect methods and direct methods lessons cover each.

@@ -16,7 +16,7 @@ A second split: **active** sensors (lidar, radar, sonar) send out energy and tim
 - **Lidar** gives precise ranges to walls and objects, but rain, glass and black surfaces confuse it.
 - **Cameras** see texture and colour, but need light and give no depth from a single image.
 
-That's why robots carry several sensors and fuse them: each one covers another's failure mode, which is what the next lessons build.
+That's why robots carry several sensors and fuse them: each one covers another's failure mode, which is what the estimation lessons build.
 
 ## Worked example: integrated sensors drift
 
@@ -24,6 +24,6 @@ A gyroscope with a tiny constant bias of $0.01$ rad/s (about half a degree per s
 
 $$0.01 \times 600 = 6\ \text{rad} \approx 344^\circ$$
 
-almost a full turn the wrong way, from a bias you'd never notice in one reading. An encoder with a 1% wheel-radius error does the same to distance: 1 m of error every 100 m.
+almost a full turn of accumulated error (after just one minute it is already $0.6$ rad, about $34^\circ$), from a bias you'd never notice in one reading. An encoder with a 1% wheel-radius error does the same to distance: 1 m of error every 100 m.
 
 > **Common mistake:** trusting a proprioceptive sensor over long periods. Anything you integrate drifts. You need an exteroceptive sensor (lidar against walls, GPS, a camera seeing landmarks) to pull the estimate back.

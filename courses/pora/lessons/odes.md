@@ -27,7 +27,7 @@ Smaller $h$ is more accurate but takes more steps. Better methods (Runge-Kutta) 
 
 ## Higher derivatives become more state
 
-Newton's law for a cart, $m\,\ddot q = u$, has a second derivative. Stack position and velocity into one vector, $x = (q, \dot q)$, and it becomes first-order: $\dot x = (\dot q,\ u/m)$. This trick is how every mechanical system gets into the form $\dot x = f(x, u)$, and it's the next lesson.
+Newton's law for a cart, $m\,\ddot q = u$, has a second derivative. Stack position and velocity into one vector, $x = (q, \dot q)$, and it becomes first-order: $\dot x = (\dot q,\ u/m)$. This trick is how every mechanical system gets into the form $\dot x = f(x, u)$, and it's the subject of the state-space lesson.
 
 ## Worked example
 

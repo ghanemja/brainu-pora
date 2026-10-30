@@ -18,7 +18,7 @@ Approximate nonlinear dynamics near a point or trajectory with a linear model so
 
 ### Key ideas
 
-1. Around an equilibrium (x^*, u^*) with f(x^*, u^*) = 0, dynamics are approximated as δ̇ x ≈ A δ x + B δ u, with A = ∂ f/∂ x and B = ∂ f/∂ u evaluated there.
+1. Around an equilibrium (x̄, ū) with f(x̄, ū) = 0, dynamics are approximated as δ̇ x ≈ A δ x + B δ u, with A = ∂ f/∂ x and B = ∂ f/∂ u evaluated there.
 2. Linearizing about a trajectory instead of a point gives time-varying A(t), B(t), which is what trajectory tracking and iLQR use.
 3. The approximation is only local: a controller designed on the linear model is guaranteed only near the linearization point, and automatic differentiation computes the Jacobians exactly to machine precision.
 

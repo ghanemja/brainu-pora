@@ -25,15 +25,15 @@
    "Gaussians are closed under linear maps: if $x \\sim \\mathcal{N}(\\mu, \\Sigma)$ then $Ax + b \\sim \\mathcal{N}(A\\mu + b,\\ A\\Sigma A^\\top)$, which is why the Kalman filter can propagate beliefs exactly for linear systems."
   ],
   "check": {
-   "q": "A robot's 2D position belief has covariance $\\Sigma = \\operatorname{diag}(1, 1)$. It is transformed by $y = Ax$ with $A = \\operatorname{diag}(2, 1)$. What is the new covariance?",
+   "q": "A robot's 2D position belief has covariance $\\Sigma = \\operatorname{diag}(1, 4)$. It is transformed by $y = Ax$ with $A = \\operatorname{diag}(3, 1)$. What is the new covariance?",
    "choices": [
-    "$\\operatorname{diag}(2, 1)$, because the covariance scales linearly with $A$",
-    "$\\operatorname{diag}(4, 1)$, because covariance transforms as $A\\Sigma A^\\top$",
-    "$\\operatorname{diag}(1, 1)$, because a linear map cannot change uncertainty",
-    "$\\operatorname{diag}(0.5, 1)$, because stretching spreads probability thinner"
+    "$\\operatorname{diag}(3, 4)$, because the covariance scales linearly with $A$",
+    "$\\operatorname{diag}(9, 4)$, because covariance transforms as $A\\Sigma A^\\top$",
+    "$\\operatorname{diag}(1, 4)$, because a linear map cannot change uncertainty",
+    "$\\operatorname{diag}(1/3, 4)$, because stretching spreads probability thinner"
    ],
    "correct": 1,
-   "why": "Covariance transforms as $A\\Sigma A^\\top$, so variance along the first axis scales by $2^2 = 4$. Scaling by $A$ alone ($\\operatorname{diag}(2, 1)$) confuses standard deviation with variance."
+   "why": "Covariance transforms as $A\\Sigma A^\\top$, so the variance along the first axis scales by $3^2 = 9$ and the second stays at 4. Scaling by $A$ alone ($\\operatorname{diag}(3, 4)$) confuses standard deviation with variance."
   },
   "tryIt": "Draw 10,000 samples from $\\mathcal{N}(0, I)$ in NumPy, multiply by $A = \\begin{bmatrix} 2 & 0 \\\\ 1 & 1 \\end{bmatrix}$, and compare `np.cov` of the result with $AA^\\top$."
  },
@@ -286,7 +286,7 @@
  },
  "linearization": {
   "points": [
-   "Around an equilibrium $(x^*, u^*)$ with $f(x^*, u^*) = 0$, dynamics are approximated as $\\dot{\\delta x} \\approx A\\,\\delta x + B\\,\\delta u$, with $A = \\partial f/\\partial x$ and $B = \\partial f/\\partial u$ evaluated there.",
+   "Around an equilibrium $(\\bar x, \\bar u)$ with $f(\\bar x, \\bar u) = 0$, dynamics are approximated as $\\dot{\\delta x} \\approx A\\,\\delta x + B\\,\\delta u$, with $A = \\partial f/\\partial x$ and $B = \\partial f/\\partial u$ evaluated there.",
    "Linearizing about a trajectory instead of a point gives time-varying $A(t)$, $B(t)$, which is what trajectory tracking and iLQR use.",
    "The approximation is only local: a controller designed on the linear model is guaranteed only near the linearization point, and automatic differentiation computes the Jacobians exactly to machine precision."
   ],
@@ -940,12 +940,12 @@
    "q": "An EKF localizer receives a bearing measurement of 179 degrees while it predicted -179 degrees. If the innovation is not angle-wrapped, what happens?",
    "choices": [
     "Nothing much, since the Kalman gain automatically handles angles",
-    "The update is ignored because the innovation exceeds the gate",
+    "Nothing goes wrong, because the bearing model already uses atan2, which keeps angles in range",
     "The covariance grows instead of shrinking for that update",
     "It sees a 358 degree error and yanks the pose estimate far off"
    ],
    "correct": 3,
-   "why": "The true difference is only 2 degrees, but the raw subtraction gives 358 degrees, producing a huge, wrong correction. The gain does not know about angle periodicity; you must wrap the innovation."
+   "why": "The true difference is only 2 degrees, but the raw subtraction gives 358 degrees, producing a huge, wrong correction. atan2 keeps the predicted bearing in range, not the difference between two angles, and the gain knows nothing about periodicity: you must wrap the innovation."
   },
   "tryIt": "Write the $2 \\times 3$ Jacobian $H$ of the range-bearing model with respect to $(x, y, \\theta)$ for a landmark at $(m_x, m_y)$, then verify it numerically with finite differences at one pose."
  },

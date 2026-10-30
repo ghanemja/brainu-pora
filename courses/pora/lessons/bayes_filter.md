@@ -24,7 +24,7 @@ This works step by step, without replaying history, because of the **Markov assu
 
 ## The book's hallway
 
-A robot drives along a hallway with doors and a sensor that looks for a door. Moving smears its belief forward; seeing a door sharpens the belief around positions next to doors. In a hallway with several identical doors, the belief can have several peaks at once, which the Bayes filter represents fine, and which a single Gaussian (next lesson) can't.
+A robot drives along a hallway with doors and a sensor that looks for a door. Moving smears its belief forward; seeing a door sharpens the belief around positions next to doors. In a hallway with several identical doors, the belief can have several peaks at once, which the Bayes filter represents fine, and which a single Gaussian (the Kalman filter) can't.
 
 ## Worked example: one door, two readings
 

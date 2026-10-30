@@ -21,11 +21,11 @@ Average $N$ independent readings and the noise's standard deviation shrinks by $
 
 ## Trust each sensor by its variance
 
-Two sensors measure the same quantity, with variances $\sigma_A^2$ and $\sigma_B^2$. The best combination (the one with the smallest variance) weights each reading by the *inverse* of its variance:
+Two independent sensors measure the same quantity, with variances $\sigma_A^2$ and $\sigma_B^2$. The best combination (the one with the smallest variance) weights each reading by the *inverse* of its variance:
 
 $$\hat z = \frac{z_A/\sigma_A^2 + z_B/\sigma_B^2}{1/\sigma_A^2 + 1/\sigma_B^2}, \qquad \sigma^2_{\text{fused}} = \frac{1}{1/\sigma_A^2 + 1/\sigma_B^2}$$
 
-The fused estimate is always better than either sensor alone. This one formula is the heart of the Kalman filter, two lessons ahead.
+The fused estimate always has a smaller variance than either sensor alone. This one formula is the heart of the Kalman filter, coming up in the estimation lessons.
 
 ## Worked example
 

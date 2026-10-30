@@ -4,9 +4,9 @@ video: PiCC-SxWlH8 | EKF Localization | Cyrill Stachniss | 36:21
 ---
 ## The goal
 
-You know the map: a list of landmarks $m_1, \ldots, m_N$ at known positions. You don't know the robot's pose $x = (x, y, \theta)$. **EKF localization** tracks the pose as a Gaussian $\mathcal{N}(\mu, \Sigma)$ with the EKF from the EKF & UKF lesson, using the motion and range-bearing models from the last lesson.
+You know the map: a list of landmarks $m_1, \ldots, m_N$ at known positions. You don't know the robot's pose $x = (x, y, \theta)$. **EKF localization** tracks the pose as a Gaussian $\mathcal{N}(\mu, \Sigma)$ with the EKF from the EKF & UKF lesson, using the motion and range-bearing models from the motion & measurement models lesson.
 
-## The loop (the book's Algorithm 2)
+## The loop
 
 **Predict** with the motion model and its Jacobian $F$:
 
