@@ -65,6 +65,11 @@ function pathFor(D, bgId, goals, placed) {
   [...keepSet].sort((a, b) => chk(a) - chk(b) || dep(a) - dep(b) || order[a] - order[b]).forEach(visit);
   return { steps: out, known: [...need].filter((x) => !keepSet.has(x)) };
 }
+// The flagship path: every lesson on the way to "Know where the robot is" has been checked line by
+// line (equations, worked examples recomputed, quiz answers). Other paths are early drafts.
+const FLAGSHIP = "ekf_localization";
+const reviewedSet = (D) => new Set([FLAGSHIP, ...ancestors(D.C, FLAGSHIP)]);
+const ISSUES = "https://github.com/ghanemja/brainu-pora/issues/new";
 const chName = (D, c) => (c == null ? "Assumed background" : c === 0 ? "Getting started" : "Chapter " + c + ": " + D.CH[c].title);
 const goalName = (D, id) => (D.G.find((x) => x.id === id) || {}).n || (D.C[id] || {}).n || "";
 const goalsLabel = (D, gs) => { const n = gs.map((g) => goalName(D, g)); return n.length <= 2 ? n.join(" + ") : n[0] + " + " + (n.length - 1) + " more"; };
@@ -326,7 +331,7 @@ const roughTime = (m) => (m < 50 ? "under an hour" : m < 90 ? "about an hour" : 
 // The front door: what this is in one line, one button, and something to play with.
 // Tap a goal on the cork and watch its path pin itself; left alone, it cycles through them.
 function Welcome({ D, set, next, onReset }) {
-  const G = D.G, [gi, setGi] = useState(0), [touched, setTouched] = useState(false);
+  const G = D.G, [gi, setGi] = useState(() => Math.max(0, G.findIndex((x) => x.id === FLAGSHIP))), [touched, setTouched] = useState(false);
   useEffect(() => { if (touched || reduceMotion()) return; const t = setInterval(() => setGi((k) => (k + 1) % G.length), 3400); return () => clearInterval(t); }, [touched]);
   const g = G[gi], P = pathFor(D, "new", [g.id]);
   const go = () => { trackEvent(touched ? "welcome-goal/" + g.id : "welcome-start"); set(touched ? { goal: [g.id] } : {}); nav("#/start"); };
@@ -346,7 +351,8 @@ function Welcome({ D, set, next, onReset }) {
       <div class="cork cork-sm"><${CourseMap} D=${D} goals=${[g.id]} steps=${P.steps} /></div>
       <p class="wl-say"><b>${g.n}</b>: ${P.steps.length} lessons from scratch, ${roughTime(pathMinutes(D, P.steps))}. Fewer if you know some already.</p>
       <div class="wl-goals" role="group" aria-label="Goals">${G.map((x, k) => html`<button key=${x.id} aria-pressed=${k === gi} class=${k === gi ? "on" : ""}
-        onClick=${() => { setTouched(true); setGi(k); }}>${x.n}</button>`)}</div>
+        onClick=${() => { setTouched(true); setGi(k); }}>${x.id === FLAGSHIP ? "★ " : ""}${x.n}</button>`)}</div>
+      <p class="wl-note">★ Start here: every lesson on this path has been checked line by line. The other paths are early drafts.</p>
     </section>
   </main>`;
 }
@@ -399,7 +405,7 @@ function Start({ D, S, set }) {
         <p class="qhint">${q === 2 ? "tick as many as you like" : "pick one; the quick check will fine-tune it"}</p>
         <div class="picks" role=${q === 2 ? "group" : "radiogroup"} aria-labelledby="qh">
           ${list.map((o) => html`<button key=${o.id} class=${"pick" + (isOn(o.id) ? " pick-on" : "")} role=${q === 2 ? "checkbox" : "radio"} aria-checked=${isOn(o.id)} onClick=${() => choose(o.id)}>
-            <span class=${"circ" + (q === 2 ? " sq" : "")} aria-hidden="true">${isOn(o.id) ? "✓" : ""}</span><span><b>${o.n}</b><span class="d">${o.b}</span></span></button>`)}
+            <span class=${"circ" + (q === 2 ? " sq" : "")} aria-hidden="true">${isOn(o.id) ? "✓" : ""}</span><span><b>${o.n}</b>${o.id === FLAGSHIP ? html` <span class="star">★ start here</span>` : null}<span class="d">${o.b}</span></span></button>`)}
         </div>
         ${q === 2 ? html`<div class="problem">
           <label for="prob" class="qhint">or say what you're building, in your words</label>
@@ -689,6 +695,7 @@ function Lesson({ D, S, P, set, n, part }) {
   const chapterLink = html`<a href=${ch ? ch.url : "https://porabook.com/book/"} target="_blank" rel="noopener">${c.c == null ? "the book" : "chapter " + c.c + " on porabook.com"} ↗</a>`;
   // jump to the video card with a given video picked (the Stanford lecture, from the intro)
   const lecK = vids.findIndex((v) => v.full), jump = (k) => { setSel(0); setPlaying(false); setCard(Math.max(0, cards.findIndex((x) => x.k === k))); };
+  const reviewed = useMemo(() => reviewedSet(D), [D]).has(id);
   // one credit line, naming only what this lesson actually uses
   const from = [c.L.length && "the lecture from Stanford's " + [...new Set(c.L.map((l) => l.course))].join(" and "), nbk && "the notebook from StanfordASL's pora-exercises"].filter(Boolean);
   const credit = from.length ? from.join(" and ").replace(/^t/, "T") + ". " : "";
@@ -764,9 +771,11 @@ function Lesson({ D, S, P, set, n, part }) {
           <div class="beyond"><span class="kicker">Beyond the course</span>
             ${(c.R || []).length ? html`<ul>${c.R.slice(0, 3).map((r) => html`<li key=${r.u}>${r.v ? html`<button class="mini-play" aria-label=${"Watch the 30-second explainer for " + r.t} onClick=${() => setVideo({ t: r.t, src: r.v, u: r.u })}>▶</button>` : null}<a href=${r.u} target="_blank" rel="noopener">${r.t}</a>${r.y ? html` <small>${r.y}</small>` : null}</li>`)}</ul>` : null}
             <a class="linkish" href=${arxivSearch(c.n)} target="_blank" rel="noopener">Newest work on ${c.n} on arXiv ↗</a></div>
-          <p class="credit">${credit}Notes, quiz and exercise by BrainU, following <i>Principles of Robot Autonomy</i>${c.c ? ", chapter " + c.c : ""}.</p>
+          <p class="credit">${credit}Notes, quiz and exercise by BrainU, following <i>Principles of Robot Autonomy</i>${c.c ? ", chapter " + c.c : ""}${reviewed ? ", checked line by line" : "; not reviewed yet"}.</p>
         </section>`}
 
+      <p class="report"><a href=${ISSUES + "?" + new URLSearchParams({ title: c.n + " · " + cur.t, body: "Lesson: " + c.n + " (" + kicker + ")\nCard " + (ci + 1) + " of " + cards.length + ": " + cur.t + "\nPage: " + location.href + "\n\nWhat's wrong or confusing:\n\n" })}
+        target="_blank" rel="noopener" onClick=${() => trackEvent("report/" + id)}>Spot a mistake, or something confusing on this card? Tell us ↗</a></p>
       <nav class="deck-foot" aria-label="Cards in this lesson">
         <button class="linkish deck-back" disabled=${ci === 0} onClick=${back}>‹ Back</button>
         <ol class="deck-dots">${cards.map((x, k) => html`<li key=${k}><button aria-label=${k + 1 + ". " + x.t} title=${x.t} aria-current=${k === ci ? "step" : null}

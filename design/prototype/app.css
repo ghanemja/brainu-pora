@@ -928,3 +928,10 @@ body.am-canvas[data-medium] { background: var(--desk) url(tex/paper.jpg) !import
 /* the single credit line: small interface text, set apart by a pencil rule */
 .credit { margin: var(--rule) 0 0 !important; padding-top: 8px; border-top: 1px dashed var(--line); font: 400 13px/1.5 "Bricolage Grotesque", sans-serif !important; color: var(--muted); }
 .practice p.credit { font: 400 13px/1.5 "Bricolage Grotesque", sans-serif !important; margin-top: 18px !important; }
+/* the flagship path, starred where goals are picked; Caveat because it's a pencilled note */
+.wl-note { margin: 0; text-align: center; font: 400 18px/1.3 "Caveat", cursive; color: var(--muted); }
+.star { font: 700 17px "Caveat", cursive; color: var(--redpen); white-space: nowrap; }
+/* reporting a problem: small interface text under the card */
+.report { margin: -4px 0 0; text-align: center; font: 400 13.5px "Bricolage Grotesque", sans-serif; }
+.report a { color: var(--muted); text-underline-offset: 3px; }
+.report a:hover { color: var(--red); }
