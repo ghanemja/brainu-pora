@@ -14,7 +14,7 @@ The **extended Kalman filter** uses the linearization lesson. At the current mea
 
 $$F = \frac{\partial f}{\partial x}\bigg|_{\mu}, \qquad H = \frac{\partial h}{\partial x}\bigg|_{\bar\mu}$$
 
-and run the usual equations: $\bar\mu = f(\mu, u)$ and $\bar\Sigma = F\Sigma F^\top + Q$; then $K = \bar\Sigma H^\top(H\bar\Sigma H^\top + R)^{-1}$ and $\mu = \bar\mu + K(z - h(\bar\mu))$. The mean goes through the true nonlinear functions; only the covariance uses the straight-line approximation.
+and run the usual equations: $\bar\mu = f(\mu, u)$ and $\bar\Sigma = F\Sigma F^\top + Q$; then $K = \bar\Sigma H^\top(H\bar\Sigma H^\top + R)^{-1}$ $\mu = \bar\mu + K(z - h(\bar\mu))$ and $\Sigma = (I - KH)\bar\Sigma$. The mean goes through the true nonlinear functions; the covariance and the gain use the straight-line approximation.
 
 ## The UKF: push a few points through
 
