@@ -815,3 +815,50 @@ body.am-canvas[data-medium] { background: var(--desk) url(tex/paper.jpg) !import
   .card { padding-left: 60px !important; padding-right: 16px !important; }
 }
 .lesson { padding-bottom: 0; }
+
+/* ═════════════════ Real materials: framed cork, a slate board with a chalk tray ═════════════════
+   Both boards get a wood frame (tex/frame.jpg) in their border. A border-coloured ::before over the
+   frame lights it from the top left, and the coloured borders meet on the diagonal, so the corners
+   read as mitre joints. Inset shadows sink the surface below the frame. */
+.cork, .board { --fw: 14px; position: relative; border: var(--fw) solid transparent !important; border-radius: 5px !important; }
+.cork::before, .board::before { content: ""; position: absolute; inset: calc(-1 * var(--fw)); border: var(--fw) solid; border-radius: 5px; pointer-events: none; z-index: 1;
+  border-color: rgba(255,232,190,.26) rgba(30,15,5,.16) rgba(30,15,5,.34) rgba(255,232,190,.14); }
+/* the cork: granules (tex/cork.jpg), a soft window light top left, darker toward the frame */
+.cork { margin: 0 !important;
+  background: radial-gradient(ellipse 70% 60% at 28% 18%, rgba(255,238,205,.20), transparent 70%) padding-box,
+    radial-gradient(ellipse at center, transparent 55%, rgba(70,38,12,.30)) padding-box,
+    url(tex/cork.jpg) 0 0 / 256px padding-box, url(tex/frame.jpg) center / 700px 140px border-box !important;
+  box-shadow: inset 0 0 0 1px rgba(40,20,6,.55), inset 3px 4px 8px rgba(40,20,6,.55), 0 2px 3px rgba(40,25,10,.3), 0 16px 28px -10px rgba(40,25,10,.5) !important; }
+.mm-cork { --fw: 7px; margin: 6px 0 4px !important; }
+.mm-cork::before { border-width: 7px; }
+/* the slate: dust left by erasing, more of it settled at the bottom, a dull sheen from above */
+.board { --fw: 16px; margin: 0 0 20px !important;
+  background: linear-gradient(172deg, rgba(255,255,255,.06), transparent 38%) padding-box,
+    radial-gradient(ellipse 34% 20% at 24% 34%, rgba(235,231,222,.075), transparent 70%) padding-box,
+    radial-gradient(ellipse 30% 16% at 72% 64%, rgba(235,231,222,.06), transparent 70%) padding-box,
+    radial-gradient(ellipse 22% 12% at 56% 22%, rgba(235,231,222,.045), transparent 70%) padding-box,
+    linear-gradient(0deg, rgba(235,231,222,.10), transparent 16%) padding-box,
+    var(--am-paper-texture, none) padding-box, url(tex/slate.jpg) center / cover padding-box,
+    url(tex/frame.jpg) center / 700px 140px border-box !important;
+  background-blend-mode: normal, normal, normal, normal, normal, soft-light, normal, normal !important;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.6), inset 4px 5px 12px rgba(0,0,0,.5), inset 0 0 70px rgba(0,0,0,.32), 0 2px 3px rgba(40,25,10,.3), 0 20px 30px -12px rgba(40,25,10,.5) !important; }
+/* the chalk tray: a wood ledge under the frame, with an eraser and two sticks of chalk on it */
+.board::after { content: ""; position: absolute; z-index: 2; pointer-events: none; height: 27px;
+  left: calc(-1 * var(--fw) - 8px); right: calc(-1 * var(--fw) - 8px); bottom: calc(-1 * var(--fw) - 15px);
+  background:
+    linear-gradient(180deg, #fffef8, #e6e2d6 70%, #cfcabd) 72% 6px / 48px 7px no-repeat,
+    linear-gradient(180deg, #f8eeb4, #e2d48c) 80% 7px / 22px 6px no-repeat,
+    linear-gradient(180deg, #5f5c58, #3e3b38) 14% 10px / 70px 5px no-repeat,
+    linear-gradient(180deg, #e2c08a, #b48a50 80%, #8d6634) 14% 1px / 70px 10px no-repeat,
+    linear-gradient(180deg, rgba(255,236,200,.45) 0 1.5px, transparent 1.5px 55%, rgba(30,15,5,.35)) 0 12px / 100% 15px no-repeat,
+    url(tex/frame.jpg) 0 12px / 100% 15px no-repeat;
+  filter: drop-shadow(0 5px 5px rgba(40,25,10,.35)); }
+.recap { padding: 18px 24px 16px !important; }
+@media (max-width: 600px) { .board { --fw: 11px; } .cork { --fw: 10px; } }
+/* pins and labels on the cork */
+.gn-hi { fill: #fff; opacity: .6; pointer-events: none; }
+.gn-dim .gn-hi { opacity: .35; }
+/* the path is red string between pins: solid thread with a little shadow on the cork; stretches
+   you haven't walked yet are slacker and paler */
+.gs { stroke-dasharray: none !important; stroke-width: 1.5; opacity: .62; stroke-linecap: round; filter: drop-shadow(.6px 1.4px .5px rgba(40,18,4,.45)); }
+.gs-done { opacity: 1; stroke-width: 1.9; }

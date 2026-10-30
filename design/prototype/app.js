@@ -115,7 +115,9 @@ function CourseMap({ D, known = [], goals = [], steps = [], current = -1, done =
   return html`<svg class="cmap ${compact ? "cmap-compact" : ""}" viewBox=${vb} role="img"
       aria-label=${steps.length ? `Course map: ${steps.length} lessons on your path${current >= 0 ? ", you are on lesson " + (current + 1) : ""}.` : "Course map of 69 concepts"}>
     ${compact ? null : D.PARTS.map((p, pi) => html`<g key=${"l" + pi} transform=${`translate(${XS[pi]} 44) rotate(${[-2, 1, -1, 2, -1.5][pi]})`}>
-      <rect x="-54" y="-14" width="108" height="26" fill="#fbf9f1" /><text y="4" text-anchor="middle" class="gl">${PART_SHORT[pi] || trunc(p.t, 18)}</text></g>`)}
+      <rect x="-53" y="-12" width="108" height="26" fill="rgba(40,18,4,.28)" /><rect x="-54" y="-14" width="108" height="26" fill="#fbf9f1" />
+      <text y="4" text-anchor="middle" class="gl">${PART_SHORT[pi] || trunc(p.t, 18)}</text>
+      <rect x="-13" y="-19" width="26" height="9" fill="rgba(250,246,226,.62)" stroke="rgba(120,100,60,.12)" stroke-width=".6" transform=${`rotate(${[3, -4, 2, -2, 4][pi]})`} /></g>`)}
     ${edges.map(([a, b]) => html`<line key=${a + ">" + b} x1=${f(L[a][0])} y1=${f(L[a][1])} x2=${f(L[b][0])} y2=${f(L[b][1])} class=${K.has(a) && K.has(b) ? "ge ge-known" : "ge"} />`)}
     ${steps.slice(1).map((id, k) => { const a = L[steps[k]], b = L[id];
       return html`<line key=${"s" + steps[k] + id} x1=${f(a[0])} y1=${f(a[1])} x2=${f(b[0])} y2=${f(b[1])} class=${"gs " + (current >= 0 && k < current ? "gs-done" : "")} />`; })}
@@ -128,8 +130,9 @@ function CourseMap({ D, known = [], goals = [], steps = [], current = -1, done =
           onKeyDown=${click ? (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), click()) : null}>
         <title>${tip}</title>
         ${st === "goal" || st === "now" ? html`<circle cx=${f(x)} cy=${f(y)} r=${f(r + 5)} class="gn-ring" />` : null}
-        <circle cx=${f(x)} cy=${f(y + 1.5)} r=${f(r)} fill="rgba(0,0,0,.25)" />
+        <circle cx=${f(x + r * 0.22)} cy=${f(y + r * 0.38)} r=${f(r * 1.05)} fill="rgba(40,18,4,.32)" />
         <circle cx=${f(x)} cy=${f(y)} r=${f(r)} class="gn-dot" />
+        <ellipse cx=${f(x - r * 0.3)} cy=${f(y - r * 0.34)} rx=${f(r * 0.36)} ry=${f(r * 0.26)} class="gn-hi" />
         ${(st === "path" || st === "now" || (st === "done" && !compact)) && (!compact || st === "now") ? html`<text x=${f(x)} y=${f(y + (compact ? 4 : 2.6))} text-anchor="middle" class=${compact ? "gn-num-big" : ""}>${k + 1}</text>` : null}
       </g>`; })}
     ${pulse && L[steps[pulse.from]] && L[steps[pulse.from + 1]] ? html`<${Spark} key=${"p" + pulse.key} from=${L[steps[pulse.from]]} to=${L[steps[pulse.from + 1]]} />` : null}
