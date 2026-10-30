@@ -98,43 +98,106 @@ function Spark({ from, to }) {
   return html`<circle ref=${ref} r="5" class="spark" cx="0" cy="0"><animateMotion begin="indefinite" dur="1s" fill="freeze" path=${`M${from[0]},${from[1]} L${to[0]},${to[1]}`} /></circle>`;
 }
 
+// Pushpins: a domed plastic head with a collar and a highlight, casting a shadow down-right on
+// the cork. The gradients are defined once per board.
+const PIN_COL = { red: ["#ff9b92", "#d42a20", "#6e0c08"], gold: ["#fff0a6", "#e2a800", "#6e5000"], green: ["#b4ecad", "#2f8f3a", "#123f17"], cream: ["#ffffff", "#ece2c8", "#9c8862"] };
+const PinDefs = () => html`<defs>${Object.entries(PIN_COL).map(([k, [a, b, c]]) => html`<radialGradient key=${k} id=${"pp-" + k} cx="35%" cy="30%" r="75%">
+  <stop offset="0" stop-color=${a} /><stop offset=".45" stop-color=${b} /><stop offset="1" stop-color=${c} /></radialGradient>`)}</defs>`;
+const Pushpin = ({ x, y, c = "red", s = 1, cls = "", d }) => html`<g class=${"pp " + cls} style=${{ transform: `translate(${x}px, ${y}px) scale(${s})`, "--d": d }}>
+  <ellipse cx="3.4" cy="5.6" rx="5.4" ry="2.7" fill="rgba(30,14,2,.36)" />
+  <circle r="6.2" fill=${`url(#pp-${c})`} /><circle r="3.3" cx="-.4" cy="-.5" fill=${`url(#pp-${c})`} stroke="rgba(0,0,0,.22)" stroke-width=".5" />
+  <ellipse cx="-2.3" cy="-2.7" rx="2" ry="1.25" fill="#fff" opacity=".78" /></g>`;
+// Red yarn between two pins: it sags under its own weight, with a twisted-fibre highlight and a
+// shadow on the cork. `d` is also set as a style so a moved card drags its yarn smoothly.
+// The sag grows with the horizontal span, so a strand hanging straight down stays straight.
+const yarnD = (a, b) => { const sag = 3 + Math.abs(b[0] - a[0]) * 0.16;
+  return `M${a[0].toFixed(1)},${a[1].toFixed(1)} Q${((a[0] + b[0]) / 2).toFixed(1)},${((a[1] + b[1]) / 2 + sag).toFixed(1)} ${b[0].toFixed(1)},${b[1].toFixed(1)}`; };
+const Yarn = ({ a, b, d: delay, done }) => { const d = yarnD(a, b), st = { d: `path("${d}")` };
+  return html`<g class=${"yarn" + (done ? " yarn-done" : "")} style=${{ "--d": delay }}>
+    <path d=${d} style=${st} class="yn-sh" /><path d=${d} style=${st} class="yn" /><path d=${d} style=${st} class="yn-tw" /><path d=${d} style=${st} class="yn-tw2" /></g>`; };
+
+// The big board: each lesson on your path is an index card pinned in its part's column, in path
+// order, with yarn from pin to pin. Everything else stays as a small tack in the background.
+const CARD_W = 108, CARD_H = 42;
+function boardFor(D, steps) {
+  const at = {}, by = D.PARTS.map(() => []);
+  steps.forEach((id) => { const pi = D.PARTS.findIndex((p) => p.chs.includes(D.C[id].c)); by[Math.max(0, pi)].push(id); });
+  by.forEach((list, pi) => { const gap = Math.min(50, 296 / Math.max(1, list.length));
+    list.forEach((id, k) => (at[id] = { x: Math.min(548, Math.max(60, XS[pi] + (k % 2 ? 6 : -6))), y: 98 + CARD_H / 2 + k * gap, rot: [-2.4, 1.8, -1.1, 2.6, -0.7, 1.4][(k + pi * 2) % 6] })); });
+  return at;
+}
+// a lesson name in pen, on at most two short lines, clear of the pin in the card's top-right corner
+function cardLines(name) {
+  const words = name.replace(/\s*\(.*?\)/, "").split(" "), out = [""];
+  for (const w of words) { const cur = out[out.length - 1]; if ((cur + " " + w).trim().length <= 15 || !cur) out[out.length - 1] = (cur + " " + w).trim(); else out.push(w); }
+  return (out.length > 2 ? [out[0], out.slice(1).join(" ")] : out).map((t) => trunc(t, 15));
+}
+
 function CourseMap({ D, known = [], goals = [], steps = [], current = -1, done = {}, compact = false, pulse = null, onPick }) {
   const L = useMemo(() => layoutFor(D), [D]), ids = Object.keys(D.C), K = new Set(known), at = {};
   steps.forEach((id, k) => (at[id] = k));
   const state = (id) => id in at && at[id] === current ? "now" : goals.includes(id) ? "goal" : id in at ? (done[id] ? "done" : "path") : K.has(id) ? "known" : "dim";
   const f = (v) => v.toFixed(1), grow = compact ? 1.45 : 1;
+  const click = (id) => (onPick && at[id] != null ? () => onPick(at[id]) : null);
+  const keys = (fn) => (fn ? (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), fn()) : null);
+  const label = steps.length ? `Course map: ${steps.length} lessons on your path${current >= 0 ? ", you are on lesson " + (current + 1) : ""}.` : "Course map of 69 concepts";
+
+  if (!compact) {
+    const B = boardFor(D, steps), pinAt = (id) => [B[id].x + CARD_W / 2 - 11, B[id].y - CARD_H / 2 + 6];
+    const colour = (st) => (st === "goal" ? "gold" : st === "done" ? "green" : "red");
+    return html`<svg class="cmap cmap-board" viewBox="0 0 610 420" role="img" aria-label=${label}><${PinDefs} />
+      ${D.PARTS.map((p, pi) => html`<g key=${"l" + pi} transform=${`translate(${XS[pi]} 44) rotate(${[-2, 1, -1, 2, -1.5][pi]})`}>
+        <rect x="-53" y="-12" width="108" height="26" fill="rgba(40,18,4,.28)" /><rect x="-54" y="-14" width="108" height="26" fill="#fbf9f1" />
+        <text y="4" text-anchor="middle" class="gl">${PART_SHORT[pi] || trunc(p.t, 18)}</text>
+        <rect x="-13" y="-19" width="26" height="9" fill="rgba(250,246,226,.62)" stroke="rgba(120,100,60,.12)" stroke-width=".6" transform=${`rotate(${[3, -4, 2, -2, 4][pi]})`} /></g>`)}
+      ${ids.filter((id) => !(id in at)).map((id) => { const st = state(id);
+        return html`<g key=${"k" + id}><title>${D.C[id].n}${st === "known" ? " · you know this" : ""}</title>
+          <${Pushpin} x=${L[id][0]} y=${L[id][1]} c=${st === "known" ? "green" : "cream"} s=${st === "known" ? 0.55 : 0.42} cls=${"tack tack-" + st} /></g>`; })}
+      ${steps.map((id, k) => { const st = state(id), b = B[id], go = click(id), lines = cardLines(D.C[id].n);
+        return html`<g key=${"c" + id} class=${"pc pc-" + st + (go ? " pc-click" : "")} style=${{ transform: `translate(${b.x}px, ${b.y}px) rotate(${b.rot}deg)`, "--d": Math.min(0.9, 0.08 + k * 0.07).toFixed(2) + "s" }}
+            onClick=${go} role=${go ? "button" : null} tabindex=${go ? 0 : null} onKeyDown=${keys(go)} aria-label=${"Lesson " + (k + 1) + ": " + D.C[id].n}>
+          <title>${"Lesson " + (k + 1) + ": " + D.C[id].n}${st === "goal" ? " · your goal" : st === "done" ? " · done" : ""}</title>
+          <g class="pc-in">
+          <rect x=${-CARD_W / 2 + 2} y=${-CARD_H / 2 + 3} width=${CARD_W} height=${CARD_H} class="pc-sh" />
+          <rect x=${-CARD_W / 2} y=${-CARD_H / 2} width=${CARD_W} height=${CARD_H} class="pc-paper" />
+          ${st === "now" ? null : html`<line x1=${-CARD_W / 2} x2=${CARD_W / 2} y1="-9.5" y2="-9.5" class="pc-red" />
+            <line x1=${-CARD_W / 2} x2=${CARD_W / 2} y1="2.5" y2="2.5" class="pc-blue" /><line x1=${-CARD_W / 2} x2=${CARD_W / 2} y1="14" y2="14" class="pc-blue" />`}
+          <text x=${-CARD_W / 2 + 6} y="-12" class="pc-num">${st === "now" ? "UP NEXT · " : ""}#${k + 1}</text>
+          ${st === "goal" ? html`<text x=${CARD_W / 2 - 22} y="-12" text-anchor="end" class="pc-stamp">GOAL</text>` : null}
+          ${st === "done" ? html`<path d=${`M${CARD_W / 2 - 34} -15 l3 3 l7 -7`} class="pc-tick" />` : null}
+          ${lines.map((t, j) => html`<text key=${j} x=${-CARD_W / 2 + 6} y=${(lines.length > 1 ? 0.5 : 6.5) + j * 11.5} class="pc-name">${t}</text>`)}
+          </g></g>`; })}
+      ${steps.slice(1).map((id, k) => html`<${Yarn} key=${"y" + steps[k] + id} a=${pinAt(steps[k])} b=${pinAt(id)} d=${(0.25 + k * 0.07).toFixed(2) + "s"} done=${current >= 0 && k < current} />`)}
+      ${steps.map((id, k) => { const [x, y] = pinAt(id); return html`<${Pushpin} key=${"p" + id} x=${x} y=${y} c=${colour(state(id))} s=${state(id) === "goal" ? 1.15 : 1} cls="pp-on" d=${Math.min(0.9, 0.2 + k * 0.07).toFixed(2) + "s"} />`; })}
+    </svg>`;
+  }
+
   // Beside a lesson the map zooms to your path so the pins are big enough to read and tap.
   let vb = "0 0 610 420";
-  if (compact && steps.length) {
+  if (steps.length) {
     const pts = steps.concat(goals).filter((id) => L[id]).map((id) => L[id]), xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
     let x0 = Math.min(...xs) - 34, x1 = Math.max(...xs) + 34, y0 = Math.min(...ys) - 34, y1 = Math.max(...ys) + 34;
     const w = Math.max(x1 - x0, 260), hgt = Math.max(y1 - y0, w * 0.62), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
     vb = `${(cx - w / 2).toFixed(0)} ${(cy - hgt / 2).toFixed(0)} ${w.toFixed(0)} ${hgt.toFixed(0)}`;
   }
-  const edges = compact ? [] : ids.flatMap((id) => D.C[id].p.filter((q) => L[q]).map((q) => [q, id]));
-  return html`<svg class="cmap ${compact ? "cmap-compact" : ""}" viewBox=${vb} role="img"
-      aria-label=${steps.length ? `Course map: ${steps.length} lessons on your path${current >= 0 ? ", you are on lesson " + (current + 1) : ""}.` : "Course map of 69 concepts"}>
-    ${compact ? null : D.PARTS.map((p, pi) => html`<g key=${"l" + pi} transform=${`translate(${XS[pi]} 44) rotate(${[-2, 1, -1, 2, -1.5][pi]})`}>
-      <rect x="-53" y="-12" width="108" height="26" fill="rgba(40,18,4,.28)" /><rect x="-54" y="-14" width="108" height="26" fill="#fbf9f1" />
-      <text y="4" text-anchor="middle" class="gl">${PART_SHORT[pi] || trunc(p.t, 18)}</text>
-      <rect x="-13" y="-19" width="26" height="9" fill="rgba(250,246,226,.62)" stroke="rgba(120,100,60,.12)" stroke-width=".6" transform=${`rotate(${[3, -4, 2, -2, 4][pi]})`} /></g>`)}
-    ${edges.map(([a, b]) => html`<line key=${a + ">" + b} x1=${f(L[a][0])} y1=${f(L[a][1])} x2=${f(L[b][0])} y2=${f(L[b][1])} class=${K.has(a) && K.has(b) ? "ge ge-known" : "ge"} />`)}
-    ${steps.slice(1).map((id, k) => { const a = L[steps[k]], b = L[id];
-      return html`<line key=${"s" + steps[k] + id} x1=${f(a[0])} y1=${f(a[1])} x2=${f(b[0])} y2=${f(b[1])} class=${"gs " + (current >= 0 && k < current ? "gs-done" : "")} />`; })}
-    ${ids.map((id) => { const st = state(id), [x, y] = L[id], k = at[id];
-      const r = (st === "goal" ? 8 : st === "now" ? 8 : st === "path" || st === "done" ? 6.5 : st === "known" ? 5 : 3.6) * grow;
-      const tip = D.C[id].n + (st === "known" ? " · you know this" : st === "goal" ? " · your goal" : k != null ? " · lesson " + (k + 1) : "");
-      const click = onPick && k != null ? () => onPick(k) : null;
-      return html`<g key=${id} class=${"gn gn-" + st + (click ? " gn-click" : "")} style=${{ "--d": Math.min(0.6, k != null ? k * 0.05 : (ids.indexOf(id) % 12) * 0.04).toFixed(2) + "s" }}
-          onClick=${click} role=${click ? "button" : null} tabindex=${click ? 0 : null} aria-label=${click ? tip : null}
-          onKeyDown=${click ? (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), click()) : null}>
-        <title>${tip}</title>
-        ${st === "goal" || st === "now" ? html`<circle cx=${f(x)} cy=${f(y)} r=${f(r + 5)} class="gn-ring" />` : null}
-        <circle cx=${f(x + r * 0.22)} cy=${f(y + r * 0.38)} r=${f(r * 1.05)} fill="rgba(40,18,4,.32)" />
-        <circle cx=${f(x)} cy=${f(y)} r=${f(r)} class="gn-dot" />
-        <ellipse cx=${f(x - r * 0.3)} cy=${f(y - r * 0.34)} rx=${f(r * 0.36)} ry=${f(r * 0.26)} class="gn-hi" />
-        ${(st === "path" || st === "now" || (st === "done" && !compact)) && (!compact || st === "now") ? html`<text x=${f(x)} y=${f(y + (compact ? 4 : 2.6))} text-anchor="middle" class=${compact ? "gn-num-big" : ""}>${k + 1}</text>` : null}
-      </g>`; })}
+  const onTop = (id) => id in at || goals.includes(id);
+  const pin = (id) => { const st = state(id), [x, y] = L[id], k = at[id], go = click(id);
+    const r = (st === "goal" ? 8 : st === "now" ? 8 : st === "path" || st === "done" ? 6.5 : st === "known" ? 5 : 3.6) * grow;
+    const tip = D.C[id].n + (st === "known" ? " · you know this" : st === "goal" ? " · your goal" : k != null ? " · lesson " + (k + 1) : "");
+    return html`<g key=${id} class=${"gn gn-" + st + (go ? " gn-click" : "")} style=${{ "--d": Math.min(0.6, k != null ? k * 0.05 : (ids.indexOf(id) % 12) * 0.04).toFixed(2) + "s" }}
+        onClick=${go} role=${go ? "button" : null} tabindex=${go ? 0 : null} aria-label=${go ? tip : null} onKeyDown=${keys(go)}>
+      <title>${tip}</title>
+      ${st === "goal" || st === "now" ? html`<circle cx=${f(x)} cy=${f(y)} r=${f(r + 5)} class="gn-ring" />` : null}
+      <circle cx=${f(x + r * 0.22)} cy=${f(y + r * 0.38)} r=${f(r * 1.05)} fill="rgba(40,18,4,.32)" />
+      <circle cx=${f(x)} cy=${f(y)} r=${f(r)} class="gn-dot" />
+      <ellipse cx=${f(x - r * 0.3)} cy=${f(y - r * 0.34)} rx=${f(r * 0.36)} ry=${f(r * 0.26)} class="gn-hi" />
+      ${st === "now" ? html`<text x=${f(x)} y=${f(y + 4)} text-anchor="middle" class="gn-num-big">${k + 1}</text>` : null}
+    </g>`;
+  };
+  return html`<svg class="cmap cmap-compact" viewBox=${vb} role="img" aria-label=${label}>
+    ${ids.filter((id) => !onTop(id)).map(pin)}
+    ${steps.slice(1).map((id, k) => html`<${Yarn} key=${"y" + steps[k] + id} a=${L[steps[k]]} b=${L[id]} d="0s" done=${current >= 0 && k < current} />`)}
+    ${ids.filter(onTop).map(pin)}
     ${pulse && L[steps[pulse.from]] && L[steps[pulse.from + 1]] ? html`<${Spark} key=${"p" + pulse.key} from=${L[steps[pulse.from]]} to=${L[steps[pulse.from + 1]]} />` : null}
   </svg>`;
 }
@@ -478,7 +541,7 @@ function PathPage({ D, S, P, set }) {
       const el = inner.current; if (!el) return;
       const o = el.getBoundingClientRect();
       const pts = [...el.querySelectorAll(".chip[data-n]")].sort((a, b) => a.dataset.n - b.dataset.n)
-        .map((n) => { const r = n.getBoundingClientRect(); return [r.left - o.left + 22, r.top - o.top + r.height / 2]; });
+        .map((n) => { const r = n.getBoundingClientRect(); return [r.left - o.left + 12, r.top - o.top + r.height / 2]; });
       let d = "";
       pts.forEach(([x, y], k) => { if (!k) { d = `M${x},${y}`; return; } const [px, py] = pts[k - 1], dist = Math.hypot(x - px, y - py);
         d += ` Q${(px + x) / 2},${Math.max(py, y) + 6 + dist * 0.14} ${x},${y}`; });
@@ -516,11 +579,11 @@ function PathPage({ D, S, P, set }) {
         <div class="row">${note in pos ? html`<a class="am-button" href=${"#/lesson/" + (pos[note] + 1)}>Open lesson</a>` : !S.goal.includes(note) ? html`<button class="am-button am--secondary" onClick=${() => { setNote(null); set({ goal: S.goal.concat(note), i: 0, started: false }); }}>Add as a goal</button>` : null}
           <button class="linkish" onClick=${() => setNote(null)}>Close</button></div></div>` : null}
       <div class="cork-scroll"><div class="cork-in" ref=${inner}>${cols}
-        <svg class="string" width=${str.w} height=${str.h} aria-hidden="true">
-          <path d=${str.d} class="str-shadow" pathLength="1" /><path d=${str.d} class="str-line" pathLength="1" />
-          ${str.pins.map(([x, y], k) => html`<g key=${k} class="pin"><circle cx=${x} cy=${y + 1.5} r="5" fill="rgba(0,0,0,.3)" /><circle cx=${x} cy=${y} r="4.6" fill="#d6332a" /><circle cx=${x - 1.4} cy=${y - 1.6} r="1.5" fill="#ff9a8f" /></g>`)}
+        <svg class="string" width=${str.w} height=${str.h} aria-hidden="true"><${PinDefs} />
+          <g class="yarn"><path d=${str.d} class="yn-sh" pathLength="1" /><path d=${str.d} class="yn" pathLength="1" /><path d=${str.d} class="yn-tw" /><path d=${str.d} class="yn-tw2" /></g>
+          ${str.pins.map(([x, y], k) => html`<g key=${k} class="pin"><${Pushpin} x=${x} y=${y} c=${k === str.pins.length - 1 ? "gold" : "red"} s=${0.85} /></g>`)}
         </svg></div></div>
-      <p class="paper-tip">Follow the red string. Tap a card to see where it sits.</p>
+      <p class="paper-tip">Follow the red yarn. Tap a card to see where it sits.</p>
     </section>
   </main>`;
 }

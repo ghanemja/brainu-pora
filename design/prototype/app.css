@@ -67,9 +67,6 @@ h1, h2 { text-wrap: balance; }
 .cmap-compact .gl { font-size: 14px; }
 .ge { stroke: #3b2a1a; stroke-opacity: .12; stroke-width: .8; }
 .ge-known { stroke-opacity: .35; }
-.gs { stroke: var(--red); stroke-width: 1.6; stroke-dasharray: 4 3; opacity: .75; }
-.gs-done { stroke-dasharray: none; opacity: 1; stroke-width: 2.2; }
-.cmap-compact .gs { stroke-width: 2.4; }
 .gn text { font: 700 7px "Bricolage Grotesque", sans-serif; fill: #8a1d16; pointer-events: none; }
 .gn text.gn-num-big { font-size: 10px; fill: #3a2a00; }
 .gn-dot { transition: fill .3s, stroke .3s; }
@@ -858,7 +855,54 @@ body.am-canvas[data-medium] { background: var(--desk) url(tex/paper.jpg) !import
 /* pins and labels on the cork */
 .gn-hi { fill: #fff; opacity: .6; pointer-events: none; }
 .gn-dim .gn-hi { opacity: .35; }
-/* the path is red string between pins: solid thread with a little shadow on the cork; stretches
-   you haven't walked yet are slacker and paler */
-.gs { stroke-dasharray: none !important; stroke-width: 1.5; opacity: .62; stroke-linecap: round; filter: drop-shadow(.6px 1.4px .5px rgba(40,18,4,.45)); }
-.gs-done { opacity: 1; stroke-width: 1.9; }
+
+/* ═════════════════ The board: index cards, push pins, red yarn ═════════════════ */
+.cmap-board .gl { font-size: 17px !important; }
+/* cards glide to their new spot when the path changes, and drop in when they're new */
+.pc { transition: transform .55s cubic-bezier(.3,1.25,.5,1); }
+.pc-in { animation: cardDrop .5s cubic-bezier(.3,1.4,.5,1) both var(--d); transform-box: fill-box; transform-origin: 50% 0; }
+@keyframes cardDrop { from { opacity: 0; transform: translateY(-10px) rotate(-4deg) scale(1.06); } }
+.pc-sh { fill: rgba(30,14,2,.30); }
+.pc-paper { fill: #fffdf6; }
+.pc-now .pc-paper { fill: #fff09a; }
+.pc-goal .pc-paper { stroke: var(--red); stroke-width: 1.6; }
+.pc-red { stroke: rgba(214,64,64,.55); stroke-width: .8; }
+.pc-blue { stroke: rgba(108,156,222,.32); stroke-width: .6; }
+/* card text: the number is interface (Bricolage), the name is pen on paper (Caveat) */
+.pc-num { font: 700 7.5px "Bricolage Grotesque", sans-serif; letter-spacing: .06em; fill: var(--red); }
+.pc-now .pc-num { fill: #7a5a00; }
+.pc-stamp { font: 800 7.5px "Bricolage Grotesque", sans-serif; letter-spacing: .14em; fill: var(--red); }
+.pc-name { font: 700 13.5px "Caveat", cursive; fill: var(--ink); }
+.pc-done .pc-name { fill: #5c564c; }
+.pc-tick { fill: none; stroke: var(--green); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.pc-click { cursor: pointer; }
+.pc-click:hover .pc-paper, .pc-click:focus-visible .pc-paper { stroke: var(--ink); stroke-width: 1.2; }
+/* push pins */
+.pp { transition: transform .55s cubic-bezier(.3,1.25,.5,1); }
+.pp-on > * { animation: pinPush .35s cubic-bezier(.3,1.6,.5,1) both var(--d); }
+@keyframes pinPush { from { opacity: 0; transform: translate(-3px, -7px) scale(1.5); } }
+.tack-dim { opacity: .72; }
+/* red yarn: a soft shadow, the strand, and two offset dash patterns for the twist of the ply */
+.yarn { animation: cardin .5s ease both var(--d); pointer-events: none; }
+.yarn path { fill: none; stroke-linecap: round; transition: d .55s cubic-bezier(.3,1.25,.5,1); }
+.yn-sh { stroke: rgba(30,14,2,.32); stroke-width: 3.2; transform: translate(1.6px, 3.2px); }
+.yn { stroke: #b51f18; stroke-width: 2.7; }
+.yn-tw { stroke: rgba(255,160,150,.6); stroke-width: 2.1; stroke-dasharray: 1.1 2.6; }
+.yn-tw2 { stroke: rgba(90,6,4,.4); stroke-width: 2.1; stroke-dasharray: 1.1 2.6; stroke-dashoffset: 1.85; }
+.cmap-compact .yn { stroke-width: 3.6; } .cmap-compact .yn-sh { stroke-width: 4; } .cmap-compact .yn-tw, .cmap-compact .yn-tw2 { stroke-width: 2.8; stroke-dasharray: 1.5 3.4; }
+.cmap-compact .yn-tw2 { stroke-dashoffset: 2.4; }
+.cmap-compact .yarn:not(.yarn-done) { opacity: .75; }
+@media (prefers-reduced-motion: reduce) { .pc, .pp, .yarn path { transition: none; } }
+/* the course map page uses the same yarn; while the path is being pinned, only the strand draws in */
+.string .yarn { animation: none; }
+.pinning .string .yn-tw, .pinning .string .yn-tw2 { animation: cardin .4s 2.2s both; }
+.pinning .string .yn-tw, .pinning .string .yn-tw2 { stroke-dasharray: 1.1 2.6 !important; stroke-dashoffset: 0; }
+.pinning .string .yn-tw2 { stroke-dashoffset: 1.85; }
+/* the course map page: every strip keeps a gutter on its left where the yarn and pins run */
+.cork .chip { padding-left: 26px !important; }
+.cork .chip-path, .cork .chip-goal { padding-left: 46px !important; }
+.cork .chip-path .num { left: 26px !important; }
+/* legend under the board: a green tack, an index card, the gold goal pin */
+.glegend .gl-p { width: 15px !important; height: 11px !important; border-radius: 1px !important; background: #fffdf6; box-shadow: inset 0 2.5px 0 rgba(214,64,64,.6), 0 1px 2px rgba(0,0,0,.35); }
+.glegend .gl-g { background: radial-gradient(circle at 35% 30%, #fff0a6, #e2a800 45%, #6e5000); }
+.glegend .gl-k { background: radial-gradient(circle at 35% 30%, #b4ecad, #2f8f3a 45%, #123f17); box-shadow: none; }
